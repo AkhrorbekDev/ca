@@ -1,7 +1,6 @@
-<script lang="ts">
+<script lang="ts" setup>
 
 </script>
-
 
 <template>
   <div class="bg-white">
@@ -14,15 +13,15 @@
           <img src="/icons/youtube.svg" alt="youtube">
         </div>
 
-        <div class="flex items-center gap-6">
+        <router-link to="/login" class="flex items-center gap-6">
           <img src="/icons/lang.svg" alt="lang">
 
           <div class="flex items-center gap-4">
-            <Avatar icon="pi pi-user" style="background-color: #F3F3F3; color: #B7B8BA" shape="circle"/>
+            <Avatar icon="pi pi-user" class="bg-[#F3F3F3] text-[#B7B8BA]" shape="circle"/>
 
             <span class="text-[#A8AAAE]">Kirish</span>
           </div>
-        </div>
+        </router-link>
       </div>
     </div>
   </div>

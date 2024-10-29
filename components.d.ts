@@ -9,15 +9,11 @@ declare module 'vue' {
   export interface GlobalComponents {
     404: typeof import('./src/components/errors/404.vue')['default']
     Avatar: typeof import('primevue/avatar')['default']
-    Button: typeof import('primevue/button')['default']
-    Dropdown: typeof import('primevue/dropdown')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     InputText: typeof import('primevue/inputtext')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Select: typeof import('primevue/select')['default']
-    SelectButton: typeof import('primevue/selectbutton')['default']
   }
 }
