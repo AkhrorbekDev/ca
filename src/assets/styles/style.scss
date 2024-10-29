@@ -1,0 +1,37 @@
+@use '@/assets/styles/mixins.scss';
+@use '@/assets/styles/fonts.scss';
+@use '@/assets/styles/settings.scss';
+@use '@/assets/styles/tailwind.scss';
+@use "@/assets/styles/components/ui/app-form.scss";
+@use "@/assets/styles/components/ui/app-tab.scss";
+@use "@/assets/styles/components/ui/app-switch.scss";
+@use "@/assets/styles/components/ui/app-checkbox.scss";
+
+
+
+html {
+  scroll-behavior: smooth;
+}
+
+.dark h1,
+.dark h2,
+.dark h3,
+.dark h4,
+.dark h5,
+.dark h6,
+.dark span,
+.dark p,
+.dark a {
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #F8F9FC #f1f1f1;
+}
+
