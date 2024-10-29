@@ -66,8 +66,13 @@ const sliderData: SliderData[] = [
         class="mySwiper"
     >
       <swiper-slide v-for="(item, index) in sliderData" :key="index">
-        <div>
+        <div class="relative group">
           <img :src="item.image" :alt="item.title">
+          <div class="group-hover:hidden text-white title-absolute text-[24px] font-bold">{{ item.title }}</div>
+          <div class="hidden group-hover:flex hover-data flex-col items-center justify-center">
+            <span class="block text-white text-[24px] font-bold !mb-[12px]">{{ item.title }}</span>
+            <span class="block text-white text-[16px] font-medium">{{ item.description }}</span>
+          </div>
         </div>
       </swiper-slide>
     </swiper>
@@ -101,5 +106,21 @@ const sliderData: SliderData[] = [
 
 .swiper-wrapper {
   transition-timing-function: linear !important;
+}
+
+.title-absolute {
+  position: absolute;
+  left: 25px;
+  bottom: 24px;
+
+}
+
+.hover-data {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0, 0.6);
 }
 </style>
