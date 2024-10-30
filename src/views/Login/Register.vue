@@ -9,7 +9,7 @@ const value = ref<string>('+998990893954')
 <template>
   <div>
     <div class="fixed inset-0">
-      <img src="../../assets/images/bgCar.svg" alt="Background" class="w-full h-full object-cover">
+      <img src="../../assets/images/bgCar.png" alt="Background" class="w-full h-full object-cover">
     </div>
 
     <div class="absolute flex justify-around md:w-[60%] w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
