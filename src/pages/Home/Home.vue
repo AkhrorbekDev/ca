@@ -5,6 +5,7 @@ import HeroSection from '@/pages/Home/components/HeroSection.vue'
 import AboutUsSection from "@/pages/Home/components/AboutUsSection.vue";
 import ServiceSection from "./components/ServiceSection.vue";
 import TopDrivers from "@/pages/Home/components/TopDrivers.vue";
+import CustomersReview from "@/pages/Home/components/CustomersReview.vue";
 
 </script>
 
@@ -16,6 +17,7 @@ import TopDrivers from "@/pages/Home/components/TopDrivers.vue";
     <AboutUsSection/>
     <ServiceSection/>
     <TopDrivers/>
+    <CustomersReview/>
     <Footer/>
   </div>
 </template>

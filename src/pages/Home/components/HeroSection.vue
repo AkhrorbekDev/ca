@@ -5,41 +5,38 @@
 <template>
   <div class="!h-[900px] relative">
     <video autoplay muted loop playsinline class="background-video">
-      <!--        <source src="background.webm" type="video/webm">-->
-      <source src="@/assets/video/road_transport_truck_industry_forest_nature_highwa_2023_11_27_05.mp4"
-              type="video/mp4">
+      <source src="@/assets/video/road_transport_truck_industry_forest_nature_highwa_2023_11_27_05.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
 
     <div class="max-w-screen-xl  container lg:mx-auto">
       <div class="bg-[#FFFFFF] overflow-hidden rounded-[100px] flex items-center !mt-[32px] !pl-[32px]">
-        <img class="!mr-[45px]" src="@/assets/logo.svg" alt="logo" width="130">
+        <router-link to="/">
+          <img class="!mr-[45px]" src="@/assets/logo.svg" alt="logo" width="130"/>
+        </router-link>
 
         <nav class="flex items-center gap-7">
-          <a href="#" class="text-[#4F5662] font-medium text-[16px] hover:text-green-500">Platforma haqida</a>
-          <a href="#" class="text-[#4F5662] font-medium text-[16px] hover:text-green-500">Maqsad va
-            qadriyatlarimiz</a>
-          <a href="#" class="text-[#4F5662] font-medium text-[16px] hover:text-green-500">Xizmatlar</a>
-          <a href="#" class="text-[#4F5662] font-medium text-[16px] hover:text-green-500">Afzalliklar</a>
-          <a href="#" class="text-[#4F5662] font-medium text-[16px] hover:text-green-500">Hamkorlik</a>
-          <a href="#" class="text-[#4F5662] font-medium text-[16px] hover:text-green-500">FAQ</a>
-          <a href="#" class="text-[#4F5662] font-medium text-[16px] hover:text-green-500">Bog'lanish</a>
+          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Platforma haqida</router-link>
+          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Maqsad va qadriyatlarimiz</router-link>
+          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Xizmatlar</router-link>
+          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Afzalliklar</router-link>
+          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Hamkorlik</router-link>
+          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">FAQ</router-link>
+          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Bog'lanish</router-link>
         </nav>
 
         <div class="bg-[#66C61C] !px-[24px] !py-[28px] !ml-auto relative">
-            <span
-                class="bg-[#66C61C] w-[32px] h-[32px] rounded-full flex items-center justify-center absolute left-[-15px]"><i
-                class="pi pi-phone"
-                style="width: 15px; color: white"></i></span>
-          <span class="text-white font-semibold text-[20px]">(99) 815 87 62</span>
+            <span class="bg-[#66C61C] w-[32px] h-[32px] rounded-full flex items-center justify-center absolute left-[-15px]">
+              <i class="pi pi-phone" style="width: 15px; color: white"/>
+            </span>
+          <a href="tel:+998998158762" class="text-white font-semibold text-[20px]">(99) 815 87 62</a>
         </div>
-
       </div>
-
 
       <div class="!mt-[138px]">
         <h1 class="text-white text-[64px] font-black">Barcha <span class="text-[#66C61C]">transport</span> <br>
-          xizmatlari bir joyda</h1>
+          xizmatlari bir joyda
+        </h1>
 
         <span class="block text-white text-[18px] !mt-[18px] !mb-[56px]">
             Carting — bu barcha turdagi transport xizmatlarini <br>
@@ -47,10 +44,8 @@
           </span>
 
         <div class="flex items-center">
-          <button
-              class="!px-[24px] !py-[12px] bg-[#66C61C] rounded-full text-white text-[16px] font-medium !mr-[16px]">
-            E’lon
-            berish
+          <button class="!px-[24px] !py-[12px] bg-[#66C61C] rounded-full text-white text-[16px] font-medium !mr-[16px]">
+            E’lon berish
           </button>
 
           <button class="flex items-center text-white text-[16px] font-medium">

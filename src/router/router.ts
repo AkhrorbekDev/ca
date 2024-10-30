@@ -1,4 +1,5 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
+import PersonalData from "@/pages/Login/PersonalData.vue";
 
 const routes: RouteRecordRaw[] = [
 
@@ -12,8 +13,32 @@ const routes: RouteRecordRaw[] = [
     {
         path: "/login",
         name: "login",
-        component: () => import("@/views/Login.vue"),
+        component: () => import("@/pages/Login/Login.vue"),
         meta: {layout: "LoginLayout"},
+    },
+    {
+        path: "/income-password",
+        name: "income-password",
+        component: () => import("@/pages/Login/IncomePassword.vue"),
+        meta: {layout: "IncomePasswordLayout"},
+    },
+    {
+        path: "/register",
+        name: "register",
+        component: () => import("@/pages/Login/Register.vue"),
+        meta: {layout: "Register"},
+    },
+    {
+        path: "/selection",
+        name: "selection",
+        component: () => import("@/pages/Login/Selection.vue"),
+        meta: {layout: "Selection"},
+    },
+    {
+        path: "/personal-data",
+        name: "personal-data",
+        component: () => import("@/pages/Login/PersonalData.vue"),
+        meta: {layout: "PersonalData"},
     },
 ];
 
