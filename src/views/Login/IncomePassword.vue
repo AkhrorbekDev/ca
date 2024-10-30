@@ -9,8 +9,8 @@ const value = ref<null>(null)
 </script>
 <template>
   <div>
-    <router-link to="/">
-      <img src="@/assets/images/logo2.svg" class="!p-[24px] absolute right-0" alt="logo"/>
+    <router-link to="/public">
+      <img src="../../assets/images/logo2.svg" class="!p-[24px] absolute right-0" alt="logo"/>
     </router-link>
 
     <div class="flex items-center justify-center h-[100vh]">
@@ -34,7 +34,7 @@ const value = ref<null>(null)
 
         <div class="!mt-[24px] text-center text-gray-600">
           <span class="text-[#292D32] !text-[15px]">Kod olmadingizmi?</span>
-          <router-link to="/" class="text-[#0BA5EC] !ml-1 !text-[15px]">Qayta yuborish</router-link>
+          <router-link to="/public" class="text-[#0BA5EC] !ml-1 !text-[15px]">Qayta yuborish</router-link>
         </div>
       </div>
     </div>

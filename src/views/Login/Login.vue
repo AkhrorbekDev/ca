@@ -15,7 +15,7 @@ const value = ref<string>('+998990893954')
     <div class="absolute flex justify-around md:w-[60%] w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
       <img src="../../assets/images/logo.svg" class="w-[217px] hidden md:block" alt="logo">
 
-      <div class="bg-white rounded-[24px] !w-[400px] !px-[40px] !py-[32px] -translate-x-8">
+      <div class="bg-white rounded-[24px] !w-[400px] !px-[40px] !py-[32px] md:-translate-x-8">
         <h2 class="text-[#282B30] text-[36px] !mb-[20px] text-center font-600">Kirish</h2>
         <p class="text-[#292D324D] text-[16px] text-center !mb-[24px]">
           Profilingizga kirish uchun ro'yxatdan o'tgan raqamingizni kiriting!

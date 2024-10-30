@@ -8,8 +8,8 @@ const ingredient = ref<null>(null)
 </script>
 <template>
   <div class="bg-[#FAFAFA]">
-    <router-link to="/">
-      <img src="@/assets/images/logo2.svg" class="!p-[24px] absolute right-0" alt="logo"/>
+    <router-link to="/public">
+      <img src="../../assets/images/logo2.svg" class="!p-[24px] absolute right-0" alt="logo"/>
     </router-link>
 
     <div class="flex items-center justify-center h-[100vh]">
@@ -43,7 +43,7 @@ const ingredient = ref<null>(null)
 
         <div class="!mt-[24px]  text-gray-600">
           <router-link to="/income-password" class="text-[#0BA5EC] !text-[15px] flex items-center justify-center">
-            <img src="@/assets/images/toLeft.svg" alt="left">
+            <img src="../../assets/images/toLeft.svg" alt="left">
             Ortga
           </router-link>
         </div>

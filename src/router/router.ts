@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
-import PersonalData from "@/pages/Login/PersonalData.vue";
+import Service from "@/layout/ServiceLayout.vue";
 
 const routes: RouteRecordRaw[] = [
 
@@ -13,32 +13,40 @@ const routes: RouteRecordRaw[] = [
     {
         path: "/login",
         name: "login",
-        component: () => import("@/pages/Login/Login.vue"),
+        component: () => import("@/views/Login/Login.vue"),
         meta: {layout: "LoginLayout"},
     },
     {
         path: "/income-password",
         name: "income-password",
-        component: () => import("@/pages/Login/IncomePassword.vue"),
+        component: () => import("@/views/Login/IncomePassword.vue"),
         meta: {layout: "IncomePasswordLayout"},
     },
     {
         path: "/register",
         name: "register",
-        component: () => import("@/pages/Login/Register.vue"),
+        component: () => import("@/views/Login/Register.vue"),
         meta: {layout: "Register"},
     },
     {
         path: "/selection",
         name: "selection",
-        component: () => import("@/pages/Login/Selection.vue"),
+        component: () => import("@/views/Login/Selection.vue"),
         meta: {layout: "Selection"},
     },
     {
         path: "/personal-data",
         name: "personal-data",
-        component: () => import("@/pages/Login/PersonalData.vue"),
+        component: () => import("@/views/Login/PersonalData.vue"),
         meta: {layout: "PersonalData"},
+    },
+
+    // services
+    {
+        path: "/services",
+        name: "services",
+        component: () => import("@/layout/ServiceLayout.vue"),
+        meta: {layout: "Service"},
     },
 ];
 
@@ -55,7 +63,7 @@ router.beforeEach(async (to: any, _, next) => {
 
 
 router.afterEach((to: any) => {
-    const DEFAULT_TITLE = "CARTING";
+    const DEFAULT_TITLE = "Carting transport xizmati";
     document.title = to.meta.title || DEFAULT_TITLE;
 });
 
