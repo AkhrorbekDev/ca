@@ -9,6 +9,7 @@ export default {
         extend: {
             boxShadow: {
                 'custom': '0 24px 32px 0px rgba(41, 45, 50, 0.05)',
+                'header': "0px 2px 8.4px 0px #292D3214;"
             },
             colors: {
                 "black-text": "#000D24",
