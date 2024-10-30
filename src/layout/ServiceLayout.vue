@@ -5,7 +5,8 @@ import {ref} from "vue";
 interface MenuItems {
   title: string;
   children?: MenuItems[];
-  isOpen?: boolean
+  isOpen?: boolean,
+  img?: string
 }
 
 const menuItems = ref<MenuItems[]>([
@@ -15,7 +16,10 @@ const menuItems = ref<MenuItems[]>([
     children: [{
       img: "./car.svg",
       title: 'Yuk tashish'
-    },]
+    }, {
+      img: "./car.svg",
+      title: 'Yuk tashish'
+    }]
   },
   {
     title: 'E’lonlar',
@@ -56,7 +60,8 @@ const openChildMenu = (index: number) => {
               <span :class="list.isOpen ? 'text-[#000]' : ''">{{ list.title }}</span>
               <svg v-if="list.children" width="25" height="24" viewBox="0 0 25 24" fill="none"
                    xmlns="http://www.w3.org/2000/svg">
-                <path d="M17.75 9.5L12.75 14.5L7.75 9.5" :class="list.isOpen ? 'stroke-black' : 'stroke-white'" stroke-width="1.5" stroke-linecap="round"
+                <path d="M17.75 9.5L12.75 14.5L7.75 9.5" :class="list.isOpen ? 'stroke-black' : 'stroke-white'"
+                      stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round"/>
               </svg>
             </div>
