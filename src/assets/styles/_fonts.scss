@@ -1,5 +1,5 @@
 @use '@/assets/styles/mixins.scss' as mixins; // Use a namespace
-$inter-family: "Inter";
+$inter-family: "Lufga";
 $font-format: "truetype";
 
 $fonts: (
@@ -12,7 +12,7 @@ $fonts: (
 @each $style, $weight in $fonts {
   @include mixins.font-face(
                   $inter-family,
-                  "@/assets/fonts/inter/#{$style}.ttf",
+                  "@/assets/fonts/lufga/#{$style}.ttf",
                   $weight,
                   $font-format
   );
