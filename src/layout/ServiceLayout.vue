@@ -31,7 +31,6 @@ const menuItems = ref<MenuItems[]>([
   },
 ])
 
-
 const openChildMenu = (index: number) => {
   menuItems.value.forEach((item, i) => {
     if (item.children) {
