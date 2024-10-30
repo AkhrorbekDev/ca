@@ -7,6 +7,7 @@ import ServiceSection from "./components/ServiceSection.vue";
 import TopDrivers from "@/pages/Home/components/TopDrivers.vue";
 import InfoWizard from "@/pages/Home/components/InfoWizard.vue";
 import AdvantagesSection from "@/pages/Home/components/AdvantagesSection.vue";
+import CustomersReview from "@/pages/Home/components/CustomersReview.vue";
 
 </script>
 
@@ -21,6 +22,7 @@ import AdvantagesSection from "@/pages/Home/components/AdvantagesSection.vue";
     <TopDrivers/>
     <InfoWizard/>
     <AdvantagesSection/>
+    <CustomersReview/>
 
     <Footer/>
   </div>

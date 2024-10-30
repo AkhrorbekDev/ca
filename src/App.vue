@@ -2,14 +2,15 @@
 import MainLayout from "@/layout/MainLayout.vue";
 import LoginLayout from "@/layout/LoginLayout.vue";
 import ErrorLayout from "@/layout/ErrorLayout.vue";
-import ResetPasswordLayout from "@/views/ResetPassword.vue";
-import IncomePasswordLayout from "@/views/IncomePassword.vue";
-import PasswordLayout from "@/views/Password.vue";
+import Selection from "@/pages/Login/Selection.vue";
+import IncomePasswordLayout from "@/pages/Login/IncomePassword.vue";
+import PersonalData from "@/pages/Login/PersonalData.vue";
+import Register from "@/pages/Login/Register.vue";
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 
 interface RouteMeta {
-  layout?: "MainLayout" | "LoginLayout" | "ErrorLayout" | "ResetPasswordLayout" | "IncomePasswordLayout" | "PasswordLayout";
+  layout?: "MainLayout" | "LoginLayout" | "ErrorLayout" | "Selection" | "IncomePasswordLayout" | "Register" | "PersonalData";
 }
 
 const route = useRoute();
@@ -19,9 +20,10 @@ const layouts = {
   MainLayout,
   LoginLayout,
   ErrorLayout,
-  ResetPasswordLayout,
+  Selection,
   IncomePasswordLayout,
-  PasswordLayout,
+  Register,
+  PersonalData,
 };
 </script>
 

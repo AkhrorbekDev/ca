@@ -1,7 +1,24 @@
-<script lang="ts">
+<script lang="ts" setup>
+import { ref } from "vue";
 
+interface Items {
+  label: string;
+}
+
+const menu = ref();
+const items = ref<Items[]>([
+  {
+    label: "O'zbekcha",
+  },
+  {
+    label: 'Русский',
+  }
+]);
+
+const toggle = (event) => {
+  menu.value.toggle(event);
+};
 </script>
-
 
 <template>
   <div class="bg-white">
@@ -14,16 +31,29 @@
           <img src="/icons/youtube.svg" alt="youtube">
         </div>
 
+
         <div class="flex items-center gap-6">
-          <img src="/icons/lang.svg" alt="lang">
+          <div>
+            <img src="/icons/lang.svg" alt="lang" class="cursor-pointer" @click="toggle">
 
-          <div class="flex items-center gap-4">
-            <Avatar icon="pi pi-user" style="background-color: #F3F3F3; color: #B7B8BA" shape="circle"/>
-
-            <span class="text-[#A8AAAE]">Kirish</span>
+            <Menu class="!mt-4" ref="menu" id="overlay_menu" :model="items" :popup="true" />
           </div>
+
+          <router-link to="/login" class="flex items-center gap-6">
+            <div class="flex items-center gap-4">
+              <Avatar icon="pi pi-user" class="bg-[#F3F3F3] text-[#B7B8BA]" shape="circle"/>
+
+              <span class="text-[#A8AAAE]">Kirish</span>
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<style lang="scss">
+#overlay_menu {
+  min-width: 6.7rem;
+}
+</style>
