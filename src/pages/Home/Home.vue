@@ -8,6 +8,7 @@ import TopDrivers from "@/pages/Home/components/TopDrivers.vue";
 import CustomersReview from "@/pages/Home/components/CustomersReview.vue";
 import InfoWizard from "@/pages/Home/components/InfoWizard.vue";
 import AdvantagesSection from "@/pages/Home/components/AdvantagesSection.vue";
+import DownloadApps from "@/pages/Home/components/DownloadApps.vue";
 
 </script>
 
@@ -23,6 +24,7 @@ import AdvantagesSection from "@/pages/Home/components/AdvantagesSection.vue";
 
     <InfoWizard/>
     <AdvantagesSection/>
+    <DownloadApps/>
     <CustomersReview/>
     <Footer/>
   </div>
