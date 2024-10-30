@@ -59,12 +59,10 @@
 
 
         <div class="flex items-center justify-center">
-          <button
+          <router-link to="/services"
               class="!px-[24px] !py-[12px] bg-[#66C61C] rounded-full text-white text-[16px] font-medium !mr-[16px]">
-            E’lon
-            berish
-
-          </button>
+            E’lon berish
+          </router-link>
 
           <button class="flex items-center text-white text-[16px] font-medium">
             <div class="w-[48px] h-[48px] flex items-center justify-center bg-white rounded-full !mr-[12px]">

@@ -47,7 +47,7 @@ const cities = ref([
                   class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-select"/>
         </div>
 
-        <button class="bg-[#66C61C] h-[40px] text-white rounded-full !mt-auto">
+        <button class="bg-[#66C61C] h-[40px] text-white rounded-full !mt-auto" @click="$router.push('/services')">
           Izlash
         </button>
 
@@ -70,9 +70,9 @@ const cities = ref([
             transport xizmatlaridan istalgan vaqtda, istalgan joydanfoydalanish
             imkoniyatini yaratishdir.</p>
 
-          <button class="bg-[#66C61C] font-medium text-white rounded-[8px] !px-[24px] !py-[12px]">
+          <router-link to="/services" class="bg-[#66C61C] font-medium text-white rounded-[8px] !px-[24px] !py-[12px]">
             Xizmatdan foydalanish
-          </button>
+          </router-link>
         </div>
 
         <div>
