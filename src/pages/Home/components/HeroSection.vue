@@ -34,18 +34,23 @@
       </div>
 
       <div class="!mt-[138px]">
-        <h1 class="text-white text-[64px] font-black">Barcha <span class="text-[#66C61C]">transport</span> <br>
-          xizmatlari bir joyda
-        </h1>
+        <h1 class="text-white text-[90px] font-black text-center leading-tight">BARCHA <span class="text-[#66C61C]">TRANSPORT</span>
+          <br>
+          XIZMATLARI BIR JOYDA</h1>
 
-        <span class="block text-white text-[18px] !mt-[18px] !mb-[56px]">
+
+        <span class="block text-white text-[18px] !mt-[18px] !mb-[56px] text-center">
             Carting — bu barcha turdagi transport xizmatlarini <br>
               bir joyga jamlagan innovatsion platforma.
           </span>
 
-        <div class="flex items-center">
-          <button class="!px-[24px] !py-[12px] bg-[#66C61C] rounded-full text-white text-[16px] font-medium !mr-[16px]">
-            E’lon berish
+
+        <div class="flex items-center justify-center">
+          <button
+              class="!px-[24px] !py-[12px] bg-[#66C61C] rounded-full text-white text-[16px] font-medium !mr-[16px]">
+            E’lon
+            berish
+
           </button>
 
           <button class="flex items-center text-white text-[16px] font-medium">
