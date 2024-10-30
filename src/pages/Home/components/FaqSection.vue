@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 
+import {ref} from "vue";
+
 interface FaqData {
   title: string
   description: string
@@ -10,6 +12,7 @@ const faqsData: WizardData[] = [
   {
     title: "Carting platformasidan qanday ro’yxatdan o’taman?",
     description: "Albatta, buning uchun siz Platforma yoki Ilovani yuklab olib, ro‘yxatdan o‘tish orqali siz o‘z profilingizni yaratasiz. Qaysi turdagi transport xizmatini ko’rsatishingiz, uning narxlarini ko’rsatgan holda e’lon yaratasiz. Mijozlar esa o’zlari sizni topishadi va aloqaga chiqishadi.",
+
   },
 
   {
@@ -33,6 +36,18 @@ const faqsData: WizardData[] = [
   },
 ]
 
+const tabIndex = ref<string | number>(null)
+
+
+const changeIndex = (index) => {
+  console.log(tabIndex.value, index)
+  if (tabIndex.value !== index) {
+    tabIndex.value = index
+  } else {
+    tabIndex.value = null
+  }
+
+}
 </script>
 
 
@@ -50,30 +65,32 @@ const faqsData: WizardData[] = [
         </div>
 
         <div class="w-full">
-
           <Accordion expandIcon="none" collapseIcon="none">
-            <AccordionPanel v-for="(item, index) in faqsData" :value="index" class="!border-0">
+            <AccordionPanel v-for="(item, index) in faqsData" @click="changeIndex(index)" :value="index"
+                            class="!border-0">
               <AccordionHeader>
                 <div class="flex items-center grow">
                   <div
-                      class="w-[56px] h-[56px] bg-[#353C4A] rounded-[16px] flex items-center justify-center !mr-[24px]">
-                    <i class="pi  pi-plus" style="font-size: 19px; color: white"></i>
+                      :class="tabIndex == index ? 'bg-[#66C61C]' : 'bg-[#353C4A]'"
+                      class="w-[56px] h-[56px]  rounded-[16px] flex items-center justify-center !mr-[24px]">
+                    <i :class="['pi  ', tabIndex == index ? 'pi-minus' : 'pi-plus']"
+                       style="font-size: 19px; color: white"></i>
                   </div>
 
                   <div
-                      class="bg-[#353C4A] rounded-[16px] !py-[16px] !px-[24px] w-full flex items-center justify-between">
+                      :class="tabIndex == index ? 'bg-[#66C61C]' : 'bg-[#353C4A]'"
+                      class="rounded-[16px] !py-[16px] !px-[24px] w-full flex items-center justify-between">
                     <span
                         class="text-[18px] font-semibold text-white">{{ item.title }}</span>
 
-                    <i class="pi  pi-angle-right
+                    <i :class="['pi  ', tabIndex == index ? 'pi-angle-down' : 'pi-angle-right']
 " style="font-size: 19px; color: white"></i>
                   </div>
                 </div>
               </AccordionHeader>
               <AccordionContent>
-                <p class="m-0">
+                <p class="text-[#292D32]">
                   {{ item.description }}
-
 
                 </p>
               </AccordionContent>

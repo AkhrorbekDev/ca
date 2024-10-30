@@ -12,6 +12,7 @@ import InfoWizard from "@/pages/Home/components/InfoWizard.vue";
 import AdvantagesSection from "@/pages/Home/components/AdvantagesSection.vue";
 import CustomersReview from "@/pages/Home/components/CustomersReview.vue";
 import FaqSection from "@/pages/Home/components/FaqSection.vue";
+import OfferSection from "@/pages/Home/components/OfferSection.vue";
 
 </script>
 
@@ -24,10 +25,10 @@ import FaqSection from "@/pages/Home/components/FaqSection.vue";
     <AboutUsSection/>
     <ServiceSection/>
     <TopDrivers/>
-
     <InfoWizard/>
     <AdvantagesSection/>
     <FaqSection/>
+    <OfferSection/>
     <Partners/>
     <DownloadApps/>
     <CustomersReview/>
