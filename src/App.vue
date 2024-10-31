@@ -6,12 +6,12 @@ import Selection from "@/views/Login/Selection.vue";
 import IncomePasswordLayout from "@/views/Login/IncomePassword.vue";
 import PersonalData from "@/views/Login/PersonalData.vue";
 import Register from "@/views/Login/Register.vue";
-import Service from "@/layout/ServiceLayout.vue"
+import ServiceLayout from "@/layout/ServiceLayout.vue"
 import { useRoute } from "vue-router";
 import { computed } from "vue";
 
 interface RouteMeta {
-  layout?: "MainLayout" | "LoginLayout" | "ErrorLayout" | "Selection" | "IncomePasswordLayout" | "Register" | "PersonalData" | "Service";
+  layout?: "MainLayout" | "LoginLayout" | "ErrorLayout" | "Selection" | "IncomePasswordLayout" | "Register" | "PersonalData" | "ServiceLayout";
 }
 
 const route = useRoute();
@@ -25,7 +25,7 @@ const layouts = {
   IncomePasswordLayout,
   Register,
   PersonalData,
-  Service
+  ServiceLayout
 };
 </script>
 

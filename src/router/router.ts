@@ -1,5 +1,4 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
-import Service from "@/layout/ServiceLayout.vue";
 
 const routes: RouteRecordRaw[] = [
 
@@ -45,8 +44,8 @@ const routes: RouteRecordRaw[] = [
     {
         path: "/services",
         name: "services",
-        component: () => import("@/layout/ServiceLayout.vue"),
-        meta: {layout: "Service"},
+        component: () => import("@/pages/Services/Map.vue"),
+        meta: {layout: "ServiceLayout"},
     },
 ];
 

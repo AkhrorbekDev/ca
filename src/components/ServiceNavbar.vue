@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Menu} from '../layout/fakeJson'
+import {Menu} from '@/layout/fakeJson'
 import {onMounted, onUnmounted, ref} from "vue";
 
 interface MenuItems {
@@ -98,14 +98,6 @@ const openChildMenu = (index: number) => {
         </div>
       </div>
     </div>
-
-    <iframe
-        src="https://yandex.uz/map-widget/v1/?ll=69.279737%2C41.311151&z=12"
-        width="100%"
-        style="height: 100vh"
-        frameborder="0"
-    />
-    <slot/>
   </div>
 </template>
 
