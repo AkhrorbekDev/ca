@@ -144,4 +144,8 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
   border: none !important;
   width: 350px;
 }
+
+.p-select {
+  position: static!important;
+}
 </style>

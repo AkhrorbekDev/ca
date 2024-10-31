@@ -23,7 +23,7 @@
           <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Maqsad va
             qadriyatlarimiz
           </router-link>
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Xizmatlar
+          <router-link to="/services" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Xizmatlar
           </router-link>
           <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
             Afzalliklar
@@ -42,7 +42,7 @@
                 class="bg-[#66C61C] w-[32px] h-[32px] rounded-full flex items-center justify-center absolute left-[-15px]">
               <i class="pi pi-phone" style="width: 15px; color: white"/>
             </span>
-          <a href="tel:+998998158762" class="text-white font-semibold text-[20px]">(99) 815 87 62</a>
+          <a href="tel:+998990893954" class="text-white font-semibold text-[20px]">(99) 089 39 54</a>
         </div>
       </div>
 

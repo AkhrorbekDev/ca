@@ -1,11 +1,10 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
+import Service from "@/router/service";
 
 const routes: RouteRecordRaw[] = [
-
     {
         path: "/",
         name: 'home',
-
         component: () => import("@/pages/Home/Home.vue"),
         meta: {layout: "MainLayout"},
     },
@@ -39,21 +38,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import("@/views/Login/PersonalData.vue"),
         meta: {layout: "PersonalData"},
     },
-
-    // services
-    {
-        path: "/services",
-        name: "services",
-        component: () => import("@/pages/Services/Map.vue"),
-        meta: {layout: "ServiceLayout"},
-    },
-
-    {
-        path: "/announcement",
-        name: "announcement",
-        component: () => import("@/pages/Services/Announcement/Announcement.vue"),
-        meta: {layout: "ServiceLayout"},
-    },
+    ...Service
 ];
 
 
@@ -66,7 +51,6 @@ router.beforeEach(async (to: any, _, next) => {
     if (!to.meta.layout) to.meta.layout = "MainLayout";
     next()
 });
-
 
 router.afterEach((to: any) => {
     const DEFAULT_TITLE = "Carting transport xizmati";

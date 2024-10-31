@@ -1,7 +1,4 @@
-<script
-  setup
-  lang="ts"
->
+<script setup lang="ts">
 
 const backToHome = () => {
   sessionStorage.setItem("current-menu", "0");
