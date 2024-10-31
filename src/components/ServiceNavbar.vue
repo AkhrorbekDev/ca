@@ -3,10 +3,6 @@ import {Menu, services, Truck} from '@/components/fakeJson'
 import {onMounted, onUnmounted, ref, watchEffect} from "vue";
 import {useRouter, useRoute} from "vue-router";
 
-
-const route = useRoute()
-const router = useRouter()
-
 interface MenuItems {
   title: string;
   children?: MenuItems[];
@@ -15,7 +11,8 @@ interface MenuItems {
   route?: string
 }
 
-
+const route = useRoute()
+const router = useRouter()
 
 const menuItems = ref<MenuItems[]>([
   {
@@ -35,9 +32,11 @@ const menuItems = ref<MenuItems[]>([
 ])
 const currentIndex = ref<number | null>(null)
 
+
 onMounted(() => closeMenu())
 
 onUnmounted(() => closeMenu())
+
 
 const closeMenu = () => {
   document.body.addEventListener("click", () => {
@@ -57,40 +56,41 @@ const openChildMenu = (index: number, item: MenuItems) => {
   });
 };
 
-
-const openDetail = (value: any) => value.isDetail = !value.isDetail
+const openDetail = (value: any, item: any) => {
+  if (item.route) {
+    menuItems.value.forEach((e) => e.isOpen = false)
+    router.push({name: item.route})
+  } else {
+    value.isDetail = !value.isDetail
+  }
+};
 
 const handleClickCard = (item: any) => {
   if (item.route) {
+    menuItems.value.forEach((e) => e.isOpen = false)
     router.push(`${item.route}/${item.id}`)
-    item.isDetail = !item.isDetail
   }
 }
+
 
 watchEffect(() => {
   currentIndex.value = route.name == 'announcement' && 1
 })
 </script>
-
-
 <template>
-  <div>
+  <div class="fixed top-[24px] !px-[24px] w-full">
+    <div class="bg-[#FFFFFF] rounded-[100px] flex1 !shadow-header !py-[12px] !px-[32px]">
+      <router-link to="/">
+        <img class="!mr-[45px]" src="@/assets/logo.svg" alt="logo" width="130"/>
+      </router-link>
 
-    <div class="fixed top-[24px] !px-[24px] w-full">
-      <div class="bg-[#FFFFFF] rounded-[100px] flex1 !shadow-header !py-[12px] !px-[32px]">
-        <router-link to="/">
-          <img class="!mr-[45px]" src="@/assets/logo.svg" alt="logo" width="130"/>
-        </router-link>
-
-        <div class="bg-[#1A1F23] !px-[5px] !py-[4px] flex1 rounded-[50px] hidden !md:block !lg:block">
-
-          <div
-              v-for="(list, index2) in menuItems"
-              :key="index2"
-              class="flex1 group text relative"
-              :class="{'bg-white activeClass' : list.isOpen || (currentIndex === index2 && list.route)}"
-              @click.stop="openChildMenu(index2, list)"
-
+      <div class="hidden md:block">
+        <div class="bg-[#1A1F23] !px-[5px] !py-[4px] flex1 rounded-[50px]">
+          <div v-for="(list, index2) in menuItems"
+               :key="index2"
+               class="flex1 group text relative"
+               :class="{'bg-white activeClass' : list.isOpen || (currentIndex === index2 && list.route)}"
+               @click.stop="openChildMenu(index2, list)"
           >
             <div class="flex1">
               <span :class="list.isOpen ? 'text-[#000]' : ''">{{ list.title }}</span>
@@ -106,7 +106,7 @@ watchEffect(() => {
                 <div class="cards card-wrap"
                      v-for="(item, index) in list.children"
                      :key="index"
-                     @click.stop="openDetail(list)"
+                     @click.stop="openDetail(list, item)"
                 >
                   <img :src="item.img" class="!m-auto swg !my-0" alt="#"/>
                   <p class="text-gray-900">{{ item.title }}</p>
@@ -130,11 +130,11 @@ watchEffect(() => {
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="flex items-center">
-          <h4 class="text-[#292D3266] text-[18px] !mr-[18px]">Asror</h4>
-          <img src="@/assets/images/avatar.jpg" alt="avatar" class="h-[40px] w-[40px] !rounded-full"/>
-        </div>
+      <div class="flex items-center">
+        <h4 class="text-[#292D3266] text-[18px] !mr-[18px]">Asror</h4>
+        <img src="@/assets/images/avatar.jpg" alt="avatar" class="h-[40px] w-[40px] !rounded-full"/>
       </div>
     </div>
   </div>

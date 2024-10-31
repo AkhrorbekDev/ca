@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
+import Service from "@/router/service";
 
 const routes: RouteRecordRaw[] = [
-
     {
         path: "/",
         name: 'home',
@@ -38,27 +38,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import("@/views/Login/PersonalData.vue"),
         meta: {layout: "PersonalData"},
     },
-
-    // services
-    {
-        path: "/services",
-        name: "services",
-        component: () => import("@/pages/Services/Map/Map.vue"),
-        meta: {layout: "ServiceLayout"},
-    },
-    {
-        path: "/transport/:id",
-        name: "transport-id",
-        component: () => import("@/pages/Services/Transports/Transports.vue"),
-        meta: {layout: "ServiceLayout"},
-    },
-
-    {
-        path: "/announcement",
-        name: "announcement",
-        component: () => import("@/pages/Services/Announcement/Announcement.vue"),
-        meta: {layout: "ServiceLayout"},
-    },
+    ...Service
 ];
 
 

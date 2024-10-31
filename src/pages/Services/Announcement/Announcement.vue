@@ -73,4 +73,8 @@ const tabs = ['Barchasi', 'Mening e\'lonlarim', 'Mening e\'lonlarim'];
   border: none !important;
   width: 350px;
 }
+
+.p-select {
+  position: static!important;
+}
 </style>
