@@ -124,7 +124,7 @@ const handleSubmit = (index: number) => {
 
 <style scoped lang="scss">
 .menu-item {
-  @apply py-[15px] px-[16px] rounded-full w-[343px] flex items-center justify-between cursor-pointer;
+  @apply py-[15px] bg-[#fff] px-[16px] rounded-full w-[343px] flex items-center justify-between cursor-pointer;
   box-shadow: 0 2px 8.4px 0 #292D3214;
 }
 

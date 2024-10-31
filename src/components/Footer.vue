@@ -1,8 +1,3 @@
-<script lang="ts">
-
-</script>
-
-
 <template>
   <div class="bg-[#FAFAFA]">
     <div class="max-w-screen-xl  container lg:mx-auto">
@@ -23,29 +18,29 @@
         <div>
           <h3 class="font-semibold text-[#292D32] text-[16px] !mb-[16px]">Mijozlar uchun</h3>
 
-          <span class="block text-[14px] !mb-[10px] text-[#292D324D]">Пользовательское соглашение</span>
-          <span class="block text-[14px] !mb-[10px] text-[#292D324D]">Как выбрать исполнителя</span>
-          <span class="block text-[14px] !mb-[10px] text-[#292D324D]">Обратная связь</span>
-          <span class="block text-[14px] !mb-[10px] text-[#292D324D]">Оплата и доставка</span>
-          <span class="block text-[14px] !mb-[10px] text-[#292D324D]">Возвраты</span>
-          <span class="block text-[14px] text-[#292D324D]">О сервисе</span>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Пользовательское соглашение</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Как выбрать исполнителя</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Обратная связь</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Оплата и доставка</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Возвраты</router-link>
+          <router-link to="#" class="block text-[14px] text-[#292D324D]">О сервисе</router-link>
         </div>
 
         <div>
           <h3 class="font-semibold text-[#292D32] text-[16px] !mb-[16px]">Ijrochilar uchun</h3>
 
-          <span class="block text-[14px] !mb-[10px] text-[#292D324D]">Сайт для партнёров</span>
-          <span class="block text-[14px] !mb-[10px] text-[#292D324D]">Справка для исполнителей</span>
-          <span class="block text-[14px] !mb-[10px] text-[#292D324D]">Регистрация исполнителя</span>
-          <span class="block text-[14px] !mb-[10px] text-[#292D324D]">Личный кабинет исполнителя</span>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Сайт для партнёров</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Справка для исполнителей</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Регистрация исполнителя</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Личный кабинет исполнителя</router-link>
         </div>
 
         <div>
           <h3 class="font-semibold text-[#292D32] text-[16px] !mb-[16px]">Hamkorlik</h3>
 
-          <span class="block text-[14px] !mb-[10px] text-[#292D324D]">Работа с  брендом</span>
-          <span class="block text-[14px] !mb-[10px] text-[#292D324D]">Партнёрская программа</span>
-          <span class="block text-[14px] !mb-[10px] text-[#292D324D]">Новости компании</span>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Работа с  брендом</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Партнёрская программа</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Новости компании</router-link>
         </div>
       </div>
 
@@ -53,15 +48,15 @@
 
       <div class="flex items-center justify-between !py-[16px]">
         <div class="flex items-center gap-6">
-          <span class="text-[#292D32] font-medium text-[14px]">© 2023 “Carting”</span>
-          <span class="text-[#292D324D] font-medium text-[14px]">Foydalanish shartlari</span>
-          <span class="text-[#292D324D] font-medium text-[14px]">Maxfiylik siyosati</span>
+          <router-link to="#" class="text-[#292D32] font-medium text-[14px]">© 2023 “Carting”</router-link>
+          <router-link to="#" class="text-[#292D324D] font-medium text-[14px]">Foydalanish shartlari</router-link>
+          <router-link to="#" class="text-[#292D324D] font-medium text-[14px]">Maxfiylik siyosati</router-link>
         </div>
 
-        <div class="flex items-center gap-4">
+        <a href="https://anysoft.uz/" target="_blank" class="flex items-center gap-4">
           <span class="text-[#292D324D] font-medium text-[14px]">Ishlab chiqilgan</span>
           <img src="@/assets/anysoft.svg" alt="anysoft" width="85">
-        </div>
+        </a>
       </div>
     </div>
   </div>

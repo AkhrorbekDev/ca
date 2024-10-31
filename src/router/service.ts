@@ -2,7 +2,7 @@ export default [
     {
         path: "/services",
         name: "services",
-        component: () => import("@/pages/Services/Map/Map.vue"),
+        component: () => import("@/pages/Services/Services/Services.vue"),
         meta: {layout: "ServiceLayout"},
     },
     {

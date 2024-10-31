@@ -23,7 +23,7 @@
           <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Maqsad va
             qadriyatlarimiz
           </router-link>
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Xizmatlar
+          <router-link to="/services" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Xizmatlar
           </router-link>
           <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
             Afzalliklar

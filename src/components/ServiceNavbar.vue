@@ -40,7 +40,9 @@ onUnmounted(() => closeMenu())
 
 const closeMenu = () => {
   document.body.addEventListener("click", () => {
-    menuItems.value.forEach((e) => e.isOpen = false)
+    menuItems.value.forEach((e) => {
+      e.isOpen = false
+    })
   });
 }
 
@@ -77,6 +79,7 @@ watchEffect(() => {
   currentIndex.value = route.name == 'announcement' && 1
 })
 </script>
+
 <template>
   <div class="fixed top-[24px] !px-[24px] w-full">
     <div class="bg-[#FFFFFF] rounded-[100px] flex1 !shadow-header !py-[12px] !px-[32px]">
@@ -101,6 +104,8 @@ watchEffect(() => {
               </svg>
             </div>
 
+
+            <!--dropdown 1-->
             <div class="mega-drop-menu" v-if="list.isOpen && list.children">
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards card-wrap"
@@ -114,6 +119,7 @@ watchEffect(() => {
               </div>
             </div>
 
+            <!--dropdown 2-->
             <div class="mega-drop-menu" @click.stop v-if="list.children && currentIndex === index2 && list.isDetail">
               <button @click="list.isDetail = false" class="text-[#000]">x</button>
               <div class="grid grid-cols-2 gap-3">
