@@ -1,5 +1,34 @@
 <script lang="ts" setup>
+import ConfirmDialog from 'primevue/confirmdialog';
+
 const model = defineModel()
+
+import {useConfirm} from "primevue/useconfirm";
+
+const confirm = useConfirm();
+
+const confirm1 = () => {
+  confirm.require({
+    group: 'headless',
+    message: 'Haqiqatdan ham e’lonni bekor qilmoqchimisiz?',
+    headerActions: false,
+    pcCloseButton: false,
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Save'
+    },
+    accept: () => {
+
+    },
+    reject: () => {
+
+    }
+  });
+};
 </script>
 
 <template>
@@ -151,12 +180,28 @@ const model = defineModel()
 
         <p class="font-light text-[#292D324D] text-center !mb-[16px]">E’lon vaqti: 16.08.2024, 09:14</p>
 
-        <button class="bg-[#F044381A] text-[16px] text-[#F04438] text-center w-full rounded-[24px] !p-[16px]">
+        <button @click="confirm1()"
+                class="bg-[#F044381A] text-[16px] text-[#F04438] text-center w-full rounded-[24px] !p-[16px]">
           Faolsizlantirish
         </button>
 
       </div>
     </div>
+    <ConfirmDialog group="headless">
+      <template #container="{ message, acceptCallback, rejectCallback }">
+        <div class="bg-white rounded-[24px] !p-[24px]">
+          <h6 class="!mb-[24px]">{{ message.message }}</h6>
+          <div class="flex items-center gap-4 justify-end">
+            <button class="bg-[#F3F3F3] rounded-[24px] text-[#292D32] text-[16px] !px-[30px] !py-[16px]"
+                    @click="rejectCallback">Yo‘q
+            </button>
+            <button class="bg-[#F3F3F3] rounded-[24px] text-[#292D32] text-[16px] !px-[30px] !py-[16px]"
+                    @click="acceptCallback">Ha
+            </button>
+          </div>
+        </div>
+      </template>
+    </ConfirmDialog>
   </Dialog>
 </template>
 

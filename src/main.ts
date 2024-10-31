@@ -6,6 +6,9 @@ import Aura from '@primevue/themes/aura';
 import {createPinia} from "pinia";
 import router from "@/router/router";
 import i18n from "@/localization";
+import ConfirmationService from 'primevue/confirmationservice';
+import DialogService from 'primevue/dialogservice'
+import ToastService from 'primevue/toastservice';
 
 //// PRIME ICONS
 import 'primeicons/primeicons.css'
@@ -26,6 +29,9 @@ app.use(PrimeVue, {
     },
 
 })
+app.use(ConfirmationService)
+app.use(ToastService)
+app.use(DialogService)
     .use(createPinia())
     .use(router)
     .use(i18n)

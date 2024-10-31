@@ -40,7 +40,7 @@ const announcementData: AnnouncementType[] = [
 ]
 
 const activeTab = ref(0);
-const tabs = ['Barchasi', 'Mening e\'lonlarim', 'Mening e\'lonlarim'];
+const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
 </script>
 
 <template>
