@@ -6,10 +6,10 @@ const route = useRoute()
 </script>
 
 <template>
-  <div>
+  <div class="bg-[#FAFAFA] h-screen">
     <ServiceNavbar/>
 
-    <div :class="route.name === 'services' ? '' : '!mt-[148px]'">
+    <div :class="route.name === 'services' ? '' : '!pt-[148px] !px-[24px]'">
       <slot/>
     </div>
   </div>

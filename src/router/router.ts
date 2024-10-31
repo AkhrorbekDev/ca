@@ -47,6 +47,13 @@ const routes: RouteRecordRaw[] = [
         component: () => import("@/pages/Services/Map.vue"),
         meta: {layout: "ServiceLayout"},
     },
+
+    {
+        path: "/announcement",
+        name: "announcement",
+        component: () => import("@/pages/Services/Announcement/Announcement.vue"),
+        meta: {layout: "ServiceLayout"},
+    },
 ];
 
 
