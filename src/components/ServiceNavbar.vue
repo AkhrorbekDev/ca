@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import {Menu, services, Truck} from '@/components/fakeJson'
-import {onMounted, onUnmounted, ref} from "vue";
-import {useRouter} from "vue-router";
+import {onMounted, onUnmounted, ref, watchEffect} from "vue";
+import {useRouter, useRoute} from "vue-router";
+
+
+const route = useRoute()
+const router = useRouter()
 
 interface MenuItems {
   title: string;
   children?: MenuItems[];
   isOpen?: boolean,
   img?: string
+  route?: string
 }
 
-const router = useRouter()
+
 
 const menuItems = ref<MenuItems[]>([
   {
@@ -20,6 +25,7 @@ const menuItems = ref<MenuItems[]>([
   },
   {
     title: 'E’lonlar',
+    route: '/announcement'
   },
   {
     title: "Transport e'lonlari",
@@ -39,7 +45,10 @@ const closeMenu = () => {
   });
 }
 
-const openChildMenu = (index: number) => {
+const openChildMenu = (index: number, item: MenuItems) => {
+  if (item.route) {
+    router.push(item.route)
+  }
   currentIndex.value = index
   menuItems.value.forEach((item, i) => {
     if (item.children) {
@@ -47,6 +56,7 @@ const openChildMenu = (index: number) => {
     }
   });
 };
+
 
 const openDetail = (value: any) => value.isDetail = !value.isDetail
 
@@ -56,10 +66,16 @@ const handleClickCard = (item: any) => {
     item.isDetail = !item.isDetail
   }
 }
+
+watchEffect(() => {
+  currentIndex.value = route.name == 'announcement' && 1
+})
 </script>
 
+
 <template>
-  <div class="bg-[#FAFAFA] select-none mt-[100px]">
+  <div>
+
     <div class="fixed top-[24px] !px-[24px] w-full">
       <div class="bg-[#FFFFFF] rounded-[100px] flex1 !shadow-header !py-[12px] !px-[32px]">
         <router-link to="/">
@@ -67,11 +83,14 @@ const handleClickCard = (item: any) => {
         </router-link>
 
         <div class="bg-[#1A1F23] !px-[5px] !py-[4px] flex1 rounded-[50px] hidden !md:block !lg:block">
-          <div v-for="(list, index2) in menuItems"
-               :key="index2"
-               class="flex1 group text relative"
-               :class="{'bg-white activeClass' : list.isOpen || currentIndex === index2}"
-               @click.stop="openChildMenu(index2)"
+
+          <div
+              v-for="(list, index2) in menuItems"
+              :key="index2"
+              class="flex1 group text relative"
+              :class="{'bg-white activeClass' : list.isOpen || (currentIndex === index2 && list.route)}"
+              @click.stop="openChildMenu(index2, list)"
+
           >
             <div class="flex1">
               <span :class="list.isOpen ? 'text-[#000]' : ''">{{ list.title }}</span>
