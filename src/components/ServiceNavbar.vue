@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import {Menu} from '@/layout/fakeJson'
+import {Menu, services, Truck} from '@/components/fakeJson'
 import {onMounted, onUnmounted, ref} from "vue";
+import {useRouter} from "vue-router";
 
 interface MenuItems {
   title: string;
@@ -9,17 +10,13 @@ interface MenuItems {
   img?: string
 }
 
+const router = useRouter()
+
 const menuItems = ref<MenuItems[]>([
   {
     title: 'Xizmatlar',
     isOpen: false,
-    children: [{
-      img: "./car.svg",
-      title: 'Yuk tashish'
-    }, {
-      img: "./car.svg",
-      title: 'Yuk tashish'
-    }]
+    children: services
   },
   {
     title: 'E’lonlar',
@@ -50,10 +47,19 @@ const openChildMenu = (index: number) => {
     }
   });
 };
+
+const openDetail = (value: any) => value.isDetail = !value.isDetail
+
+const handleClickCard = (item: any) => {
+  if (item.route) {
+    router.push(`${item.route}/${item.id}`)
+    item.isDetail = !item.isDetail
+  }
+}
 </script>
 
 <template>
-  <div class="bg-[#FAFAFA]">
+  <div class="bg-[#FAFAFA] select-none mt-[100px]">
     <div class="fixed top-[24px] !px-[24px] w-full">
       <div class="bg-[#FFFFFF] rounded-[100px] flex1 !shadow-header !py-[12px] !px-[32px]">
         <router-link to="/">
@@ -61,31 +67,45 @@ const openChildMenu = (index: number) => {
         </router-link>
 
         <div class="bg-[#1A1F23] !px-[5px] !py-[4px] flex1 rounded-[50px] hidden !md:block !lg:block">
-          <div
-              v-for="(list, index2) in menuItems"
-              :key="index2"
-              class="flex1 group text relative"
-              :class="{'bg-white activeClass' : list.isOpen || currentIndex === index2}"
-              @click.stop="openChildMenu(index2)"
+          <div v-for="(list, index2) in menuItems"
+               :key="index2"
+               class="flex1 group text relative"
+               :class="{'bg-white activeClass' : list.isOpen || currentIndex === index2}"
+               @click.stop="openChildMenu(index2)"
           >
             <div class="flex1">
               <span :class="list.isOpen ? 'text-[#000]' : ''">{{ list.title }}</span>
               <svg v-if="list.children" width="25" height="24" viewBox="0 0 25 24" fill="none"
                    xmlns="http://www.w3.org/2000/svg">
                 <path d="M17.75 9.5L12.75 14.5L7.75 9.5" :class="list.isOpen ? 'stroke-black' : 'stroke-white'"
-                      stroke-width="1.5" stroke-linecap="round"
-                      stroke-linejoin="round"/>
+                      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
 
             <div class="mega-drop-menu" v-if="list.isOpen && list.children">
               <div class="grid grid-cols-2 gap-3">
-                <div class="cards"
+                <div class="cards card-wrap"
                      v-for="(item, index) in list.children"
                      :key="index"
+                     @click.stop="openDetail(list)"
                 >
-                  <img :src="item.img" class="!m-auto !my-0" alt="#"/>
+                  <img :src="item.img" class="!m-auto swg !my-0" alt="#"/>
                   <p class="text-gray-900">{{ item.title }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mega-drop-menu" @click.stop v-if="list.children && currentIndex === index2 && list.isDetail">
+              <button @click="list.isDetail = false" class="text-[#000]">x</button>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="cards"
+                     v-for="(item, index) in Truck"
+                     :key="index"
+                     @click="handleClickCard(item)"
+                >
+                  <img :src="item.img" v-if="item.img" class="!m-auto !my-0" alt="#"/>
+                  <h4 class="text-[#292D32] text-[14px]">{{ item.title }}</h4>
+                  <p class="text-gray-900">{{ item.subTitle }}</p>
                 </div>
               </div>
             </div>
@@ -94,7 +114,7 @@ const openChildMenu = (index: number) => {
 
         <div class="flex items-center">
           <h4 class="text-[#292D3266] text-[18px] !mr-[18px]">Asror</h4>
-          <img src="@/assets/images/avatar.jpg" alt="avatar" height="40" width="40"/>
+          <img src="@/assets/images/avatar.jpg" alt="avatar" class="h-[40px] w-[40px] !rounded-full"/>
         </div>
       </div>
     </div>
@@ -148,14 +168,8 @@ const openChildMenu = (index: number) => {
 }
 
 .mega-drop-menu {
-  position: absolute;
-  top: 80px;
-  left: -50%;
-  padding: 16px;
-  background-color: #FAFAFA;
+  @apply absolute top-[80px] left-[-50px] !p-[16px] bg-[#FAFAFA] w-[359px] rounded-[24px];
   box-shadow: 0 32px 100px 0 #292D3229;
-  width: 359px;
-  border-radius: 24px;
 
   .cards {
     @apply w-[157px] h-[112px] p-[14px] bg-white rounded-[20px] text-center flex flex-col items-center justify-center;
@@ -166,15 +180,15 @@ const openChildMenu = (index: number) => {
     }
   }
 
-  .cards:hover {
-    background-color: #66C61C;
+  .card-wrap:hover {
+    @apply bg-[#66C61C];
 
-    img {
+    .swg {
       filter: brightness(13.5);
     }
 
     p {
-      color: white;
+      @apply text-[#fff];
     }
   }
 }

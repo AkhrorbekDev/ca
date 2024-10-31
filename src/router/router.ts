@@ -5,7 +5,6 @@ const routes: RouteRecordRaw[] = [
     {
         path: "/",
         name: 'home',
-
         component: () => import("@/pages/Home/Home.vue"),
         meta: {layout: "MainLayout"},
     },
@@ -44,7 +43,13 @@ const routes: RouteRecordRaw[] = [
     {
         path: "/services",
         name: "services",
-        component: () => import("@/pages/Services/Map.vue"),
+        component: () => import("@/pages/Services/Map/Map.vue"),
+        meta: {layout: "ServiceLayout"},
+    },
+    {
+        path: "/transport/:id",
+        name: "transport-id",
+        component: () => import("@/pages/Services/Transports/Transports.vue"),
         meta: {layout: "ServiceLayout"},
     },
 ];
@@ -59,7 +64,6 @@ router.beforeEach(async (to: any, _, next) => {
     if (!to.meta.layout) to.meta.layout = "MainLayout";
     next()
 });
-
 
 router.afterEach((to: any) => {
     const DEFAULT_TITLE = "Carting transport xizmati";

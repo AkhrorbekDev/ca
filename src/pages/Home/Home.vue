@@ -14,6 +14,7 @@ import CustomersReview from "@/pages/Home/components/CustomersReview.vue";
 import FaqSection from "@/pages/Home/components/FaqSection.vue";
 import OfferSection from "@/pages/Home/components/OfferSection.vue";
 
+import ScrollTop from 'primevue/scrolltop';
 </script>
 
 
@@ -34,6 +35,8 @@ import OfferSection from "@/pages/Home/components/OfferSection.vue";
     <CustomersReview/>
 
     <Footer/>
+
+    <ScrollTop />
   </div>
 </template>
 

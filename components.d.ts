@@ -23,6 +23,7 @@ declare module 'vue' {
     RadioButton: typeof import('primevue/radiobutton')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ScrollTop: typeof import('primevue/scrolltop')['default']
     Select: typeof import('primevue/select')['default']
     ServiceNavbar: typeof import('./src/components/ServiceNavbar.vue')['default']
     Textarea: typeof import('primevue/textarea')['default']
