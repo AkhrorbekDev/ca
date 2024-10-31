@@ -9,6 +9,8 @@ declare module 'vue' {
   export interface GlobalComponents {
     404: typeof import('./src/components/errors/404.vue')['default']
     AutoComplete: typeof import('primevue/autocomplete')['default']
+    Avatar: typeof import('primevue/avatar')['default']
+    AvatarGroup: typeof import('primevue/avatargroup')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
     Dialog: typeof import('primevue/dialog')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']

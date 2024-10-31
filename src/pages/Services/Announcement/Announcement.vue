@@ -146,6 +146,6 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
 }
 
 .p-select {
-  position: static!important;
+  position: static !important;
 }
 </style>
