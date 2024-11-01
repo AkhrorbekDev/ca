@@ -11,69 +11,71 @@ const modules = [Navigation];
 </script>
 
 <template>
-  <div class="max-w-screen-xl lg:mx-auto !pb-[80px]">
-    <!-- Xizmatlar-->
-    <section>
-      <h1 class="text-[#292D32] text-[32px] font-semibold">Xizmatlar</h1>
-      <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">
-        Bu yerda umumiy xizmatlar haqida tushuntiruvchi text bo’ladi
-      </p>
+  <div>
+    <div class="max-w-screen-xl lg:mx-auto">
+      <!-- Xizmatlar-->
+      <div class="!mb-[64px]">
+        <h1 class="text-[#292D32] text-[32px] font-semibold">Xizmatlar</h1>
+        <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">
+          Bu yerda umumiy xizmatlar haqida tushuntiruvchi text bo’ladi
+        </p>
 
-      <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-        <div class="card-service !flex !flex-col !justify-between"
-             v-for="(item, index) in services" :key="index"
-        >
-          <div>
-            <h1 class="text-[#292D32] text-[20px] !mb-[4px]">{{ item.title }}</h1>
-            <p class="text-[#292D3266] text-[12px]">
-              {{ item.subTitle }}
-            </p>
-          </div>
+        <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          <div class="card-service !flex !flex-col !justify-between"
+               v-for="(item, index) in services" :key="index"
+          >
+            <div>
+              <h1 class="text-[#292D32] text-[20px] !mb-[4px]">{{ item.title }}</h1>
+              <p class="text-[#292D3266] text-[12px]">
+                {{ item.subTitle }}
+              </p>
+            </div>
 
-          <img :src="item.img" class="!mb-[42px] !m-auto !mt-[24px]" alt="motobike">
+            <img :src="item.img" class="!mb-[42px] !m-auto !mt-[24px]" alt="motobike">
 
-          <div class="text-center !mb-[25px]">
-            <button class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
-              E’lon berish
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
-    <!--Transport e’lonlari-->
-    <div class="!mt-[96px]">
-      <h1 class="text-[#292D32] text-[32px] font-semibold">Transport e’lonlari</h1>
-      <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">
-        Bu yerda transport e’lonlari haqida tushuntiruvchi text bo’ladi
-      </p>
-
-      <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-        <div class="card-service2 hover:bg-white hover:shadow-lg transition !flex !flex-col !justify-between"
-             v-for="(item2, index2) in transportAdvertising" :key="index2"
-        >
-          <div>
-            <h1 class="text-[#292D32] text-[20px] !mb-[4px]">{{ item2.title }}</h1>
-            <p class="text-[#292D3266] text-[12px]">
-              {{ item2.subTitle }}
-            </p>
-          </div>
-
-          <img :src="item2.img" class="!mb-[42px] !m-auto !mt-[24px]" alt="motobike">
-
-          <div class="text-center !mb-[25px]">
-            <button class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
-              E’lon berish
-            </button>
+            <div class="text-center !mb-[25px]">
+              <button class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
+                E’lon berish
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
+    <div class="bg-[#fff]">
+      <div class="max-w-screen-xl lg:mx-auto !pt-[32px] !pb-[56px]">
+        <div>
+          <h1 class="text-[#292D32] text-[32px] font-semibold">Transport e’lonlari</h1>
+          <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">
+            Bu yerda transport e’lonlari haqida tushuntiruvchi text bo’ladi
+          </p>
 
-    <!--E’lonlar-->
-    <div class="!mt-[96px]">
+          <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            <div class="card-service2 bg-[#FAFAFA] hover:shadow-lg transition !flex !flex-col !justify-between"
+                 v-for="(item2, index2) in transportAdvertising" :key="index2"
+            >
+              <div>
+                <h1 class="text-[#292D32] text-[20px] !mb-[4px]">{{ item2.title }}</h1>
+                <p class="text-[#292D3266] text-[12px]">
+                  {{ item2.subTitle }}
+                </p>
+              </div>
+
+              <img :src="item2.img" class="!mb-[42px] !m-auto !mt-[24px]" alt="motobike">
+
+              <div class="text-center !mb-[25px]">
+                <button class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
+                  E’lon berish
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="max-w-screen-xl !pt-[64px] lg:mx-auto !pb-[50px]">
       <h1 class="text-[#292D32] text-[32px] font-semibold">E’lonlar</h1>
       <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">
         Bu yerda e’lonlar haqida tushuntiruvchi text bo’ladi
