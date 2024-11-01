@@ -77,7 +77,7 @@ export const announcement = [
 
     {
         title: "Yoqilg‘i\n" +
-            "yetkazish,
+            "yetkazish",
         image: car
     },
 
