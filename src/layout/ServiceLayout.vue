@@ -12,5 +12,21 @@ const route = useRoute()
     <div :class="route.name === 'services' ? '!pt-[148px] !px-[24px]' : '!pt-[148px] !px-[24px]'">
       <slot/>
     </div>
+
+    <div class="support flex flex-col fixed bottom-[30px] right-[30px]">
+      <a href="tel:+998990893954" class="!p-[16px] rounded-full bg-[#66C61C]">
+        <img src="@/assets/images/icons/phone.svg" alt="phone"/>
+      </a>
+
+      <a href="https://telegram.org/" target="_blank" class="!p-[16px] rounded-full bg-[#66C61C] !mt-[24px]">
+        <img src="@/assets/images/icons/sms.svg" alt="sms"/>
+      </a>
+    </div>
   </div>
 </template>
+
+<style>
+.support a {
+  box-shadow: 0 24px 32px 0 #66C61C40;
+}
+</style>

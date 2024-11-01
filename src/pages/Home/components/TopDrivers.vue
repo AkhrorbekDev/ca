@@ -78,7 +78,6 @@ const driverData: DriversData[] = [
         :autoplay="{
       delay: 0,
       disableOnInteraction: false,
-
     }"
         :speed="8000"
         :modules="modules"
@@ -101,7 +100,6 @@ const driverData: DriversData[] = [
 
             <span class="!ml-[6px]">{{ item.rating }}</span>
           </div>
-
         </div>
       </swiper-slide>
     </swiper>
