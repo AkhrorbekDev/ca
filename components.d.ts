@@ -8,15 +8,28 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     404: typeof import('./src/components/errors/404.vue')['default']
+    Accordion: typeof import('primevue/accordion')['default']
+    AccordionContent: typeof import('primevue/accordioncontent')['default']
+    AccordionHeader: typeof import('primevue/accordionheader')['default']
+    AccordionPanel: typeof import('primevue/accordionpanel')['default']
     AutoComplete: typeof import('primevue/autocomplete')['default']
+    Avatar: typeof import('primevue/avatar')['default']
+    AvatarGroup: typeof import('primevue/avatargroup')['default']
+    Button: typeof import('primevue/button')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
+    ConfirmDialog: typeof import('primevue/confirmdialog')['default']
     Dialog: typeof import('primevue/dialog')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
+    InputMask: typeof import('primevue/inputmask')['default']
+    InputText: typeof import('primevue/inputtext')['default']
+    Menu: typeof import('primevue/menu')['default']
     RadioButton: typeof import('primevue/radiobutton')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Select: typeof import('primevue/select')['default']
     ServiceNavbar: typeof import('./src/components/ServiceNavbar.vue')['default']
+    Textarea: typeof import('primevue/textarea')['default']
+    Toast: typeof import('primevue/toast')['default']
   }
 }
