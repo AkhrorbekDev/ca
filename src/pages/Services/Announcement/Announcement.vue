@@ -62,6 +62,55 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
       </div>
 
       <div class="flex items-center gap-4">
+
+        <div class="relative">
+          <button
+              v-if="activeTab == 1 || activeTab == 2"
+              class="flex items-center gap-4 bg-[#66C61C] rounded-[16px] !p-[16px] text-white text-[16px] text-nowrap">
+            <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                  d="M3.85288 8.95043C4.50437 6.17301 6.67301 4.00437 9.45043 3.35288C11.4563 2.88237 13.5437 2.88237 15.5496 3.35288C18.327 4.00437 20.4956 6.17301 21.1471 8.95044C21.6176 10.9563 21.6176 13.0437 21.1471 15.0496C20.4956 17.827 18.327 19.9956 15.5496 20.6471C13.5437 21.1176 11.4563 21.1176 9.45044 20.6471C6.67301 19.9956 4.50437 17.827 3.85288 15.0496C3.38237 13.0437 3.38237 10.9563 3.85288 8.95043Z"
+                  stroke="white" stroke-width="1.5"/>
+              <path d="M15 12H10M12.5 14.5L12.5 9.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            E’lon joylash
+          </button>
+
+
+          <div>
+            <!--dropdown 1-->
+            <div class="mega-drop-menu">
+              <div class="grid grid-cols-2 gap-3">
+                <div class="cards card-wrap cursor-pointer"
+                >
+                  <!--                     v-for="(item, index) in list.children"-->
+                  <!--                     :key="index"-->
+                  <!--                     @click.stop="openDetail(list, item)"-->
+                  <img src="@/assets/images/cars.svg" class="!m-auto swg !my-0" alt="#"/>
+                  <p class="text-gray-900">Yetkazib
+                    berish</p>
+                </div>
+              </div>
+            </div>
+
+            <!--dropdown 2-->
+            <!--            <div class="mega-drop-menu" @click.stop v-if="list.children && currentIndex === index2 && list.isDetail">-->
+            <!--              <button @click="list.isDetail = false" class="text-[#000]">x</button>-->
+            <!--              <div class="grid grid-cols-2 gap-3">-->
+            <!--                <div class="cards"-->
+            <!--                     v-for="(item, index) in Truck"-->
+            <!--                     :key="index"-->
+            <!--                     @click="handleClickCard(item)"-->
+            <!--                >-->
+            <!--                  <img :src="item.img" v-if="item.img" class="!m-auto !my-0" alt="#"/>-->
+            <!--                  <h4 class="text-[#292D32] text-[14px]">{{ item.title }}</h4>-->
+            <!--                  <p class="text-gray-900">{{ item.subTitle }}</p>-->
+            <!--                </div>-->
+            <!--              </div>-->
+            <!--            </div>-->
+          </div>
+        </div>
+
         <div class="flex flex-col gap-2 w-full">
           <Select v-model="selectedCity" :options="[]" optionLabel="name" placeholder="Xizmatlar"
                   class="w-full !border-0 !rounded-[16px] custom-placeholder-select h-[56px] flex items-center"/>
@@ -87,8 +136,16 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
              :key="index" @click="visible = true">
           <div class="flex items-center justify-between">
             <div
-                :class="['!px-[11px] !py-[4px] rounded-[50px] text-[10px] font-medium', item.status ? 'bg-[#F0FAE9] text-[#66C61C]' : 'bg-[#FEEDEC] text-[#F04438]']">
+                :class="['!px-[11px] !py-[4px] rounded-[50px] text-[10px] font-medium flex items-center gap-3', item.status ? 'bg-[#F0FAE9] text-[#66C61C]' : 'bg-[#FEEDEC] text-[#F04438]']">
               {{ item.status ? 'Faol' : 'Faol emas' }}
+              <div v-if="!item.status && (activeTab == 1 || activeTab == 2)" class="flex items-center">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                      d="M10.7765 6.88856C8.63259 6.88856 6.88759 8.63356 6.88759 10.7775C6.88759 12.9213 8.63259 14.6663 10.7765 14.6663C12.9204 14.6663 14.6654 12.9213 14.6654 10.7775C14.6654 8.63356 12.9204 6.88856 10.7765 6.88856ZM10.7765 13.5552C9.24481 13.5552 7.9987 12.3091 7.9987 10.7775C7.9987 9.24579 9.24481 7.99967 10.7765 7.99967C12.3081 7.99967 13.5543 9.24579 13.5543 10.7775C13.5543 12.3091 12.3081 13.5552 10.7765 13.5552ZM11.332 10.5475L12.2804 11.4958L11.4948 12.2813L10.2209 11.0075V9.11079H11.332V10.5475ZM6.61981 13.5552H4.84759C4.56425 13.5552 4.32648 13.3425 4.29592 13.0608L3.36314 4.66634H11.502L11.3743 5.81634C11.7526 5.86134 12.1165 5.95079 12.4637 6.07523L12.6204 4.66634H13.5548V3.55523H10.2215V2.44412C10.2215 1.83134 9.72314 1.33301 9.11036 1.33301H5.77703C5.16425 1.33301 4.66592 1.83134 4.66592 2.44412V3.55523H1.33203V4.66634H2.24481L3.19148 13.1836C3.28536 14.0286 3.99703 14.6663 4.84759 14.6663H7.63703C7.24481 14.3491 6.90092 13.9752 6.61981 13.5552ZM5.77648 2.44412H9.10981V3.55523H5.77648V2.44412Z"
+                      fill="#F04438"/>
+                </svg>
+                5 kun 12 soat
+              </div>
             </div>
 
             <img class="h-[50px]" :src="item.image" alt="image" height="50px">
