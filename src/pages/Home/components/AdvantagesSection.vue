@@ -35,7 +35,7 @@ const advantagesDataData: AdvantagesData[] = [
     <div class="max-w-screen-xl  container lg:mx-auto">
       <div class="flex items-center">
         <img src="@/assets/images/advantages-img.png" alt="advantages-img" width="600"
-             class="w-[600px] h-[808px] !mr-[39px]">
+             class="w-[600px] h-[808px] !mr-[39px] !rounded-2xl">
 
         <div>
           <p class="font-medium text-[#292D3266] !mb-[24px]">Nima uchun bizni tanlashadi</p>

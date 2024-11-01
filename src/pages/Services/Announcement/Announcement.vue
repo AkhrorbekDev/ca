@@ -1,8 +1,32 @@
 <script setup lang="ts">
 import ModalAnnouncement from "@/pages/Services/Announcement/components/ModalAnnouncement.vue";
-import {ref} from 'vue';
+import {announcement} from "@/pages/Services/Announcement/constants";
+import {onMounted, onUnmounted, ref} from 'vue';
 
 const visible = ref(false);
+const childMenu = ref([])
+const menuVisible = ref<boolean>(false)
+
+onMounted(() => closeMenu())
+
+onUnmounted(() => closeMenu())
+
+
+const closeMenu = () => {
+  document.body.addEventListener("click", () => {
+    menuVisible.value = false
+  });
+}
+
+const toggleMenu = () => {
+  menuVisible.value = !menuVisible.value
+}
+
+const openDetail = (item) => {
+  if (item.child) {
+    childMenu.value = item.child
+  }
+}
 
 interface AnnouncementType {
   status: boolean,
@@ -65,6 +89,7 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
 
         <div class="relative">
           <button
+              @click.stop="toggleMenu"
               v-if="activeTab == 1 || activeTab == 2"
               class="flex items-center gap-4 bg-[#66C61C] rounded-[16px] !p-[16px] text-white text-[16px] text-nowrap">
             <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -77,37 +102,38 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
           </button>
 
 
-          <div>
+          <div v-if="menuVisible">
             <!--dropdown 1-->
-            <div class="mega-drop-menu">
+            <div v-if="menuVisible && !childMenu.length" class="mega-drop-menu">
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards card-wrap cursor-pointer"
+                     v-for="(item, index) in announcement"
+                     :key="index"
+                     @click.stop="openDetail(item, index)"
                 >
-                  <!--                     v-for="(item, index) in list.children"-->
-                  <!--                     :key="index"-->
-                  <!--                     @click.stop="openDetail(list, item)"-->
-                  <img src="@/assets/images/cars.svg" class="!m-auto swg !my-0" alt="#"/>
-                  <p class="text-gray-900">Yetkazib
-                    berish</p>
+
+                  <img :src="item.image" class="!m-auto swg !my-0" alt="#"/>
+                  <p class="text-gray-900">{{ item.title }}</p>
                 </div>
               </div>
             </div>
 
             <!--dropdown 2-->
-            <!--            <div class="mega-drop-menu" @click.stop v-if="list.children && currentIndex === index2 && list.isDetail">-->
-            <!--              <button @click="list.isDetail = false" class="text-[#000]">x</button>-->
-            <!--              <div class="grid grid-cols-2 gap-3">-->
-            <!--                <div class="cards"-->
-            <!--                     v-for="(item, index) in Truck"-->
-            <!--                     :key="index"-->
-            <!--                     @click="handleClickCard(item)"-->
-            <!--                >-->
-            <!--                  <img :src="item.img" v-if="item.img" class="!m-auto !my-0" alt="#"/>-->
-            <!--                  <h4 class="text-[#292D32] text-[14px]">{{ item.title }}</h4>-->
-            <!--                  <p class="text-gray-900">{{ item.subTitle }}</p>-->
-            <!--                </div>-->
-            <!--              </div>-->
-            <!--            </div>-->
+            <div v-if="childMenu.length" class="mega-drop-menu" @click.stop>
+              <button @click="childMenu = []" class="text-[#000]">x</button>
+              <div class="grid grid-cols-2 gap-3">
+                <div class="cards"
+                     v-for="(item2, index) in childMenu"
+                     :key="index"
+
+                >
+                  <!--                  @click="handleClickCard(item)"-->
+                  <img :src="item2.image" v-if="item2.image" class="!m-auto !my-0" alt="#"/>
+                  <h4 class="text-[#292D32] text-[14px]">{{ item2.title }}</h4>
+                  <p class="text-gray-900">{{ item2.info }}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 

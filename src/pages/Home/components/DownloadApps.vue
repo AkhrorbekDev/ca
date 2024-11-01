@@ -1,6 +1,7 @@
 <template>
   <div class="flex items-center justify-center py-16 px-4 bg-[#fafafa]">
-    <div class="max-w-screen-xl  container lg:mx-auto flex flex-col md:flex-row items-center gap-10 md:!pt-[80px] md:!pb-[120px] !pb-[40px]">
+    <div
+        class="max-w-screen-xl  container lg:mx-auto flex flex-col md:flex-row items-center gap-10 md:!pt-[80px] md:!pb-[120px] !pb-[40px]">
 
       <div class="flex justify-center md:justify-start md:w-1/2 space-x-4">
         <img src="@/assets/images/phones.png" alt="Phone" class="w-full  object-contain aspect-square">
@@ -23,7 +24,7 @@
             <div class="flex items-center !mb-[16px]">
               <img src="@/assets/images/apple.png" class="h-[35px] w-[35px]" alt="apple"/>
               <div class="!ml-[12px]">
-                <p class="text-[#292D32] text-[13px] !mb-[3px]">Da mavjud</p>
+                <!--                <p class="text-[#292D32] text-[13px] !mb-[3px]">Da mavjud</p>-->
                 <b class="text-[#292D32] text-[16px] font-600">App Store</b>
               </div>
             </div>
@@ -35,7 +36,7 @@
             <div class="flex items-center !mb-[16px]">
               <img src="@/assets/images/playmarket.png" class="h-[35px] w-[35px]" alt="playmarket"/>
               <div class="!ml-[12px]">
-                <p class="text-[#292D32] text-[13px] !mb-[3px]">Da mavjud</p>
+                <!--                <p class="text-[#292D32] text-[13px] !mb-[3px]">Da mavjud</p>-->
                 <b class="text-[#292D32] text-[16px] font-600">Google Play</b>
               </div>
             </div>

@@ -43,10 +43,10 @@ const closeMenu = () => {
     menuItems.value.forEach((e) => {
       e.isOpen = false
 
-     // currentIndex.value = 0
-     //  e.children.forEach((val) => {
-     //    val.isDetail = false
-     //  })
+      // currentIndex.value = 0
+      //  e.children.forEach((val) => {
+      //    val.isDetail = false
+      //  })
     })
   });
 }
