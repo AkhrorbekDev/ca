@@ -17,6 +17,7 @@ declare module 'vue' {
     AvatarGroup: typeof import('primevue/avatargroup')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
     Dialog: typeof import('primevue/dialog')['default']
+    FloatLabel: typeof import('primevue/floatlabel')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
     InputMask: typeof import('primevue/inputmask')['default']
