@@ -15,9 +15,7 @@ declare module 'vue' {
     AutoComplete: typeof import('primevue/autocomplete')['default']
     Avatar: typeof import('primevue/avatar')['default']
     AvatarGroup: typeof import('primevue/avatargroup')['default']
-    Button: typeof import('primevue/button')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
-    ConfirmDialog: typeof import('primevue/confirmdialog')['default']
     Dialog: typeof import('primevue/dialog')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
@@ -30,6 +28,5 @@ declare module 'vue' {
     Select: typeof import('primevue/select')['default']
     ServiceNavbar: typeof import('./src/components/ServiceNavbar.vue')['default']
     Textarea: typeof import('primevue/textarea')['default']
-    Toast: typeof import('primevue/toast')['default']
   }
 }
