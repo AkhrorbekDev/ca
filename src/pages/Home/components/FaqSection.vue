@@ -52,7 +52,7 @@ const changeIndex = (index) => {
 
 
 <template>
-  <div class="bg-white !py-[100px]">
+  <div id="faq" class="bg-white !py-[100px]">
     <div class="max-w-screen-xl  container lg:mx-auto">
       <div class="flex items-start">
         <div class="!mr-[40px]">

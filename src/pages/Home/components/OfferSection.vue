@@ -8,7 +8,7 @@ const value = ref(null);
 
 <template>
   <div>
-    <div class="bg-[#353C4A] !pt-[80px] !pb-[244px]">
+    <div class="bg-[#353C4A] !pt-[80px] !pb-[244px]" id="contact">
       <div class="max-w-screen-xl  container lg:mx-auto">
         <div class="flex items-start justify-between">
           <h3 class="text-white text-[48px] font-semibold">Sizni hamkorlikka <br>

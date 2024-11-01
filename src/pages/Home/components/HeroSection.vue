@@ -1,7 +1,3 @@
-<script lang="ts">
-
-</script>
-
 <template>
   <div class="!h-[900px] relative">
     <video autoplay muted loop playsinline class="background-video">
@@ -17,24 +13,27 @@
         </router-link>
 
         <nav class="flex items-center gap-7">
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Platforma
-            haqida
+          <a href="#about" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+            Platforma haqida
+          </a>
+          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+            Maqsad va qadriyatlarimiz
           </router-link>
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Maqsad va
-            qadriyatlarimiz
-          </router-link>
-          <router-link to="/services" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Xizmatlar
+          <router-link to="/services" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+            Xizmatlar
           </router-link>
           <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
             Afzalliklar
           </router-link>
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Hamkorlik
-          </router-link>
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">FAQ
-          </router-link>
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+          <a href="#contact" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+            Hamkorlik
+          </a>
+          <a href="#faq" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+            FAQ
+          </a>
+          <a href="#contact" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
             Bog'lanish
-          </router-link>
+          </a>
         </nav>
 
         <div class="bg-[#66C61C] !px-[24px] !py-[28px] !ml-auto relative">
