@@ -109,7 +109,7 @@ const modules = [Navigation];
               <h1 class="text-[#292D324D] text-[14px] !mt-[4px] !mb-[4px]">{{ item3.date }}</h1>
             </div>
 
-            <img :src="item3.img" class="!mb-[42px] !m-auto !mt-[24px] object-contain !w-auto !h-[95px]" :alt="item3.title"/>
+            <img :src="item3.img" class="!mb-[42px] !m-auto !mt-[24px] !object-contain !w-auto !h-[95px]" :alt="item3.title"/>
 
             <div class="text-center !mb-[25px]">
               <button class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
