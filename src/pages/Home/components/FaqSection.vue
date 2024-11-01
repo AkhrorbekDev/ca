@@ -89,7 +89,7 @@ const changeIndex = (index) => {
                 </div>
               </AccordionHeader>
               <AccordionContent>
-                <p class="text-[#292D32]">
+                <p class="text-[#292D32] !ml-[80px]">
                   {{ item.description }}
 
                 </p>

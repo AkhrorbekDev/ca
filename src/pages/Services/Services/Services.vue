@@ -95,10 +95,10 @@ const modules = [Navigation];
             v-for="(item3, index3) in advertising" :key="index3"
             :virtualIndex="index3"
         >
-          <div class="card-service !h-[356px] flex flex-col justify-between">
+          <div class="card-service !h-[356px] !flex !flex-col !justify-between">
             <div>
               <h1 class="text-[#292D324D] text-[20px] !mb-[8px]">{{ item3.title }}</h1>
-              <div class="flex items-center">
+              <div class="!flex !items-center">
                 <span class="text-[#1A1F23] text-[14px] font-medium !mr-[7px]">Toshkent</span>
                 <svg width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M0.667969 4.72792H10.0013L6.10825 1.33398" stroke="#1A1F23" stroke-linecap="round"
@@ -111,7 +111,8 @@ const modules = [Navigation];
               <h1 class="text-[#292D324D] text-[14px] !mt-[4px] !mb-[4px]">{{ item3.date }}</h1>
             </div>
 
-            <img :src="item3.img" class="!mb-[42px] !m-auto !mt-[24px] !object-contain !w-auto !h-[95px]" :alt="item3.title"/>
+            <img :src="item3.img" class="!mb-[42px] !m-auto !mt-[24px] !object-contain !w-auto !h-[95px]"
+                :alt="item3.title"/>
 
             <div class="text-center !mb-[25px]">
               <button class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
@@ -128,7 +129,7 @@ const modules = [Navigation];
 <style lang="scss">
 .card-service {
   @apply bg-white rounded-[20px] p-[16px] cursor-pointer;
-  box-shadow: 0 2px 8.4px 0 #292D3214;
+  box-shadow: 0 2px 8.4px 0 #292D3214!important;
 }
 
 .card-service2 {

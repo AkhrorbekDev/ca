@@ -18,12 +18,12 @@
         <div>
           <h3 class="font-semibold text-[#292D32] text-[16px] !mb-[16px]">Mijozlar uchun</h3>
 
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Пользовательское соглашение</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Как выбрать исполнителя</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Обратная связь</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Оплата и доставка</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Возвраты</router-link>
-          <router-link to="#" class="block text-[14px] text-[#292D324D]">О сервисе</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Platforma haqida</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Maqsad va qadriyatlarimiz</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Xizmatlar</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Afzalliklar</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Hamkorlik</router-link>
+          <router-link to="#" class="block text-[14px] text-[#292D324D]">Bog‘lanish</router-link>
         </div>
 
         <div>

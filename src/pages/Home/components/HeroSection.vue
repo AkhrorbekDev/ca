@@ -42,7 +42,7 @@
                 class="bg-[#66C61C] w-[32px] h-[32px] rounded-full flex items-center justify-center absolute left-[-15px]">
               <i class="pi pi-phone" style="width: 15px; color: white"/>
             </span>
-          <a href="tel:+998990893954" class="text-white font-semibold text-[20px]">(99) 089 39 54</a>
+          <a href="tel:+998777000007" class="text-white font-semibold text-[20px]">(77) 700 00 07</a>
         </div>
       </div>
 
@@ -58,13 +58,13 @@
           </span>
 
 
-        <div class="flex items-center justify-center">
+        <div class="flex items-center justify-center gap-10">
           <router-link to="/services"
-              class="!px-[24px] !py-[12px] bg-[#66C61C] rounded-full text-white text-[16px] font-medium !mr-[16px]">
+              class="!px-[24px] !py-[12px] bg-[#66C61C] rounded-full text-white text-[20px] font-medium">
             E’lon berish
           </router-link>
 
-          <button class="flex items-center text-white text-[16px] font-medium">
+          <button class="flex items-center text-white  text-[20px] font-medium">
             <div class="w-[48px] h-[48px] flex items-center justify-center bg-white rounded-full !mr-[12px]">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

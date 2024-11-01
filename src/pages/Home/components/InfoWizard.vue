@@ -36,6 +36,8 @@ const wizardData: WizardData[] = [
 
 <template>
   <div class="bg-white">
+    <h3 class="text-[#292D32] text-[64px] font-semibold text-center !mb-[40px]">Foydalanish tartibi</h3>
+
     <div class="max-w-screen-xl  container lg:mx-auto">
       <div class="!pt-[72px] !pb-[100px] flex items-center">
         <div
