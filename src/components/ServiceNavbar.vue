@@ -42,6 +42,11 @@ const closeMenu = () => {
   document.body.addEventListener("click", () => {
     menuItems.value.forEach((e) => {
       e.isOpen = false
+
+     // currentIndex.value = 0
+     //  e.children.forEach((val) => {
+     //    val.isDetail = false
+     //  })
     })
   });
 }
