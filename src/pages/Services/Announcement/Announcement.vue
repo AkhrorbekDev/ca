@@ -28,6 +28,12 @@ const toggleMenu = () => {
 const openDetail = (item) => {
   if (item.child) {
     childMenu.value = item.child
+  } else {
+    visible2.value = true
+    nextTick(() => {
+      visible2Data.value = item
+
+    })
   }
 }
 

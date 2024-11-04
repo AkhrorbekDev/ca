@@ -65,10 +65,14 @@ const openChildMenu = (index: number, item: MenuItems) => {
 
 const openDetail = (value: any, item: any) => {
   if (item.route) {
+    console.log(item)
     menuItems.value.forEach((e) => e.isOpen = false)
-    router.push({name: item.route})
-  } else {
+    router.push({name: item.route, params: {type: item.unique}})
+  }
+  if (item.child) {
+
     value.isDetail = !value.isDetail
+
   }
 };
 
@@ -112,6 +116,7 @@ watchEffect(() => {
 
             <!--dropdown 1-->
             <div class="mega-drop-menu" v-if="list.isOpen && list.children">
+              <!--              <span class="text-black">{{ list.children }}</span>-->
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards card-wrap"
                      v-for="(item, index) in list.children"
