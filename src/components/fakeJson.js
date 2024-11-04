@@ -9,67 +9,56 @@ import gaz from "@/assets/images/trucks/gaz.png"
 export const services = [
     {
         img: car,
-        title: 'Yetkazib berish'
+        title: 'Yetkazib berish',
+        unique: "delivery",
+        route: "service-detail"
     },
     {
         img: car,
-        title: 'Peregon xizmati'
+        title: 'Peregon xizmati',
+        unique: "distillation",
+        route: "service-detail"
     },
     {
         img: car,
-        title: 'Yuk tashish'
+        title: 'Yuk tashish',
+        unique: "shipping",
+        route: "service-detail"
     },
     {
         img: car,
-        title: 'Yoqilg‘i yetkazish'
+        title: 'Yoqilg‘i yetkazish',
+        unique: "oil"
     },
     {
         img: car,
-        title: 'Yo\'lovchilarni tashish'
+        title: 'Yo\'lovchilarni tashish',
+        unique: "passenger"
     },
     {
         img: car,
-        title: 'Transport ijarasi'
+        title: 'Transport ijarasi',
+        unique: "rent"
     },
     {
         img: car,
-        title: 'Maxsus texnika xizmatlari'
+        title: 'Maxsus texnika xizmatlari',
+        unique: "technical"
     },
     {
         img: car,
-        title: 'Transport transferi'
+        title: 'Transport transferi',
+        unique: "transfer"
     },
     {
         img: car,
-        title: 'Saqlash xizmati'
+        title: 'Saqlash xizmati',
+        unique: "keeping"
     },
     {
         img: car,
-        title: 'Avto ta\'mirlash'
-    },
-]
-
-export const Menu = [
-    {
-        img: car,
-        title: 'Yuk tashish'
-    },
-    {
-        img: car,
-        title: 'Yo\'lovchilarni tashish'
-    },
-    {
-        img: car,
-        title: 'Maxsus texnika xizmatlari'
-    },
-    {
-        img: car,
-        route: 'transport-rental',
-        title: 'Transport ijarasi'
-    },
-    {
-        img: car,
-        title: 'Transport transferi'
+        title: 'Avto ta\'mirlash',
+        unique: "repair"
     },
 ]
 
@@ -117,3 +106,31 @@ export const Truck = [
         route: '/transport'
     }
 ]
+
+export const Menu = [
+    {
+        img: car,
+        title: 'Yuk tashish',
+        child: Truck
+    },
+    {
+        img: car,
+        title: 'Yo\'lovchilarni tashish',
+        child: Truck
+    },
+    {
+        img: car,
+        title: 'Maxsus texnika xizmatlari',
+        child: Truck
+    },
+    {
+        img: car,
+        route: 'transport-rental',
+        title: 'Transport ijarasi'
+    },
+    {
+        img: car,
+        title: 'Transport transferi'
+    },
+]
+

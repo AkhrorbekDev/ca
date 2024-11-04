@@ -6,6 +6,12 @@ export default [
         meta: {layout: "ServiceLayout"},
     },
     {
+        path: "/service-detail/:type",
+        name: "service-detail",
+        component: () => import("@/pages/Services/components/ServiceItem.vue"),
+        meta: {layout: "ServiceLayout"},
+    },
+    {
         path: "/transport/:id",
         name: "transport-id",
         component: () => import("@/pages/Services/Transports/Transports.vue"),

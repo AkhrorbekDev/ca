@@ -5,6 +5,9 @@ import ochu from "@/assets/images/trucks/ochu.png"
 import truck from "@/assets/images/trucks/truck.png"
 import shalanda from "@/assets/images/trucks/shalanda.png"
 import gaz from "@/assets/images/trucks/gaz.png"
+import ekskavator from "@/assets/images/ekskavator.png"
+import ustaxona from "@/assets/images/ustaxona.png"
+import usta from "@/assets/images/usta.png"
 
 export const announcement = [
     {
@@ -150,32 +153,32 @@ export const announcement = [
             {
                 title: "Ekskavator",
                 info: "Qazish ishlari uchun",
-                image: ,
+                image: ekskavator,
                 unique: "technical",
             },
             {
                 title: "Miniven",
                 info: "8 o‘rindiqli",
-                image: gazel,
+                image: ekskavator,
                 unique: "technical",
             },
             {
                 title: "Mikroavtobus",
                 info: "20 o‘rindiqli",
-                image: ochu,
+                image: ekskavator,
                 unique: "technical",
             },
             {
                 title: "Avtobus",
                 info: "30 o‘rindiqli",
-                image: truck,
+                image: ekskavator,
                 unique: "technical",
             },
 
             {
                 title: "Avtobus",
                 info: "50 o‘rindiqli",
-                image: shalanda,
+                image: ekskavator,
                 unique: "technical",
             }
         ]
@@ -186,6 +189,33 @@ export const announcement = [
             "transferi",
         image: car,
         unique: "transfer",
+        child: [
+            {
+                title: "Avtovozlar",
+                info: "Maxsus yuk mashinalari",
+                image: '',
+                unique: "transfer",
+            },
+            {
+                title: "Evakuator",
+                info: "Maxsus yuk mashinalari",
+                image: '',
+                unique: "transfer",
+            },
+            {
+                title: "Maxsus texnika\n" +
+                    "transferi",
+                info: "Maxsus yuk mashinalari",
+                image: '',
+                unique: "transfer",
+            },
+            {
+                title: "Yaxtalar va qayiqlar",
+                info: "Maxsus yuk mashinalari",
+                image: '',
+                unique: "transfer",
+            }
+        ]
     },
 
     {
@@ -200,6 +230,20 @@ export const announcement = [
             "ta'mirlash",
         image: car,
         unique: "repair",
+        child: [
+            {
+                title: "Ustaxonalar",
+                info: "Xizmat ko’rsatish",
+                image: ustaxona,
+                unique: "repair",
+            },
+            {
+                title: "Ustalar",
+                info: "Bir turdagi xizmat",
+                image: usta,
+                unique: "repair",
+            },
+        ]
     },
 
 ]

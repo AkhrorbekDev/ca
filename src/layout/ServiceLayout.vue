@@ -7,9 +7,9 @@ const route = useRoute()
 
 <template>
   <div class="bg-[#FAFAFA] min-h-screen">
-    <ServiceNavbar/>
+    <ServiceNavbar class="z-50"/>
 
-    <div :class="route.name === 'services' ? '!pt-[148px] !px-[24px]' : '!pt-[148px] !px-[24px]'">
+    <div class="!pt-[118px] !px-[24px]">
       <slot/>
     </div>
 
