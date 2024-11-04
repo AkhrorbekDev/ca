@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import ModalAnnouncement from "@/pages/Services/Announcement/components/ModalAnnouncement.vue";
+import AddAnnouncementModal from "@/pages/Services/Announcement/components/AddAnnouncementModal.vue";
 import {announcement} from "@/pages/Services/Announcement/constants";
-import {onMounted, onUnmounted, ref} from 'vue';
+import {nextTick, onMounted, onUnmounted, ref} from 'vue';
 
 const visible = ref(false);
+const visible2 = ref(false);
+const visible2Data = ref<any>({});
 const childMenu = ref([])
 const menuVisible = ref<boolean>(false)
 
@@ -25,6 +28,19 @@ const toggleMenu = () => {
 const openDetail = (item) => {
   if (item.child) {
     childMenu.value = item.child
+  }
+}
+
+const handleClickCard = (data) => {
+
+  if (data) {
+    console.log(data, "data")
+    visible2.value = true
+    nextTick(() => {
+      visible2Data.value = data
+
+    })
+
   }
 }
 
@@ -122,12 +138,12 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
             <div v-if="childMenu.length" class="mega-drop-menu" @click.stop>
               <button @click="childMenu = []" class="text-[#000]">x</button>
               <div class="grid grid-cols-2 gap-3">
-                <div class="cards"
+                <div class="cards cursor-pointer"
                      v-for="(item2, index) in childMenu"
                      :key="index"
-
+                     @click="handleClickCard(item2)"
                 >
-                  <!--                  @click="handleClickCard(item)"-->
+
                   <img :src="item2.image" v-if="item2.image" class="!m-auto !my-0" alt="#"/>
                   <h4 class="text-[#292D32] text-[14px]">{{ item2.title }}</h4>
                   <p class="text-gray-900">{{ item2.info }}</p>
@@ -200,6 +216,7 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
     </div>
 
     <ModalAnnouncement v-model="visible"/>
+    <AddAnnouncementModal v-model="visible2" :announceValue="visible2Data"/>
   </div>
 </template>
 
