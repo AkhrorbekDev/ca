@@ -17,12 +17,41 @@ export default [
         component: () => import("@/pages/Services/Transports/Transports.vue"),
         meta: {layout: "ServiceLayout"},
     },
+
+
     {
         path: "/transport-view/:id",
         name: "transport-view-id",
         component: () => import("@/pages/Services/Transports/TransportDetail.vue"),
         meta: {layout: "ServiceLayout"},
     },
+    {
+        path: "/transport-repair/:id",
+        name: "transport-repair-id",
+        component: () => import("@/pages/Services/Transports/TransportDetail.vue"),
+        meta: {layout: "ServiceLayout"},
+    },
+    {
+        path: "/transport-rental/:id",
+        name: "transport-rental-id",
+        component: () => import("@/pages/Services/TransportRental/TransporRent.vue"),
+        meta: {layout: "ServiceLayout"},
+    },
+    {
+        path: "/transport-rental-service/:id",
+        name: "transport-rental-service-id",
+        component: () => import("@/pages/Services/TransportRental/TransporRent.vue"),
+        meta: {layout: "ServiceLayout"},
+    },
+    {
+        path: "/transport-rental-service/:id/:id2",
+        name: "transport-rental-service-id-id2",
+        component: () => import("@/pages/Services/Transports/TransportDetail.vue"),
+        meta: {layout: "ServiceLayout"},
+    },
+
+
+
     {
         path: "/transport-rental",
         name: "transport-rental",
@@ -33,6 +62,12 @@ export default [
         path: "/announcement",
         name: "announcement",
         component: () => import("@/pages/Services/Announcement/Announcement.vue"),
+        meta: {layout: "ServiceLayout"},
+    },
+    {
+        path: "/transport-repair",
+        name: "transport-repair",
+        component: () => import("@/pages/Services/TransportRepair/Repair.vue"),
         meta: {layout: "ServiceLayout"},
     },
 ]
