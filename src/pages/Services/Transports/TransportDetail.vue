@@ -46,11 +46,10 @@ const is_active = ref<boolean>(false)
           <a href="tel:+998990893954" class="!p-[16px] bg-[#66C61C] rounded-full w-full text-white !mb-[16px] text-center">
             Qo'ng'iroq qilish
           </a>
-          <button
-              class="!p-[16px] bg-[#27A7E7] rounded-full w-full text-white !mb-[16px] flex items-center justify-center">
+          <a href="https://telegram.org/" target="_blank" class="!p-[16px] bg-[#27A7E7] rounded-full w-full text-white !mb-[16px] flex items-center justify-center">
             <img src="@/assets/images/icons/telegram.svg" class="!mr-[13px]" alt="tg"/>
             Telegram orqali bog'lanish
-          </button>
+          </a>
         </div>
       </div>
     </div>

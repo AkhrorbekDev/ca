@@ -12,8 +12,7 @@
           bizga har bir mijozning fikri juda muhimdir!
         </p>
 
-        <div
-            class="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2  md:bottom-[-77%] md:w-full">
+        <div class="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2  md:bottom-[-60%] md:w-full">
           <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-10">
             <div class="bg-[#FAFAFA] !m-auto w-[392px] rounded-[24px] !p-[24px]"
             >
@@ -25,10 +24,10 @@
               <img src="@/assets/images/star.svg" class="!my-[16px]" alt="star"/>
 
               <div class="flex items-center">
-                <img src="@/assets/images/avatar.jpg" class="h-[64px] w-[64px]" alt="">
+                <img src="@/assets/images/avatar.jpg" class="h-[64px] rounded-full  w-[64px]" alt="">
                 <div class="!ml-[16px]">
-                  <b class="text-[#000D24] text-[18px] !mb-[4px] font-600">Ibrohim Nurmatov</b>
-                  <p class="text-[#A8AAAE] text-[14px]">Dasturchi</p>
+                  <b class="text-[#000D24] text-[18px] !mb-[4px] font-600">Begzod Rafikhov</b>
+                  <p class="text-[#A8AAAE] text-[14px]">Haydovchi</p>
                 </div>
               </div>
             </div>
@@ -44,10 +43,10 @@
               <img src="@/assets/images/star.svg" class="!my-[16px]" alt="star"/>
 
               <div class="flex items-center">
-                <img src="@/assets/images/avatar.jpg" class="h-[64px] w-[64px]" alt="">
+                <img src="@/assets/images/avatar.jpg" class="h-[64px] rounded-full w-[64px]" alt="">
                 <div class="!ml-[16px]">
-                  <b class="text-[#000D24] text-[18px] !mb-[4px] font-600">Ibrohim Nurmatov</b>
-                  <p class="text-[#A8AAAE] text-[14px]">Dasturchi</p>
+                  <b class="text-[#000D24] text-[18px] !mb-[4px] font-600">Dilshod Bunyodov</b>
+                  <p class="text-[#A8AAAE] text-[14px]">Menejer</p>
                 </div>
               </div>
             </div>
@@ -55,17 +54,16 @@
             <div class="bg-[#FAFAFA] !m-auto w-[392px] rounded-[24px] !p-[24px]"
             >
               <p class="text-[#292D3266] text-[18px]">
-                Carting xizmatlari boshqa kompaniyalarga nisbatan hamyonbop va sifatli!
-
+                Carting xizmatlari boshqa kompaniyalarga nisbatan hamyonbop!
               </p>
 
               <img src="@/assets/images/star.svg" class="!my-[16px]" alt="star"/>
 
               <div class="flex items-center">
-                <img src="@/assets/images/avatar.jpg" class="h-[64px] w-[64px]" alt="">
+                <img src="@/assets/images/avatar.jpg" class="h-[64px] w-[64px] rounded-full" alt="">
                 <div class="!ml-[16px]">
                   <b class="text-[#000D24] text-[18px] !mb-[4px] font-600">Ibrohim Nurmatov</b>
-                  <p class="text-[#A8AAAE] text-[14px]">Dasturchi</p>
+                  <p class="text-[#A8AAAE] text-[14px]">Operator</p>
                 </div>
               </div>
             </div>

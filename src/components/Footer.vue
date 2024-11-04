@@ -18,29 +18,30 @@
         <div>
           <h3 class="font-semibold text-[#292D32] text-[16px] !mb-[16px]">Mijozlar uchun</h3>
 
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Пользовательское соглашение</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Как выбрать исполнителя</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Обратная связь</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Оплата и доставка</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Возвраты</router-link>
-          <router-link to="#" class="block text-[14px] text-[#292D324D]">О сервисе</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Platforma haqida</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Maqsad va qadriyatlarimiz</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Xizmatlar</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Afzalliklar</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Hamkorlik</router-link>
+          <router-link to="#" class="block text-[14px] text-[#292D324D]">Bog‘lanish</router-link>
         </div>
 
         <div>
-          <h3 class="font-semibold text-[#292D32] text-[16px] !mb-[16px]">Ijrochilar uchun</h3>
+          <h3 class="font-semibold text-[#292D32] text-[16px] !mb-[16px]">Mijozlar uchun</h3>
 
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Сайт для партнёров</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Справка для исполнителей</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Регистрация исполнителя</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Личный кабинет исполнителя</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Yordam bo'limi</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Foydalanish tartibi</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Top haydovchilar</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Shaxsiy kabinet</router-link>
         </div>
 
         <div>
-          <h3 class="font-semibold text-[#292D32] text-[16px] !mb-[16px]">Hamkorlik</h3>
+          <h3 class="font-semibold text-[#292D32] text-[16px] !mb-[16px]">Manzil</h3>
 
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Работа с  брендом</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Партнёрская программа</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Новости компании</router-link>
+         <p class="text-[14px] text-[#292D324D] w-[180px]">
+           Toshkent shahri,
+           Shayxontohur tumani, Muqumiy ko‘chasi 46-uy
+         </p>
         </div>
       </div>
 

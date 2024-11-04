@@ -1,7 +1,3 @@
-<script lang="ts">
-
-</script>
-
 <template>
   <div class="!h-[900px] relative">
     <video autoplay muted loop playsinline class="background-video">
@@ -17,24 +13,27 @@
         </router-link>
 
         <nav class="flex items-center gap-7">
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Platforma
-            haqida
+          <a href="#about" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+            Platforma haqida
+          </a>
+          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+            Maqsad va qadriyatlarimiz
           </router-link>
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Maqsad va
-            qadriyatlarimiz
-          </router-link>
-          <router-link to="/services" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Xizmatlar
+          <router-link to="/services" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+            Xizmatlar
           </router-link>
           <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
             Afzalliklar
           </router-link>
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">Hamkorlik
-          </router-link>
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">FAQ
-          </router-link>
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+          <a href="#contact" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+            Hamkorlik
+          </a>
+          <a href="#faq" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+            FAQ
+          </a>
+          <a href="#contact" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
             Bog'lanish
-          </router-link>
+          </a>
         </nav>
 
         <div class="bg-[#66C61C] !px-[24px] !py-[28px] !ml-auto relative">
@@ -42,7 +41,7 @@
                 class="bg-[#66C61C] w-[32px] h-[32px] rounded-full flex items-center justify-center absolute left-[-15px]">
               <i class="pi pi-phone" style="width: 15px; color: white"/>
             </span>
-          <a href="tel:+998990893954" class="text-white font-semibold text-[20px]">(99) 089 39 54</a>
+          <a href="tel:+998777000007" class="text-white font-semibold text-[20px]">(77) 700 00 07</a>
         </div>
       </div>
 
@@ -58,13 +57,13 @@
           </span>
 
 
-        <div class="flex items-center justify-center">
+        <div class="flex items-center justify-center gap-10">
           <router-link to="/services"
-              class="!px-[24px] !py-[12px] bg-[#66C61C] rounded-full text-white text-[16px] font-medium !mr-[16px]">
+              class="!px-[24px] !py-[12px] bg-[#66C61C] rounded-full text-white text-[20px] font-medium">
             E’lon berish
           </router-link>
 
-          <button class="flex items-center text-white text-[16px] font-medium">
+          <button class="flex items-center text-white  text-[20px] font-medium">
             <div class="w-[48px] h-[48px] flex items-center justify-center bg-white rounded-full !mr-[12px]">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
