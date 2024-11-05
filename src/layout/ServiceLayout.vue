@@ -13,7 +13,7 @@ const route = useRoute()
       <slot/>
     </div>
 
-    <div class="support flex flex-col fixed bottom-[30px] right-[30px]">
+    <div v-if="route.name !== 'service-detail'" class="support flex flex-col fixed bottom-[30px] right-[30px]">
       <a href="tel:+998990893954" class="!p-[16px] rounded-full bg-[#66C61C]">
         <img src="@/assets/images/icons/phone.svg" alt="phone"/>
       </a>

@@ -6,27 +6,37 @@ import truck from "@/assets/images/trucks/truck.png"
 import shalanda from "@/assets/images/trucks/shalanda.png"
 import gaz from "@/assets/images/trucks/gaz.png"
 
+import moto from '@/assets/images/icons/motobike.svg'
+import rul from '@/assets/images/icons/rul.svg'
+import truck2 from '@/assets/images/icons/labo.svg'
+import pistol from '@/assets/images/icons/pistol.svg'
+import carKey from '@/assets/images/icons/carKey.svg'
+import exkavator from '@/assets/images/icons/exkovator.svg'
+import evakvator from '@/assets/images/icons/evakvator.svg'
+import home from '@/assets/images/icons/home.svg'
+import settings from '@/assets/images/icons/settings.svg'
+
 export const services = [
     {
-        img: car,
+        img: moto,
         title: 'Yetkazib berish',
         unique: "delivery",
         route: "service-detail"
     },
     {
-        img: car,
+        img: rul,
         title: 'Peregon xizmati',
         unique: "distillation",
         route: "service-detail"
     },
     {
-        img: car,
+        img: truck2,
         title: 'Yuk tashish',
         unique: "shipping",
         route: "service-detail"
     },
     {
-        img: car,
+        img: pistol,
         title: 'Yoqilg‘i yetkazish',
         unique: "oil",
         route: "service-detail"
@@ -38,27 +48,30 @@ export const services = [
         route: "service-detail"
     },
     {
-        img: car,
+        img: carKey,
         title: 'Transport ijarasi',
         route: "transport-rental"
     },
     {
-        img: car,
+        img: exkavator,
         title: 'Maxsus texnika xizmatlari',
-        unique: "technical"
+        unique: "technical",
+        route: "service-detail"
     },
     {
-        img: car,
+        img: evakvator,
         title: 'Transport transferi',
-        unique: "transfer"
+        unique: "transfer",
+        route: "service-detail"
     },
     {
-        img: car,
+        img: home,
         title: 'Saqlash xizmati',
-        unique: "keeping"
+        unique: "keeping",
+        route: "service-keeping"
     },
     {
-        img: car,
+        img: settings,
         title: 'Avto ta\'mirlash',
         unique: "repair",
         route: 'transport-repair'
@@ -112,7 +125,7 @@ export const Truck = [
 
 export const Menu = [
     {
-        img: car,
+        img: truck2,
         title: 'Yuk tashish',
         child: Truck
     },
@@ -122,17 +135,17 @@ export const Menu = [
         child: Truck
     },
     {
-        img: car,
+        img: exkavator,
         title: 'Maxsus texnika xizmatlari',
         child: Truck
     },
     {
-        img: car,
+        img: carKey,
         route: 'transport-rental',
         title: 'Transport ijarasi'
     },
     {
-        img: car,
+        img: evakvator,
         title: 'Transport transferi'
     },
 ]

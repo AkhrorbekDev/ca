@@ -19,7 +19,8 @@
           <h3 class="font-semibold text-[#292D32] text-[16px] !mb-[16px]">Mijozlar uchun</h3>
 
           <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Platforma haqida</router-link>
-          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Maqsad va qadriyatlarimiz</router-link>
+          <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Maqsad va qadriyatlarimiz
+          </router-link>
           <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Xizmatlar</router-link>
           <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Afzalliklar</router-link>
           <router-link to="#" class="block text-[14px] !mb-[10px] text-[#292D324D]">Hamkorlik</router-link>
@@ -38,10 +39,10 @@
         <div>
           <h3 class="font-semibold text-[#292D32] text-[16px] !mb-[16px]">Manzil</h3>
 
-         <p class="text-[14px] text-[#292D324D] w-[180px]">
-           Toshkent shahri,
-           Shayxontohur tumani, Muqumiy ko‘chasi 46-uy
-         </p>
+          <p class="text-[14px] text-[#292D324D] w-[180px]">
+            Toshkent shahri,
+            Shayxontohur tumani, Muqumiy ko‘chasi 46-uy
+          </p>
         </div>
       </div>
 
@@ -49,7 +50,7 @@
 
       <div class="flex items-center justify-between !py-[16px]">
         <div class="flex items-center gap-6">
-          <router-link to="#" class="text-[#292D32] font-medium text-[14px]">© 2023 “Carting”</router-link>
+          <router-link to="#" class="text-[#292D32] font-medium text-[14px]">© 2024 “Carting”</router-link>
           <router-link to="#" class="text-[#292D324D] font-medium text-[14px]">Foydalanish shartlari</router-link>
           <router-link to="#" class="text-[#292D324D] font-medium text-[14px]">Maxfiylik siyosati</router-link>
         </div>

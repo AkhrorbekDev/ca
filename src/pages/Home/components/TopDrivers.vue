@@ -21,41 +21,47 @@ const driverData: DriversData[] = [
     full_name: "Dilshod Bunyodov",
     rating: "4.5",
     image: "./driver.png",
-    rating: "4.5"
+    rating: "4.5",
+    who: "Yuk tashish"
   },
 
   {
     full_name: "Abdulaziz Aliyev",
     rating: "4.5",
     image: "./driver2.png",
-    rating: "4.5"
+    rating: "4.5",
+    who: "Dispecher"
   },
   {
     full_name: "Begzod Rafikhov",
     rating: "4.5",
     image: "./driver3.png",
-    rating: "4.5"
+    rating: "4.5",
+    who: "Meneger"
   },
 
   {
     full_name: "Abbos Mehmonov",
     rating: "4.5",
     image: "./driver4.png",
-    rating: "4.5"
+    rating: "4.5",
+    who: "Direktor"
   },
 
   {
     full_name: "Sevara Nafisova",
     rating: "4.5",
     image: "./driver5.png",
-    rating: "4.5"
+    rating: "4.5",
+    who: "Operator"
   },
 
   {
     full_name: "Asadbek ASD",
     rating: "4.5",
     image: "./driver2.png",
-    rating: "4.5"
+    rating: "4.5",
+    who: "Mutaxasis"
   },
 
 ];
@@ -88,7 +94,7 @@ const driverData: DriversData[] = [
 
           <div class="rating-absolute flex items-center justify-between !px-[20px]">
 
-            <span class="text-[14px] text-[#ffffff] bg-[#66C61C] rounded-[100px] !py-[4px] !px-[8px]">Yuk tashish</span>
+            <span class="text-[14px] text-[#ffffff] bg-[#66C61C] rounded-[100px] !py-[4px] !px-[8px]">{{ item.who}}</span>
 
 
             <div class="flex items-center justify-between">

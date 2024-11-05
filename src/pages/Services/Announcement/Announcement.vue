@@ -40,7 +40,10 @@ const openDetail = (item) => {
 const handleClickCard = (data) => {
 
   if (data) {
-    console.log(data, "data")
+    if (data.child) {
+      childMenu.value = data.child
+      return
+    }
     visible2.value = true
     nextTick(() => {
       visible2Data.value = data
@@ -184,6 +187,7 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
              :key="index" @click="visible = true">
           <div class="flex items-center justify-between">
             <div
+                v-if="activeTab !== 0"
                 :class="['!px-[11px] !py-[4px] rounded-[50px] text-[10px] font-medium flex items-center gap-3', item.status ? 'bg-[#F0FAE9] text-[#66C61C]' : 'bg-[#FEEDEC] text-[#F04438]']">
               {{ item.status ? 'Faol' : 'Faol emas' }}
               <div v-if="!item.status && (activeTab == 1 || activeTab == 2)" class="flex items-center">

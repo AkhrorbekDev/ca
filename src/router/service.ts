@@ -11,6 +11,21 @@ export default [
         component: () => import("@/pages/Services/components/ServiceItem.vue"),
         meta: {layout: "ServiceLayout"},
     },
+
+    {
+        path: "/service/keeping",
+        name: "service-keeping",
+        component: () => import("@/pages/Services/components/KeepingPage.vue"),
+        meta: {layout: "ServiceLayout"},
+    },
+
+    {
+        path: "/service/keeping-detail/:id",
+        name: "service-keeping-detail",
+        component: () => import("@/pages/Services/components/KeepingPageItem.vue"),
+        meta: {layout: "ServiceLayout"},
+    },
+
     {
         path: "/transport/:id",
         name: "transport-id",
@@ -46,7 +61,7 @@ export default [
     {
         path: "/transport-rental-service/:id/:id2",
         name: "transport-rental-service-id-id2",
-        component: () => import("@/pages/Services/Transports/TransportDetail.vue"),
+        component: () => import("@/pages/Services/components/RentPage.vue"),
         meta: {layout: "ServiceLayout"},
     },
 
@@ -57,7 +72,6 @@ export default [
         component: () => import("@/pages/Services/Transports/TransportDetail.vue"),
         meta: {layout: "ServiceLayout"},
     },
-
 
 
     {
@@ -83,7 +97,8 @@ export default [
         path: "/transport-repair-rooms/1",
         name: "transport-repair-rooms-id",
         component: () => import("@/pages/Services/TransportRepair/RepairRooms.vue"),
-        meta: {layout: "ServiceLayout"
+        meta: {
+            layout: "ServiceLayout"
         },
     }
 ]

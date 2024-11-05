@@ -40,8 +40,9 @@ const value = ref<string>('+998990893954')
         </button>
 
         <div class="!mt-[24px] text-center text-gray-600">
-          <span class="text-[#292D32] !text-[15px]">Platformamizda yangimisiz?</span>
-          <router-link to="/register" class="text-[#0BA5EC] !ml-1 !text-[15px]">Ro'yxatdan o'tish</router-link>
+          <span class="text-[#292D32] !text-[15px] text-nowrap">Platformamizda yangimisiz? <router-link to="/register"
+                                                                                                        class="text-[#0BA5EC] !ml-1 !text-[15px]">Ro'yxatdan o'tish</router-link></span>
+
         </div>
       </div>
     </div>

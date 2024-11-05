@@ -241,7 +241,29 @@ export const announcement = [
                 title: "Ustalar",
                 info: "Bir turdagi xizmat",
                 image: usta,
-                unique: "repair",
+                unique: "master",
+                child: [
+                    {
+                        title: "Kuzov ustasi",
+                        info: "Polirovka, bo‘yoq, qirilish,\n" +
+                            "buklanish",
+                        image: '',
+                        unique: "master",
+                    },
+                    {
+                        title: "Avtoelektrik",
+                        info: "Elektrga oid barcha ishlar, fara, tablo",
+                        image: '',
+                        unique: "master",
+                    },
+                    {
+                        title: "Mator ustasi",
+                        info: "Dvigitel motor ishlari",
+                        image: '',
+                        unique: "master",
+                    },
+
+                ]
             },
         ]
     },

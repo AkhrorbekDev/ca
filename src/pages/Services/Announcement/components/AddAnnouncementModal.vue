@@ -83,6 +83,40 @@ const addDefinitionList = () => {
     price: 0
   })
 }
+const categoriesList = [
+  "Motorist",
+  "Avtoelektrika",
+  "Kuzovchi",
+  "Avtotuning",
+  "Hodovik",
+]
+
+const categories = ref([])
+
+const servicesList = [
+  "Polirovka",
+  "Keramika",
+  "Bo’yoq",
+  "Myatina",
+]
+
+const service = ref([])
+
+const pushService = (index) => {
+  if (service.value.includes(index)) {
+    return
+  }
+
+  service.value.push(index)
+}
+
+const pushCategory = (index) => {
+  if (categories.value.includes(index)) {
+    return
+  }
+
+  categories.value.push(index)
+}
 
 </script>
 
@@ -250,8 +284,8 @@ const addDefinitionList = () => {
         </div>
 
         <div
-            v-if="announceValue.unique === 'repair'">
-          <div class="grid grid-cols-2 gap-4">
+            v-if="announceValue.unique === 'repair' || announceValue.unique === 'master'">
+          <div class="grid grid-cols-2 gap-4 !mb-[24px]">
             <FloatLabel variant="in">
               <InputText id="in_label" variant="filled"
                          class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
@@ -264,6 +298,42 @@ const addDefinitionList = () => {
               <label for="in_label" class="!text-[#292D324D]">Narx</label>
             </FloatLabel>
 
+            <FloatLabel variant="in">
+              <InputText id="in_label" variant="filled"
+                         class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"
+                         placeholder="Kompaniya nomini kiriting!"/>
+              <label for="in_label" class="!text-[#292D324D]">Kompaniya nomi</label>
+            </FloatLabel>
+
+          </div>
+
+          <div v-if="announceValue.unique !== 'master'"
+               class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px] !mb-[24px]">
+            <span class="text-[#292D324D] text-[12px] !mb-[8px]">Toifalar</span>
+
+            <div class="flex items-center gap-2">
+              <button
+                  v-for="(item, index) in categoriesList" @click="pushCategory(index)"
+                  :class="['!py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px]', categories.includes(index) && 'bg-[#66C61C] text-white']">
+                {{
+                  item
+                }}
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px]">
+            <span class="text-[#292D324D] text-[12px] !mb-[8px]">Xizmatlar</span>
+
+            <div class="flex items-center gap-2">
+              <button
+                  v-for="(item, index) in servicesList" @click="pushService(index)"
+                  :class="['!py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px]', service.includes(index) && 'bg-[#66C61C] text-white']">
+                {{
+                  item
+                }}
+              </button>
+            </div>
           </div>
 
           <div class="flex flex-col gap-2 w-full !mt-[24px]">
@@ -273,7 +343,7 @@ const addDefinitionList = () => {
           </div>
 
           <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-            <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
+            <span class="text-[#292D324D] text-[12px]">Ustaxona rasmlari</span>
             <!--          {{ imageList }}-->
 
             <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl">

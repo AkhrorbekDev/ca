@@ -81,7 +81,8 @@ const handleSubmit = (index: number) => {
     </div>
 
     <div class="flex items-center justify-center">
-      <div class="!p-[24px] rounded-[24px] bg-white menu-shadow !w-[343px]" v-if="is_car">
+      <div class="!p-[24px] rounded-[24px] bg-white menu-shadow !w-[343px] max-h-[600px] h-full overflow-y-auto"
+           v-if="is_car">
         <div class="bg-[#FAFAFA] w-full text-[12px] text-[#292D324D] px-[8px] !mb-[12px]">Sedan</div>
 
         <div v-for="(item, index) in car"
@@ -101,7 +102,9 @@ const handleSubmit = (index: number) => {
       <div v-else class="!w-[343px]"/>
 
 
-      <div class="!p-[24px] rounded-[24px] bg-white menu-shadow !w-[343px] !ml-[24px]" v-if="is_moto">
+      <div
+          class="!p-[24px] rounded-[24px] bg-white menu-shadow !w-[343px] !ml-[24px] max-h-[600px] h-full overflow-y-auto"
+          v-if="is_moto">
         <div class="bg-[#FAFAFA] w-full text-[12px] text-[#292D324D] px-[8px] !mb-[12px]">Mototexnika</div>
 
         <div v-for="(item1, index1) in moto"

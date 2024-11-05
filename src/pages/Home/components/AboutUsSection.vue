@@ -14,7 +14,8 @@ const cities = ref([
 <template>
   <div class="about-us ">
     <div class="max-w-screen-xl  container lg:mx-auto !pt-[334px] !pb-[100px] relative">
-      <div class="bg-white rounded-[24px] !p-[40px] grid grid-cols-3 gap-6 shadow-custom absolute top-[-80px] w-full left-0">
+      <div
+          class="bg-white rounded-[24px] !p-[40px] grid grid-cols-3 gap-6 shadow-custom absolute top-[-80px] w-full left-0">
         <div class="flex flex-col gap-2 w-full">
           <label for="username" class="text-[#292D32] font-medium text-[16px]">Xizmat turi</label>
           <Select v-model="selectedCity" :options="cities" optionLabel="name" placeholder="Manzilni tanlang"

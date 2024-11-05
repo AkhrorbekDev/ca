@@ -18,52 +18,71 @@ export const services = [
     {
         title: 'Yetkazib berish',
         subTitle: 'Tovar va mahsulotlarni tez va xavfsiz manzilga yetkazib berish xizmati',
-        img: moto
+        img: moto,
+        unique: "delivery",
+        route: "service-detail"
     },
     {
         title: 'Peregon',
         subTitle: 'Malakali haydovchilar tomonidan avtomobilingizni kerakli manzilga yetkazib berish xizmati',
-        img: rul
+        img: rul,
+        unique: "distillation",
+        route: "service-detail"
     },
     {
         title: 'Yuk tashish',
         subTitle: 'Barcha turdagi kichikdan kattagacha yuklarni tashish uchun samarali yechim',
-        img: truck
+        img: truck,
+        unique: "shipping",
+        route: "service-detail"
     },
     {
         title: 'Yoqilg’i yetkazish',
         subTitle: 'Avtomobilingiz uchun yoqilg‘ini tez va sifatli belgilangan manzilga yetkazish',
-        img: pistol
+        img: pistol,
+        unique: "oil",
+        route: "service-detail"
     },
     {
         title: 'Yo‘lovchi tashish',
         subTitle: 'Shaxsiy, oilaviy yoki guruh bo‘lib sayohat qilish uchun transport xizmati',
-        img: car
+        img: car,
+        unique: "passenger",
+        route: "service-detail"
     },
     {
         title: 'Transport ijarasi',
         subTitle: 'Bu transport vositalarini vaqtinchalik foydalanish uchun to\'lov asosida berish xizmati',
-        img: carKey
+        img: carKey,
+        route: "transport-rental"
     },
     {
         title: 'Maxsus texnika',
         subTitle: 'Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati',
-        img: exkavator
+        img: exkavator,
+        unique: "technical",
+        route: "service-detail"
     },
     {
         title: 'Transport transferi',
         subTitle: 'Transportlarni manzilga xavfsiz va vaqtida yetkazib berish xizmati',
-        img: evakvator
+        img: evakvator,
+        unique: "transfer",
+        route: "service-detail"
     },
     {
         title: 'Saqlash xizmati',
         subTitle: 'Yuklaringizni xavfsiz va qulay saqlash uchun omborxona xizmatlari',
-        img: home
+        img: home,
+        unique: "keeping",
+        route: "service-keeping"
     },
     {
         title: 'Avto ta’mirlash',
         subTitle: 'Texnik ko‘rik va boshqa zarur bo‘lgan avtoservis xizmatlarini ko‘rsatish',
-        img: settings
+        img: settings,
+        unique: "repair",
+        route: 'transport-repair'
     },
 ]
 

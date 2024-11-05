@@ -2,6 +2,9 @@
 import {Menu, services, Truck} from '@/components/fakeJson'
 import {onMounted, onUnmounted, ref, watchEffect} from "vue";
 import {useRouter, useRoute} from "vue-router";
+import {useCommonStore} from "@/stores/common.store"
+
+const store = useCommonStore()
 
 interface MenuItems {
   title: string;
@@ -71,7 +74,7 @@ const openChildMenu = (index: number, item: MenuItems) => {
 
 const openDetail = (value: any, item: any) => {
   if (item.route) {
-    console.log(item)
+    store.activeService = item
     menuItems.value.forEach((e) => e.isOpen = false)
     router.push({name: item.route, params: {type: item.unique}})
   }
@@ -111,7 +114,11 @@ watchEffect(() => {
                @click.stop="openChildMenu(index2, list)"
           >
             <div class="flex1">
-              <span :class="list.isOpen ? 'text-[#000]' : ''">{{ list.title }}</span>
+              <span :class="list.isOpen ? 'text-[#000]' : ''">{{ list.title }} <span
+                  v-if="list.title == 'Xizmatlar' && (route.name == 'service-detail' || route.name == 'transport-rental')">({{
+                  store.activeService && store.activeService.title
+                }})</span>
+              </span>
               <svg v-if="list.children" width="25" height="24" viewBox="0 0 25 24" fill="none"
                    xmlns="http://www.w3.org/2000/svg">
                 <path d="M17.75 9.5L12.75 14.5L7.75 9.5" :class="list.isOpen ? 'stroke-black' : 'stroke-white'"
@@ -126,10 +133,11 @@ watchEffect(() => {
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards card-wrap"
                      v-for="(item, index) in list.children"
+                     :class="item.unique && store.activeService.unique && store.activeService.unique == item.unique ? 'menu-active !bg-[#66C61C] text-[#fff]' : ''"
                      :key="index"
                      @click.stop="openDetail(list, item)"
                 >
-                  <img :src="item.img" class="!m-auto swg !my-0" alt="#"/>
+                  <img :src="item.img" class="!m-auto swg !my-0 w-[40px] h-[40px]" alt="#"/>
                   <p class="text-gray-900">{{ item.title }}</p>
                 </div>
               </div>
@@ -323,5 +331,18 @@ watchEffect(() => {
       @apply text-[#fff];
     }
   }
+}
+
+.menu-active {
+  background-color: #66C61C !important;
+
+  .swg {
+    filter: brightness(13.5);
+  }
+
+}
+
+.menu-active p {
+  color: white !important;
 }
 </style>

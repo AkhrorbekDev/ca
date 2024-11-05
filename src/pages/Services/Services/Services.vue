@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import {Swiper, SwiperSlide} from "swiper/vue";
 import {Navigation} from 'swiper/modules';
+import {useRouter} from "vue-router";
 
 import {services, transportAdvertising, advertising} from './fakeJson'
 
 import 'swiper/css';
 import 'swiper/css/navigation';
 
+
+const router = useRouter()
 const modules = [Navigation];
+
+const openDetail = (item: any) => {
+  if (item.route) {
+    router.push({name: item.route, params: {type: item.unique}})
+  }
+};
 </script>
 
 <template>
@@ -34,7 +43,8 @@ const modules = [Navigation];
             <img :src="item.img" class="!mb-[42px] !m-auto !mt-[24px]" alt="motobike">
 
             <div class="text-center !mb-[25px]">
-              <button class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
+              <button @click="openDetail(item)"
+                      class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
                 E’lon berish
               </button>
             </div>
@@ -112,7 +122,7 @@ const modules = [Navigation];
             </div>
 
             <img :src="item3.img" class="!mb-[42px] !m-auto !mt-[24px] !object-contain !w-auto !h-[95px]"
-                :alt="item3.title"/>
+                 :alt="item3.title"/>
 
             <div class="text-center !mb-[25px]">
               <button class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
@@ -129,7 +139,7 @@ const modules = [Navigation];
 <style lang="scss">
 .card-service {
   @apply bg-white rounded-[20px] p-[16px] cursor-pointer;
-  box-shadow: 0 2px 8.4px 0 #292D3214!important;
+  box-shadow: 0 2px 8.4px 0 #292D3214 !important;
 }
 
 .card-service2 {

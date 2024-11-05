@@ -11,7 +11,7 @@ const faqsData: WizardData[] = [
 
   {
     title: "Carting platformasidan qanday ro’yxatdan o’taman?",
-    description: "Albatta, buning uchun siz Platforma yoki Ilovani yuklab olib, ro‘yxatdan o‘tish orqali siz o‘z profilingizni yaratasiz. Qaysi turdagi transport xizmatini ko’rsatishingiz, uning narxlarini ko’rsatgan holda e’lon yaratasiz. Mijozlar esa o’zlari sizni topishadi va aloqaga chiqishadi.",
+    description: "Platformani o’zida yoki Ilovani yuklab olib, ro‘yxatdan o‘tish orqali siz o‘z profilingizni yaratasiz. Kelgusida ushbu yaratilgan profil orqali siz platforma va undagi xizmatlardan foylanishingiz mukin",
 
   },
 
@@ -22,12 +22,12 @@ const faqsData: WizardData[] = [
 
   {
     title: "Cartingda buyurtma narxi qanday hisoblanadi?",
-    description: "Albatta, buning uchun siz Platforma yoki Ilovani yuklab olib, ro‘yxatdan o‘tish orqali siz o‘z profilingizni yaratasiz. Qaysi turdagi transport xizmatini ko’rsatishingiz, uning narxlarini ko’rsatgan holda e’lon yaratasiz. Mijozlar esa o’zlari sizni topishadi va aloqaga chiqishadi.",
+    description: " Har bir xizmat bo’yicha narxlar buyurtmachi va xizmat ko’rsatuvchi o’rtasida erkin bozor sharoitida, o’zaro kelishilgan holda belgilanadi. Platforma esa yuk hajmi va manzil masofasidan kelib chiqib taxminiy narx taklif etadi.",
   },
 
   {
     title: "Baholar va sharhlar qanday beriladi?",
-    description: "Albatta, buning uchun siz Platforma yoki Ilovani yuklab olib, ro‘yxatdan o‘tish orqali siz o‘z profilingizni yaratasiz. Qaysi turdagi transport xizmatini ko’rsatishingiz, uning narxlarini ko’rsatgan holda e’lon yaratasiz. Mijozlar esa o’zlari sizni topishadi va aloqaga chiqishadi.",
+    description: "Yuk yetkazib berilganidan so‘ng, siz haydovchiga va xizmat sifatiga baho berishingiz va sharh qoldirishingiz mumkin. Bu baholar boshqa foydalanuvchilarga yordam beradi va xizmatimizni yanada yaxshilashga hissa qo‘shadi.",
   },
 
   {

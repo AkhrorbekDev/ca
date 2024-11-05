@@ -24,27 +24,27 @@ const modules = [Autoplay];
 const sliderData: SliderData[] = [
   {
     title: "Yetkazib berish",
-    description: "Қурилиш ёки махсус ишларни бажариш учун зарур бўлган техникалар хизмати",
+    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
     image: "./delivery.png"
   },
   {
     title: "Yuk tashish",
-    description: "Қурилиш ёки махсус ишларни бажариш учун зарур бўлган техникалар хизмати",
+    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
     image: "./shipping.png"
   },
   {
     title: "Yo'lovchi tashish",
-    description: "Қурилиш ёки махсус ишларни бажариш учун зарур бўлган техникалар хизмати",
+    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
     image: "./passenger.png"
   },
   {
     title: "Maxsus texnika",
-    description: "Қурилиш ёки махсус ишларни бажариш учун зарур бўлган техникалар хизмати",
+    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
     image: "./special.png"
   },
   {
     title: "Maxsus texnika",
-    description: "Қурилиш ёки махсус ишларни бажариш учун зарур бўлган техникалар хизмати",
+    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
     image: "./special.png"
   }
 ];
