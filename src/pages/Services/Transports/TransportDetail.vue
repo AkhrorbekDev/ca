@@ -25,7 +25,7 @@ const route = useRoute()
       </div>
 
       <div class="flex flex-col md:!ml-[100px] lg:w-1/2">
-        <h2 class="text-[#292D32] text-[32px] font-500" v-if="route.name === 'transport-rental-service-id-id2'">AVTOritet</h2>
+        <h2 class="text-[#292D32] text-[32px] font-500" v-if="route.name === 'transport-repair-room-id-id2'">AVTOritet</h2>
         <h2 class="text-[#292D32] text-[32px] font-500" v-if="route.name === 'transport-view-id'">Omborxona</h2>
 <!--        <h2 class="text-[#292D32] text-[32px] font-500" >Kia Sonet classic</h2>-->
 
@@ -47,7 +47,7 @@ const route = useRoute()
           Shanba yakshanba ham ishlayman.
         </p>
 
-        <div v-if="route.name === 'transport-rental-service-id-id2'" class="!my-[40px] !w-[90%]">
+        <div v-if="route.name === 'transport-repair-room-id-id2'" class="!my-[40px] !w-[90%]">
           <h4 class="text-[16px] text-[#292D324D] !mb-[8px]">Toifalar</h4>
 
           <div class="bg-[#fff] rounded-full !mr-[16px] inline-block !mb-[16px]" v-for="(index4) in 5" :key="index4">
@@ -75,7 +75,7 @@ const route = useRoute()
           </a>
 
           <button
-              v-if="route.name === 'transport-rental-service-id-id2'"
+              v-if="route.name === 'transport-repair-room-id-id2'"
               class="!p-[16px] bg-[#D4D5D6] rounded-full w-full text-[#292D32] !mb-[16px] flex items-center justify-center"
           >
             Navbatga yozilish

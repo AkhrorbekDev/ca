@@ -6,14 +6,14 @@ const router = useRouter()
 const route = useRoute()
 
 const enterToDetail = (value: any) => {
-  router.push(`/transport-rental-service/${route.params.id}/${value}/`)
+  router.push(`/transport-repair-room/1/${value}/`)
 }
 </script>
 
 <template>
   <div>
     <h1 class="text-[#292D32] text-[24px] font-500 !mb-[24px]">
-      Yengil avtomobillar (Kia Sonet)
+      Ustaxonalar
     </h1>
 
     <div class="grid md:grid-cols-6 gap-5">
@@ -21,6 +21,7 @@ const enterToDetail = (value: any) => {
           v-for="(item, index) in 30"
           :key="index"
           :item="item"
+          :is-room="true"
           @click="enterToDetail(item)"
       />
     </div>

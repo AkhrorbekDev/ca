@@ -48,7 +48,7 @@ const toggleVisibility = (type: 'car' | 'moto') => {
 };
 
 const handleSubmit = (index: number) => {
-  router.push(`/transport-repair/${index + 1}`)
+  router.push(`/transport-repair-rooms/${index + 1}`)
 }
 </script>
 
