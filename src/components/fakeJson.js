@@ -40,7 +40,7 @@ export const services = [
     {
         img: car,
         title: 'Transport ijarasi',
-        unique: "rent"
+        route: "transport-rental"
     },
     {
         img: car,
@@ -60,7 +60,8 @@ export const services = [
     {
         img: car,
         title: 'Avto ta\'mirlash',
-        unique: "repair"
+        unique: "repair",
+        route: 'transport-repair'
     },
 ]
 

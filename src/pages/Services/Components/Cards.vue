@@ -3,6 +3,10 @@ defineProps({
   item: {
     type: Array,
     default: () => []
+  },
+  isRoom: {
+    type: Boolean,
+    default: () => false
   }
 })
 </script>
@@ -11,11 +15,12 @@ defineProps({
   <div class="bg-[#FFFFFF] rounded-[24px] overflow-hidden cursor-pointer"
        style="box-shadow: 0 2px 8px 0 #292D3214"
   >
-    <img src="@/assets/images/cars/sonet.png" class="w-full" alt="car"/>
+    <img src="@/assets/images/rooms.png" v-if="isRoom" class="w-full" alt="car"/>
+    <img v-else src="@/assets/images/cars/sonet.png" class="w-full" alt="car"/>
 
     <div class="!px-[16px] !py-[12px]">
-      <h1 class="text-[#000000] text-[14px] font-400">Kia Sonet classic</h1>
-      <h2 class="text-[16px] text-[#000000] font-500 !mt-[4px]">800 000 UZS</h2>
+      <h1 class="text-[#000000] text-[14px] font-400">{{isRoom ? 'Carbox' : 'Kia Sonet classic'}}</h1>
+      <h2 class="text-[16px] text-[#000000] font-500 !mt-[4px]" v-if="!isRoom">800 000 UZS</h2>
 
       <div class="!mt-[8px] flex items-center">
         <img src="@/assets/images/icons/location.svg" alt="mark"/>

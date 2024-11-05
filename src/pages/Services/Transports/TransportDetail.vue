@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import {ref} from "vue";
+import {useRoute} from "vue-router";
 
 const is_active = ref<boolean>(false)
+
+const route = useRoute()
 </script>
 
 <template>
@@ -22,7 +25,9 @@ const is_active = ref<boolean>(false)
       </div>
 
       <div class="flex flex-col md:!ml-[100px] lg:w-1/2">
-        <h2 class="text-[#292D32] text-[32px] font-500">Omborxona</h2>
+        <h2 class="text-[#292D32] text-[32px] font-500" v-if="route.name === 'transport-repair-room-id-id2'">AVTOritet</h2>
+        <h2 class="text-[#292D32] text-[32px] font-500" v-if="route.name === 'transport-view-id'">Omborxona</h2>
+<!--        <h2 class="text-[#292D32] text-[32px] font-500" >Kia Sonet classic</h2>-->
 
         <div class="flex items-center text-gray-500 !mt-[16px] !mb-[40px]">
           <img src="@/assets/images/icons/star.svg" alt="#">
@@ -32,7 +37,7 @@ const is_active = ref<boolean>(false)
           </span>
         </div>
 
-        <p class="text-[16px] text-[#292D32] font-500 !mb-[40px]">
+        <p class="text-[16px] text-[#292D32] font-500 !mb-[40px]" v-if="route.name === 'transport-view-id'">
           <span class="text-[#292D324D] font-500">Maydon:</span>
           200 m²
         </p>
@@ -42,6 +47,24 @@ const is_active = ref<boolean>(false)
           Shanba yakshanba ham ishlayman.
         </p>
 
+        <div v-if="route.name === 'transport-repair-room-id-id2'" class="!my-[40px] !w-[90%]">
+          <h4 class="text-[16px] text-[#292D324D] !mb-[8px]">Toifalar</h4>
+
+          <div class="bg-[#fff] rounded-full !mr-[16px] inline-block !mb-[16px]" v-for="(index4) in 5" :key="index4">
+            <span class="text-[12px] text-[#292D32] !py-[4px] !px-[16px]">Motorist</span>
+          </div>
+
+          <h4 class="text-[16px] text-[#292D324D] !mb-[8px] !mt-[40px]">Xizmatlar</h4>
+
+
+          <div class="flex space-x-4">
+            <div class="p-4 bg-white rounded-2xl text-center !w-auto" v-for="(index4) in 5" :key="index4">
+              <p class="text-[12px] text-[#292D32] !py-[4px] !px-[16px] !mb-0">Polirovka</p>
+              <p class="text-[10px] text-[#BBBCBE]">$200</p>
+            </div>
+          </div>
+        </div>
+
         <div class="flex flex-col w-full">
           <a href="tel:+998990893954" class="!p-[16px] bg-[#66C61C] rounded-full w-full text-white !mb-[16px] text-center">
             Qo'ng'iroq qilish
@@ -50,6 +73,13 @@ const is_active = ref<boolean>(false)
             <img src="@/assets/images/icons/telegram.svg" class="!mr-[13px]" alt="tg"/>
             Telegram orqali bog'lanish
           </a>
+
+          <button
+              v-if="route.name === 'transport-repair-room-id-id2'"
+              class="!p-[16px] bg-[#D4D5D6] rounded-full w-full text-[#292D32] !mb-[16px] flex items-center justify-center"
+          >
+            Navbatga yozilish
+          </button>
         </div>
       </div>
     </div>
