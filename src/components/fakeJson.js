@@ -28,12 +28,14 @@ export const services = [
     {
         img: car,
         title: 'Yoqilg‘i yetkazish',
-        unique: "oil"
+        unique: "oil",
+        route: "service-detail"
     },
     {
         img: car,
         title: 'Yo\'lovchilarni tashish',
-        unique: "passenger"
+        unique: "passenger",
+        route: "service-detail"
     },
     {
         img: car,
