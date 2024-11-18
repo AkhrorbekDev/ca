@@ -1,6 +1,20 @@
 <script setup lang="ts">
 import {ref} from "vue";
 import {useRouter} from "vue-router";
+import {useCommonStore} from "@/stores/common.store"
+import {services} from "@/components/fakeJson"
+import {onMounted} from "vue";
+
+const store = useCommonStore()
+
+onMounted(() => {
+
+  let item = services.find(el => el.unique == 'rent')
+  if (Object.keys(item).length) {
+    store.activeService = item
+  }
+
+})
 
 interface Car {
   title: string;

@@ -5,6 +5,13 @@ const model = defineModel()
 
 import {useConfirm} from "primevue/useconfirm";
 
+const props = defineProps({
+  tabIndex: {
+    type: Number,
+    default: 0
+  }
+})
+
 const confirm = useConfirm();
 
 const confirm1 = () => {
@@ -32,7 +39,7 @@ const confirm1 = () => {
 </script>
 
 <template>
-  <Dialog v-model:visible="model" modal :style="{ width: '50rem' }"
+  <Dialog dismissableMask v-model:visible="model" modal :style="{ width: '50rem' }"
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <template #header>
       <div class="grow text-center text-[#292D32] text-[24px] font-medium">
@@ -180,7 +187,7 @@ const confirm1 = () => {
 
         <p class="font-light text-[#292D324D] text-center !mb-[16px]">E’lon vaqti: 16.08.2024, 09:14</p>
 
-        <button @click="confirm1()"
+        <button v-if="props.tabIndex !== 0" @click="confirm1()"
                 class="bg-[#F044381A] text-[16px] text-[#F04438] text-center w-full rounded-[24px] !p-[16px]">
           Faolsizlantirish
         </button>

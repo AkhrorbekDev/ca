@@ -153,7 +153,7 @@ onMounted(() => {
             <div
                 v-if="extraMenu"
                 @click.stop
-                class="bg-white rounded-[24px] !p-[16px] w-full absolute left-0 top-[130%] max-h-[600px] h-auto overflow-y-scroll"
+                class="bg-white rounded-[24px] !p-[16px] w-full absolute left-0 top-[130%] max-h-[600px] h-auto overflow-y-auto"
                 style="box-shadow: 0px 32px 100px 0px #292D3229;">
 
               <div class="flex flex-col gap-2 w-full !mb-[24px]">
@@ -329,7 +329,7 @@ onMounted(() => {
             <div
                 v-if="extraMenu"
                 @click.stop
-                class="bg-white rounded-[24px] !p-[16px] w-full absolute left-0 top-[130%] max-h-[600px] h-auto overflow-y-scroll"
+                class="bg-white rounded-[24px] !p-[16px] w-full absolute left-0 top-[130%] max-h-[600px] h-auto overflow-y-auto"
                 style="box-shadow: 0px 32px 100px 0px #292D3229;">
 
               <div class="flex flex-col gap-2 w-full !mb-[24px]">
@@ -474,7 +474,7 @@ onMounted(() => {
             <div
                 v-if="extraMenu"
                 @click.stop
-                class="bg-white rounded-[24px] !p-[16px] w-full absolute left-0 top-[130%] max-h-[600px] h-auto overflow-y-scroll"
+                class="bg-white rounded-[24px] !p-[16px] w-full absolute left-0 top-[130%] max-h-[600px] h-auto overflow-y-auto"
                 style="box-shadow: 0px 32px 100px 0px #292D3229;">
 
               <!--              Yuk turi-->
@@ -865,7 +865,8 @@ onMounted(() => {
             <!--            filter absolute start-->
             <div
                 v-if="extraMenu"
-                class="bg-white rounded-[24px] !p-[16px] w-full absolute left-0 top-[130%] max-h-[600px] h-auto overflow-y-scroll"
+                @click.stop
+                class="bg-white rounded-[24px] !p-[16px] w-full absolute left-0 top-[130%] max-h-[600px] h-auto overflow-y-auto"
                 style="box-shadow: 0px 32px 100px 0px #292D3229;">
 
               <!--              Yuk turi-->
@@ -1159,7 +1160,7 @@ onMounted(() => {
             <!--            filter absolute start-->
             <div
                 v-if="extraMenu"
-                class="bg-white rounded-[24px] !p-[16px] w-full absolute left-0 top-[130%] max-h-[600px] h-auto overflow-y-scroll"
+                class="bg-white rounded-[24px] !p-[16px] w-full absolute left-0 top-[130%] max-h-[600px] h-auto overflow-y-auto"
                 style="box-shadow: 0px 32px 100px 0px #292D3229;">
 
               <!--              Yuk turi-->
@@ -1462,7 +1463,7 @@ onMounted(() => {
             <!--            filter absolute start-->
             <div
                 v-if="extraMenu"
-                class="bg-white rounded-[24px] !p-[16px] w-full absolute left-0 top-[130%] max-h-[600px] h-auto overflow-y-scroll"
+                class="bg-white rounded-[24px] !p-[16px] w-full absolute left-0 top-[130%] max-h-[600px] h-auto overflow-y-auto"
                 style="box-shadow: 0px 32px 100px 0px #292D3229;">
 
               <!--              Yuk turi-->
@@ -1709,7 +1710,8 @@ onMounted(() => {
 
     </div>
 
-    <div v-if="route.params.type !== 'oil'" class="bg-white rounded-[32px] !p-[16px] absolute bottom-[20px] right-[20px] z-[100] w-[368px]">
+    <div v-if="route.params.type !== 'oil'"
+         class="bg-white rounded-[32px] !p-[16px] absolute bottom-[20px] right-[20px] z-[100] w-[368px]">
       <button class="bg-[#66C61C] w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]">
         E’lonni joylash
       </button>
@@ -1763,5 +1765,9 @@ onMounted(() => {
 .p-menu-item-content {
   padding: 8px 12px !important;
   border-radius: 16px !important;
+}
+
+.p-select-list-container {
+  min-height: 500px;
 }
 </style>

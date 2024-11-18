@@ -225,7 +225,7 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
       </div>
     </div>
 
-    <ModalAnnouncement v-model="visible"/>
+    <ModalAnnouncement v-model="visible" :tabIndex="activeTab"/>
     <AddAnnouncementModal v-model="visible2" :announceValue="visible2Data"/>
   </div>
 </template>

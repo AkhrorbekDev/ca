@@ -94,7 +94,7 @@ export default [
     },
     {
 
-        path: "/transport-repair-rooms/1",
+        path: "/transport-repair-rooms/:id",
         name: "transport-repair-rooms-id",
         component: () => import("@/pages/Services/TransportRepair/RepairRooms.vue"),
         meta: {

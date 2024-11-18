@@ -65,6 +65,9 @@ const openChildMenu = (index: number, item: MenuItems) => {
     router.push(item.route)
   }
   currentIndex.value = index
+  if (index !== 0 && route.name !== 'service-detail') {
+    store.activeService = {}
+  }
   menuItems.value.forEach((item, i) => {
     if (item.children) {
       item.isOpen = i === index ? !item.isOpen : false;
@@ -115,7 +118,7 @@ watchEffect(() => {
           >
             <div class="flex1">
               <span :class="list.isOpen ? 'text-[#000]' : ''">{{ list.title }} <span
-                  v-if="list.title == 'Xizmatlar' && (route.name == 'service-detail' || route.name == 'transport-rental')">({{
+                  v-if="list.title == 'Xizmatlar' && (route.name == 'service-detail' || route.name == 'transport-rental' || route.name == 'transport-repair-room-id-id2' || route.name == 'transport-repair-rooms-id' || route.name == 'service-keeping'  || route.name == 'transport-repair'  || route.name == 'transport-rental-service-id'  || route.name == 'transport-rental-service-id-id2')">({{
                   store.activeService && store.activeService.title
                 }})</span>
               </span>
@@ -133,7 +136,7 @@ watchEffect(() => {
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards card-wrap"
                      v-for="(item, index) in list.children"
-                     :class="item.unique && store.activeService.unique && store.activeService.unique == item.unique ? 'menu-active !bg-[#66C61C] text-[#fff]' : ''"
+                     :class="currentIndex == 0 && item.unique && store.activeService.unique && store.activeService.unique == item.unique ? 'menu-active !bg-[#66C61C] text-[#fff]' : ''"
                      :key="index"
                      @click.stop="openDetail(list, item)"
                 >
@@ -145,7 +148,7 @@ watchEffect(() => {
 
             <!--dropdown 2-->
             <div class="mega-drop-menu" @click.stop v-if="list.children && currentIndex === index2 && list.isDetail">
-              <button @click="list.isDetail = false" class="text-[#000]">x</button>
+
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards"
                      v-for="(item, index) in Truck"
@@ -157,6 +160,19 @@ watchEffect(() => {
                   <p class="text-gray-900">{{ item.subTitle }}</p>
                 </div>
               </div>
+              <button @click="list.isDetail = false"
+                      class="text-[#000000] text-[16px] flex items-center gap-2 !py-[8px] !px-[16px] bg-white rounded-[100px] !mx-auto !mt-4">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                      d="M9.57141 18.8201C9.38141 18.8201 9.19141 18.7501 9.04141 18.6001L2.97141 12.5301C2.68141 12.2401 2.68141 11.7601 2.97141 11.4701L9.04141 5.40012C9.33141 5.11012 9.81141 5.11012 10.1014 5.40012C10.3914 5.69012 10.3914 6.17012 10.1014 6.46012L4.56141 12.0001L10.1014 17.5401C10.3914 17.8301 10.3914 18.3101 10.1014 18.6001C9.96141 18.7501 9.76141 18.8201 9.57141 18.8201Z"
+                      fill="#292D32"/>
+                  <path
+                      d="M20.5019 12.75H3.67188C3.26188 12.75 2.92188 12.41 2.92188 12C2.92188 11.59 3.26188 11.25 3.67188 11.25H20.5019C20.9119 11.25 21.2519 11.59 21.2519 12C21.2519 12.41 20.9119 12.75 20.5019 12.75Z"
+                      fill="#292D32"/>
+                </svg>
+                Ortga
+              </button>
+
             </div>
           </div>
         </div>

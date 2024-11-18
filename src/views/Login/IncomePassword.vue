@@ -9,7 +9,7 @@ const value = ref<null>(null)
 </script>
 <template>
   <div>
-    <router-link to="/public">
+    <router-link to="/">
       <img src="../../assets/images/logo2.svg" class="!p-[24px] absolute right-0" alt="logo"/>
     </router-link>
 

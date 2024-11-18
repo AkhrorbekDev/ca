@@ -28,6 +28,11 @@ const sliderData: SliderData[] = [
     image: "./delivery.png"
   },
   {
+    title: "Maxsus texnika",
+    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
+    image: "./special.png"
+  },
+  {
     title: "Yuk tashish",
     description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
     image: "./shipping.png"
@@ -41,17 +46,12 @@ const sliderData: SliderData[] = [
     title: "Maxsus texnika",
     description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
     image: "./special.png"
-  },
-  {
-    title: "Maxsus texnika",
-    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
-    image: "./special.png"
   }
 ];
 </script>
 
 <template>
-  <div class="bg-white">
+  <div id="services" class="bg-white">
     <swiper
         :loop="true"
         :slidesPerView="4"

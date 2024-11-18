@@ -12,19 +12,19 @@
           <img class="!mr-[45px]" src="@/assets/logo.svg" alt="logo" width="130"/>
         </router-link>
 
-        <nav class="flex items-center gap-7">
+        <nav class="flex items-center gap-7 !mx-auto ">
           <a href="#about" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
             Platforma haqida
           </a>
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
-            Maqsad va qadriyatlarimiz
-          </router-link>
-          <router-link to="/services" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+          <!--          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">-->
+          <!--            Maqsad va qadriyatlarimiz-->
+          <!--          </router-link>-->
+          <a href="#services" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
             Xizmatlar
-          </router-link>
-          <router-link to="#" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
+          </a>
+          <a href="#advantage" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
             Afzalliklar
-          </router-link>
+          </a>
           <a href="#contact" class="text-[#4F5662] transition font-medium text-[16px] hover:text-green-500">
             Hamkorlik
           </a>
@@ -59,7 +59,7 @@
 
         <div class="flex items-center justify-center gap-10">
           <router-link to="/services"
-              class="!px-[24px] !py-[12px] bg-[#66C61C] rounded-full text-white text-[20px] font-medium">
+                       class="!px-[24px] !py-[12px] bg-[#66C61C] rounded-full text-white text-[20px] font-medium">
             E’lon berish
           </router-link>
 

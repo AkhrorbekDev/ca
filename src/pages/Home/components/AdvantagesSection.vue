@@ -31,7 +31,7 @@ const advantagesDataData: AdvantagesData[] = [
 
 
 <template>
-  <div class="bg-[#FAFAFA] !py-[100px]">
+  <div id="advantage" class="bg-[#FAFAFA] !py-[100px]">
     <div class="max-w-screen-xl  container lg:mx-auto">
       <div class="flex items-center">
         <img src="@/assets/images/advantages-img.png" alt="advantages-img" width="600"

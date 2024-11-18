@@ -50,6 +50,7 @@ export const services = [
     {
         img: carKey,
         title: 'Transport ijarasi',
+        unique: "rent",
         route: "transport-rental"
     },
     {
