@@ -19,6 +19,7 @@ import {FreeMode, Navigation, Thumbs} from 'swiper/modules';
 const thumbsSwiper = ref(null);
 
 const setThumbsSwiper = (swiper) => {
+  console.log("SSa", swiper)
   thumbsSwiper.value = swiper;
 };
 
