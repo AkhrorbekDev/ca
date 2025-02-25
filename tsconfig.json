@@ -10,6 +10,7 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
+    "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
@@ -38,5 +39,9 @@
   "exclude": [
     "node_modules",
     "**/*.js"
+  ],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
   ]
 }
