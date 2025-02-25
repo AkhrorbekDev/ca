@@ -130,6 +130,27 @@ const extraToggleMenu = () => {
   extraMenu.value = !extraMenu.value
 }
 
+const cargoTypes = [
+    {
+  label: 'Boshqa yuklar',
+  description: 'Boshqa yuklar'
+},
+  {
+  label: 'Qurilish mollari',
+  description: 'Mebel, plintus, gipsokarton'
+}
+]
+
+const loadTypes = [
+  {
+    label: 'Yuk tashuvchilarsiz',
+    description: 'Yordam kerak emas'
+  },
+  {
+    label: 'Haydovchi yuklarni tashishi kerak',
+    description: '50kg dan ortiq bo\'lmagan'
+  }
+]
 
 onMounted(() => {
   if (route.query && route.query.type && route.query.type === 'announcement') {
@@ -309,16 +330,30 @@ watchEffect(() => {
             style="box-shadow: 0px 32px 100px 0px #292D3229;"
         >
           <div>
-            <div class="flex items-center justify-between !py-4 border-b border-[#F5F5F7]">
+            <div v-for="item in cargoTypes" :key="item.label" class="flex items-center justify-between !py-4 border-b border-[#F5F5F7]">
               <div class="w-full flex flex-col items-start justify-start">
                 <label for="ingredient1" class="flex items-center gap-4 cursor-pointer">
-                  Naqd
+                  {{ item.label }}
                 </label>
                 <span>
-                  Boshqa materiallar
+                  {{ item.description }}
                 </span>
               </div>
               <RadioButton v-model="ingredient" inputId="ingredient1" name="pizza" value="Cheese"/>
+
+            </div>
+          </div>
+          <div>
+            <div v-for="item in loadTypes" :key="item.label" class="flex items-center justify-between !py-4 border-b border-[#F5F5F7]">
+              <div class="w-full flex flex-col items-start justify-start">
+                <label for="ingredient1" class="flex items-center gap-4 cursor-pointer">
+                  {{ item.label }}
+                </label>
+                <span>
+                  {{ item.description }}
+                </span>
+              </div>
+              <RadioButton v-model="ingredient" inputId="loadType" name="loadType" :value="item.label"/>
 
             </div>
           </div>
