@@ -9,7 +9,7 @@ export default [
         path: "/service-detail/:type",
         name: "service-detail",
         component: () => import("@/pages/Services/Components/ServiceItem.vue"),
-        meta: {layout: "ServiceLayout"},
+        meta: {layout: "ServiceLayoutWithSideBar"},
     },
 
     {

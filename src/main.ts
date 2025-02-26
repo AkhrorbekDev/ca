@@ -9,11 +9,24 @@ import i18n from "@/localization";
 import ConfirmationService from 'primevue/confirmationservice';
 import DialogService from 'primevue/dialogservice'
 import ToastService from 'primevue/toastservice';
-
+import auth from "@/modules/auth";
+import api from '@/plugins/api'
 //// PRIME ICONS
 import 'primeicons/primeicons.css'
 
 const app = createApp(App);
+app.use(createPinia())
+app.use(auth, {
+    appId: '#app',
+    baseUrl: 'https://api.carting.uz/api',
+    endpoints: {
+        login: {
+            url: '/mobile/v1/phone/verify',
+            method: 'post'
+        },
+        user: 'getMe'
+    }
+})
 
 app.use(PrimeVue, {
     theme: {
@@ -32,9 +45,12 @@ app.use(PrimeVue, {
 app.use(ConfirmationService)
 app.use(ToastService)
 app.use(DialogService)
-    .use(createPinia())
     .use(router)
     .use(i18n)
+    .use(api, {
+        baseUrl: 'https://api.carting.uz/api'
+    })
+
     .mount('#app')
 
 
