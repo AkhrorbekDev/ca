@@ -29,7 +29,11 @@ export class TokenStatus {
         tokenExpiresAt: number | false
     ): TokenStatusEnum {
         const now = Date.now()
-
+        console.log({
+            token,
+            tokenExpiresAt,
+            now
+        })
         try {
             if (!token || !tokenExpiresAt) {
                 return TokenStatusEnum.UNKNOWN
@@ -41,7 +45,6 @@ export class TokenStatus {
         // Give us some slack to help the token from expiring between validation and usage
         const timeSlackMillis = 500
         tokenExpiresAt -= timeSlackMillis
-
         // Token is still valid
         if (now < tokenExpiresAt) {
             return TokenStatusEnum.VALID

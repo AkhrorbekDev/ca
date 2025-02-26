@@ -73,7 +73,7 @@ class Auth {
         return this.request._request('http://localhost:3000')
     }
 
-    check () {
+    check (checkStatus = false) {
         const response = {
             valid: false,
             tokenExpired: false
@@ -81,6 +81,7 @@ class Auth {
 
         // Sync token
         const token = this.token.sync()
+        console.log(token, 'token')
 
         // Token is required but not available
         if (!token) {
@@ -97,6 +98,7 @@ class Auth {
         const tokenStatus = this.token.status()
 
         // Token has expired. Attempt `tokenCallback`
+        console.log(tokenStatus)
         if (tokenStatus.expired()) {
             response.tokenExpired = true
             return response
@@ -132,7 +134,7 @@ class Auth {
                 const refreshToken = res.data[this.options.refreshToken.property]
                 this.token.set(token, tokenExpiration)
                 this.refreshToken.set(refreshToken, refreshTokenExpiration)
-                this.initializeRequestInterceptor()
+                this.initializeRequestInterceptor(this.options.endpoints.refresh)
             }
 
             return Promise.resolve(res)
@@ -141,9 +143,10 @@ class Auth {
 
     initializeRequestInterceptor(refreshEndpoint?: string): void {
         this.interceptor = async (config) => {
-            console.log(config, 'config')
+            console.log(this.options.token, 'config')
             // Don't intercept refresh token requests
-            if (!this._needToken(config) || config.url === refreshEndpoint) {
+            console.log(!this._needToken(config) || config.url === refreshEndpoint)
+            if (this._needToken(config) || config.url === refreshEndpoint) {
                 return config
             }
 
@@ -155,6 +158,12 @@ class Auth {
                 isRefreshable
             } = this.check(true)
             let isValid = valid
+            console.log({
+                valid,
+                tokenExpired,
+                refreshTokenExpired,
+                isRefreshable
+            })
 
             // Refresh token has expired. There is no way to refresh. Force reset.
             if (refreshTokenExpired) {
@@ -221,9 +230,14 @@ class Auth {
         return (
             options.token.global ||
             Object.values(options.endpoints).some((endpoint: HTTPRequest | string) =>
-                typeof endpoint === 'object'
-                    ? endpoint.url === config.url
-                    : endpoint === config.url
+                {
+                    console.log('test1222', typeof endpoint === 'object'
+                        ? endpoint.url === config.url
+                        : endpoint === config.url)
+                    return typeof endpoint === 'object'
+                        ? endpoint.url === config.url
+                        : endpoint === config.url
+                }
             )
         )
     }

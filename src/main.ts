@@ -24,7 +24,8 @@ app.use(auth, {
             url: '/mobile/v1/phone/verify',
             method: 'post'
         },
-        user: 'getMe'
+        user: 'getMe',
+        refresh: 'refresh',
     }
 })
 

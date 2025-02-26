@@ -8,6 +8,11 @@ interface TokenInterface {
     storage: StorageInterface;
     options: ModuleOptions['token']
     token: string | false
+    get (): string | false
+    set(tokenValue: string | false, expiration: number | false): string | false
+    sync (): string | false
+    status (): TokenStatus
+
 }
 
 class Token {
