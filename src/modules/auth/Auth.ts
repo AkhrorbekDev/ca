@@ -29,7 +29,6 @@ class Auth {
     }
 
     constructor(context, options) {
-        console.log(options, 'optiosn')
         this.options = options
         this.context = context
         this.storage = new Storage(this.options.cookie)
@@ -70,7 +69,7 @@ class Auth {
     }
 
     async init () {
-        return this.request._request('http://localhost:3000')
+        // return this.request._request('http://localhost:3000')
     }
 
     check (checkStatus = false) {
@@ -132,7 +131,7 @@ class Auth {
                 const tokenExpiration = res.data[this.options.token.expiration] || this.options.token.expiration
                 const refreshTokenExpiration = res.data[this.options.refreshToken.expiration] || this.options.refreshToken.expiration
                 const refreshToken = res.data[this.options.refreshToken.property]
-                this.token.set(token, tokenExpiration)
+                this.token.set(token, tokenExpiration * 1000)
                 this.refreshToken.set(refreshToken, refreshTokenExpiration)
                 this.initializeRequestInterceptor(this.options.endpoints.refresh)
             }
@@ -171,7 +170,7 @@ class Auth {
             }
 
             // Token has expired.
-            if (tokenExpired) {
+            /*if (tokenExpired) {
                 // Refresh token is not available. Force reset.
                 if (!isRefreshable) {
                     this.reset()
@@ -188,16 +187,16 @@ class Auth {
                             return false
                         })
                 }
-            }
+            }*/
 
             // Sync token
             const token = this.token.get()
 
             // Scheme checks were performed, but returned that is not valid.
-            if (!isValid) {
+            /*if (!isValid) {
                 return config
             }
-
+*/
             // Token is valid, let the request pass
             // Fetch updated token and add to current request
             return this._getUpdatedRequestConfig(config, token)
@@ -211,6 +210,7 @@ class Auth {
 
 
     private _getUpdatedRequestConfig(config, token: string | boolean) {
+        console.log('test', token)
         if (typeof token === 'string') {
             config.headers[this.options.token.name] = token
         }

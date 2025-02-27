@@ -19,6 +19,7 @@ class ApiCoreFetch implements ApiCoreFetch, FetchHooks {
         context.options = context.options || {}
         context.options.headers = {
             ...context.options.headers,
+            'Content-Type': 'application/json',
             'Authorization': `Basic ${btoa('root:GJA4TI8zQciHrXq')}`,
         }
         console.log(context, 'context')
@@ -29,17 +30,20 @@ class ApiCoreFetch implements ApiCoreFetch, FetchHooks {
             });
         }
     }
+    async onResponseError (context: FetchContext, app) {
+        console.log(context, 'res error')
+    }
 
     constructor(context, options) {
         const fetch = $fetch.create({
             baseURL: options.baseUrl,
             onRequest: (ctx) => this.onRequest(ctx, context),
+            onResponseError: (ctx) => this.onResponseError(ctx, context),
         });
 
         this._fetch = (url, options) => {
             return fetch(url, options);
         }
-        console.log(this, 'test')
     }
 
     async get(url: string, params?: any): Promise<any> {
