@@ -23,6 +23,7 @@ declare module 'vue' {
     Header: typeof import('./src/components/Header.vue')['default']
     InputMask: typeof import('primevue/inputmask')['default']
     InputText: typeof import('primevue/inputtext')['default']
+    LocationItem: typeof import('./src/components/form-elements/LocationItem.vue')['default']
     Menu: typeof import('primevue/menu')['default']
     RadioButton: typeof import('primevue/radiobutton')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

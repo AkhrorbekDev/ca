@@ -7,7 +7,7 @@ import IncomePasswordLayout from "@/views/Login/IncomePassword.vue";
 import PersonalData from "@/views/Login/PersonalData.vue";
 import Register from "@/views/Login/Register.vue";
 import ServiceLayout from "@/layout/ServiceLayout.vue"
-import { useRoute } from "vue-router";
+import {useRoute} from "vue-router";
 import {computed, onMounted} from "vue";
 import ServiceLayoutWithSideBar from "@/layout/ServiceLayoutWithSideBar.vue";
 
@@ -62,6 +62,6 @@ onMounted(async () => {
       v-if="layout"
       :is="layouts[layout]"
   >
-    <RouterView />
+    <RouterView/>
   </component>
 </template>

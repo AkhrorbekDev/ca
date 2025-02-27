@@ -11,11 +11,15 @@ import DialogService from 'primevue/dialogservice'
 import ToastService from 'primevue/toastservice';
 import auth from "@/modules/auth";
 import api from '@/plugins/api'
+import { vMaska } from "maska"
+
+import {defineRule, configure} from 'vee-validate'
 //// PRIME ICONS
 import 'primeicons/primeicons.css'
 
 const app = createApp(App);
 app.use(createPinia())
+app.directive('maska', vMaska)
 app.use(auth, {
     appId: '#app',
     baseUrl: 'https://api.carting.uz/api',

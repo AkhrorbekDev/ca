@@ -7,10 +7,10 @@ const route = useRoute()
 </script>
 
 <template>
-  <div class="bg-[#FAFAFA] min-h-screen">
+  <div class="bg-[#FAFAFA] min-h-screen flex items-start">
     <ServiceSideBar class="z-50"/>
 
-    <div class="!pt-[118px] !px-[24px]">
+    <div class="w-full">
       <slot/>
     </div>
 

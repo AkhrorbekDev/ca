@@ -28,6 +28,10 @@ export default defineConfig({
     resolve: {
         alias: {
             "@": fileURLToPath(new URL("./src", import.meta.url)),
+            vue: 'vue/dist/vue.esm-bundler.js',
+            ymaps3:
+                "./node_modules/@yandex/ymaps3-types"
+
         },
     },
 });

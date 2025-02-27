@@ -4,7 +4,16 @@ import skuter from "@/assets/images/skuter.png"
 import sedan from "@/assets/images/sedan.png"
 import {useCommonStore} from "@/stores/common.store"
 import {services} from "@/components/fakeJson"
+import {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker} from '@/lib/ymaps';
+import type {YMapLocationRequest} from 'ymaps3';
+import useMapStore from "@/stores/map.store";
+import {watch} from 'vue'
 
+const mapStore = useMapStore()
+const LOCATION: YMapLocationRequest = {
+  center: [69.279719, 41.311145],
+  zoom: 12
+};
 const store = useCommonStore()
 
 
@@ -93,6 +102,16 @@ const toggle = (event) => {
   menu.value.toggle(event);
 };
 
+const defaultMarkerOptions = {
+  color: 'lavender',
+  size: 'normal',
+  iconName: 'fallback'
+}
+
+watch(mapStore.getMarkers, () => {
+  console.log(mapStore.getMarkers);
+})
+
 onMounted(() => {
 
   let item = services.find(el => el.unique == route.params.type)
@@ -106,7 +125,7 @@ onMounted(() => {
 <template>
   <div>
 
-    <div class="relative z-10">
+    <div class="!hidden z-10">
       <div v-if="route.params.type == 'delivery'" class="grid grid-cols-9 gap-4 bg-white !p-[16px] rounded-[40px]">
         <div class="col-span-2">
           <FloatLabel variant="in">
@@ -1717,12 +1736,25 @@ onMounted(() => {
       </button>
     </div>
 
-    <iframe
-        src="https://yandex.uz/map-widget/v1/?ll=69.279737%2C41.311151&z=12"
+
+    <div
         width="100%"
-        style="height: 100vh; position: fixed; top: 0; left: 0"
-        frameborder="0"
-    />
+        style="height: 100vh; top: 0; left: 0"
+    >
+      <YMap :location="LOCATION">
+        <YMapDefaultSchemeLayer/>
+        <YMapDefaultFeaturesLayer/>
+
+        <YMapMarker v-for="marker in mapStore.getMarkers" :key="marker.id"
+                    v-bind="{
+                      ...marker.markerProps,
+                      ...defaultMarkerOptions
+                    }"
+                    :draggable="true">
+          <img src="https://picsum.photos/200/300" alt="">
+        </YMapMarker>
+      </YMap>
+    </div>
   </div>
 </template>
 

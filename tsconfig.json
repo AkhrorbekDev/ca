@@ -16,6 +16,9 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "ymaps3": [
+        "./node_modules/@yandex/ymaps3-types"
       ]
     },
     "lib": [
@@ -28,6 +31,10 @@
       "vite/client",
       "element-plus/global",
       "@vue/runtime-core"
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@yandex/ymaps3-types"
     ]
   },
   "include": [
@@ -41,7 +48,11 @@
     "**/*.js"
   ],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
   ]
 }
