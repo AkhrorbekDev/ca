@@ -26,7 +26,7 @@ import {watch, computed} from 'vue'
 
 const mapStore = useMapStore()
 const refreshMarkers = (m) => {
-  console.log(m)
+  console.log(m, 'refresh')
   return m.map(marker => {
     return {
       type: 'Feature',
@@ -1822,7 +1822,7 @@ const changeMarkerPosition = (o, e) => {
                 :onDragEnd="(e) => console.log('drag end', e)"
                 source="clusterer-source"
             >
-              <div class="geo-icon">
+              <div class="map-geo-icon">
                 <img width="24" height="24" src="@/assets/icons/map-pin.svg" alt="">
               </div>
             </YMapMarker>
@@ -1833,7 +1833,7 @@ const changeMarkerPosition = (o, e) => {
                 :coordinates="coordinates"
                 draggable
                 source="clusterer-source">
-              <div class="geo-icon">
+              <div class="map-geo-icon">
                 <img width="24" height="24" src="@/assets/icons/map-pin.svg" alt="">
 
               </div>
@@ -1853,12 +1853,12 @@ const changeMarkerPosition = (o, e) => {
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .p-floatlabel label {
   top: 1rem !important;
 }
 
-.geo-icon {
+.map-geo-icon {
   width: 56px;
   height: 56px;
   border-radius: 100%;

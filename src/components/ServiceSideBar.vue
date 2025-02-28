@@ -290,19 +290,6 @@ const openChildMenu = (index: number, item: MenuItems) => {
       lng: 111,
       name: '111,111'
     })
-    console.log(mainForm.value);
-  })
-  console.log(useMapStore())
-  mapStore.setMarker({
-    id: 'to_location',
-    marker: {
-      markerProps: {
-        coordinates: [69.279719, 41.311145],
-      },
-      callback(details) {
-        console.log(details, 'mapp details')
-      }
-    }
   })
 };
 
@@ -395,7 +382,7 @@ const setLocation = (name) => {
         })
       }
     }
-  })
+  }, name)
   locationChange = (locationDetails) => {
     mainForm.value.setFieldValue()
   }
@@ -482,25 +469,9 @@ watchEffect(() => {
 
           <div
               class="grid grid-cols-1 gap-4 !p-[16px]">
-            <div class="col-span-full">
-              <FloatLabel variant="in">
-                <div class=" w-full !bg-[#FAFAFA] !rounded-[24px] flex items-center justify-between">
-                  <div class="flex flex-col  items-start justify-center">
-                    <InputText id="in_label" variant="outline" placeholder="Manzilni tanlang"
-                               class=" !bg-transparent  !pt-[34px] !pb-[18px] !px-[16px] shadow-none !border-0"/>
-                    <label for="in_label" class="!text-[#292D324D]">Qayerdan</label>
-                  </div>
-                  <div class="geo-icon">
-                    <img :src="geoIcon" alt="">
-                  </div>
-                </div>
-              </FloatLabel>
-            </div>
+            <LocationItem as="div" class="col-span-full" name="from_location" @click="setLocation('from_location')"/>
 
-            <div class="col-span-full">
-              <LocationItem name="to_location" @click="setLocation('to_location')"/>
-            </div>
-
+            <LocationItem as="div" class="col-span-full" name="to_location" @click="setLocation('to_location')"/>
             <div class="col-span-full">
               <FloatLabel variant="in">
                 <DatePicker v-model="value2" inputId="in_label" showIcon iconDisplay="input" variant="filled"

@@ -20,7 +20,6 @@ const useMapStore = defineStore({
     },
     actions: {
         setMarker(marker: { id: string | number, marker: MarkerType }, id: string | number) {
-            console.log(marker, id, 'test')
             if (id) {
                 this.markers = this.markers.map(m => {
                     if (m.id === id) {
@@ -29,8 +28,9 @@ const useMapStore = defineStore({
                     return m
                 })
             } else {
-                this.markers.push(marker)
+                this.markers.push(marker.marker)
             }
+            console.log(this.markers)
         },
         updateMarker(props: MarkerType['markerProps'], id: string | number) {
             if (id) {
