@@ -60,6 +60,5 @@ defineProps({
   border-radius: 12px;
   padding: 8px;
   background: #66C61C;
-
 }
 </style>

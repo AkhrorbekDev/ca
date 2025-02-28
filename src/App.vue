@@ -52,7 +52,9 @@ onMounted(async () => {
     "security_code": "5555"
   }).then(res => {
     console.log(res)
-    console.log($api.services.getServices())
+    console.log($api.advertisement.getAdvertisement({
+      transport_id: 7
+    }))
   })
 })
 </script>

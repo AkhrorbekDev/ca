@@ -4,12 +4,43 @@ import skuter from "@/assets/images/skuter.png"
 import sedan from "@/assets/images/sedan.png"
 import {useCommonStore} from "@/stores/common.store"
 import {services} from "@/components/fakeJson"
-import {YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer, YMapMarker} from '@/lib/ymaps';
-import type {YMapLocationRequest} from 'ymaps3';
+import {
+  YMap,
+  YMapDefaultSchemeLayer,
+  YMapDefaultFeaturesLayer,
+  YMapMarker,
+  YMapClusterer,
+  clusterByGrid, YMapLayer,
+  YMapDefaultMarker,
+  YMapListener,
+  YMapFeatureDataSource,
+  YMapControls,
+  YMapZoomControl,
+  YMapGeolocationControl,
+  YMapControl
+} from '@/lib/ymaps';
+import type {LngLatBounds, LngLat, YMapLocationRequest, Margin} from '@yandex/ymaps3-types';
+import type {Feature} from '@yandex/ymaps3-clusterer';
 import useMapStore from "@/stores/map.store";
-import {watch} from 'vue'
+import {watch, computed} from 'vue'
 
 const mapStore = useMapStore()
+const refreshMarkers = (m) => {
+  console.log(m)
+  return m.map(marker => {
+    return {
+      type: 'Feature',
+      id: marker.id,
+      geometry: {
+        type: 'Point',
+        ...marker.markerProps.geometry
+      }
+    }
+  })
+}
+const _markers = ref(refreshMarkers(mapStore.getMarkers || []))
+
+const gridSizedMethod = clusterByGrid({gridSize: 64});
 const LOCATION: YMapLocationRequest = {
   center: [69.279719, 41.311145],
   zoom: 12
@@ -102,15 +133,6 @@ const toggle = (event) => {
   menu.value.toggle(event);
 };
 
-const defaultMarkerOptions = {
-  color: 'lavender',
-  size: 'normal',
-  iconName: 'fallback'
-}
-
-watch(mapStore.getMarkers, () => {
-  console.log(mapStore.getMarkers);
-})
 
 onMounted(() => {
 
@@ -118,8 +140,48 @@ onMounted(() => {
   if (Object.keys(item).length) {
     store.activeService = item
   }
-
 })
+
+
+watch(mapStore.getMarkers, (newVal) => {
+  _markers.value = refreshMarkers(newVal)
+}, {
+  immediate: true,
+  deep: true
+})
+
+
+const visible = ref(false)
+const mapCluster = ref(null)
+
+const cor = ref([69.279719, 41.311145])
+const lastChangedMarker = ref(0)
+const changeMarkerPosition = (o, e) => {
+  let marker
+  if (_markers.value?.length > 1 && lastChangedMarker.value < _markers.value?.length) {
+    marker = _markers.value[lastChangedMarker.value > 0 ? lastChangedMarker.value + 1 : lastChangedMarker.value]
+
+    lastChangedMarker.value++
+  } else {
+    marker = _markers.value[0]
+  }
+  cor.value = e.coordinates
+  mapStore.updateMarker({
+    ...marker,
+    geometry: {
+      ...marker.geometry,
+      coordinates: e.coordinates
+    }
+  }, marker.id)
+
+  console.log(mapStore.getMarker(marker.id));
+  mapStore.getMarker(marker.id)?.callback({
+    ...marker.geometry,
+    coordinates: e.coordinates
+  })
+
+}
+
 </script>
 
 <template>
@@ -1739,28 +1801,77 @@ onMounted(() => {
 
     <div
         width="100%"
-        style="height: 100vh; top: 0; left: 0"
+        style="width: 100%; height: 100vh; top: 0; left: 0"
     >
-      <YMap :location="LOCATION">
+      <YMap :location="LOCATION" :ref="refMap">
         <YMapDefaultSchemeLayer/>
         <YMapDefaultFeaturesLayer/>
+        <YMapFeatureDataSource id="clusterer-source"/>
+        <YMapLayer source="clusterer-source" type="markers" :zIndex="1800"/>
 
-        <YMapMarker v-for="marker in mapStore.getMarkers" :key="marker.id"
-                    v-bind="{
-                      ...marker.markerProps,
-                      ...defaultMarkerOptions
-                    }"
-                    :draggable="true">
-          <img src="https://picsum.photos/200/300" alt="">
-        </YMapMarker>
+        <YMapClusterer ref="mapCluster" :method="gridSizedMethod" :features="_markers">
+          <template #marker="{feature}">
+            <YMapMarker
+                draggable
+                v-bind="{
+                  size: 'normal',
+                  iconName: 'fallback',
+                }"
+                :key="feature.id"
+                :coordinates="feature.geometry.coordinates"
+                :onDragEnd="(e) => console.log('drag end', e)"
+                source="clusterer-source"
+            >
+              <div class="geo-icon">
+                <img width="24" height="24" src="@/assets/icons/map-pin.svg" alt="">
+              </div>
+            </YMapMarker>
+          </template>
+          <template #cluster="{coordinates, features}">
+            <YMapMarker
+                :key="features[0].id + features.length"
+                :coordinates="coordinates"
+                draggable
+                source="clusterer-source">
+              <div class="geo-icon">
+                <img width="24" height="24" src="@/assets/icons/map-pin.svg" alt="">
+
+              </div>
+            </YMapMarker>
+          </template>
+        </YMapClusterer>
+        <YMapControls position="right">
+          <YMapGeolocationControl v-bind="{easing: 'ease-in-out', duration: 1000, zoom: 15}"/>
+
+          <YMapZoomControl/>
+        </YMapControls>
+        <YMapListener
+            @click="changeMarkerPosition"
+        />
       </YMap>
     </div>
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 .p-floatlabel label {
   top: 1rem !important;
+}
+
+.geo-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 100%;
+  padding: 8px;
+  background: white;
+  transform: translate(-50%, calc(-100% + 2px));
+  position: absolute;
+
+  img {
+    width: 40px;
+    height: 40px;
+  }
+
 }
 
 .custom-date input {

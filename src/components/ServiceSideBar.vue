@@ -10,8 +10,10 @@ import * as yup from 'yup'
 import LocationItem from "@/components/form-elements/LocationItem.vue";
 import {Form} from 'vee-validate'
 import useMapStore from '@/stores/map.store'
+import getGeoObject from "@/composables/getGeoObject";
 
 const store = useCommonStore()
+const mapStore = useMapStore()
 
 interface MenuItems {
   title: string;
@@ -263,7 +265,6 @@ const closeMenu = () => {
   });
 }
 
-const mapStore = useMapStore()
 
 const openChildMenu = (index: number, item: MenuItems) => {
   selectedMenu.value = item
@@ -368,7 +369,33 @@ let locationChange = {
 }
 
 const setLocation = (name) => {
+  console.log('sert test')
 
+  mapStore.setMarker({
+    id: name,
+    marker: {
+      id: name,
+      markerProps: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [69.279719, 41.311145]
+        }
+      },
+      callback: async (e) => {
+        await getGeoObject({cord: e.coordinates}).then(res => {
+          const marker = mapStore.getMarker(name)
+          mainForm.value.setFieldValue(name, {
+            lat: marker.markerProps.geometry.coordinates[0],
+            lng: marker.markerProps.geometry.coordinates[1],
+            name: res.description
+          })
+          mapStore.removeMarker(name)
+
+        })
+      }
+    }
+  })
   locationChange = (locationDetails) => {
     mainForm.value.setFieldValue()
   }
