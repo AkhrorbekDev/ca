@@ -2,6 +2,7 @@ import {defineStore, acceptHMRUpdate} from "pinia";
 import {YMapMarkerProps} from "@/lib/ymaps";
 import {defu} from 'defu'
 import getGeoObject from '@/composables/getGeoObject'
+import {ref} from "vue";
 
 type MarkerType = {
     id: string | any,
@@ -12,25 +13,18 @@ type MarkerType = {
 const useMapStore = defineStore({
     id: 'mapStore',
     state(): Object<{
-        markers: Array<MarkerType>
+        markers: Array<MarkerType>,
+        defaultCoordinates: Array<number>
     }> {
         return {
-            markers: []
+            markers: [],
+            defaultCoordinates: [69.279719, 41.311145]
+
         }
     },
     actions: {
         setMarker(marker: { id: string | number, marker: MarkerType }, id: string | number) {
-            if (id) {
-                this.markers = this.markers.map(m => {
-                    if (m.id === id) {
-                        m = marker
-                    }
-                    return m
-                })
-            } else {
-                this.markers.push(marker.marker)
-            }
-            console.log(this.markers)
+            this.markers.push(marker.marker)
         },
         updateMarker(props: MarkerType['markerProps'], id: string | number) {
             if (id) {
@@ -45,7 +39,11 @@ const useMapStore = defineStore({
             }
         },
         removeMarker(id: string) {
-            this.markers = this.markers.filter(marker => marker.id !== id)
+            const index = this.markers.findIndex(marker => marker.id === id)
+            if (index !== -1) {
+                this.markers.splice(index, 1)
+            }
+            console.log(this.markers, index, id)
         }
     },
     getters: {

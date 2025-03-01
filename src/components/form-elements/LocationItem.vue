@@ -22,6 +22,7 @@ defineProps({
   }
 })
 
+
 </script>
 
 <template>
@@ -29,7 +30,8 @@ defineProps({
     <FloatLabel variant="in">
       <div class=" w-full !bg-[#FAFAFA] !rounded-[24px] flex items-center justify-between">
         <div class="flex flex-col  items-start justify-center">
-          <InputText id="in_label" readonly :disabled="true" variant="outline" placeholder="Manzilni tanlang"
+          <InputText id="in_label" readonly :model-value="location.name" :disabled="true" variant="outline"
+                     placeholder="Manzilni tanlang"
                      class=" !bg-transparent  !pt-[18px] !pb-[18px] !px-[16px] shadow-none !border-0"/>
           <label class="!text-[#292D324D]">Qayerga</label>
         </div>
