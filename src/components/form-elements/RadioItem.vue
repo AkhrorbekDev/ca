@@ -13,12 +13,17 @@ defineProps({
   item: {
     type: Object,
     default: () => ({})
+  },
+  modelValue: {
+    type: Number || String || undefined,
+    default: undefined
   }
 })
 </script>
 
 <template>
   <Field
+      v-slot="{handleChange}"
       :name="name"
       class="flex items-center justify-between !py-4 border-b border-[#F5F5F7]"
   >
@@ -30,7 +35,11 @@ defineProps({
         {{ item.description }}
       </span>
     </div>
-    <RadioButton :inputId="`name.${value}`" :name="name" :value="value"/>
+    <RadioButton
+        :model-value="modelValue"
+        :inputId="`name.${value}`" :name="name"
+        :value="value"
+        @update:model-value="handleChange"/>
 
   </Field>
 </template>

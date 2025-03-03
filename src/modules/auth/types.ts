@@ -1,5 +1,4 @@
-
-enum Methods  {
+enum Methods {
     get = 'GET',
     post = 'POST',
     put = 'PUT',
@@ -34,6 +33,7 @@ type ModuleOptions = {
         prefix: string,
         expiration: number
         expirationPrefix: string
+        maxAge: number
     }
     refreshToken: {
         name: string,
@@ -41,6 +41,7 @@ type ModuleOptions = {
         prefix: string,
         expiration: number
         expirationPrefix: string
+        maxAge: number
     }
     cookie: {
         prefix: string

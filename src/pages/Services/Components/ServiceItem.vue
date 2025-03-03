@@ -193,13 +193,14 @@ const changeOnDrag = (e, id) => {
 
 <template>
   <div>
-    <div v-if="route.params.type !== 'oil'"
-         class="bg-white rounded-[32px] !p-[16px] absolute bottom-[20px] right-[20px] z-[100] w-[368px]">
-      {{ JSON.stringify(_markers) }}
-      <button class="bg-[#66C61C] w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]">
-        E’lonni joylash
-      </button>
-    </div>
+    <!--
+        <div v-if="route.params.type !== 'oil'"
+             class="bg-white rounded-[32px] !p-[16px] absolute bottom-[20px] right-[20px] z-[100] w-[368px]">
+          <button class="bg-[#66C61C] w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]">
+            E’lonni joylash
+          </button>
+        </div>
+    -->
 
 
     <div
@@ -211,38 +212,6 @@ const changeOnDrag = (e, id) => {
         <YMapDefaultFeaturesLayer/>
         <YMapFeatureDataSource id="clusterer-source"/>
         <YMapLayer source="clusterer-source" type="markers" :zIndex="1800"/>
-
-        <!--<YMapClusterer ref="mapCluster" :method="gridSizedMethod" :features="_markers">
-          <template #marker="{feature}">
-            <YMapMarker
-                draggable
-                v-bind="{
-                  size: 'normal',
-                  iconName: 'fallback',
-                }"
-                :key="feature.id"
-                :coordinates="feature.geometry.coordinates"
-                :onDragEnd="(e) => console.log('drag end', e)"
-                source="clusterer-source"
-            >
-              <div class="map-geo-icon">
-                <img width="24" height="24" src="@/assets/icons/map-pin.svg" alt="">
-              </div>
-            </YMapMarker>
-          </template>
-          <template #cluster="{coordinates, features}">
-            <YMapMarker
-                :key="features[0].id + features.length"
-                :coordinates="coordinates"
-                draggable
-                source="clusterer-source">
-              <div class="map-geo-icon">
-                <img width="24" height="24" src="@/assets/icons/map-pin.svg" alt="">
-
-              </div>
-            </YMapMarker>
-          </template>
-        </YMapClusterer>-->
         <YMapMarker
             v-for="feature in _markers" iconName="landmark"
             source="clusterer-source"

@@ -1,4 +1,4 @@
-import { ModuleOptions } from './types'
+import {ModuleOptions} from './types'
 
 const moduleDefaults: ModuleOptions = {
     watchLoggedIn: true,
@@ -25,7 +25,8 @@ const moduleDefaults: ModuleOptions = {
         name: 'Authorization',
         type: 'Bearer',
         prefix: 'authToken',
-        expiration: 60 * 60 * 24,
+        expiration: 'token_expire_time',
+        maxAge: 60 * 60 * 24,
         expirationPrefix: 'expiration'
     },
     refreshToken: {
@@ -33,7 +34,8 @@ const moduleDefaults: ModuleOptions = {
         name: 'Authorization',
         type: 'Bearer',
         prefix: 'authRefreshToken',
-        expiration: 60 * 120 * 24,
+        expiration: 'refresh_token_expire_time',
+        maxAge: 60 * 120 * 24,
         expirationPrefix: 'expiration'
     },
 }

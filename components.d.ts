@@ -19,6 +19,7 @@ declare module 'vue' {
     DatePicker: typeof import('primevue/datepicker')['default']
     DatePickeritem: typeof import('./src/components/form-elements/DatePickeritem.vue')['default']
     DeliveryForm: typeof import('./src/components/forms/DeliveryForm.vue')['default']
+    DeliveryFormDetails: typeof import('./src/components/forms/DeliveryFormDetails.vue')['default']
     Dialog: typeof import('primevue/dialog')['default']
     FloatLabel: typeof import('primevue/floatlabel')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']

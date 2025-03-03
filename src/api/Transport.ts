@@ -1,7 +1,7 @@
 import ApiCoreFetch from "@/api/core/ApiCoreFetch";
 
 
-class Advertisement extends ApiCoreFetch {
+class Transport extends ApiCoreFetch {
 
     getAdvertisement(params): Promise<any> {
         return this.get("/mobile/v1/advertisement", {
@@ -15,4 +15,4 @@ class Advertisement extends ApiCoreFetch {
     }
 }
 
-export default Advertisement
+export default Transport

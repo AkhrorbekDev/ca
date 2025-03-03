@@ -38,7 +38,7 @@ class Auth {
         this.request.onRequest = this.onRequest;
         const initialState = this.initialState
         this.state = defineStore(options.storeID, {
-            state () {
+            state() {
                 return {
                     ...initialState
                 }
@@ -56,23 +56,28 @@ class Auth {
         })
     }
 
-    get loggedIn () {
+    get loggedIn() {
         return this.state().GET('isLoggedIn')
     }
 
-    set loggedIn (value) {
+    set loggedIn(value) {
         this.state().SET('isLoggedIn', value)
     }
 
-    get user () {
+    get user() {
         return this.state().user
     }
 
-    async init () {
+    async init() {
+        const tokenStatus = this.token.status()
+        console.log(tokenStatus, 'init test')
+        if (tokenStatus.valid) {
+            this.initializeRequestInterceptor()
+        }
         // return this.request._request('http://localhost:3000')
     }
 
-    check (checkStatus = false) {
+    check(checkStatus = false) {
         const response = {
             valid: false,
             tokenExpired: false
@@ -107,7 +112,7 @@ class Auth {
         return response
     }
 
-    login (data?: any): Promise<any> {
+    login(data?: any): Promise<any> {
         const request = {}, options = {}
         if (!this.options.endpoints.login) {
             throw new Error('Login endpoint is not defined')
@@ -131,7 +136,8 @@ class Auth {
                 const tokenExpiration = res.data[this.options.token.expiration] || this.options.token.expiration
                 const refreshTokenExpiration = res.data[this.options.refreshToken.expiration] || this.options.refreshToken.expiration
                 const refreshToken = res.data[this.options.refreshToken.property]
-                this.token.set(token, tokenExpiration * 1000)
+                console.log(token, tokenExpiration, res.data, this.options.token.expiration)
+                this.token.set(token, tokenExpiration)
                 this.refreshToken.set(refreshToken, refreshTokenExpiration)
                 this.initializeRequestInterceptor(this.options.endpoints.refresh)
             }
@@ -142,7 +148,7 @@ class Auth {
 
     initializeRequestInterceptor(refreshEndpoint?: string): void {
         this.interceptor = async (config) => {
-            console.log(this.options.token, 'config')
+            console.log(this.options.token, config, 'this.options.token')
             // Don't intercept refresh token requests
             console.log(!this._needToken(config) || config.url === refreshEndpoint)
             if (this._needToken(config) || config.url === refreshEndpoint) {
@@ -203,14 +209,13 @@ class Auth {
         }
     }
 
-    reset () {
+    reset() {
         this.token.set(false)
         this.refreshToken.set(false)
     }
 
 
     private _getUpdatedRequestConfig(config, token: string | boolean) {
-        console.log('test', token)
         if (typeof token === 'string') {
             config.headers[this.options.token.name] = token
         }
@@ -219,8 +224,7 @@ class Auth {
     }
 
 
-    refreshTokens () {
-
+    refreshTokens() {
 
 
     }
@@ -229,8 +233,7 @@ class Auth {
         const options = this.options
         return (
             options.token.global ||
-            Object.values(options.endpoints).some((endpoint: HTTPRequest | string) =>
-                {
+            Object.values(options.endpoints).some((endpoint: HTTPRequest | string) => {
                     console.log('test1222', typeof endpoint === 'object'
                         ? endpoint.url === config.url
                         : endpoint === config.url)
