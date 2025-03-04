@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import {deliverySchema} from "@/components/form-elements/schema";
-import {onMounted, ref, watchEffect} from "vue";
-import getGeoObject from "@/composables/getGeoObject";
-import {Field, Form} from "vee-validate";
+import {Field} from "vee-validate";
 import RadioItem from "@/components/form-elements/RadioItem.vue";
 import {useRoute} from "vue-router";
 
@@ -94,6 +92,6 @@ console.log(deliverySchema, 'schema')
   </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 
 </style>

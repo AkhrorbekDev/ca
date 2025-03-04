@@ -100,6 +100,7 @@ const currentIndex = ref<number | null>(null)
 
 const openChildMenu = (index: number, item: MenuItems) => {
   selectedMenu.value = item
+  showForm.value = false
   if (item.route) {
     router.push(item.route)
   }
@@ -402,4 +403,5 @@ const openDetail = (value: any, item: any) => {
 .menu-active p {
   color: white !important;
 }
+
 </style>

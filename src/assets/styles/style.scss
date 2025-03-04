@@ -12,10 +12,11 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 html {
@@ -42,5 +43,13 @@ html {
 * {
   scrollbar-width: thin;
   scrollbar-color: #b7b9ba #f1f1f1;
+}
+
+.formItem {
+  height: auto;
+  padding: 8px 16px;
+  background: #FAFAFA;
+  border-radius: 24px;
+  max-height: 76px;
 }
 

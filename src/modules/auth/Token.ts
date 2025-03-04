@@ -87,7 +87,7 @@ class Token {
                 throw error
             }
         }
-        return this._setExpiration(tokenExpiration)
+        return this._setExpiration(tokenExpiration || false)
     }
 }
 

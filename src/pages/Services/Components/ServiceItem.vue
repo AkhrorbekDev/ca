@@ -5,25 +5,21 @@ import sedan from "@/assets/images/sedan.png"
 import {useCommonStore} from "@/stores/common.store"
 import {services} from "@/components/fakeJson"
 import {
+  clusterByGrid,
   YMap,
-  YMapDefaultSchemeLayer,
-  YMapDefaultFeaturesLayer,
-  YMapMarker,
-  YMapClusterer,
-  clusterByGrid, YMapLayer,
-  YMapDefaultMarker,
-  YMapListener,
-  YMapFeatureDataSource,
   YMapControls,
-  YMapZoomControl,
+  YMapDefaultFeaturesLayer,
+  YMapDefaultSchemeLayer,
+  YMapFeatureDataSource,
   YMapGeolocationControl,
-  YMapControl
+  YMapLayer,
+  YMapListener,
+  YMapMarker,
+  YMapZoomControl
 } from '@/lib/ymaps';
-import type {LngLatBounds, LngLat, YMapLocationRequest, Margin} from '@yandex/ymaps3-types';
-import type {Feature} from '@yandex/ymaps3-clusterer';
+import type {YMapLocationRequest} from '@yandex/ymaps3-types';
 import useMapStore from "@/stores/map.store";
-import {watch, computed} from 'vue'
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from 'vue'
 import {useRoute, useRouter} from "vue-router";
 
 const mapStore = useMapStore()
@@ -278,7 +274,6 @@ const changeOnDrag = (e, id) => {
 }
 
 .p-select-overlay {
-  top: 235px !important;
   border-radius: 24px !important;
   padding: 12px 20px !important;
 }
@@ -297,6 +292,6 @@ const changeOnDrag = (e, id) => {
 }
 
 .p-select-list-container {
-  min-height: 500px;
+  max-height: 25rem !important;
 }
 </style>

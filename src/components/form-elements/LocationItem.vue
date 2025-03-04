@@ -27,20 +27,19 @@ defineProps({
 
 <template>
   <Field :name="name">
-    <FloatLabel variant="in">
-      <div class=" w-full !bg-[#FAFAFA] !rounded-[24px] flex items-center justify-between">
+    <div class="formItem">
+      <div class=" w-full flex items-center justify-between">
         <div class="flex flex-col  items-start justify-center">
+          <label class="!text-[#292D324D]">Qayerga</label>
           <InputText id="in_label" readonly :model-value="location.name" :disabled="true" variant="outline"
                      placeholder="Manzilni tanlang"
-                     class=" !bg-transparent  !pt-[18px] !pb-[18px] !px-[16px] shadow-none !border-0"/>
-          <label class="!text-[#292D324D]">Qayerga</label>
+                     class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"/>
         </div>
         <div class="geo-icon">
           <img :src="geoIcon" alt="">
         </div>
       </div>
-      <input type="hidden">
-    </FloatLabel>
+    </div>
     <Field :name="`${name}.lat`">
       <input type="hidden" :value="location.lat">
     </Field>

@@ -25,7 +25,6 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
             'Content-Type': 'application/json',
             'Authorization': `Basic ${btoa('root:GJA4TI8zQciHrXq')}`,
         }
-        console.log(app.config.globalProperties.$auth.interceptor, 'app.config.globalProperties.$auth')
         if (app.config.globalProperties.$auth.interceptor) {
             context.options = await app.config.globalProperties.$auth.interceptor({
                 ...context.options,

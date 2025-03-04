@@ -38,6 +38,10 @@ const moduleDefaults: ModuleOptions = {
         maxAge: 60 * 120 * 24,
         expirationPrefix: 'expiration'
     },
+    user: {
+        property: 'user',
+        fetchUser: true
+    }
 }
 
 export {moduleDefaults}

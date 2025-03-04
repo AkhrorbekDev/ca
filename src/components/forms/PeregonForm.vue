@@ -2,9 +2,8 @@
 import {Field, Form} from 'vee-validate'
 import {deliverySchema} from "@/components/form-elements/schema";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
-import {inject, onMounted, ref} from 'vue'
+import {inject, ref} from 'vue'
 import getGeoObject from "@/composables/getGeoObject";
-import RadioItem from "@/components/form-elements/RadioItem.vue";
 import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
 
@@ -144,20 +143,6 @@ const paymentTypes = ref([
     `
   }
 ])
-const loadWeightTypes = [
-  {
-    label: 'kg',
-    value: 'kg'
-  },
-  {
-    label: 'm3',
-    value: 'm3'
-  },
-  {
-    label: 'litr',
-    value: 'litr'
-  }
-]
 
 const onSaveDetails = () => {
   const errors = mainForm.value.getErrors()
@@ -178,48 +163,25 @@ const onSaveDetails = () => {
 
 const staticValues = ref({
   service_type_id: props.serviceTypeId,
-  adv_type: ADV_TYPES.receive,
-  details: {
-    load_weight: {
-      name: 'kg',
-      amount: 0
-    }
-  }
+  adv_type: ADV_TYPES.receive
 })
-const transports = ref([])
-const selectedTransports = ref(null)
-const transportLoading = ref(false)
+
 const submit = () => {
-  console.log('sub')
   mainForm.value.validate()
       .then(res => {
-        console.log(res, 'res')
         if (res.valid) {
           console.log(mainForm.value.getValues())
         }
       })
 }
-
-const updateTransportType = (e) => {
-  mainForm.value.setFieldValue('details.transportation_type_id', e.id)
-  selectedTransports.value = e
-}
-
-onMounted(() => {
-  transportLoading.value = true
-  $api.transport.getTransportByServiceId(props.serviceTypeId)
-      .then(res => {
-        transports.value = res.data
-      }).finally(() => transportLoading.value = false)
-})
 </script>
 
 <template>
   <Form
       v-slot="{values}"
       ref="mainForm"
-      as="form"
-      :initial-values="staticValues"
+      as="div"
+      @submit.prevent="submit"
       :validation-schema="deliverySchema"
       class="navbar-items__form w flex items-start !transition-all"
       :class="{
@@ -235,53 +197,6 @@ onMounted(() => {
 
       <LocationItem :location="values.to_location" as="div" class="col-span-full" name="to_location"
                     @click="setLocation('to_location')"/>
-
-      <Field as="div" name="details.load_weight.amount"
-             class="load_weight_select formItem flex items-center justify-between">
-        <div class="flex flex-col  items-start justify-center">
-
-          <label for="load_weight" class="!text-[#292D324D]">Yuk vazni</label>
-          <InputText
-              :model-value="values.details.load_weight.amount"
-              type="number"
-              class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"
-              id="load_weight" aria-describedby="username-help" variant="outline"
-              placeholder="Narxni kiriting"/>
-        </div>
-        <Field
-            name="details.load_weight.name"
-            v-slot="{handleChange, field}"
-        >
-          <Select
-              append-to="self"
-              overlay-class="load_type_name"
-              :model-value="values.details?.load_weight.name"
-              optionValue="value"
-              :options="loadWeightTypes"
-              optionLabel="label"
-              @update:model-value="handleChange"
-              class="!bg-[#FAFAFA] shadow-[none] !border-0 flex items-center">
-            <template #option="slotProps">
-              <div
-
-                  class="flex items-center min-w-[60px] w-full justify-between !py-4 border-b border-[#F5F5F7]"
-              >
-                <div class="w-full flex flex-col items-start justify-start">
-                  <label for="ingredient1" class="flex items-center gap-4 cursor-pointer">
-                    {{ slotProps.option.label }}
-                  </label>
-                </div>
-                <RadioButton
-                    :model-value="values.details?.load_weight.name"
-                    :inputId="`name.${slotProps.option.value}`" :name="field.name"
-                    :value="slotProps.option.value"/>
-
-              </div>
-            </template>
-
-          </Select>
-        </Field>
-      </Field>
       <Field v-slot="{field}" name="shipment_date" class="col-span-full">
         <FloatLabel variant="in">
           <DatePicker
@@ -324,54 +239,11 @@ onMounted(() => {
         </div>
 
       </div>
-
-      <Field name="details.transportation_type_id" as="div" class="col-span-full">
-        <FloatLabel variant="in">
-          <Select :loading="transportLoading" :model-value="selectedTransports"
-                  @update:model-value="updateTransportType" :options="transports" optionLabel="name"
-                  placeholder="Transportni tanlang"
-                  class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
-            <template #value="slotProps">
-              <div v-if="slotProps.value" class="flex items-center">
-                <img :alt="slotProps.value.name"
-                     :src="slotProps.value.icon"
-                     class="mr-2" style="width: 80px; height: 40px; object-fit: contain"/>
-                <div>{{ slotProps.value.name }}</div>
-              </div>
-              <span v-else>
-                    {{ slotProps.placeholder }}
-                </span>
-            </template>
-            <template #option="slotProps">
-              <div class="flex items-center grow">
-                <img :alt="slotProps.option.name"
-                     :src="slotProps.option.icon"
-                     :class="`mr-2`" style="width: 94px; height: 73px; object-fit: contain"/>
-                <div class="flex items-center justify-between grow">
-                  <div>
-                    <span class="block">{{ slotProps.option.name }}</span>
-                  </div>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="24" height="24" rx="12" fill="#66C61C"/>
-                    <path
-                        d="M8.33203 11.9999H15.6654M15.6654 11.9999L12.6065 9.33325M15.6654 11.9999L12.6065 14.6666"
-                        stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-
-
-                </div>
-              </div>
-            </template>
-          </Select>
-          <label for="in_label" class="!text-[#292D324D]">Transport turi</label>
-        </FloatLabel>
-      </Field>
       <Field name="service_type_id">
         <input :value="serviceTypeId" type="hidden">
       </Field>
-      <button
-          @click="submit"
-          class="bg-[#66C61C] !mt-auto w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]">
+      <button type="submit"
+              class="bg-[#66C61C] !mt-auto w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]">
         E’lonni joylash
       </button>
     </div>
@@ -383,35 +255,6 @@ onMounted(() => {
         style="box-shadow: 0 32px 100px 0 #292D3229;"
     >
       <div>
-
-        <Field name="details.cargo_type">
-          <div>
-            <span class="bg-[#FAFAFA] rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
-              Yuk turi
-            </span>
-          </div>
-          <RadioItem
-              :model-value="values.details.cargo_type"
-              as="div"
-              name="details.cargo_type"
-              v-for="item in cargoTypes"
-              :key="item.label"
-              :value="item.value"
-              :item="item"
-          />
-        </Field>
-        <Field name="details.load_type">
-          <div>
-          <span class="text-sm text-[#292D324D]">
-            Yuklash hizmat
-          </span>
-
-          </div>
-          <RadioItem
-              :model-value="values.details.load_type"
-              as="div" name="details.load_type" v-for="item in loadTypes"
-              :key="item.label" :item="item" :value="item.value"/>
-        </Field>
         <Field as="div" name="note" class="flex flex-col gap-2 w-full !mb-[24px]">
           <label for="description" class="text-[#292D3280] text-[12px]">Izoh</label>
           <Textarea :model-value="values.note" id="description" class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
@@ -472,19 +315,4 @@ onMounted(() => {
   width: 0 !important;
 }
 
-.load_weight_select .p-select {
-  --p-select-shadow: none;
-}
-
-
-</style>
-
-<style>
-.load_type_name {
-  top: 100%;
-  z-index: 2;
-  right: 0 !important;
-  left: auto !important;
-  min-width: 200px !important;
-}
 </style>

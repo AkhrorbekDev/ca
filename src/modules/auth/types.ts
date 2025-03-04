@@ -52,6 +52,10 @@ type ModuleOptions = {
             domain?: string
             secure?: boolean
         }
+    },
+    user: {
+        property: string,
+        fetchUser: boolean
     }
 }
 

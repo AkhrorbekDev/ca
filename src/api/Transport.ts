@@ -3,10 +3,9 @@ import ApiCoreFetch from "@/api/core/ApiCoreFetch";
 
 class Transport extends ApiCoreFetch {
 
-    getAdvertisement(params): Promise<any> {
-        return this.get("/mobile/v1/advertisement", {
-            adv_type: 'PROVIDE', // RECEIVE,
-            ...params
+    getTransportByServiceId(id): Promise<any> {
+        return this.get("/mobile/v1/list/transportation_types", {
+            service_id: id
         });
     }
 
