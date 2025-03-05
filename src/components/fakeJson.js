@@ -57,7 +57,6 @@ export const services = [
         "id": 4,
         title: 'Transport ijarasi',
         unique: "rent",
-        route: "transport-rental"
     },
     {
         img: exkavator,
@@ -137,26 +136,30 @@ export const Truck = [
 export const Menu = [
     {
         img: truck2,
+        id: 1,
         title: 'Yuk tashish',
-        child: Truck
+        // child: Truck
     },
     {
         img: car,
+        id: 2,
         title: 'Yo\'lovchilarni tashish',
-        child: Truck
+        // child: Truck
     },
     {
         img: exkavator,
+        id: 3,
         title: 'Maxsus texnika xizmatlari',
-        child: Truck
+        // child: Truck
     },
     {
         img: carKey,
-        route: 'transport-rental',
+        id: 4,
         title: 'Transport ijarasi'
     },
     {
         img: evakvator,
+        id: 6,
         title: 'Transport transferi'
     },
 ]

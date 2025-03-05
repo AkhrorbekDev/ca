@@ -12,6 +12,12 @@ class Transport extends ApiCoreFetch {
     createAdvertisement(data): Promise<any> {
         return this.post('/mobile/v1/advertisement', data)
     }
+
+    getCars(id) {
+        return this.get("/mobile/v1/list/cars", {
+            service_id: id
+        });
+    }
 }
 
 export default Transport

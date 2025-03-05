@@ -8,7 +8,7 @@ import PersonalData from "@/views/Login/PersonalData.vue";
 import Register from "@/views/Login/Register.vue";
 import ServiceLayout from "@/layout/ServiceLayout.vue"
 import {useRoute} from "vue-router";
-import {computed, onMounted} from "vue";
+import {computed} from "vue";
 import ServiceLayoutWithSideBar from "@/layout/ServiceLayoutWithSideBar.vue";
 
 interface RouteMeta {
@@ -26,7 +26,8 @@ const layouts = {
   IncomePasswordLayout,
   Register,
   PersonalData,
-  ServiceLayout,
+  ServiceLayout: ServiceLayoutWithSideBar
+  ,
   ServiceLayoutWithSideBar
 };
 

@@ -81,12 +81,12 @@ class Auth {
     async init() {
         const tokenStatus = this.token.status()
         const refreshTokenStatus = this.refreshToken.status()
-        console.log(tokenStatus, refreshTokenStatus, 'init tokenStatus')
-        console.log([
-            tokenStatus.valid(),
-            tokenStatus.expired(),
-            tokenStatus.unknown()
-        ])
+        // console.log(tokenStatus, refreshTokenStatus, 'init tokenStatus')
+        // console.log([
+        //     tokenStatus.valid(),
+        //     tokenStatus.expired(),
+        //     tokenStatus.unknown()
+        // ])
         if (tokenStatus.valid()) {
             await this.initializeRequestInterceptor()
             if (this.options.user.fetchUser) {
