@@ -171,8 +171,42 @@ const oilTransfer = yup.object({
     ...baseSchema
 })
 
+const peregonSchema = yup.object({
+
+    from_location: yup.object({
+        lat: yup.string().required(),
+        lng: yup.string().required(),
+        name: yup.string().required()
+    }).nonNullable(),
+    to_location: yup.object({
+        lat: yup.string().required(),
+        lng: yup.string().required(),
+        name: yup.string().required()
+    }).nonNullable(),
+    ...baseSchema
+})
+const shippingSchema = yup.object({
+
+    from_location: yup.object({
+        lat: yup.string().required(),
+        lng: yup.string().required(),
+        name: yup.string().required()
+    }).nonNullable(),
+    to_location: yup.object({
+        lat: yup.string().required(),
+        lng: yup.string().required(),
+        name: yup.string().required()
+    }).nonNullable(),
+    details: yup.object({
+        transportation_type_id: yup.number().required()
+    }),
+    ...baseSchema
+})
+
 export {
     oilTransfer,
+    peregonSchema,
+    shippingSchema,
     warehouseSchema,
     autoRepairPlaceSchema,
     autoRepairSchema,

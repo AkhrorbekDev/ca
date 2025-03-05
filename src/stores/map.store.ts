@@ -24,6 +24,8 @@ const useMapStore = defineStore({
     },
     actions: {
         setMarker(marker: { id: string | number, marker: MarkerType }, id: string | number) {
+            const isExist = this.markers.some(item => item.id === id)
+            if (isExist) return
             this.markers.push(marker.marker)
         },
         updateMarker(props: MarkerType['markerProps'], id: string | number) {

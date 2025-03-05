@@ -53,9 +53,6 @@ onMounted(async () => {
   //   console.log(res)
   //
   // })
-  console.log($api.advertisement.getAdvertisement({
-    transport_id: 7
-  }))
 })
 </script>
 

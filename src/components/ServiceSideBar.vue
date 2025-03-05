@@ -6,6 +6,8 @@ import {useCommonStore} from "@/stores/common.store"
 import useMapStore from '@/stores/map.store'
 import DeliveryForm from "@/components/forms/DeliveryForm.vue";
 import useAdvertisementStore from "@/stores/advertisement";
+import PeregonForm from "@/components/forms/PeregonForm.vue";
+import ShippingForm from "@/components/forms/ShippingForm.vue";
 
 const store = useCommonStore()
 const mapStore = useMapStore()
@@ -186,7 +188,9 @@ const openDetail = (value: any, item: any) => {
             </div>
           </div>
         </div>
-        <DeliveryForm v-if="selectedService" :service-type-id="selectedService.id" :show="showForm"/>
+        <ShippingForm v-if="selectedService && selectedService.id === 1" :service-type-id="selectedService.id" :show="showForm"/>
+        <DeliveryForm v-if="selectedService && selectedService.id === 9" :service-type-id="selectedService.id" :show="showForm"/>
+        <PeregonForm v-if="selectedService && selectedService.id === 10" :service-type-id="selectedService.id" :show="showForm"/>
       </div>
     </div>
   </div>
@@ -203,7 +207,6 @@ const openDetail = (value: any, item: any) => {
     width: 1px;
     height: 100%;
     background-color: #C2C2C233;
-    background-color: red;
   }
 
   &.subitems {
