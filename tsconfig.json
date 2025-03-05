@@ -1,0 +1,58 @@
+{
+  "compilerOptions": {
+    "allowJs": false,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "preserve",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "ymaps3": [
+        "./node_modules/@yandex/ymaps3-types"
+      ]
+    },
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "noEmit": true,
+    "types": [
+      "vue",
+      "vite/client",
+      "element-plus/global",
+      "@vue/runtime-core"
+    ],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@yandex/ymaps3-types"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.js"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}
