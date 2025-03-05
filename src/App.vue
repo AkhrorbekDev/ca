@@ -17,7 +17,6 @@ interface RouteMeta {
 
 const route = useRoute();
 const layout = computed(() => (route.meta as RouteMeta).layout);
-import {inject} from "vue";
 
 const layouts = {
   MainLayout,

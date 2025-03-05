@@ -1,9 +1,18 @@
 <script setup lang="ts">
-import ServiceNavbar from "@/components/ServiceNavbar.vue";
 import {useRoute} from "vue-router";
 import ServiceSideBar from "@/components/ServiceSideBar.vue";
+import {inject, onMounted} from "vue";
+import useAdvertisementStore from '@/stores/advertisement'
+import {ADV_TYPES} from "@/constants";
 
+const adv_store = useAdvertisementStore()
 const route = useRoute()
+const $api = inject('api')
+onMounted(() => {
+  $api.services.getServices().then(res => {
+    adv_store.setServices(ADV_TYPES.provide, res.data)
+  })
+})
 </script>
 
 <template>

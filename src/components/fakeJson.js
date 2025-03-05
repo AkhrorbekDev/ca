@@ -19,60 +19,70 @@ import settings from '@/assets/images/icons/settings.svg'
 export const services = [
     {
         img: moto,
+        "id": 9,
         title: 'Yetkazib berish',
         unique: "delivery",
         route: "service-detail"
     },
     {
         img: rul,
+        "id": 10,
         title: 'Peregon xizmati',
         unique: "distillation",
         route: "service-detail"
     },
     {
         img: truck2,
+        id: 1,
         title: 'Yuk tashish',
         unique: "shipping",
         route: "service-detail"
     },
     {
         img: pistol,
+        id: 8,
         title: 'Yoqilg‘i yetkazish',
         unique: "oil",
         route: "service-detail"
     },
     {
         img: car,
+        "id": 2,
         title: 'Yo\'lovchilarni tashish',
         unique: "passenger",
         route: "service-detail"
     },
     {
         img: carKey,
+        "id": 4,
         title: 'Transport ijarasi',
         unique: "rent",
         route: "transport-rental"
     },
     {
         img: exkavator,
-        title: 'Maxsus texnika xizmatlari',
+        "id": 3,
+        title: 'Maxsus texnika',
         unique: "technical",
         route: "service-detail"
     },
     {
         img: evakvator,
+        "id": 6,
         title: 'Transport transferi',
         unique: "transfer",
         route: "service-detail"
     },
     {
         img: home,
-        title: 'Saqlash xizmati',
+        "id": 7,
+        title: 'Omborda saqlash',
         unique: "keeping",
         route: "service-keeping"
     },
     {
         img: settings,
+        "id": 5,
         title: 'Avto ta\'mirlash',
         unique: "repair",
         route: 'transport-repair'
