@@ -13,6 +13,7 @@ declare module 'vue' {
     AccordionHeader: typeof import('primevue/accordionheader')['default']
     AccordionPanel: typeof import('primevue/accordionpanel')['default']
     Avatar: typeof import('primevue/avatar')['default']
+    AvatarGroup: typeof import('primevue/avatargroup')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
     DatePicker: typeof import('primevue/datepicker')['default']
     DatePickeritem: typeof import('./src/components/form-elements/DatePickeritem.vue')['default']
@@ -25,7 +26,9 @@ declare module 'vue' {
     InputText: typeof import('primevue/inputtext')['default']
     LocationItem: typeof import('./src/components/form-elements/LocationItem.vue')['default']
     Menu: typeof import('primevue/menu')['default']
+    OilShippingForm: typeof import('./src/components/forms/OilShippingForm.vue')['default']
     PeregonForm: typeof import('./src/components/forms/PeregonForm.vue')['default']
+    PersonTransferForm: typeof import('./src/components/forms/PersonTransferForm.vue')['default']
     ProfileDropDown: typeof import('./src/components/ProfileDropDown.vue')['default']
     RadioButton: typeof import('primevue/radiobutton')['default']
     RadioItem: typeof import('./src/components/form-elements/RadioItem.vue')['default']
@@ -35,6 +38,8 @@ declare module 'vue' {
     ServiceNavbar: typeof import('./src/components/ServiceNavbar.vue')['default']
     ServiceSideBar: typeof import('./src/components/ServiceSideBar.vue')['default']
     ShippingForm: typeof import('./src/components/forms/ShippingForm.vue')['default']
+    SpecialTransportRentForm: typeof import('./src/components/forms/SpecialTransportRentForm.vue')['default']
     Textarea: typeof import('primevue/textarea')['default']
+    TransportTransferForm: typeof import('./src/components/forms/TransportTransferForm.vue')['default']
   }
 }

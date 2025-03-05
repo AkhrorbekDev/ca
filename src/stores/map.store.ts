@@ -1,8 +1,5 @@
-import {defineStore, acceptHMRUpdate} from "pinia";
+import {acceptHMRUpdate, defineStore} from "pinia";
 import {YMapMarkerProps} from "@/lib/ymaps";
-import {defu} from 'defu'
-import getGeoObject from '@/composables/getGeoObject'
-import {ref} from "vue";
 
 type MarkerType = {
     id: string | any,
@@ -24,6 +21,7 @@ const useMapStore = defineStore({
     },
     actions: {
         setMarker(marker: { id: string | number, marker: MarkerType }, id: string | number) {
+            if (!this.markers) this.markers = []
             const isExist = this.markers.some(item => item.id === id)
             if (isExist) return
             this.markers.push(marker.marker)
@@ -46,6 +44,9 @@ const useMapStore = defineStore({
                 this.markers.splice(index, 1)
             }
             console.log(this.markers, index, id)
+        },
+        clearMarkers() {
+            console.trace('clear marrkers')
         }
     },
     getters: {

@@ -62,7 +62,7 @@ export const services = [
     {
         img: exkavator,
         "id": 3,
-        title: 'Maxsus texnika xizmatlari',
+        title: 'Maxsus texnika',
         unique: "technical",
         route: "service-detail"
     },

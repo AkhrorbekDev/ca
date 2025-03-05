@@ -8,6 +8,10 @@ import DeliveryForm from "@/components/forms/DeliveryForm.vue";
 import useAdvertisementStore from "@/stores/advertisement";
 import PeregonForm from "@/components/forms/PeregonForm.vue";
 import ShippingForm from "@/components/forms/ShippingForm.vue";
+import OilShippingForm from "@/components/forms/OilShippingForm.vue";
+import PersonTransferForm from "@/components/forms/PersonTransferForm.vue";
+import TransportTransferForm from "@/components/forms/TransportTransferForm.vue";
+import SpecialTransportRentForm from "@/components/forms/SpecialTransportRentForm.vue";
 
 const store = useCommonStore()
 const mapStore = useMapStore()
@@ -115,6 +119,7 @@ const openChildMenu = (index: number, item: MenuItems) => {
       item.isOpen = i === index ? !item.isOpen : false;
     }
   });
+  mapStore.clearMarkers()
 
   menuVisible.value = true
 };
@@ -131,6 +136,8 @@ const openDetail = (value: any, item: any) => {
   }
   selectedService.value = item
   showForm.value = true
+
+  mapStore.clearMarkers()
 };
 
 </script>
@@ -188,9 +195,22 @@ const openDetail = (value: any, item: any) => {
             </div>
           </div>
         </div>
-        <ShippingForm v-if="selectedService && selectedService.id === 1" :service-type-id="selectedService.id" :show="showForm"/>
-        <DeliveryForm v-if="selectedService && selectedService.id === 9" :service-type-id="selectedService.id" :show="showForm"/>
-        <PeregonForm v-if="selectedService && selectedService.id === 10" :service-type-id="selectedService.id" :show="showForm"/>
+        <ShippingForm v-if="selectedService && (selectedService.id === 1 || selectedService.id === 9)"
+                      :service-type-id="selectedService.id"
+                      :show="showForm"/>
+        <DeliveryForm v-if="selectedService && selectedService.id === 123" :service-type-id="selectedService.id"
+                      :show="showForm"/>
+        <PeregonForm v-if="selectedService && selectedService.id === 10" :service-type-id="selectedService.id"
+                     :show="showForm"/>
+        <OilShippingForm v-if="selectedService && selectedService.id === 8" :service-type-id="selectedService.id"
+                         :show="showForm"/>
+        <PersonTransferForm v-if="selectedService && selectedService.id === 2" :service-type-id="selectedService.id"
+                            :show="showForm"/>
+        <TransportTransferForm v-if="selectedService && selectedService.id === 6" :service-type-id="selectedService.id"
+                               :show="showForm"/>
+        <SpecialTransportRentForm v-if="selectedService && selectedService.id === 3"
+                                  :service-type-id="selectedService.id"
+                                  :show="showForm"/>
       </div>
     </div>
   </div>

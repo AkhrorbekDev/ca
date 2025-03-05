@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {Field, Form} from 'vee-validate'
-import {deliverySchema, peregonSchema} from "@/components/form-elements/schema";
+import {peregonSchema} from "@/components/form-elements/schema";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
 import {inject, ref} from 'vue'
 import getGeoObject from "@/composables/getGeoObject";
@@ -131,9 +131,7 @@ const staticValues = ref({
   service_type_id: props.serviceTypeId,
   adv_type: ADV_TYPES.receive,
   price: 0,
-  details: {
-
-  },
+  details: {},
   note: '',
   pay_type: 'CASH'
 })
@@ -220,7 +218,7 @@ const submit = () => {
       <button
           @click="submit"
 
-              class="bg-[#66C61C] !mt-auto w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]">
+          class="bg-[#66C61C] !mt-auto w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]">
         E’lonni joylash
       </button>
     </div>

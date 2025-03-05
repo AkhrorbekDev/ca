@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import {Field, Form} from 'vee-validate'
-import {shippingSchema} from "@/components/form-elements/schema";
+import {passengerTrafficSchema} from "@/components/form-elements/schema";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
-import {inject, onMounted, ref, watch} from 'vue'
+import {inject, onMounted, ref} from 'vue'
 import getGeoObject from "@/composables/getGeoObject";
-import RadioItem from "@/components/form-elements/RadioItem.vue";
 import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
 
@@ -62,40 +61,6 @@ const toggleShowDetails = () => {
   showDetails.value = !showDetails.value
 }
 
-const cargoTypes = [
-  {
-    label: 'Boshqa materiallar',
-    value: 1,
-    description: 'Boshqa materiallar'
-  },
-  {
-    label: 'Qurilish mollari',
-    value: 2,
-    description: 'Mebel, plintus, gipsokarton'
-  },
-  {
-    label: 'Oziq ovqat',
-    value: 3,
-    description: 'Ichimliklar, gazli, mineral suvlar'
-  },
-  {
-    label: 'Uskunalar va ehtiyot qismlar',
-    value: 4,
-    description: 'Kuzovlar, yoritgihc, generator'
-  }
-]
-const loadTypes = [
-  {
-    label: 'Yuk tashuvchilarsiz',
-    value: 1,
-    description: 'Yordam kerak emas'
-  },
-  {
-    label: 'Haydovchi yuklarni tashishi kerak',
-    value: 2,
-    description: '50kg dan ortiq bo\'lmagan yuklarni tashish'
-  }
-]
 const paymentTypes = ref([
   {
     name: 'Naqd',
@@ -144,20 +109,6 @@ const paymentTypes = ref([
     `
   }
 ])
-const loadWeightTypes = [
-  {
-    label: 'kg',
-    value: 'kg'
-  },
-  {
-    label: 'm3',
-    value: 'm3'
-  },
-  {
-    label: 'litr',
-    value: 'litr'
-  }
-]
 
 const onSaveDetails = () => {
   const errors = mainForm.value.getErrors()
@@ -179,18 +130,14 @@ const onSaveDetails = () => {
 const staticValues = ref({
   service_type_id: props.serviceTypeId,
   adv_type: ADV_TYPES.receive,
+  price: 0,
   details: {
-    load_weight: {
-      name: 'kg',
-      amount: 0
-    }
-  }, price: 0,
+    passenger_count: 1
+  },
   note: '',
   pay_type: 'CASH'
 })
-const transports = ref([])
-const selectedTransports = ref(null)
-const transportLoading = ref(false)
+
 const submit = () => {
   mainForm.value.validate()
       .then(res => {
@@ -202,21 +149,20 @@ const submit = () => {
         }
       })
 }
+const isLoading = ref(false)
+const transports = ref([])
+const selectedTransports = ref(null)
 
 const updateTransportType = (e) => {
   mainForm.value.setFieldValue('details.transportation_type_id', e.id)
   selectedTransports.value = e
 }
-
-watch(() => props.serviceTypeId, () => {
-  mainForm.value.resetForm(staticValues.value)
-})
 onMounted(() => {
-  transportLoading.value = true
+  isLoading.value = true
   $api.transport.getTransportByServiceId(props.serviceTypeId)
       .then(res => {
         transports.value = res.data
-      }).finally(() => transportLoading.value = false)
+      }).finally(() => isLoading.value = false)
 })
 </script>
 
@@ -226,7 +172,7 @@ onMounted(() => {
       ref="mainForm"
       as="div"
       :initial-values="staticValues"
-      :validation-schema="shippingSchema"
+      :validation-schema="passengerTrafficSchema"
       class="navbar-items__form w flex items-start !transition-all"
       :class="{
             '_form-active': show,
@@ -241,52 +187,15 @@ onMounted(() => {
 
       <LocationItem :location="values.to_location" as="div" class="col-span-full" name="to_location"
                     @click="setLocation('to_location')"/>
+      <Field as="div" name="details.passenger_count" class="formItem flex flex-col">
+        <label for="price" class="text-[#292D324D] txt-[12px]">Yo'lovchilar soni</label>
+        <InputText
+            :model-value="values.details.passenger_count"
+            type="number"
 
-      <Field as="div" name="details.load_weight.amount"
-             class="load_weight_select formItem flex items-center justify-between">
-        <div class="flex flex-col  items-start justify-center">
-
-          <label for="load_weight.amount" class="!text-[#292D324D]">Yuk vazni</label>
-          <InputText
-              :model-value="values.details.load_weight.amount"
-              type="number"
-              class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"
-              id="load_weight.amount" aria-describedby="username-help"
-              variant="outline"
-          />
-        </div>
-        <Field
-            name="details.load_weight.name"
-            v-slot="{handleChange, field}"
-        >
-          <Select
-              append-to="self"
-              overlay-class="load_type_name"
-              :model-value="values.details?.load_weight.name"
-              optionValue="value"
-              :options="loadWeightTypes"
-              optionLabel="label"
-              @update:model-value="handleChange"
-              class="!bg-[#FAFAFA] shadow-[none] !border-0 flex items-center">
-            <template #option="slotProps">
-              <div
-
-                  class="flex items-center min-w-[60px] w-full justify-between !py-4 border-b border-[#F5F5F7]"
-              >
-                <div class="w-full flex flex-col items-start justify-start">
-                  <label :for="`name.${slotProps.option.value}`" class="flex items-center gap-4 cursor-pointer">
-                    {{ slotProps.option.label }}
-                  </label>
-                </div>
-                <RadioButton
-                    :model-value="values.details?.load_weight.name"
-                    :inputId="`name.${slotProps.option.value}`" :name="field.name"
-                    :value="slotProps.option.value"/>
-              </div>
-            </template>
-
-          </Select>
-        </Field>
+            class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"
+            id="price" aria-describedby="username-help"
+            placeholder="Yo'lovchilar soni"/>
       </Field>
       <Field v-slot="{field}" name="shipment_date" class="col-span-full">
         <FloatLabel variant="in">
@@ -306,7 +215,6 @@ onMounted(() => {
       </Field>
 
       <div class="col-span-full">
-
         <div
             @click="toggleShowDetails"
             class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
@@ -316,7 +224,7 @@ onMounted(() => {
             </span>
           <div class="flex items-center justify-between">
             <span class="text-[#292D32]">
-              Yuk turi, rasmi, yuklash xizmati, to‘lov...
+              Izoh, to'lov turi, narx
             </span>
             <svg :style="{
               transform: showDetails ? 'rotate(90deg)' : 'rotate(180deg)'
@@ -328,13 +236,12 @@ onMounted(() => {
           </div>
 
         </div>
-
       </div>
-
       <Field name="details.transportation_type_id" as="div" class="col-span-full">
         <FloatLabel variant="in">
-          <Select :loading="transportLoading" :model-value="selectedTransports"
-                  @update:model-value="updateTransportType" :options="transports" optionLabel="name"
+          <Select :loading="isLoading" :model-value="selectedTransports"
+                  @update:model-value="updateTransportType" :options="transports"
+                  optionLabel="name"
                   placeholder="Transportni tanlang"
                   class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
             <template #value="slotProps">
@@ -377,7 +284,8 @@ onMounted(() => {
       </Field>
       <button
           @click="submit"
-          class="bg-[#66C61C] !mt-auto w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]">
+          class="bg-[#66C61C] !mt-auto w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]"
+      >
         E’lonni joylash
       </button>
     </div>
@@ -389,35 +297,6 @@ onMounted(() => {
         style="box-shadow: 0 32px 100px 0 #292D3229;"
     >
       <div>
-
-        <Field name="details.cargo_type">
-          <div>
-            <span class="bg-[#FAFAFA] rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
-              Yuk turi
-            </span>
-          </div>
-          <RadioItem
-              :model-value="values.details.load_type_id"
-              as="div"
-              name="details.load_type_id"
-              v-for="item in cargoTypes"
-              :key="item.label"
-              :value="item.value"
-              :item="item"
-          />
-        </Field>
-        <Field name="details.load_service_id">
-          <div>
-          <span class="text-sm text-[#292D324D]">
-            Yuklash hizmat
-          </span>
-
-          </div>
-          <RadioItem
-              :model-value="values.details.load_service_id"
-              as="div" name="details.load_service_id" v-for="item in loadTypes"
-              :key="item.label" :item="item" :value="item.value"/>
-        </Field>
         <Field as="div" name="note" class="flex flex-col gap-2 w-full !mb-[24px]">
           <label for="description" class="text-[#292D3280] text-[12px]">Izoh</label>
           <Textarea :model-value="values.note" id="description" class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
@@ -454,7 +333,6 @@ onMounted(() => {
           <InputText
               :model-value="values.price"
               type="number"
-
               class="!py-[12px] !px-[16px] !rounded-[16px] border !border-[#C2C2C233] !placeholder-[#292D324D]"
               id="price" aria-describedby="username-help"
               placeholder="Narxni kiriting"/>
@@ -475,22 +353,9 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .hideDetailsOnLocationChange {
+  transform: translateX(-100%) !important;
+  visibility: hidden !important;
   width: 0 !important;
 }
 
-.load_weight_select .p-select {
-  --p-select-shadow: none;
-}
-
-
-</style>
-
-<style>
-.load_type_name {
-  top: 100%;
-  z-index: 2;
-  right: 0 !important;
-  left: auto !important;
-  min-width: 200px !important;
-}
 </style>

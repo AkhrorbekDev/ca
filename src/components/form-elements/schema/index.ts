@@ -31,6 +31,7 @@ const deliverySchema = yup.object({
 })
 
 const passengerTrafficSchema = yup.object({
+    shipment_date: yup.string().required(),
     from_location: yup.object({
         lat: yup.string().required(),
         lng: yup.string().required(),
@@ -56,7 +57,9 @@ const specialTechniqueSchema = yup.object({
         name: yup.string().required()
     }).nonNullable(),
     details: yup.object({
-        transportation_type_id: yup.number().required(),
+        from_date: yup.string().required(),
+        to_date: yup.string().required(),
+
     }),
     ...baseSchema
 })
@@ -123,6 +126,7 @@ const autoRepairSchema = yup.object({
 })
 
 const transportTransferSchema = yup.object({
+    shipment_date: yup.string().required(),
     from_location: yup.object({
         lat: yup.string().required(),
         lng: yup.string().required(),
@@ -154,7 +158,7 @@ const warehouseSchema = yup.object({
 })
 
 const oilTransfer = yup.object({
-    shipment_data: yup.string().required(),
+    shipment_date: yup.string().required(),
     from_location: yup.object({
         lat: yup.string().required(),
         lng: yup.string().required(),
@@ -172,7 +176,7 @@ const oilTransfer = yup.object({
 })
 
 const peregonSchema = yup.object({
-
+    shipment_date: yup.string().required(),
     from_location: yup.object({
         lat: yup.string().required(),
         lng: yup.string().required(),
@@ -186,6 +190,7 @@ const peregonSchema = yup.object({
     ...baseSchema
 })
 const shippingSchema = yup.object({
+    shipment_date: yup.string().required(),
 
     from_location: yup.object({
         lat: yup.string().required(),

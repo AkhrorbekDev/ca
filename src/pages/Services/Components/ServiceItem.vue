@@ -24,6 +24,7 @@ import {useRoute, useRouter} from "vue-router";
 
 const mapStore = useMapStore()
 const refreshMarkers = (m) => {
+  if (!m) return
   return m.map(marker => {
     return {
       type: 'Feature',

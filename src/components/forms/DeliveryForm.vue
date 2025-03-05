@@ -4,7 +4,6 @@ import {deliverySchema} from "@/components/form-elements/schema";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
 import {inject, onMounted, ref} from 'vue'
 import getGeoObject from "@/composables/getGeoObject";
-import RadioItem from "@/components/form-elements/RadioItem.vue";
 import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
 
@@ -62,40 +61,6 @@ const toggleShowDetails = () => {
   showDetails.value = !showDetails.value
 }
 
-const cargoTypes = [
-  {
-    label: 'Boshqa materiallar',
-    value: 1,
-    description: 'Boshqa materiallar'
-  },
-  {
-    label: 'Qurilish mollari',
-    value: 2,
-    description: 'Mebel, plintus, gipsokarton'
-  },
-  {
-    label: 'Oziq ovqat',
-    value: 3,
-    description: 'Ichimliklar, gazli, mineral suvlar'
-  },
-  {
-    label: 'Uskunalar va ehtiyot qismlar',
-    value: 4,
-    description: 'Kuzovlar, yoritgihc, generator'
-  }
-]
-const loadTypes = [
-  {
-    label: 'Yuk tashuvchilarsiz',
-    value: 1,
-    description: 'Yordam kerak emas'
-  },
-  {
-    label: 'Haydovchi yuklarni tashishi kerak',
-    value: 2,
-    description: '50kg dan ortiq bo\'lmagan yuklarni tashish'
-  }
-]
 const paymentTypes = ref([
   {
     name: 'Naqd',
@@ -144,20 +109,6 @@ const paymentTypes = ref([
     `
   }
 ])
-const loadWeightTypes = [
-  {
-    label: 'kg',
-    value: 'kg'
-  },
-  {
-    label: 'm3',
-    value: 'm3'
-  },
-  {
-    label: 'litr',
-    value: 'litr'
-  }
-]
 
 const onSaveDetails = () => {
   const errors = mainForm.value.getErrors()
