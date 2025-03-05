@@ -1,22 +1,25 @@
 <script lang="ts" setup>
 import ConfirmDialog from 'primevue/confirmdialog';
+import { Announcement } from "../types";
+import { useConfirm } from "primevue/useconfirm";
+import { inject, onMounted, ref } from "vue";
+import services from "@/api/Services";
 
-const model = defineModel()
+const model = defineModel();
 const props = defineProps({
   announceValue: {
     type: Object,
-    default: () => {
-    }
+    default: () => ({}),
+  },
+  activeTab: {
+    type: Number,
   }
-})
+});
 
-import {useConfirm} from "primevue/useconfirm";
-import {ref} from "vue";
-
-const oilList = ref<{ oil_type: string; price: number }[] | []>([])
-const rentList = ref<{ oil_type: string; price: number }[] | []>([])
-const definitionList = ref<{ oil_type: string; price: number }[] | []>([])
-const imageList = ref<string[] | []>([])
+const oilList = ref<{ oil_type: string; price: number }[] | []>([]);
+const rentList = ref<{ oil_type: string; price: number }[] | []>([]);
+const definitionList = ref<{ oil_type: string; price: number }[] | []>([]);
+const imageList = ref<string[] | []>([]);
 
 const confirm = useConfirm();
 
@@ -29,94 +32,152 @@ const confirm1 = () => {
     rejectProps: {
       label: 'Cancel',
       severity: 'secondary',
-      outlined: true
+      outlined: true,
     },
     acceptProps: {
-      label: 'Save'
+      label: 'Save',
     },
-    accept: () => {
-
-    },
-    reject: () => {
-
-    }
+    accept: () => {},
+    reject: () => {},
   });
 };
-
-const images = ref([
-  "https://via.placeholder.com/150",
-  "https://via.placeholder.com/150",
-  "https://via.placeholder.com/150",
-  "https://via.placeholder.com/150",
-]);
 
 const handleFileUpload = (event) => {
   const file = event.target.files[0];
   if (file) {
-    // Create a temporary URL for the uploaded file
-    imageList.value.push(URL.createObjectURL(file))
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = e.target.result as string;
+      collectImages.value.push({
+        fileName: file.name,
+        base64: base64.split(',')[1], // Remove the data URL prefix
+      });
+      imageList.value.push(URL.createObjectURL(file)); // For preview
+    };
+    reader.readAsDataURL(file);
   }
 };
 
-
 const deleteImage = (index) => {
-  imageList.value.splice(index, 1)
-}
+  imageList.value.splice(index, 1);
+};
 
-const addList = () => {
-  oilList.value.push({
-    oil_type: "",
-    price: 0
-  })
-}
+// Fetching data
+const $auth = inject('auth');
+const $api = inject('api');
 
-const addRentList = () => {
-  rentList.value.push({
-    oil_type: "",
-    price: 0
-  })
-}
+const categoriesAllList = ref([]);
+const servicesAllList = ref([]);
 
-const addDefinitionList = () => {
-  definitionList.value.push({
-    oil_type: "",
-    price: 0
-  })
-}
-const categoriesList = [
-  "Motorist",
-  "Avtoelektrika",
-  "Kuzovchi",
-  "Avtotuning",
-  "Hodovik",
-]
+onMounted(async () => {
+  await fetchAnnouncements();
+});
 
-const categories = ref([])
+const fetchAnnouncements = async () => {
+  try {
+    await $auth.login({
+      phone_number: "998990195492",
+      sms_type: "phone",
+      session_token: "64430f938253f55cb6ebecbb46928523",
+      security_code: "5555",
+    });
 
-const servicesList = [
-  "Polirovka",
-  "Keramika",
-  "Bo’yoq",
-  "Myatina",
-]
+    const response = await $api.workshop.getWorkshopCategory();
+    categoriesAllList.value = response?.data;
 
-const service = ref([])
+    const responseOne = await $api.workshop.getWorkshopService();
+    servicesAllList.value = responseOne?.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+// Sending data
+const categories = ref([]);
+const service = ref([]);
+const collectImages = ref([]);
+
+const addAnnouncement = ref<Announcement>({
+  adv_type: '',
+  service_type_id: 5,
+  from_location: {
+    lat: null,
+    lng: null,
+    name: null,
+  },
+  price: null,
+  details: {
+    repair_type_id: null,
+    category: [],
+    services: [],
+    company_name: null,
+  },
+  note: null,
+});
 
 const pushService = (index) => {
-  if (service.value.includes(index)) {
-    return
+  const serviceIndex = service.value.indexOf(index);
+  console.log("Selected Services Prev:", service.value); // Debugging
+  if (serviceIndex !== -1) {
+    service.value.splice(serviceIndex, 1);
+  } else {
+    service.value.push(index);
   }
-
-  service.value.push(index)
-}
+  console.log("Selected Services:", service.value); // Debugging
+};
 
 const pushCategory = (index) => {
-  if (categories.value.includes(index)) {
-    return
+  const categoryIndex = categories.value.indexOf(index);
+  console.log("Selected Categories Prev:", categories.value); // Debugging
+  if (categoryIndex !== -1) {
+    categories.value.splice(categoryIndex, 1);
+  } else {
+    categories.value.push(index);
   }
+  console.log("Selected Categories:", categories.value); // Debugging
+};
 
-  categories.value.push(index)
-}
+const createAnnouncement = async (announce) => {
+  try {
+
+    // Update addAnnouncement with the selected categories and services
+    announce.adv_type = props.activeTab === 1 ? 'RECEIVE' : props.activeTab === 2 ? 'PROVIDE' : '';
+    announce.details.category = categories.value;
+    announce.details.services = service.value;
+
+    const announcementResponse = await $api.workshop.createWorkshop(announce);
+    const advertisementId = announcementResponse?.data?.id;
+
+    // Send Image
+    const imagePayload = {
+      advertisement_id: advertisementId,
+      images: collectImages.value,
+    }
+    await $api.image.sendImage(imagePayload);
+
+    addAnnouncement.value = {
+      adv_type: '',
+      service_type_id: 5,
+      from_location: {
+        lat: null,
+        lng: null,
+        name: null,
+      },
+      price: null,
+      details: {
+        repair_type_id: null,
+        category: [],
+        services: [],
+        company_name: null,
+      },
+      note: null,
+    };
+
+
+  } catch (error) {
+    console.error("Error creating announcement: ", error);
+  }
+};
 
 </script>
 
@@ -124,6 +185,8 @@ const pushCategory = (index) => {
   <Dialog dismissableMask v-model:visible="model" modal :style="{ width: '50rem' }"
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <template #header>
+      <pre>{{addAnnouncement}}</pre>
+      <pre>{{collectImages}}</pre>
       <div class="grow text-center text-[#292D32] text-[24px] font-medium">
         {{ announceValue.title }}
         ma’lumotlari
@@ -283,23 +346,23 @@ const pushCategory = (index) => {
           </div>
         </div>
 
-        <div
+        <form @submit.prevent="createAnnouncement(addAnnouncement)"
             v-if="announceValue.unique === 'repair' || announceValue.unique === 'master'">
           <div class="grid grid-cols-2 gap-4 !mb-[24px]">
             <FloatLabel variant="in">
-              <InputText id="in_label" variant="filled"
+              <InputText v-model="addAnnouncement.from_location.name" id="in_label" variant="filled"
                          class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
               <label for="in_label" class="!text-[#292D324D]">Qayerdan</label>
             </FloatLabel>
 
             <FloatLabel variant="in">
-              <InputText id="in_label" variant="filled" type="number"
+              <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
                          class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
               <label for="in_label" class="!text-[#292D324D]">Narx</label>
             </FloatLabel>
 
             <FloatLabel variant="in">
-              <InputText id="in_label" variant="filled"
+              <InputText v-model="addAnnouncement.details.company_name" id="in_label" variant="filled"
                          class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"
                          placeholder="Kompaniya nomini kiriting!"/>
               <label for="in_label" class="!text-[#292D324D]">Kompaniya nomi</label>
@@ -313,11 +376,12 @@ const pushCategory = (index) => {
 
             <div class="flex items-center gap-2">
               <button
-                  v-for="(item, index) in categoriesList" @click="pushCategory(index)"
-                  :class="['!py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px]', categories.includes(index) && 'bg-[#66C61C] text-white']">
-                {{
-                  item
-                }}
+                  type="button"
+                  v-for="(item) in categoriesAllList"
+                  :key="item.id"
+                  @click="pushCategory(item?.id)"
+                  :class="['!py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px]', categories.includes(item?.id) && 'bg-[#66C61C] text-white']">
+                {{ item?.name }}
               </button>
             </div>
           </div>
@@ -327,18 +391,19 @@ const pushCategory = (index) => {
 
             <div class="flex items-center gap-2">
               <button
-                  v-for="(item, index) in servicesList" @click="pushService(index)"
-                  :class="['!py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px]', service.includes(index) && 'bg-[#66C61C] text-white']">
-                {{
-                  item
-                }}
+                  type="button"
+                  v-for="(item) in servicesAllList"
+                  :key="item.id"
+                  @click="pushService(item?.id)"
+                  :class="['!py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px]', service.includes(item?.id) && 'bg-[#66C61C] text-white']">
+                {{ item?.name }}
               </button>
             </div>
           </div>
 
           <div class="flex flex-col gap-2 w-full !mt-[24px]">
             <label for="description" class="text-[#292D3280] text-[16px]">Izoh</label>
-            <Textarea id="description" class="w-full   custom-placeholder-input" rows="3" cols="30"
+            <Textarea v-model="addAnnouncement.note" id="description" class="w-full   custom-placeholder-input" rows="3" cols="30"
                       placeholder="Yuk haqida izoh qoldiring!"/>
           </div>
 
@@ -361,7 +426,7 @@ const pushCategory = (index) => {
               </div>
 
               <label for="fileAnnouncement" class="relative">
-                <button>
+                <button type="button">
                   <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="0.5" y="0.5" width="109" height="109" rx="15.5" stroke="#66C61C" stroke-dasharray="8 8"/>
                     <path d="M55.5046 62V55" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"
@@ -374,15 +439,17 @@ const pushCategory = (index) => {
                         stroke="#66C61C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
 
-                  <input @change="handleFileUpload" class="absolute opacity-0 inset-0 cursor-pointer"
+                  <input @change="handleFileUpload"  class="absolute opacity-0 inset-0 cursor-pointer"
                          id="fileAnnouncement" type="file"
                          accept="image/*">
-
                 </button>
               </label>
             </div>
           </div>
-        </div>
+          <div class="w-full flex justify-end">
+            <button type="submit" class="text-white bg-[#66C61C] !py-4 !px-11 rounded-3xl">Joylash</button>
+          </div>
+        </form>
 
         <div
             v-if="announceValue.unique === 'technical'">

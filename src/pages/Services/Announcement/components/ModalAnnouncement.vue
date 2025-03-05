@@ -1,20 +1,30 @@
 <script lang="ts" setup>
 import ConfirmDialog from 'primevue/confirmdialog';
+import {AnnouncementType} from "@/pages/Services/Announcement/announcement.types";
 
 const model = defineModel()
 
 import {useConfirm} from "primevue/useconfirm";
+import {formatNumber} from "@/utils/helper";
+import {inject} from "vue";
 
 const props = defineProps({
   tabIndex: {
     type: Number,
     default: 0
+  },
+  announcement: {
+    type: Object as () => AnnouncementType,
+    default: () => ({})
   }
 })
 
 const confirm = useConfirm();
 
-const confirm1 = () => {
+const $auth = inject('auth');
+const $api = inject('api');
+
+const confirm1 = (id: number) => {
   confirm.require({
     group: 'headless',
     message: 'Haqiqatdan ham e’lonni bekor qilmoqchimisiz?',
@@ -28,11 +38,31 @@ const confirm1 = () => {
     acceptProps: {
       label: 'Save'
     },
-    accept: () => {
+    accept: async () => {
+      try {
+        console.log("Attempting to log in...");
+        await $auth.login({
+          "phone_number": "998990195492",
+          "sms_type": "phone", // phone, mail
+          "session_token": "64430f938253f55cb6ebecbb46928523",
+          "security_code": "5555"
+        });
+        console.log("Login successful");
 
+        const editAnnouncement = {
+          id: id,
+          status: "IS_ACTIVE"
+        };
+
+        console.log("Sending edit announcement request with data:", editAnnouncement);
+        await $api.announcement.editAnnouncement({id, data: editAnnouncement});
+        console.log("Edit announcement request successful");
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     },
     reject: () => {
-
+      console.error("Error fetching data:", error);
     }
   });
 };
@@ -42,8 +72,9 @@ const confirm1 = () => {
   <Dialog dismissableMask v-model:visible="model" modal :style="{ width: '50rem' }"
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <template #header>
+      <pre>{{announcement?.id}}</pre>
       <div class="grow text-center text-[#292D32] text-[24px] font-medium">
-        Yuk tashish
+        {{announcement?.service_name}}
       </div>
     </template>
     <div>
@@ -70,12 +101,12 @@ const confirm1 = () => {
         <div class="grid grid-cols-2 gap-4">
           <div class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
             <p class="text-[12px] text-[#292D324D] !mb-[6px]">Qayerdan</p>
-            <h6 class="text-[#292D32] text-[16px]">Toshkent, Yakkasaroy tumani</h6>
+            <h6 class="text-[#292D32] text-[16px]">{{announcement?.from_location?.name}}</h6>
           </div>
 
           <div class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
             <p class="text-[12px] text-[#292D324D] !mb-[6px]">Qayerga</p>
-            <h6 class="text-[#292D32] text-[16px]">Toshkent, Shayxontohur tumani</h6>
+            <h6 class="text-[#292D32] text-[16px]">{{announcement?.to_location?.name}}</h6>
           </div>
 
           <div class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
@@ -113,23 +144,23 @@ const confirm1 = () => {
                     d="M16 22.75H8C4.35 22.75 2.25 20.65 2.25 17V8.5C2.25 4.85 4.35 2.75 8 2.75H16C19.65 2.75 21.75 4.85 21.75 8.5V17C21.75 20.65 19.65 22.75 16 22.75ZM8 4.25C5.14 4.25 3.75 5.64 3.75 8.5V17C3.75 19.86 5.14 21.25 8 21.25H16C18.86 21.25 20.25 19.86 20.25 17V8.5C20.25 5.64 18.86 4.25 16 4.25H8Z"
                     fill="#BFC0C2"/>
               </svg>
-              <span class="text-[#292D32] text-[16px]">14.08.2024 17:35</span>
+              <span class="text-[#292D32] text-[16px]">{{announcement.details?.from_date}}</span>
             </div>
           </div>
 
           <div class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
             <p class="text-[12px] text-[#292D324D] !mb-[6px]">Yuk vazni</p>
             <div class="flex items-center justify-between">
-              <span class="text-[#292D32] text-[16px]">30</span>
-              <span class="text-[#292D32] text-[16px]">kg</span>
+              <span class="text-[#292D32] text-[16px]">{{announcement.details?.load_weight?.amount}}</span>
+              <span class="text-[#292D32] text-[16px]">{{announcement.details?.load_weight?.name}}</span>
             </div>
           </div>
 
           <div class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
             <p class="text-[12px] text-[#292D324D] !mb-[6px]">Transport turi</p>
             <div class="flex items-center gap-10">
-              <span class="text-[#292D32] text-[16px]">Furgon 4.8x2.05x1.92</span>
-              <img src="../../../../../public/truck.png" alt="truck">
+              <span class="text-[#292D32] text-[16px]">{{announcement.transport_name}}</span>
+              <img v-if="announcement?.transport_icon" class="object-contain w-[86px]" :src="announcement?.transport_icon" alt="truck">
             </div>
           </div>
 
@@ -144,12 +175,12 @@ const confirm1 = () => {
 
             <div class="flex items-center">
               <span class="text-[#AFAFAF] text-[16px] !mr-1">To‘lov turi:</span>
-              <span class="text-[#000000] text-[16px] !mr-1">Naqd</span>
+              <span class="text-[#000000] text-[16px] !mr-1">{{announcement.details?.pay_type}}</span>
             </div>
 
             <div class="flex items-center">
               <span class="text-[#AFAFAF] text-[16px] !mr-1">Izoh:</span>
-              <span class="text-[#000000] text-[16px] !mr-1"></span>
+              <span class="text-[#000000] text-[16px] !mr-1">{{announcement?.comments}}</span>
             </div>
           </div>
 
@@ -161,7 +192,7 @@ const confirm1 = () => {
 
             <div class="flex items-center">
               <span class="text-[#AFAFAF] text-[16px] !mr-1">Narxi:</span>
-              <span class="text-[#000000] text-[16px] !mr-1">500 000 UZS</span>
+              <span class="text-[#000000] text-[16px] !mr-1">{{formatNumber(announcement?.price)}} UZS</span>
             </div>
 
           </div>
@@ -171,14 +202,15 @@ const confirm1 = () => {
           <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
 
           <div class="flex items-center gap-6 !mt-[8px]">
-            <img class="rounded-2xl" src="@/assets/images/announcemnt-detail.png" alt="img" width="109">
-            <img class="rounded-2xl" src="@/assets/images/announcemnt-detail2.png" alt="img" width="109">
+            <img v-for="(image, index) in announcement?.images" :key="index" class="rounded-2xl" :src="`https://api.carting.uz/uploads/files/${image}`" alt="img" width="109">
           </div>
         </div>
 
+
+
         <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[56px]">
           <iframe
-              src="https://yandex.uz/map-widget/v1/?ll=69.279737%2C41.311151&z=12"
+              :src="`https://yandex.uz/map-widget/v1/?ll=${announcement.from_location?.lng}${announcement.from_location?.lat}`"
               width="100%"
               style="height: 300px"
               frameborder="0"
@@ -187,7 +219,7 @@ const confirm1 = () => {
 
         <p class="font-light text-[#292D324D] text-center !mb-[16px]">E’lon vaqti: 16.08.2024, 09:14</p>
 
-        <button v-if="props.tabIndex !== 0" @click="confirm1()"
+        <button v-if="props.tabIndex !== 0" @click="confirm1(announcement?.id)"
                 class="bg-[#F044381A] text-[16px] text-[#F04438] text-center w-full rounded-[24px] !p-[16px]">
           Faolsizlantirish
         </button>

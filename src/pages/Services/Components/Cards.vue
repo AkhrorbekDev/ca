@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {formatNumber} from "@/utils/helper";
+
 defineProps({
   item: {
     type: Array,
@@ -17,10 +19,10 @@ defineProps({
   >
     <img src="@/assets/images/rooms.png" v-if="isRoom" class="w-full" alt="car"/>
     <img v-else src="@/assets/images/cars/sonet.png" class="w-full" alt="car"/>
-
+<!--<pre>{{item}}</pre>-->
     <div class="!px-[16px] !py-[12px]">
       <h1 class="text-[#000000] text-[14px] font-400">{{isRoom ? 'Carbox' : 'Kia Sonet classic'}}</h1>
-      <h2 class="text-[16px] text-[#000000] font-500 !mt-[4px]" v-if="!isRoom">800 000 UZS</h2>
+      <h2 class="text-[16px] text-[#000000] font-500 !mt-[4px]" v-if="!isRoom">{{formatNumber(item?.price)}} UZS</h2>
 
       <div class="!mt-[8px] flex items-center">
         <img src="@/assets/images/icons/location.svg" alt="mark"/>

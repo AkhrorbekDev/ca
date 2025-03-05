@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref} from "vue";
+import {inject, onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import {services} from "@/components/fakeJson"
 import {useCommonStore} from "@/stores/common.store";
@@ -39,6 +39,40 @@ onMounted(() => {
 const is_active = ref<boolean>(false)
 
 const route = useRoute()
+
+const $auth = inject('auth')
+const $api = inject('api')
+const advertisementData = ref()
+
+onMounted(async () => {
+
+  // console.log($api.services._fetch('test', {
+  //   method: 'put'
+  // }))
+
+  // const res = await $api.auth.sendSmsCode({
+  //   "phone_number":"998970175492",
+  //   "sms_type":"phone",
+  //   "type": 1 // 1-Login, 2-Regisrt
+  // })
+  console.log($auth.loggedIn)
+  try {
+    const loginResponse = await $auth.login({
+      "phone_number": "998970175492",
+      "sms_type": "phone", // phone, mail
+      "session_token": "64430f938253f55cb6ebecbb46928523",
+      "security_code": "5555"
+    });
+    console.log(loginResponse);
+
+    const response = await $api.advertisement.getAdvertisement({
+      transport_id: 7
+    });
+    advertisementData.value = response?.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+})
 </script>
 
 <template>

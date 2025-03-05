@@ -59,6 +59,13 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
             body: data
         });
     }
+
+    async put(url: string, data: any): Promise<any> {
+        return this._fetch(url, {
+            method: 'PUT',
+            body: data
+        });
+    }
 }
 
 export {ApiCoreFetch}

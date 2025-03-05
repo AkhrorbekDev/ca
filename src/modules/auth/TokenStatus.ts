@@ -29,11 +29,11 @@ export class TokenStatus {
         tokenExpiresAt: number | false
     ): TokenStatusEnum {
         const now = Date.now()
-        console.log({
-            token,
-            tokenExpiresAt,
-            now
-        })
+        // console.log({
+        //     token,
+        //     tokenExpiresAt,
+        //     now
+        // })
         try {
             if (!token || !tokenExpiresAt) {
                 return TokenStatusEnum.UNKNOWN
