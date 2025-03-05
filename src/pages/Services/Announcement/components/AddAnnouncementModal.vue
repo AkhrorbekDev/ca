@@ -175,7 +175,7 @@ const createAnnouncement = async (announce) => {
 
 
   } catch (error) {
-    console.error("Error creating announcement:", error);
+    console.error("Error creating announcement: ", error);
   }
 };
 
