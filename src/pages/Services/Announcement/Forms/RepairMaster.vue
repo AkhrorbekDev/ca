@@ -194,7 +194,6 @@ const createAnnouncement = async (announce) => {
 
 <template>
   <form
-      v-if="announceValue.unique === 'repair' || announceValue.unique === 'master'"
       @submit.prevent="createAnnouncement(addAnnouncement)"
   >
     <div class="grid grid-cols-2 gap-4 !mb-[24px]">

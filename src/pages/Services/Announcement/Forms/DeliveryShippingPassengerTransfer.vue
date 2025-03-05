@@ -34,7 +34,7 @@ const collectImages = ref([]);
 
 const addAnnouncement = ref({
   adv_type: 'PROVIDE',
-  service_type_id: 1,
+  service_type_id: null,
   from_location: {
     lat: null,
     lng: null,
@@ -48,6 +48,7 @@ const addAnnouncement = ref({
   price: null,
   details: {
     transportation_type_id: 1,
+    passenger_count: null,
     company_name: null,
     load_weight: {
       amount: null,
@@ -71,6 +72,7 @@ const rules = {
     minValue: minValue(0)
   },
   details: {
+    passenger_count: {required, numeric, minValue: 0},
     load_weight: {
       amount: { required, numeric, minValue: minValue(0) },
     },
@@ -113,6 +115,8 @@ const createAnnouncement = async (announce) => {
   }
 
   try {
+    addAnnouncement.service_type_id = props.announceValue.unique === 'shipping' ? 1 : props.announceValue.unique === 'passenger' ? 2 : '';
+
     const announcementResponse = await $api.workshop.createWorkshop(announce);
     const advertisementId = announcementResponse?.data?.id;
 

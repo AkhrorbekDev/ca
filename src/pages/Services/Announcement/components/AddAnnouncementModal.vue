@@ -269,7 +269,7 @@ const createAnnouncement = async (announce) => {
           </div>
         </div>
 
-        <RepairMaster :announceValue="announceValue.unique" />
+        <RepairMaster v-if="announceValue.unique === 'repair' || announceValue.unique === 'master'" :announceValue="announceValue.unique" />
 
         <div
             v-if="announceValue.unique === 'technical'">
