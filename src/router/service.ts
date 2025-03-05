@@ -33,7 +33,6 @@ export default [
         meta: {layout: "ServiceLayout"},
     },
 
-
     {
         path: "/transport-view/:id",
         name: "transport-view-id",
@@ -84,7 +83,7 @@ export default [
         path: "/announcement",
         name: "announcement",
         component: () => import("@/pages/Services/Announcement/Announcement.vue"),
-        meta: {layout: "ServiceLayout"},
+        meta: {layout: "ServiceLayoutWithSideBar"},
     },
     {
         path: "/transport-repair",

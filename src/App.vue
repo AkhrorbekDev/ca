@@ -19,9 +19,6 @@ const route = useRoute();
 const layout = computed(() => (route.meta as RouteMeta).layout);
 import {inject} from "vue";
 
-const $auth = inject('auth')
-const $api = inject('api')
-
 const layouts = {
   MainLayout,
   LoginLayout,
@@ -33,30 +30,7 @@ const layouts = {
   ServiceLayout,
   ServiceLayoutWithSideBar
 };
-onMounted(async () => {
 
-  // console.log($api.services._fetch('test', {
-  //   method: 'put'
-  // }))
-
-  // const res = await $api.auth.sendSmsCode({
-  //   "phone_number":"998970175492",
-  //   "sms_type":"phone",
-  //   "type": 1 // 1-Login, 2-Regisrt
-  // })
-  console.log($auth.loggedIn)
-  $auth.login({
-    "phone_number": "998970175492",
-    "sms_type": "phone", // phone, mail
-    "session_token": "56139af2098c26094899ece593debbdb",
-    "security_code": "5555"
-  }).then(res => {
-    console.log(res)
-    console.log($api.advertisement.getAdvertisement({
-      transport_id: 7
-    }))
-  })
-})
 </script>
 
 <template>

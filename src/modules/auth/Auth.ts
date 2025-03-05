@@ -80,7 +80,7 @@ class Auth {
 
         // Sync token
         const token = this.token.sync()
-        console.log(token, 'token')
+        // console.log(token, 'token')
 
         // Token is required but not available
         if (!token) {
@@ -97,7 +97,7 @@ class Auth {
         const tokenStatus = this.token.status()
 
         // Token has expired. Attempt `tokenCallback`
-        console.log(tokenStatus)
+        // console.log(tokenStatus)
         if (tokenStatus.expired()) {
             response.tokenExpired = true
             return response
@@ -142,9 +142,9 @@ class Auth {
 
     initializeRequestInterceptor(refreshEndpoint?: string): void {
         this.interceptor = async (config) => {
-            console.log(this.options.token, 'config')
+            // console.log(this.options.token, 'config')
             // Don't intercept refresh token requests
-            console.log(!this._needToken(config) || config.url === refreshEndpoint)
+            // console.log(!this._needToken(config) || config.url === refreshEndpoint)
             if (this._needToken(config) || config.url === refreshEndpoint) {
                 return config
             }
@@ -157,12 +157,12 @@ class Auth {
                 isRefreshable
             } = this.check(true)
             let isValid = valid
-            console.log({
-                valid,
-                tokenExpired,
-                refreshTokenExpired,
-                isRefreshable
-            })
+            // console.log({
+            //     valid,
+            //     tokenExpired,
+            //     refreshTokenExpired,
+            //     isRefreshable
+            // })
 
             // Refresh token has expired. There is no way to refresh. Force reset.
             if (refreshTokenExpired) {
@@ -210,7 +210,7 @@ class Auth {
 
 
     private _getUpdatedRequestConfig(config, token: string | boolean) {
-        console.log('test', token)
+        // console.log('test', token)
         if (typeof token === 'string') {
             config.headers[this.options.token.name] = token
         }
@@ -231,9 +231,9 @@ class Auth {
             options.token.global ||
             Object.values(options.endpoints).some((endpoint: HTTPRequest | string) =>
                 {
-                    console.log('test1222', typeof endpoint === 'object'
-                        ? endpoint.url === config.url
-                        : endpoint === config.url)
+                    // console.log('test1222', typeof endpoint === 'object'
+                    //     ? endpoint.url === config.url
+                    //     : endpoint === config.url)
                     return typeof endpoint === 'object'
                         ? endpoint.url === config.url
                         : endpoint === config.url

@@ -1,117 +1,118 @@
 <script setup lang="ts">
 import ModalAnnouncement from "@/pages/Services/Announcement/components/ModalAnnouncement.vue";
 import AddAnnouncementModal from "@/pages/Services/Announcement/components/AddAnnouncementModal.vue";
-import {announcement} from "@/pages/Services/Announcement/constants";
-import {nextTick, onMounted, onUnmounted, ref} from 'vue';
+import { announcement } from "@/pages/Services/Announcement/constants";
+import { inject, nextTick, onMounted, onUnmounted, ref } from 'vue';
+import { AnnouncementType } from "@/pages/Services/Announcement/announcement.types";
 
 const visible = ref(false);
 const visible2 = ref(false);
 const visible2Data = ref<any>({});
-const childMenu = ref([])
-const menuVisible = ref<boolean>(false)
+const childMenu = ref([]);
+const menuVisible = ref<boolean>(false);
+const selectedAnnouncement = ref<any>(null); // Track the selected announcement
 
-onMounted(() => closeMenu())
-
-onUnmounted(() => closeMenu())
-
+onMounted(() => closeMenu());
+onUnmounted(() => closeMenu());
 
 const closeMenu = () => {
   document.body.addEventListener("click", () => {
-    menuVisible.value = false
+    menuVisible.value = false;
   });
-}
+};
 
 const toggleMenu = () => {
-  menuVisible.value = !menuVisible.value
-}
+  menuVisible.value = !menuVisible.value;
+};
 
 const openDetail = (item) => {
   if (item.child) {
-    childMenu.value = item.child
+    childMenu.value = item.child;
   } else {
-    visible2.value = true
+    visible2.value = true;
     nextTick(() => {
-      visible2Data.value = item
-
-    })
+      visible2Data.value = item;
+    });
   }
-}
+};
 
 const handleClickCard = (data) => {
-
   if (data) {
     if (data.child) {
-      childMenu.value = data.child
-      return
+      childMenu.value = data.child;
+      return;
     }
-    visible2.value = true
+    visible2.value = true;
     nextTick(() => {
-      visible2Data.value = data
-
-    })
-
+      visible2Data.value = data;
+    });
   }
-}
+};
 
-interface AnnouncementType {
-  status: boolean,
-  image: string
-  title: string
-  from: string
-  to?: string
-  created_at: string
-}
-
-const announcementData: AnnouncementType[] = [
-  {
-    title: "Yuk tashish",
-    from: "Toshkent",
-    to: "Samarqand",
-    image: "./truck.png",
-    status: true,
-    created_at: "16.08.2024"
-  },
-  {
-    title: "Maxsus texnika",
-    from: "Toshkent",
-    image: "./roller.png",
-    status: false,
-    created_at: "16.08.2024"
-  },
-  {
-    title: "Omborda saqlash",
-    from: "Toshkent",
-    to: "Samarqand",
-    image: "./vito.png",
-    status: true,
-    created_at: "16.08.2024"
-  },
-]
+const $auth = inject('auth');
+const $api = inject('api');
+const announcementAllData = ref<AnnouncementType>([]);
 
 const activeTab = ref(0);
 const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
+
+onMounted(async () => {
+  await fetchAnnouncements();
+});
+
+const fetchAnnouncements = async () => {
+  try {
+    // console.log($auth.loggedIn);
+    await $auth.login({
+      "phone_number": "998990195492",
+      "sms_type": "phone", // phone, mail
+      "session_token": "64430f938253f55cb6ebecbb46928523",
+      "security_code": "5555"
+    });
+
+    let params = {};
+    if (activeTab.value === 1) {
+      params.adv_type = 'RECEIVE';
+    } else if (activeTab.value === 2) {
+      params.adv_type = 'PROVIDE';
+    }
+
+    const response = await $api.announcement.getAnnouncement(params);
+    announcementAllData.value = response?.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
+const changeTab = (index) => {
+  activeTab.value = index;
+  fetchAnnouncements();
+};
+
+const openModal = (item) => {
+  selectedAnnouncement.value = item; // Set the selected item
+  visible.value = true; // Open the modal
+};
 </script>
 
 <template>
   <div>
     <div class="flex items-center justify-between">
-
       <div class="flex items-center space-x-4 bg-white rounded-lg !p-1.5">
         <button
             v-for="(tab, index) in tabs"
             :key="index"
             :class="[
-        '!px-4 !py-3 rounded-lg font-medium',
-        activeTab == index ? 'bg-gray-800 text-white' : 'text-gray-400'
-      ]"
-            @click="activeTab = index"
+              '!px-4 !py-3 rounded-lg font-medium',
+              activeTab == index ? 'bg-gray-800 text-white' : 'text-gray-400'
+            ]"
+            @click="changeTab(index)"
         >
           {{ tab }}
         </button>
       </div>
 
       <div class="flex items-center gap-4">
-
         <div class="relative">
           <button
               @click.stop="toggleMenu"
@@ -126,7 +127,6 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
             E’lon joylash
           </button>
 
-
           <div v-if="menuVisible">
             <!--dropdown 1-->
             <div v-if="menuVisible && !childMenu.length" class="mega-drop-menu">
@@ -136,7 +136,6 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
                      :key="index"
                      @click.stop="openDetail(item, index)"
                 >
-
                   <img :src="item.image" class="!m-auto swg !my-0" alt="#"/>
                   <p class="text-gray-900">{{ item.title }}</p>
                 </div>
@@ -152,7 +151,6 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
                      :key="index"
                      @click="handleClickCard(item2)"
                 >
-
                   <img :src="item2.image" v-if="item2.image" class="!m-auto !my-0" alt="#"/>
                   <h4 class="text-[#292D32] text-[14px]">{{ item2.title }}</h4>
                   <p class="text-gray-900">{{ item2.info }}</p>
@@ -183,13 +181,17 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
     <div class="!mt-[31px]">
       <div class="grid grid-cols-5 gap-6">
         <div class="bg-white rounded-[24px] !py-[7px] !px-[18px] cursor-pointer"
-             v-for="(item, index) in announcementData"
-             :key="index" @click="visible = true">
-          <div class="flex items-center justify-between">
+             v-for="(item) in announcementAllData"
+             :key="item?.id" @click="openModal(item)">
+          <div
+              class="flex items-center"
+              :class="activeTab !== 0 ? 'justify-between' : 'justify-center'"
+          >
+
             <div
                 v-if="activeTab !== 0"
                 :class="['!px-[11px] !py-[4px] rounded-[50px] text-[10px] font-medium flex items-center gap-3', item.status ? 'bg-[#F0FAE9] text-[#66C61C]' : 'bg-[#FEEDEC] text-[#F04438]']">
-              {{ item.status ? 'Faol' : 'Faol emas' }}
+              {{ item.status === 'ACTIVE' ? 'Faol' : 'Faol emas' }}
               <div v-if="!item.status && (activeTab == 1 || activeTab == 2)" class="flex items-center">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
@@ -200,33 +202,31 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
               </div>
             </div>
 
-            <img class="h-[50px]" :src="item.image" alt="image" height="50px">
+            <img v-if="item?.transport_icon" class="h-[50px] object-contain " :src="item?.transport_icon" alt="image" height="50px">
           </div>
 
-          <h5 class="text-[#292D324D] text-[20px] !mb-[4px]">{{ item.title }}</h5>
+          <h5 class="text-[#292D324D] text-lg !mb-[4px] line-clamp-1">{{ item.service_name ?? '' }}</h5>
 
           <div class="!mb-[4px]">
-            <div class="flex items-center" v-if="item.from && item.to">
-              <span class="text-[#1A1F23] font-medium !mr-[7px]">{{ item.from }}</span>
-              <svg width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div class="flex items-center">
+              <span v-if="item.from_location?.name" class="text-[#1A1F23] font-medium !mr-[7px] line-clamp-1">{{ item.from_location?.name }}</span>
+              <svg v-if="item.from_location?.name && item.to_location?.name" width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0.667969 4.72792H10.0013L6.10825 1.33398" stroke="#1A1F23" stroke-linecap="round"
                       stroke-linejoin="round"/>
                 <path d="M10 7.27305L0.666668 7.27305L4.55972 10.667" stroke="#1A1F23" stroke-linecap="round"
                       stroke-linejoin="round"/>
               </svg>
-              <span class="text-[#1A1F23] font-medium !ml-[7px]">{{ item.to }}</span>
+              <span v-if="item.to_location?.name" class="text-[#1A1F23] font-medium !ml-[7px] line-clamp-1">{{ item.to_location?.name }}</span>
             </div>
-
-            <span v-else class="text-[#1A1F23] font-medium">{{ item.from }}</span>
           </div>
 
-          <span class="text-[#292D324D] text-[12px] font-light">{{ item.created_at }}</span>
+          <span class="text-[#292D324D] text-[12px] font-light">{{ item?.shipment_date }}</span>
         </div>
       </div>
     </div>
 
-    <ModalAnnouncement v-model="visible" :tabIndex="activeTab"/>
-    <AddAnnouncementModal v-model="visible2" :announceValue="visible2Data"/>
+    <ModalAnnouncement :announcement="selectedAnnouncement" v-model="visible" :tabIndex="activeTab"/>
+    <AddAnnouncementModal :active-tab="activeTab" v-model="visible2" :announceValue="visible2Data"/>
   </div>
 </template>
 
@@ -236,10 +236,8 @@ const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
   color: #292D324D !important;
 }
 
-
 .p-autocomplete-input::placeholder {
   color: #292D3233 !important;
-
 }
 
 .p-autocomplete-input {

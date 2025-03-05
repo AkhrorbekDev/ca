@@ -11,7 +11,7 @@ export default  {
         const api = new Proxy(_container, {
             get: (t, n) => {
                 if (!t[n]) {
-                    console.log('new', n, classes, Classes, options)
+                    // console.log('new', n, classes, Classes, options)
                     t[n] = new classes[n](app, options)
                 }
                 return t[n]

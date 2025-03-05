@@ -22,7 +22,7 @@ class ApiCoreFetch implements ApiCoreFetch, FetchHooks {
             'Content-Type': 'application/json',
             'Authorization': `Basic ${btoa('root:GJA4TI8zQciHrXq')}`,
         }
-        console.log(context, 'context')
+        // console.log(context, 'context')
         if (app.config.globalProperties.$auth.interceptor) {
             context.options = await app.config.globalProperties.$auth.interceptor({
                 ...context.options,
@@ -53,6 +53,13 @@ class ApiCoreFetch implements ApiCoreFetch, FetchHooks {
     async post(url: string, data: any): Promise<any> {
         return this._fetch(url, {
             method: 'POST',
+            body: data
+        });
+    }
+
+    async put(url: string, data: any): Promise<any> {
+        return this._fetch(url, {
+            method: 'PUT',
             body: data
         });
     }
