@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import { ref } from "vue";
+import {inject, ref} from "vue";
+import ProfileDropDown from "@/components/ProfileDropDown.vue";
 
 interface Items {
   label: string;
 }
 
+const $auth = inject('auth')
 const menu = ref();
 const items = ref<Items[]>([
   {
@@ -31,21 +33,17 @@ const toggle = (event) => {
           <img src="/icons/youtube.svg" alt="youtube">
         </div>
 
+        <span>{{ $auth.loggedIn }} loggendin</span>
 
         <div class="flex items-center gap-6">
           <div>
             <img src="/icons/lang.svg" alt="lang" class="cursor-pointer" @click="toggle">
 
-            <Menu class="!mt-4" ref="menu" id="overlay_menu" :model="items" :popup="true" />
+            <Menu class="!mt-4" ref="menu" id="overlay_menu" :model="items" :popup="true"/>
           </div>
+          <template></template>
 
-          <router-link to="/login" class="flex items-center gap-6">
-            <div class="flex items-center gap-4">
-              <Avatar icon="pi pi-user" class="bg-[#F3F3F3] text-[#B7B8BA]" shape="circle"/>
-
-              <span class="text-[#A8AAAE]">Kirish</span>
-            </div>
-          </router-link>
+          <ProfileDropDown/>
         </div>
       </div>
     </div>

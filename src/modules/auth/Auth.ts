@@ -5,6 +5,7 @@ import {Methods} from "@/modules/auth/types";
 import {defineStore} from "pinia";
 import Token, {TokenInterface} from "@/modules/auth/Token";
 import RefreshToken, {RefreshTokenInterface} from "@/modules/auth/RefreshToken";
+import {TokenStatus} from "@/modules/auth/TokenStatus";
 
 class Auth {
 
@@ -12,13 +13,16 @@ class Auth {
     storage: StorageInterface;
     token: TokenInterface
     refreshToken: RefreshTokenInterface
+    status: TokenStatus
+
     options: any
 
     onRequest(context: FetchContext) {
         context.options = context.options || {}
+        console.log(context.options, 'options')
         context.options.headers = {
-            ...context.options.headers,
             'Authorization': `Basic ${btoa('root:GJA4TI8zQciHrXq')}`,
+            ...context.options.headers,
         }
     }
 
@@ -27,6 +31,7 @@ class Auth {
         user: null,
         isLoggedIn: false
     }
+    state
 
     constructor(context, options) {
         this.options = options
@@ -38,7 +43,7 @@ class Auth {
         this.request.onRequest = this.onRequest;
         const initialState = this.initialState
         this.state = defineStore(options.storeID, {
-            state () {
+            state() {
                 return {
                     ...initialState
                 }
@@ -56,23 +61,43 @@ class Auth {
         })
     }
 
-    get loggedIn () {
+    get loggedIn() {
         return this.state().GET('isLoggedIn')
     }
 
-    set loggedIn (value) {
+    set loggedIn(value) {
         this.state().SET('isLoggedIn', value)
     }
 
-    get user () {
+    get user() {
         return this.state().user
     }
 
-    async init () {
+    set user(value) {
+        this.state().SET('user', value)
+
+    }
+
+    async init() {
+        const tokenStatus = this.token.status()
+        const refreshTokenStatus = this.refreshToken.status()
+        console.log(tokenStatus, refreshTokenStatus, 'init tokenStatus')
+        console.log([
+            tokenStatus.valid(),
+            tokenStatus.expired(),
+            tokenStatus.unknown()
+        ])
+        if (tokenStatus.valid()) {
+            await this.initializeRequestInterceptor()
+            if (this.options.user.fetchUser) {
+                await this.fetchUser()
+            }
+            this.loggedIn = true
+        }
         // return this.request._request('http://localhost:3000')
     }
 
-    check (checkStatus = false) {
+    check(checkStatus = false) {
         const response = {
             valid: false,
             tokenExpired: false
@@ -80,7 +105,6 @@ class Auth {
 
         // Sync token
         const token = this.token.sync()
-        // console.log(token, 'token')
 
         // Token is required but not available
         if (!token) {
@@ -97,7 +121,7 @@ class Auth {
         const tokenStatus = this.token.status()
 
         // Token has expired. Attempt `tokenCallback`
-        // console.log(tokenStatus)
+        console.log(tokenStatus)
         if (tokenStatus.expired()) {
             response.tokenExpired = true
             return response
@@ -107,7 +131,7 @@ class Auth {
         return response
     }
 
-    login (data?: any): Promise<any> {
+    login(data?: any): Promise<any> {
         const request = {}, options = {}
         if (!this.options.endpoints.login) {
             throw new Error('Login endpoint is not defined')
@@ -131,20 +155,61 @@ class Auth {
                 const tokenExpiration = res.data[this.options.token.expiration] || this.options.token.expiration
                 const refreshTokenExpiration = res.data[this.options.refreshToken.expiration] || this.options.refreshToken.expiration
                 const refreshToken = res.data[this.options.refreshToken.property]
-                this.token.set(token, tokenExpiration * 1000)
+                this.token.set(token, tokenExpiration)
                 this.refreshToken.set(refreshToken, refreshTokenExpiration)
+                this.loggedIn = true
                 this.initializeRequestInterceptor(this.options.endpoints.refresh)
+
+                if (this.options.user.fetchUser) {
+                    this.fetchUser()
+                } else {
+                    this.user = {}
+                }
             }
 
             return Promise.resolve(res)
         })
     }
 
+    async logout() {
+        // Only connect to logout endpoint if it's configured
+        if (this.options.endpoints.logout) {
+            const url = typeof this.options.endpoints.logout === 'object' ? this.options.endpoints.logout.url : this.options.endpoints.logout
+            await this.request._request(url)
+                .catch(() => {
+                    //
+                })
+        }
+
+        // But reset regardless
+        return this.reset()
+    }
+
+    fetchUser() {
+
+        const request = {}, options = {}
+        if (!this.options.endpoints.user) {
+            throw new Error('Login endpoint is not defined')
+        }
+        if (typeof this.options.endpoints.user === 'string') {
+            request.url = this.options.endpoints.user
+        } else {
+            request.url = this.options.endpoints.user.url
+            request.method = Methods[this.options.endpoints.user.method?.toLocaleLowerCase()] || Methods['get']
+        }
+        options.method = request.method
+        options.headers = {}
+        options.headers[this.options.token.name] = this.token.get()
+        options.onRequest = (context) => console.log(context, 'fetchUser')
+        return this.request._request(request.url, options)
+            .then(res => {
+                this.user = res.data[this.options.user.property]
+            })
+    }
+
     initializeRequestInterceptor(refreshEndpoint?: string): void {
         this.interceptor = async (config) => {
-            // console.log(this.options.token, 'config')
             // Don't intercept refresh token requests
-            // console.log(!this._needToken(config) || config.url === refreshEndpoint)
             if (this._needToken(config) || config.url === refreshEndpoint) {
                 return config
             }
@@ -157,12 +222,12 @@ class Auth {
                 isRefreshable
             } = this.check(true)
             let isValid = valid
-            // console.log({
-            //     valid,
-            //     tokenExpired,
-            //     refreshTokenExpired,
-            //     isRefreshable
-            // })
+            console.log({
+                valid,
+                tokenExpired,
+                refreshTokenExpired,
+                isRefreshable
+            })
 
             // Refresh token has expired. There is no way to refresh. Force reset.
             if (refreshTokenExpired) {
@@ -170,13 +235,12 @@ class Auth {
             }
 
             // Token has expired.
-            /*if (tokenExpired) {
+            if (tokenExpired) {
                 // Refresh token is not available. Force reset.
                 if (!isRefreshable) {
                     this.reset()
                 }
 
-                // Refresh token is available. Attempt refresh.
                 if (this.options.isRefreshable) {
                     isValid = await this
                         .refreshTokens()
@@ -187,30 +251,24 @@ class Auth {
                             return false
                         })
                 }
-            }*/
+            }
 
-            // Sync token
             const token = this.token.get()
-
-            // Scheme checks were performed, but returned that is not valid.
-            /*if (!isValid) {
+            if (!isValid) {
                 return config
             }
-*/
-            // Token is valid, let the request pass
-            // Fetch updated token and add to current request
             return this._getUpdatedRequestConfig(config, token)
         }
     }
 
-    reset () {
+    reset() {
         this.token.set(false)
         this.refreshToken.set(false)
+        this.interceptor = null
     }
 
 
     private _getUpdatedRequestConfig(config, token: string | boolean) {
-        // console.log('test', token)
         if (typeof token === 'string') {
             config.headers[this.options.token.name] = token
         }
@@ -219,8 +277,7 @@ class Auth {
     }
 
 
-    refreshTokens () {
-
+    refreshTokens() {
 
 
     }
@@ -229,11 +286,7 @@ class Auth {
         const options = this.options
         return (
             options.token.global ||
-            Object.values(options.endpoints).some((endpoint: HTTPRequest | string) =>
-                {
-                    // console.log('test1222', typeof endpoint === 'object'
-                    //     ? endpoint.url === config.url
-                    //     : endpoint === config.url)
+            Object.values(options.endpoints).some((endpoint: HTTPRequest | string) => {
                     return typeof endpoint === 'object'
                         ? endpoint.url === config.url
                         : endpoint === config.url

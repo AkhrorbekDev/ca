@@ -1,28 +1,30 @@
-import {$Fetch, $fetch, FetchHooks, FetchContext} from 'ofetch'
+import {$Fetch, $fetch, FetchContext, FetchHooks} from 'ofetch'
 
-interface ApiCoreFetch {
+interface ApiCoreFetchInterface {
 
     _fetch: $Fetch;
 
-    get (url: string, params?: any): Promise<any>;
-    post (url: string, data: any): Promise<any>;
-    put (url: string, data: any): Promise<any>;
-    delete (url: string): Promise<any>;
+    get(url: string, params?: any): Promise<any>;
+
+    post(url: string, data: any): Promise<any>;
+
+    put(url: string, data: any): Promise<any>;
+
+    delete(url: string): Promise<any>;
 
 }
 
-class ApiCoreFetch implements ApiCoreFetch, FetchHooks {
+class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
 
     _fetch: $Fetch;
 
-    async onRequest (context: FetchContext, app) {
+    async onRequest(context: FetchContext, app) {
         context.options = context.options || {}
         context.options.headers = {
             ...context.options.headers,
             'Content-Type': 'application/json',
             'Authorization': `Basic ${btoa('root:GJA4TI8zQciHrXq')}`,
         }
-        // console.log(context, 'context')
         if (app.config.globalProperties.$auth.interceptor) {
             context.options = await app.config.globalProperties.$auth.interceptor({
                 ...context.options,
@@ -30,7 +32,8 @@ class ApiCoreFetch implements ApiCoreFetch, FetchHooks {
             });
         }
     }
-    async onResponseError (context: FetchContext, app) {
+
+    async onResponseError(context: FetchContext, app) {
         console.log(context, 'res error')
     }
 

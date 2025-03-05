@@ -11,9 +11,7 @@ import DialogService from 'primevue/dialogservice'
 import ToastService from 'primevue/toastservice';
 import auth from "@/modules/auth";
 import api from '@/plugins/api'
-import { vMaska } from "maska"
-
-import {defineRule, configure} from 'vee-validate'
+import {vMaska} from "maska"
 //// PRIME ICONS
 import 'primeicons/primeicons.css'
 
@@ -28,8 +26,12 @@ app.use(auth, {
             url: '/mobile/v1/phone/verify',
             method: 'post'
         },
-        user: 'getMe',
+        register: '/mobile/v1/phone/register',
+        user: '/mobile/v2/user',
         refresh: 'refresh',
+    },
+    user: {
+        property: 'user',
     }
 })
 
