@@ -23,30 +23,36 @@ const props = defineProps({
 const $api = inject('api');
 
 // Refs for form data and lists
+const oilList = ref<{ type: string; price: number }[] | []>([]);
 const imageList = ref<string[] | []>([]);
 const categoriesAllList = ref([]);
 const servicesAllList = ref([]);
 
 const collectImages = ref([]);
 
+const addList = () => {
+  oilList.value.push({ type: '', price: '' });
+};
+
 const addAnnouncement = ref<Announcement>({
   adv_type: 'PROVIDE',
-  service_type_id: 7,
-  to_location: {
+  service_type_id: 8,
+  from_location: {
     lat: null,
     lng: null,
     name: null,
   },
   price: null,
   details: {
-    area: null,
+    company_name: null,
+    fuels: [],
   },
   note: null,
 });
 
 // Validation rules
 const rules = {
-  to_location: {
+  from_location: {
     name: { required },
   },
   price: {
@@ -55,10 +61,11 @@ const rules = {
     minValue: minValue(0)
   },
   details: {
-    area: {
+    fuels: {
       required,
-      numeric,
-      minValue: minValue(0)
+    },
+    company_name: {
+      required,
     },
   },
   note: { maxLength: maxLength(1000) }
@@ -80,29 +87,19 @@ onMounted(async () => {
 });
 
 // File upload handler
-const handleFileUpload = (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  const file = input.files?.[0];
-
-  if (file && file.type.startsWith('image/')) {
+const handleFileUpload = (event) => {
+  const file = event.target.files[0];
+  if (file) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      const base64 = e.target?.result as string;
-
-      // Extract the base64 data without the metadata prefix
-      const base64Data = base64.split(',')[1];
-
+      const base64 = e.target.result as string;
       collectImages.value.push({
         fileName: file.name,
-        base64: base64Data, // Send only the base64 data without the prefix
-        mimeType: file.type, // Add the MIME type which might be needed by API
+        base64: base64.split(',')[1],
       });
-
       imageList.value.push(URL.createObjectURL(file));
     };
     reader.readAsDataURL(file);
-  } else {
-    console.error("Invalid file type. Please upload an image.");
   }
 };
 
@@ -117,7 +114,6 @@ const createAnnouncement = async (announce) => {
   const isFormValid = await v$.value.$validate();
 
   if (!isFormValid) {
-    // Show error toast or notification
     return;
   }
 
@@ -130,72 +126,109 @@ const createAnnouncement = async (announce) => {
     const advertisementId = announcementResponse?.data?.id;
 
     // Send images
-    if (collectImages.value.length > 0) {
-      // Send images with proper format
-      const imagePayload = {
-        advertisement_id: advertisementId,
-        images: collectImages.value.map(img => ({
-          fileName: img.fileName,
-          base64: img.base64, // This is already the clean base64 data
-          mimeType: img.mimeType, // Include MIME type if the API requires it
-        })),
-      };
+    const imagePayload = {
+      advertisement_id: advertisementId,
+      images: collectImages.value,
+    };
+    await $api.image.sendImage(imagePayload);
 
-      await $api.image.sendImage(imagePayload);
-    }
+    imagePayload.images = [];
 
     // Reset form
     addAnnouncement.value = {
       adv_type: '',
-      service_type_id: 7,
-      to_location: {
+      service_type_id: 8,
+      from_location: {
         lat: null,
         lng: null,
         name: null,
       },
       price: null,
       details: {
-        area: null,
+        company_name: null,
+        fuels: [],
       },
       note: null,
     };
 
-    imageList.value = [];
-    collectImages.value = [];
     // Optional: Show success message or close dialog
     model.value = false;
   } catch (error) {
     console.error("Error creating announcement: ", error);
-    // Optional: Show error toast or notification
   }
 };
+
+const oilTypes = [
+  { name: 'AI 80' },
+  { name: 'AI 91' },
+  { name: 'AI 92' },
+  { name: 'AI 95' },
+  { name: 'AI 98' },
+  { name: 'AI 100' },
+  { name: 'Dizel' },
+  { name: 'Gaz' },
+];
 </script>
 
 <template>
   <form
       @submit.prevent="createAnnouncement(addAnnouncement)"
   >
-    <pre>{{addAnnouncement}}</pre>
     <div class="grid grid-cols-2 gap-4">
       <FloatLabel variant="in">
-        <InputText v-model="addAnnouncement.to_location.name" id="in_label" variant="filled"
+        <InputText v-model="addAnnouncement.from_location.name" id="in_label" variant="filled"
                    class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
         <label for="in_label" class="!text-[#292D324D]">Qayerda</label>
       </FloatLabel>
 
       <FloatLabel variant="in">
-        <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
+        <InputText v-model="addAnnouncement.details.company_name" id="in_label" variant="filled"
                    class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-        <label for="in_label" class="!text-[#292D324D]">Narx</label>
+        <label for="in_label" class="!text-[#292D324D]">Kompaniya nomi</label>
       </FloatLabel>
 
       <FloatLabel variant="in">
-        <InputText v-model="addAnnouncement.details.area" id="in_label" variant="filled" type="number"
+        <InputText id="in_label" variant="filled" type="number"
                    class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-        <label for="in_label"
-               class="!text-[#292D324D]">Maydon</label>
+        <label for="in_label" class="!text-[#292D324D]">Maksimal yuk sig‘imi</label>
       </FloatLabel>
 
+      <FloatLabel variant="in">
+        <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
+                   class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
+        <label for="in_label" class="!text-[#292D324D]">Yetkazib berish narxi</label>
+      </FloatLabel>
+    </div>
+
+    <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
+      <span class="block !mb-[16px] text-[#000000] text-[16px] font-medium">Yoqilg‘i turi va narxlari</span>
+
+      <div class="grid grid-cols-2 gap-4">
+        <template v-for="item in oilList">
+          <FloatLabel variant="in">
+            <Select :value="item.type" :options="oilTypes" optionLabel="name" placeholder="AI 80"
+                    class="w-full !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center"/>
+            <label for="in_label" class="!text-[#292D324D]">Yoqilg’i turi</label>
+          </FloatLabel>
+
+          <FloatLabel variant="in">
+            <InputText :value="item.price" id="in_label" variant="filled" type="number"
+                       class="w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
+            <label for="in_label" class="!text-[#292D324D]">Narx</label>
+          </FloatLabel>
+        </template>
+      </div>
+
+      <button
+          type="button"
+          @click="addList"
+          class="!mt-[16px] flex items-center text-[#66C61C] !pl-[115px] !py-[12px] !pr-[107px] rounded-[24px] border-[1px] border-[#66C61C]">
+        <svg class="!mr-[16px]" width="10" height="10" viewBox="0 0 10 10" fill="none"
+             xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 5H9M5 1L5 9" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Qo’shish
+      </button>
     </div>
 
     <div class="flex flex-col gap-2 w-full !mt-[24px]">
@@ -216,14 +249,14 @@ const createAnnouncement = async (announce) => {
 
           <div
               class="group-hover:flex hidden absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 rounded-2xl items-center justify-center">
-            <button @click="deleteImage(index)">
+            <button type="button" @click="deleteImage(index)">
               <i class="pi pi-trash cursor-pointer" style="font-size: 1.5rem; color: red"></i>
             </button>
           </div>
         </div>
 
         <label for="fileAnnouncement" class="relative">
-          <button>
+          <button type="button">
             <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="0.5" y="0.5" width="109" height="109" rx="15.5" stroke="#66C61C" stroke-dasharray="8 8"/>
               <path d="M55.5046 62V55" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"

@@ -12,6 +12,7 @@ import {
   maxLength
 } from '@vuelidate/validators';
 import { Announcement } from "../types";
+import {Form} from "vee-validate";
 
 const mapStore = useMapStore()
 const model = defineModel();
@@ -158,11 +159,11 @@ const setLocation = (name) => {
       callback: async (e) => {
         await getGeoObject({cord: e.coordinates}).then(res => {
           const marker = mapStore.getMarker(name)
-          mainForm.value.setFieldValue(name, {
+          addAnnouncement.value[name] =  {
             lat: marker.markerProps.geometry.coordinates[0],
             lng: marker.markerProps.geometry.coordinates[1],
             name: res.data.description
-          })
+          }
           mapStore.removeMarker(name)
         }).finally(() => {
           hideDetailsOnLocationChange.value = false
@@ -245,19 +246,11 @@ watch(() => props.announceValue, (newValue) => {
           }"
   >
     <div class="grid grid-cols-2 gap-4">
-<!--      <LocationItem :location="addAnnouncement.from_location" as="div" class="col-span-full" name="from_location"-->
-<!--                    @click="setLocation('from_location')"/>-->
-      <FloatLabel variant="in">
-        <InputText v-model="addAnnouncement.from_location.name" id="in_label" variant="filled"
-                   class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-        <label for="in_label" class="!text-[#292D324D]">Qayerdan</label>
-      </FloatLabel>
+      <LocationItem :location="addAnnouncement.from_location" as="div" class="" name="from_location"
+                    @click="setLocation('from_location')"/>
 
-      <FloatLabel variant="in">
-        <InputText v-model="addAnnouncement.to_location.name" id="in_label" variant="filled"
-                   class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-        <label for="in_label" class="!text-[#292D324D]">Qayerga</label>
-      </FloatLabel>
+      <LocationItem :location="addAnnouncement.to_location" as="div" class="" name="to_location"
+                    @click="setLocation('to_location')"/>
 
       <FloatLabel variant="in">
         <InputText v-model="computedModelValue" id="in_label" variant="filled" type="number"
