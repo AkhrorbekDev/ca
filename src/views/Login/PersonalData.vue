@@ -34,8 +34,6 @@ const options = reactive<MaskInputOptions>({
 
 
 const physicalSchema = yup.object({
-  org_name: yup.string().required(),
-  stir: yup.number().required().nonNullable(),
   call_phone: yup.string().required().min(12),
   agree: yup.bool().notOneOf([false]).required(),
   user_type: yup.string().required().nonNullable()
@@ -80,34 +78,19 @@ const saveUserType = () => {
   showPersonalData.value = true
 }
 const submit = () => {
-  if (mainForm.value.getValues().user_type === 'CLIENT') {
-    clientSchema.validate(mainForm.value.getValues())
-        .then(res => {
-          console.log(res, 'validation')
-        }).catch(res => {
-      console.log(res, 'validation')
-    })
-  } else {
-    physicalSchema.validate(mainForm.value.getValues())
-        .then(res => {
-          console.log(res, 'validation')
-        }).catch(res => {
-      console.log(res, 'validation')
-    })
-  }
-  // mainForm.value.validate()
-  //     .then(res => {
-  //       if (res.valid) {
-  //         $api.auth.updateUserProfile(mainForm.value.getValues())
-  //             .then(res => {
-  //               router.push({
-  //                 name: 'services'
-  //               })
-  //             })
-  //       }
-  //     })
+  mainForm.value.validate()
+      .then(res => {
+        console.log(res)
+        if (res.valid) {
+          $api.auth.updateUserProfile(mainForm.value.getValues())
+              .then(res => {
+                router.push({
+                  name: 'services'
+                })
+              })
+        }
+      })
 }
-console.log(clientSchema, physicalSchema)
 
 </script>
 <template>
@@ -115,6 +98,7 @@ console.log(clientSchema, physicalSchema)
       v-slot="{values}"
       ref="mainForm"
       :initial-values="initialValues"
+      :validation-schema="physicalSchema"
       class="bg-[#FAFAFA]">
     <router-link to="/public">
       <img src="../../assets/images/logo2.svg" class="!p-[24px] absolute right-0" alt="logo"/>
@@ -170,7 +154,7 @@ console.log(clientSchema, physicalSchema)
 
           <div class="flex flex-col gap-y-4 !mt-[24px]">
             <template v-if="values.user_type === 'PHYSICAL'">
-              <Field as="div" class="flex flex-col" name="org_name">
+              <Field :rules="yup.string().required()" as="div" class="flex flex-col" name="org_name">
                 <label for="org_name" class="text-[#292D324D] text-[14px] !mb-[8px]">Kompaniya nomi</label>
                 <input
                     id="org_name"
@@ -183,7 +167,7 @@ console.log(clientSchema, physicalSchema)
                 />
               </Field>
 
-              <Field as="div" class="flex flex-col" name="stir">
+              <Field :rules="yup.string().required()" as="div" class="flex flex-col" name="stir">
                 <label for="stir" class="text-[#292D324D] text-[14px] !mb-[8px]">Kompaniya nomi</label>
                 <input
                     id="stir"
@@ -197,7 +181,7 @@ console.log(clientSchema, physicalSchema)
               </Field>
             </template>
             <template v-else>
-              <Field as="div" class="flex flex-col" name="first_name">
+              <Field :rules="yup.string().required()" as="div" class="flex flex-col" name="first_name">
                 <label for="first_name" class="text-[#292D324D] text-[14px] !mb-[8px]">Ismingiz</label>
                 <input
                     id="first_name"
@@ -209,7 +193,7 @@ console.log(clientSchema, physicalSchema)
                     class="!bg-[#fff] border-0 !p-[16px] outline-none rounded-[20px]"
                 />
               </Field>
-              <Field as="div" class="flex flex-col" name="last_name">
+              <Field :rules="yup.string().required()" as="div" class="flex flex-col" name="last_name">
                 <label for="last_name" class="text-[#292D324D] text-[14px] !mb-[8px]">Familyangiz</label>
                 <input
                     id="last_name"
@@ -226,8 +210,8 @@ console.log(clientSchema, physicalSchema)
             <div class="flex flex-col">
               <label for="call_phone" class="text-[#292D324D] text-[14px] !mb-[8px]">Telefon</label>
               <input
-                  id="call_phone
-"
+                  id="call_phone"
+
                   v-maska
                   :data-maska="options.mask"
                   @maska="(e) => options.postProcess(e, 'call_phone')"

@@ -87,7 +87,6 @@ class Auth {
         //     tokenStatus.expired(),
         //     tokenStatus.unknown()
         // ])
-        console.log(tokenStatus.valid(), refreshTokenStatus.valid(), 'tokenStatus.valid()')
         if (tokenStatus.valid()) {
             await this.initializeRequestInterceptor()
             if (this.options.user.fetchUser) {
@@ -96,7 +95,7 @@ class Auth {
             this.loggedIn = true
             return Promise.resolve()
         } else if (this.options.isRefreshable && refreshTokenStatus.valid()) {
-            return await this.refreshToken().then(async () => {
+            return await this.refreshTokens().then(async () => {
                 await this.initializeRequestInterceptor()
                 return Promise.resolve(true)
             })
@@ -324,6 +323,10 @@ class Auth {
                     return Promise.resolve(res)
                 }
 
+            }).catch(err => {
+                this.reset()
+
+                return Promise.reject(err)
             })
     }
 

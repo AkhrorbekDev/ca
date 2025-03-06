@@ -28,7 +28,7 @@ const vForm = ref(null)
 const optCode = ref(null)
 const vCodeForm = ref(null)
 const authType = ref(1)
-const showCodeField = ref(true)
+const showCodeField = ref(false)
 
 const validationSchema = yup.object({
   phone: yup.string().required().min(12),

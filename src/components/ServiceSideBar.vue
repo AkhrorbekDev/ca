@@ -43,7 +43,7 @@ const toggleMenu = () => {
 const menuItems = ref<MenuItems[]>([
   {
     title: 'Xizmatlar',
-    unique: 'services',
+    unique: 'service-detail',
     isOpen: false,
     icon: home,
     children: services
@@ -73,11 +73,10 @@ onMounted(() => closeMenu())
 onUnmounted(() => closeMenu())
 
 const changeRoute = (item) => {
-  showTransportGrid.value = false
 
-  if (selectedService.value.id === 4) {
+  if (selectedService.value.id === 7) {
     router.push({
-      name: 'transport-id',
+      name: item.route,
       params: {
         id: item.id
       }
@@ -90,6 +89,12 @@ const changeRoute = (item) => {
       id: item.id
     }
   })
+  showTransportGrid.value = false
+  selectedService.value = null
+  selectedMenu.value = null
+  menuVisible.value = false
+  showForm.value = false
+
 }
 const closeMenu = () => {
   document.body.addEventListener("click", () => {
@@ -106,7 +111,6 @@ const handleClickCard = (item: any) => {
   }
 }
 
-const currentIndex = ref<number | null>(null)
 const isLoadingTransports = ref(false)
 const getTransports = serviceId => {
   isLoadingTransports.value = true
@@ -131,43 +135,65 @@ const getTransports = serviceId => {
 }
 
 const openChildMenu = (index: number, item: MenuItems) => {
-  selectedMenu.value = item
-  showForm.value = false
+  if (selectedMenu.value && item.unique === selectedMenu.value.unique) {
+    menuVisible.value = false
+    showForm.value = false
+    showTransportGrid.value = false
+    selectedMenu.value = null
+    return
+  } else {
+    selectedMenu.value = item
+    showForm.value = false
+    showTransportGrid.value = false
+  }
+
   if (item.route) {
     router.push(item.route)
     selectedService.value = null
-    showForm.value = false
     menuVisible.value = false
     return
   }
-  currentIndex.value = index
-  if (index !== 0 && route.name !== 'service-detail') {
-    store.activeService = {}
-  }
   mapStore.clearMarkers()
-
   menuVisible.value = !!item.children;
-  showForm.value = false
 
 };
 
 const openDetail = (value: any, item: any) => {
-  console.log(item, value)
-  if (item.route) {
-    menuItems.value.forEach((e) => e.isOpen = false)
-    router.push({name: item.route, params: {type: item.unique}})
-
+  selectedService.value = item
+  showTransportGrid.value = false
+  if (item.id === 7) {
+    menuVisible.value = false
+    showForm.value = false
+    selectedMenu.value = null
+    changeRoute(item)
+    return
   }
-  if (value.unique !== 'transportAdv') {
-    selectedService.value = item
-    showForm.value = true
+  if (item.route) {
+    router.push({name: item.route, params: {type: item.unique}})
+  }
+  if (selectedMenu.value.unique !== 'transportAdv' && item.id !== 4) {
     mapStore.clearMarkers()
+    showForm.value = true
   } else {
-    selectedService.value = item
     getTransports(item.id)
   }
 
 };
+
+onMounted(() => {
+  if (route.params.type) {
+    if (route.name === menuItems.value[0].unique) {
+      selectedMenu.value = menuItems.value[0]
+      selectedService.value = selectedMenu.value.children.find(item => item.unique === route.params.type)
+    }/* else if (route.name === menuItems.value[2].unique) {
+      selectedMenu.value = menuItems.value[2]
+      selectedService.value = selectedMenu.value.children.find(item => item.unique === route.params.type)
+    }*/
+    menuVisible.value = true
+    showForm.value = true
+  }
+})
+
 
 </script>
 
@@ -358,6 +384,7 @@ const openDetail = (value: any, item: any) => {
     position: relative;
     visibility: hidden;
     width: 0;
+    min-width: 0 !important;
 
     &._form-active {
       visibility: visible;
@@ -426,26 +453,26 @@ const openDetail = (value: any, item: any) => {
   @apply absolute top-[80px] left-[-50px] p-[16px] bg-[#FAFAFA] w-[359px] rounded-[24px];
   box-shadow: 0 32px 100px 0 #292D3229;
 
-  //.cards {
-  //  @apply w-[157px] h-[112px] p-[14px] bg-white rounded-[20px] text-center flex flex-col items-center justify-center;
-  //  box-shadow: 0 2px 8.4px 0 #292D3214;
-  //
-  //  p {
-  //    @apply text-[#292D3266] text-[12px];
-  //  }
-  //}
-  //
-  //.card-wrap:hover {
-  //  @apply bg-[#66C61C];
-  //
-  //  .swg {
-  //    filter: brightness(13.5);
-  //  }
-  //
-  //  p {
-  //    @apply text-[#fff];
-  //  }
-  //}
+  .cards {
+    @apply w-[157px] h-[112px] p-[14px] bg-white rounded-[20px] text-center flex flex-col items-center justify-center;
+    box-shadow: 0 2px 8.4px 0 #292D3214;
+
+    p {
+      @apply text-[#292D3266] text-[12px];
+    }
+  }
+
+  .card-wrap:hover {
+    @apply bg-[#66C61C];
+
+    .swg {
+      filter: brightness(13.5);
+    }
+
+    p {
+      @apply text-[#fff];
+    }
+  }
 
 }
 

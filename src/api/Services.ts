@@ -22,6 +22,10 @@ class Services extends ApiCoreFetch {
     deleteService(id): Promise<any> {
         return this.delete(`/mobile/v1/list/services/${id}`);
     }
+
+    getFuelCompanies(params) {
+        return this.get('/mobile/v1/list/fuels', params)
+    }
 }
 
 export default Services

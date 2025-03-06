@@ -26,8 +26,7 @@ const layouts = {
   IncomePasswordLayout,
   Register,
   PersonalData,
-  ServiceLayout: ServiceLayoutWithSideBar
-  ,
+  ServiceLayout: ServiceLayoutWithSideBar,
   ServiceLayoutWithSideBar
 };
 

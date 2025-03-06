@@ -153,9 +153,9 @@ export const Menu = [
         // child: Truck
     },
     {
-        img: carKey,
-        id: 4,
-        title: 'Transport ijarasi'
+        img: rul,
+        "id": 10,
+        title: 'Peregon xizmati',
     },
     {
         img: evakvator,
