@@ -175,7 +175,7 @@ const openModal = (item) => {
     </div>
 
     <div class="!mt-[31px]">
-      <div class="grid grid-cols-5 gap-6">
+      <div class="grid xl:grid-cols-5 grid-cols-4 gap-6">
         <div class="bg-white rounded-[24px] !py-[7px] !px-[18px] cursor-pointer"
              v-for="(item) in announcementAllData"
              :key="item?.id" @click="openModal(item)">
