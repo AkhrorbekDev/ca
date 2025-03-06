@@ -1,10 +1,7 @@
 <script lang="ts" setup>
-import {ref, onMounted, inject, watch, computed} from 'vue';
+import { ref, onMounted, inject } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import useMapStore from "@/stores/map.store";
-import getGeoObject from "@/composables/getGeoObject";
-import LocationItem from "@/components/form-elements/LocationItem.vue";
-
 import {
   required,
   numeric,
@@ -12,53 +9,33 @@ import {
   maxLength
 } from '@vuelidate/validators';
 import { Announcement } from "../types";
-import {Form} from "vee-validate";
+import getGeoObject from "@/composables/getGeoObject";
+import LocationItem from "@/components/form-elements/LocationItem.vue";
 
 const mapStore = useMapStore()
 const model = defineModel();
 const props = defineProps({
   announceValue: {
-    type: String,
-    default: '',
+    type: Object,
+    default: () => ({}),
   },
   activeTab: {
     type: Number,
   }
 });
 
-const pageValue = ref(props.announceValue);
-watch(() => props.announceValue, (newValue) => {
-  pageValue.value = newValue;
-});
-
 const $api = inject('api');
 
 // Refs for form data and lists
 const imageList = ref<string[] | []>([]);
+const categoriesAllList = ref([]);
+const servicesAllList = ref([]);
 
 const collectImages = ref([]);
 
-const serviceTypeId = computed(() => {
-  switch (props.announceValue.unique) {
-    case 'shipping':
-      return 1;
-    case 'passenger':
-      return 2;
-    case 'transfer':
-      return 6;
-    default:
-      return null;
-  }
-});
-
-const addAnnouncement = ref({
+const addAnnouncement = ref<Announcement>({
   adv_type: 'PROVIDE',
-  service_type_id: serviceTypeId.value,
-  from_location: {
-    lat: null,
-    lng: null,
-    name: null,
-  },
+  service_type_id: 7,
   to_location: {
     lat: null,
     lng: null,
@@ -66,23 +43,13 @@ const addAnnouncement = ref({
   },
   price: null,
   details: {
-    transportation_type_id: 1,
-    transport_count: null,
-    passenger_count: null,
-    company_name: null,
-    load_weight: {
-      amount: null,
-      name: null
-    }
+    area: null,
   },
   note: null,
 });
 
 // Validation rules
 const rules = {
-  from_location: {
-    name: { required },
-  },
   to_location: {
     name: { required },
   },
@@ -91,60 +58,60 @@ const rules = {
     numeric,
     minValue: minValue(0)
   },
-  // details: {
-  //   passenger_count: {required, numeric, minValue: 0},
-  //   load_weight: {
-  //     amount: { required, numeric, minValue: minValue(0) },
-  //   },
-  // },
+  details: {
+    area: {
+      required,
+      numeric,
+      minValue: minValue(0)
+    },
+  },
   note: { maxLength: maxLength(1000) }
 };
 
 const v$ = useVuelidate(rules, addAnnouncement);
 
-const computedModelValue = computed({
-  get() {
-    return pageValue.value?.unique === 'passenger' ? addAnnouncement.value.details.passenger_count : pageValue.value.unique === 'transfer' ? addAnnouncement.value.details.transport_count : addAnnouncement.value.details.load_weight.amount;
-  },
+// Fetch lists on component mount
+onMounted(async () => {
+  try {
+    const responseCategory = await $api.workshop.getWorkshopCategory();
+    categoriesAllList.value = responseCategory?.data;
 
-  set(value) {
-    if (pageValue.value?.unique === 'passenger') {
-      addAnnouncement.value.details.passenger_count = value;
-    } else if (pageValue.value?.unique === 'transfer') {
-      addAnnouncement.value.details.transport_count = value;
-    } else {
-      addAnnouncement.value.details.load_weight.amount = value;
-    }
+    const responseService = await $api.workshop.getWorkshopService();
+    servicesAllList.value = responseService?.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
   }
 });
 
 // File upload handler
-const handleFileUpload = (event) => {
-  const file = event.target.files[0];
-  if (file) {
+const handleFileUpload = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+
+  if (file && file.type.startsWith('image/')) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      const base64 = e.target.result as string;
+      const base64 = e.target?.result as string;
+
+      // Extract the base64 data without the metadata prefix
+      const base64Data = base64.split(',')[1];
+
       collectImages.value.push({
         fileName: file.name,
-        base64: base64.split(',')[1],
+        base64: base64Data, // Send only the base64 data without the prefix
       });
+
       imageList.value.push(URL.createObjectURL(file));
     };
     reader.readAsDataURL(file);
+  } else {
+    console.error("Invalid file type. Please upload an image.");
   }
-};
-
-// Delete image
-const deleteImage = (index) => {
-  imageList.value.splice(index, 1);
-  collectImages.value.splice(index, 1);
 };
 
 const hideDetailsOnLocationChange = ref(false);
 
 const setLocation = (name) => {
-  console.log('Start MAP: ', name);
   mapStore.setMarker({
     id: name,
     marker: {
@@ -171,9 +138,14 @@ const setLocation = (name) => {
       }
     }
   }, name)
-  console.log('End MAP: ', name);
   hideDetailsOnLocationChange.value = true
 }
+
+// Delete image
+const deleteImage = (index) => {
+  imageList.value.splice(index, 1);
+  collectImages.value.splice(index, 1);
+};
 
 // Create announcement submission handler
 const createAnnouncement = async (announce) => {
@@ -185,27 +157,32 @@ const createAnnouncement = async (announce) => {
   }
 
   try {
+    // Set advertisement type based on active tab
+    // announce.adv_type = props.activeTab === 1 ? 'RECEIVE' :
+    //     props.activeTab === 2 ? 'PROVIDE' : '';
+
     const announcementResponse = await $api.workshop.createWorkshop(announce);
     const advertisementId = announcementResponse?.data?.id;
 
     // Send images
-    const imagePayload = {
-      advertisement_id: advertisementId,
-      images: collectImages.value,
-    };
-    await $api.image.sendImage(imagePayload);
+    if (collectImages.value.length > 0) {
+      // Send images with proper format
+      const imagePayload = {
+        advertisement_id: advertisementId,
+        images: collectImages.value.map(img => ({
+          fileName: img.fileName,
+          base64: img.base64, // This is already the clean base64 data
+          mimeType: img.mimeType, // Include MIME type if the API requires it
+        })),
+      };
 
-    imagePayload.images = [];
+      await $api.image.sendImage(imagePayload);
+    }
 
     // Reset form
     addAnnouncement.value = {
       adv_type: '',
-      service_type_id: '',
-      from_location: {
-        lat: null,
-        lng: null,
-        name: null,
-      },
+      service_type_id: 7,
       to_location: {
         lat: null,
         lng: null,
@@ -213,16 +190,13 @@ const createAnnouncement = async (announce) => {
       },
       price: null,
       details: {
-        transportation_type_id: null,
-        company_name: null,
-        load_weight: {
-          amount: null,
-          name: null
-        }
+        area: null,
       },
       note: null,
     };
 
+    imageList.value = [];
+    collectImages.value = [];
     // Optional: Show success message or close dialog
     model.value = false;
   } catch (error) {
@@ -230,11 +204,6 @@ const createAnnouncement = async (announce) => {
     // Optional: Show error toast or notification
   }
 };
-
-watch(() => props.announceValue, (newValue) => {
-  pageValue.value = newValue;
-  addAnnouncement.value.service_type_id = serviceTypeId.value;
-});
 </script>
 
 <template>
@@ -244,26 +213,22 @@ watch(() => props.announceValue, (newValue) => {
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
       <div class="grid grid-cols-2 gap-4">
-        <LocationItem :location="addAnnouncement.from_location" as="div" class="" name="from_location"
-                      @click="setLocation('from_location')"/>
-
         <LocationItem :location="addAnnouncement.to_location" as="div" class="" name="to_location"
                       @click="setLocation('to_location')"/>
-
-        <FloatLabel variant="in">
-          <InputText v-model="computedModelValue" id="in_label" variant="filled" type="number"
-                     class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-          <label for="in_label"
-                 class="!text-[#292D324D]">
-            {{pageValue?.unique === 'passenger' ? 'Maksimal yo‘lovchi soni' : pageValue?.unique === 'transfer' ? 'Maksimal transport soni' : 'Maksimal yuk sig‘imi(kg)' }}
-          </label>
-        </FloatLabel>
 
         <FloatLabel variant="in">
           <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
                      class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
           <label for="in_label" class="!text-[#292D324D]">Narx</label>
         </FloatLabel>
+
+        <FloatLabel variant="in">
+          <InputText v-model="addAnnouncement.details.area" id="in_label" variant="filled" type="number"
+                     class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
+          <label for="in_label"
+                 class="!text-[#292D324D]">Maydon</label>
+        </FloatLabel>
+
       </div>
 
       <div class="flex flex-col gap-2 w-full !mt-[24px]">
@@ -320,7 +285,7 @@ watch(() => props.announceValue, (newValue) => {
         </p>
       </div>
 
-      <div class="w-full flex justify-end !mt-5">
+      <div class="w-full flex justify-end">
         <button
             type="submit"
             :disabled="v$.$invalid"
