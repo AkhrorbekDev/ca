@@ -4,7 +4,9 @@ import AddAnnouncementModal from "@/pages/Services/Announcement/components/AddAn
 import { announcement } from "@/pages/Services/Announcement/constants";
 import { inject, nextTick, onMounted, onUnmounted, ref } from 'vue';
 import { AnnouncementType } from "@/pages/Services/Announcement/announcement.types";
+import {useRouter} from "vue-router";
 
+const router = useRouter();
 const visible = ref(false);
 const visible2 = ref(false);
 const visible2Data = ref<any>({});
@@ -19,10 +21,6 @@ const closeMenu = () => {
   document.body.addEventListener("click", () => {
     menuVisible.value = false;
   });
-};
-
-const toggleMenu = () => {
-  menuVisible.value = !menuVisible.value;
 };
 
 const openDetail = (item) => {
@@ -49,12 +47,18 @@ const handleClickCard = (data) => {
   }
 };
 
-const $auth = inject('auth');
 const $api = inject('api');
 const announcementAllData = ref<AnnouncementType>([]);
 
 const activeTab = ref(0);
 const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
+
+const toggleMenu = () => {
+  if (activeTab.value === 1) {
+    return router.push({ path: 'services' });
+  }
+  menuVisible.value = !menuVisible.value;
+};
 
 onMounted(async () => {
   await fetchAnnouncements();
@@ -62,14 +66,6 @@ onMounted(async () => {
 
 const fetchAnnouncements = async () => {
   try {
-    // console.log($auth.loggedIn);
-    await $auth.login({
-      "phone_number": "998990195492",
-      "sms_type": "phone", // phone, mail
-      "session_token": "64430f938253f55cb6ebecbb46928523",
-      "security_code": "5555"
-    });
-
     let params = {};
     if (activeTab.value === 1) {
       params.adv_type = 'RECEIVE';
@@ -179,7 +175,7 @@ const openModal = (item) => {
     </div>
 
     <div class="!mt-[31px]">
-      <div class="grid grid-cols-5 gap-6">
+      <div class="grid xl:grid-cols-5 grid-cols-4 gap-6">
         <div class="bg-white rounded-[24px] !py-[7px] !px-[18px] cursor-pointer"
              v-for="(item) in announcementAllData"
              :key="item?.id" @click="openModal(item)">
@@ -226,6 +222,7 @@ const openModal = (item) => {
     </div>
 
     <ModalAnnouncement :announcement="selectedAnnouncement" v-model="visible" :tabIndex="activeTab"/>
+
     <AddAnnouncementModal :active-tab="activeTab" v-model="visible2" :announceValue="visible2Data"/>
   </div>
 </template>

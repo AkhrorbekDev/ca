@@ -40,15 +40,6 @@ const confirm1 = (id: number) => {
     },
     accept: async () => {
       try {
-        console.log("Attempting to log in...");
-        await $auth.login({
-          "phone_number": "998990195492",
-          "sms_type": "phone", // phone, mail
-          "session_token": "64430f938253f55cb6ebecbb46928523",
-          "security_code": "5555"
-        });
-        console.log("Login successful");
-
         const editAnnouncement = {
           id: id,
           status: "IS_ACTIVE"
@@ -72,7 +63,6 @@ const confirm1 = (id: number) => {
   <Dialog dismissableMask v-model:visible="model" modal :style="{ width: '50rem' }"
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <template #header>
-      <pre>{{announcement?.id}}</pre>
       <div class="grow text-center text-[#292D32] text-[24px] font-medium">
         {{announcement?.service_name}}
       </div>
@@ -180,7 +170,7 @@ const confirm1 = (id: number) => {
 
             <div class="flex items-center">
               <span class="text-[#AFAFAF] text-[16px] !mr-1">Izoh:</span>
-              <span class="text-[#000000] text-[16px] !mr-1">{{announcement?.comments}}</span>
+              <span class="text-[#000000] text-[16px] !mr-1">{{announcement?.note}}</span>
             </div>
           </div>
 
@@ -243,7 +233,3 @@ const confirm1 = (id: number) => {
     </ConfirmDialog>
   </Dialog>
 </template>
-
-<style lang="scss">
-
-</style>

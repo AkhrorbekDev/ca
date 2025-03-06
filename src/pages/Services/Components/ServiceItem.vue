@@ -128,13 +128,13 @@ const toggle = (event) => {
 };
 
 
-onMounted(() => {
-
-  let item = services.find(el => el.unique == route.params.type)
-  if (Object.keys(item).length) {
-    store.activeService = item
-  }
-})
+// onMounted(() => {
+//
+//   let item = services.find(el => el.unique == route.params.type)
+//   if (Object.keys(item).length) {
+//     store.activeService = item
+//   }
+// })
 
 
 watch(mapStore.getMarkers, (newVal) => {
