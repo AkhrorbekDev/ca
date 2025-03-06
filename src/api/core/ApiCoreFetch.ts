@@ -14,6 +14,14 @@ interface ApiCoreFetchInterface {
 
 }
 
+const getPropertyValue = (parent, child) => {
+    const isInvalid = (parent !== undefined) && (parent[child] !== undefined) && (parent !== '')
+    if (isInvalid) {
+        return parent[child]
+    }
+    return ''
+}
+
 class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
 
     _fetch: $Fetch;
@@ -33,8 +41,23 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
         }
     }
 
-    async onResponseError(context: FetchContext, app) {
-        console.log(context, 'res error')
+    async onResponseError({
+                              response,
+                              options
+                          }
+    ) {
+        const message = getPropertyValue(response._data, 'message')
+        const statusText = getPropertyValue(response, 'statusText')
+        const statusCode = getPropertyValue(response, 'status')
+        const sendingMessage = message !== '' ? message : statusText
+
+        return Promise.reject({
+            data: response._data,
+            message: sendingMessage,
+            statusText: sendingMessage,
+            statusCode,
+            status: statusCode,
+        })
     }
 
     constructor(context, options) {

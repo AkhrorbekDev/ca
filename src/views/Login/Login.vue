@@ -23,16 +23,21 @@ const router = useRouter()
 const $api = inject('api')
 const $auth = inject('auth')
 const value = ref<string>('+998')
+const maskedPhone = ref<string>('')
 const vForm = ref(null)
 const optCode = ref(null)
 const vCodeForm = ref(null)
 const authType = ref(1)
-const showCodeField = ref(false)
+const showCodeField = ref(true)
 
 const validationSchema = yup.object({
   phone: yup.string().required().min(12),
 })
+const validationSchema2 = yup.object({
+  security_code: yup.string().required().min(4),
+})
 const showBackground = ref(true)
+const isLoading = ref(false)
 
 const changeAuthType = (e) => {
   e.preventDefault()
@@ -45,9 +50,26 @@ const changeAuthType = (e) => {
 const updateOptCode = (e) => {
   vCodeForm.value.setFieldValue('security_code', e)
 }
-const onSubmit = (res) => {
+
+function maskNumber(number) {
+  // Convert to string in case it's a number
+  const numStr = number.toString();
+
+  // Get the first 3 and last 4 digits
+  const firstPart = numStr.slice(0, 3);
+  const lastPart = numStr.slice(-4);
+
+  // Create asterisks for the middle part
+  const middlePart = '*'.repeat(numStr.length - 7);
+
+  // Combine all parts
+  return firstPart + middlePart + lastPart;
+}
+
+const onSubmit = () => {
   vForm.value.validateField('phone').then(res => {
     if (res) {
+      isLoading.value = true
       $api.auth.sendSmsCode({
         phone_number: vForm.value.values.phone,
         sms_type: 'phone',
@@ -57,28 +79,49 @@ const onSubmit = (res) => {
             if (!response.error) {
               showBackground.value = false
               showCodeField.value = true
+              maskedPhone.value = maskNumber(vForm.value.values.phone)
               vForm.value.setFieldValue('session_token', response.data.session_token)
             } else {
-              vForm.value.setFieldError(globalErrorField, response.message)
+              vForm.value.setFieldError('globalErrorField', response.message)
             }
+          })
+          .catch(err => {
+            vForm.value.setFieldError('globalErrorField', err.message)
+          })
+          .finally(() => {
+            isLoading.value = false
           })
     }
   })
+}
+
+const resendSmsCode = () => {
+  onSubmit()
 }
 const route = useRoute()
 const verifySMSCode = () => {
   vCodeForm.value.validate().then(res => {
     if (res.valid)
-      $auth.login({
-        phone_number: vForm.value.values.phone,
-        session_token: vForm.value.values.session_token,
-        sms_type: 'phone',
-        security_code: vCodeForm.value.values.security_code
-      }).then(res => {
+      isLoading.value = true
+    $auth.login({
+      phone_number: vForm.value.values.phone,
+      session_token: vForm.value.values.session_token,
+      sms_type: 'phone',
+      security_code: vCodeForm.value.values.security_code
+    }).then(res => {
+      if (authType.value === 1) {
         router.push({
           name: 'services'
         })
-      })
+      } else {
+
+      }
+    }).catch(err => {
+      vForm.value.setFieldError('globalErrorField', err.response?._data?.message || 'Something wrong')
+    })
+        .finally(() => {
+          isLoading.value = false
+        })
   })
 }
 
@@ -127,9 +170,17 @@ const verifySMSCode = () => {
 
           <button
               type="submit"
-              class="!bg-[#66C61C] !py-[16px] text-white text-[16px] rounded-[20px] !mt-[16px] w-full"
+              class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-[16px] w-full"
           >
+
             Kirish
+            <svg v-if="isLoading" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
           </button>
 
           <div v-if="authType === 1" class="!mt-[24px] text-center text-gray-600">
@@ -149,25 +200,45 @@ const verifySMSCode = () => {
     <Form
         v-show="showCodeField"
         ref="vCodeForm"
+        :validation-schema="validationSchema2"
         @submit="verifySMSCode"
     >
       <div class="flex items-center justify-center h-[100vh]">
         <div class="bg-white rounded-[24px] !w-[400px]">
           <h2 class="text-[#282B30] text-[36px] !mb-[20px] text-center font-600">Kodni kiriting</h2>
           <p class="text-[#292D324D] text-[16px] text-center !mb-[24px]">
-            Tasdiqlash kodini +998******9763 raqamiga yubordik.
+            Tasdiqlash kodini {{ maskedPhone }} raqamiga yubordik.
             Quyidagi maydonga mobil
             kodingizni kiriting.
           </p>
 
           <div as="div" name="security_code" class="flex flex-col items-center !mt-[24px]">
-            <InputOtp :model-value="optCode" @update:model-value="updateOptCode" class="!border-none !outline-none"/>
+            <InputOtp :class="{
+                _invalid: vCodeForm?.errors.security_code
+              }" :model-value="optCode" @update:model-value="updateOptCode" class="!border-none !outline-none"/>
+          </div>
+
+          <div class="flex justify-center items-center w-full !mt-[36px] min-h-[24px]">
+            <span
+                v-if="vForm?.errors?.globalErrorField"
+                class="text-[#EA5455]">
+              {{ vForm.errors.globalErrorField }}
+            </span>
           </div>
 
           <button
               type="submit"
-              class="!bg-[#66C61C] !py-[16px] text-white text-[16px] rounded-[20px] !mt-[36px] w-full">
+              class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-[16px] w-full"
+          >
+
             Kirish
+            <svg v-if="isLoading" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
           </button>
 
           <div class="!mt-[24px] text-center text-gray-600">
@@ -184,5 +255,10 @@ const verifySMSCode = () => {
 <style lang="scss">
 ._invalid {
   border-color: #EA5455;
+
+  .p-inputtext {
+    border-color: #EA5455;
+
+  }
 }
 </style>

@@ -35,7 +35,7 @@ const moduleDefaults: ModuleOptions = {
         type: 'Bearer',
         prefix: 'authRefreshToken',
         expiration: 'refresh_token_expire_time',
-        maxAge: 60 * 120 * 24,
+        maxAge: 60 * 60 * 24,
         expirationPrefix: 'expiration'
     },
     user: {
