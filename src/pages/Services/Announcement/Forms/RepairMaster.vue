@@ -26,9 +26,6 @@ const $auth = inject('auth');
 const $api = inject('api');
 
 // Refs for form data and lists
-const oilList = ref<{ oil_type: string; price: number }[] | []>([]);
-const rentList = ref<{ oil_type: string; price: number }[] | []>([]);
-const definitionList = ref<{ oil_type: string; price: number }[] | []>([]);
 const imageList = ref<string[] | []>([]);
 const categoriesAllList = ref([]);
 const servicesAllList = ref([]);
@@ -38,7 +35,7 @@ const service = ref<number[]>([]);
 const collectImages = ref([]);
 
 const addAnnouncement = ref<Announcement>({
-  adv_type: 'RECEIVE',
+  adv_type: 'PROVIDE',
   service_type_id: 5,
   from_location: {
     lat: null,
