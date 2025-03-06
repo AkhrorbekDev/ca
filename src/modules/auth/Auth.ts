@@ -130,7 +130,7 @@ class Auth {
         const refreshTokenStatus = this.refreshToken.status()
 
         // Token has expired. Attempt `tokenCallback`
-        console.log(tokenStatus)
+        console.log(tokenStatus, refreshTokenStatus, this.refreshToken.get(), 'test')
         if (refreshTokenStatus.expired()) {
             response.refreshTokenExpired = true
             return response
@@ -238,6 +238,12 @@ class Auth {
                 refreshTokenExpired,
                 isRefreshable
             } = this.check(true)
+            console.log({
+                valid,
+                tokenExpired,
+                refreshTokenExpired,
+                isRefreshable
+            })
             let isValid = valid
 
             // Refresh token has expired. There is no way to refresh. Force reset.
