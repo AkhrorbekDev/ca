@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, inject } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
+import useMapStore from "@/stores/map.store";
 import {
   required,
   numeric,
@@ -8,9 +9,10 @@ import {
   maxLength
 } from '@vuelidate/validators';
 import { Announcement } from "../types";
-import ConfirmDialog from 'primevue/confirmdialog';
-import { useConfirm } from "primevue/useconfirm";
+import LocationItem from "@/components/form-elements/LocationItem.vue";
+import getGeoObject from "@/composables/getGeoObject";
 
+const mapStore = useMapStore()
 const model = defineModel();
 const props = defineProps({
   announceValue: {
@@ -22,7 +24,6 @@ const props = defineProps({
   }
 });
 
-const $auth = inject('auth');
 const $api = inject('api');
 
 // Refs for form data and lists
@@ -55,7 +56,7 @@ const addAnnouncement = ref<Announcement>({
 // Validation rules
 const rules = {
   from_location: {
-    name: { required },
+    required,
   },
   price: {
     required,
@@ -67,8 +68,6 @@ const rules = {
       required,
       maxLength: maxLength(100)
     },
-    // category: { required },
-    // services: { required }
   },
   note: { maxLength: maxLength(1000) }
 };
@@ -87,6 +86,40 @@ onMounted(async () => {
     console.error("Error fetching data:", error);
   }
 });
+
+const hideDetailsOnLocationChange = ref(false);
+
+const setLocation = (name) => {
+  console.log('Start MAP: ', name);
+  mapStore.setMarker({
+    id: name,
+    marker: {
+      id: name,
+      markerProps: {
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: mapStore.defaultCoordinates
+        }
+      },
+      callback: async (e) => {
+        await getGeoObject({cord: e.coordinates}).then(res => {
+          const marker = mapStore.getMarker(name)
+          addAnnouncement.value[name] =  {
+            lat: marker.markerProps.geometry.coordinates[0],
+            lng: marker.markerProps.geometry.coordinates[1],
+            name: res.data.description
+          }
+          mapStore.removeMarker(name)
+        }).finally(() => {
+          hideDetailsOnLocationChange.value = false
+        })
+      }
+    }
+  }, name)
+  console.log('End MAP: ', name);
+  hideDetailsOnLocationChange.value = true
+}
 
 // File upload handler
 const handleFileUpload = (event) => {
@@ -190,15 +223,14 @@ const createAnnouncement = async (announce) => {
 </script>
 
 <template>
-  <form
+  <Transition name="bounce">
+    <form
+      v-if="!hideDetailsOnLocationChange"
       @submit.prevent="createAnnouncement(addAnnouncement)"
   >
     <div class="grid grid-cols-2 gap-4 !mb-[24px]">
-      <FloatLabel variant="in">
-        <InputText v-model="addAnnouncement.from_location.name" id="in_label" variant="filled"
-                   class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-        <label for="in_label" class="!text-[#292D324D]">Qayerdan</label>
-      </FloatLabel>
+      <LocationItem :location="addAnnouncement.from_location" as="div" class="" name="from_location"
+                    @click="setLocation('from_location')"/>
 
       <FloatLabel variant="in">
         <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
@@ -214,7 +246,7 @@ const createAnnouncement = async (announce) => {
       </FloatLabel>
     </div>
 
-    <div v-if="announceValue.unique !== 'master'"
+    <div v-if="announceValue.unique == 'master'"
          class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px] !mb-[24px]">
       <span class="text-[#292D324D] text-[12px] !mb-[8px]">Toifalar</span>
 
@@ -308,4 +340,25 @@ const createAnnouncement = async (announce) => {
       </button>
     </div>
   </form>
+  </Transition>
 </template>
+
+<style scoped>
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style>
