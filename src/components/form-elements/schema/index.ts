@@ -3,7 +3,6 @@ import * as yup from "yup";
 const baseSchema = {
     adv_type: yup.string().required(),
     service_type_id: yup.number().required(),
-    price: yup.number().required().moreThan(0),
     note: yup.string().notRequired()
 }
 
@@ -47,7 +46,6 @@ const passengerTrafficSchema = yup.object({
         passenger_count: yup.number().required().moreThan(0)
     }),
     ...baseSchema,
-    price: yup.number().required().moreThan(0),
 })
 
 const specialTechniqueSchema = yup.object({
@@ -62,7 +60,6 @@ const specialTechniqueSchema = yup.object({
         transportation_type_id: yup.number().required(),
 
     }),
-    price: yup.number().required().moreThan(0),
     ...baseSchema
 })
 
@@ -84,7 +81,6 @@ const transportRentSchema = yup.object({
         }), // Texnik xarakteristikalar
         "tariffs": yup.array({
             day: yup.number().required(),
-            price: yup.number().required()
         })
     }),
     from_location: yup.object({
@@ -143,8 +139,6 @@ const transportTransferSchema = yup.object({
         transportation_type_id: yup.number().required(),
         transport_count: yup.number().required().moreThan(0)
     }),
-    price: yup.number().required().moreThan(0),
-
     ...baseSchema
 })
 
