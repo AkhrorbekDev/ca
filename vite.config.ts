@@ -17,6 +17,9 @@ export default defineConfig({
             },
         },
     },
+    build: {
+        target: 'esnext' // This enables top-level await
+    },
     plugins: [
         vue(),
         vueDevTools(),
