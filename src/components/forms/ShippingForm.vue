@@ -22,7 +22,11 @@ const props = defineProps({
 })
 const dateRef = ref(null)
 const mainForm = ref(null)
+const mainWrapper = ref(null)
+const detailsWrapper = ref(null)
 const hideDetailsOnLocationChange = ref(false)
+const isSubmited = ref(false)
+const emit = defineEmits(['on:success'])
 
 const setLocation = (name) => {
   mapStore.setMarker({
@@ -37,17 +41,18 @@ const setLocation = (name) => {
         }
       },
       callback: async (e) => {
-        await getGeoObject({cord: e.coordinates}).then(res => {
-          const marker = mapStore.getMarker(name)
-          mainForm.value.setFieldValue(name, {
-            lat: marker.markerProps.geometry.coordinates[0],
-            lng: marker.markerProps.geometry.coordinates[1],
-            name: res.data.description
-          })
-          mapStore.removeMarker(name)
-        }).finally(() => {
-          hideDetailsOnLocationChange.value = false
-        })
+        await getGeoObject({cord: e.coordinates})
+            .then(res => {
+              const marker = mapStore.getMarker(name)
+              mainForm.value.setFieldValue(name, {
+                lat: marker.markerProps.geometry.coordinates[0],
+                lng: marker.markerProps.geometry.coordinates[1],
+                name: res.data.description
+              })
+              mapStore.removeMarker(name)
+            }).finally(() => {
+              hideDetailsOnLocationChange.value = false
+            })
       }
     }
   }, name)
@@ -61,6 +66,10 @@ const showDetails = ref(false)
 const toggleShowDetails = () => {
   showDetails.value = !showDetails.value
 }
+
+const images = ref([])
+const collectImages = ref([]);
+
 
 const cargoTypes = [
   {
@@ -159,6 +168,26 @@ const loadWeightTypes = [
   }
 ]
 
+const deleteImage = (index) => {
+  images.value.splice(index, 1);
+};
+
+const handleFileUpload = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      collectImages.value.push({
+        fileName: file.name,
+        base64: e.target.result.replace(/^data:image\/\w+;base64,/, '') // Remove the data URL prefix
+      });
+      images.value.push(URL.createObjectURL(file)); // For preview
+      event.value = ''
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
 const onSaveDetails = () => {
   const errors = mainForm.value.getErrors()
   if (errors) {
@@ -191,13 +220,29 @@ const staticValues = ref({
 const transports = ref([])
 const selectedTransports = ref(null)
 const transportLoading = ref(false)
+// const toast = useToast()
 const submit = () => {
   mainForm.value.validate()
       .then(res => {
-        if (res.valid) {
+        if (res.valid && collectImages.value.length > 0) {
+          isSubmited.value = true
           $api.advertisement.createAdvertisement(mainForm.value.getValues())
-              .then(response => {
-                console.log(response, 'res')
+              .then(async response => {
+
+                const imagePayload = {
+                  advertisement_id: response.data.id,
+                  images: collectImages.value,
+                }
+                await $api.image.sendImage(imagePayload).then(() => {
+                  mainForm.value.resetForm()
+                  emit('on:success')
+                  selectedTransports.value = null
+                  collectImages.value = []
+                  images.value = []
+                })
+              })
+              .finally(() => {
+                isSubmited.value = false
               })
         }
       })
@@ -208,8 +253,41 @@ const updateTransportType = (e) => {
   selectedTransports.value = e
 }
 
+const registerClickOutSide = (register = false) => {
+  if (register) {
+    document.addEventListener('click', (e) => {
+      console.log(detailsWrapper.value.contains(e.target))
+      if (!detailsWrapper.value.contains(e.target)) {
+        // showDetails.value = false
+      }
+    })
+  } else {
+    document.removeEventListener('click', (e) => {
+      if (!detailsWrapper.value.contains(e.target)) {
+        showDetails.value = false
+      }
+    })
+  }
+}
+//
+// watch(showDetails, (newVal) => {
+//   console.log(newVal, 'newVal')
+//   if (newVal) {
+//     registerClickOutSide(newVal)
+//   } else {
+//     registerClickOutSide(newVal)
+//   }
+// }, {
+//   immediate: false
+// })
 watch(() => props.serviceTypeId, () => {
   mainForm.value.resetForm(staticValues.value)
+  selectedTransports.value = null
+  transportLoading.value = true
+  $api.transport.getTransportByServiceId(props.serviceTypeId)
+      .then(res => {
+        transports.value = res.data
+      }).finally(() => transportLoading.value = false)
 })
 onMounted(() => {
   transportLoading.value = true
@@ -227,7 +305,7 @@ onMounted(() => {
       as="div"
       :initial-values="staticValues"
       :validation-schema="shippingSchema"
-      class="navbar-items__form w flex items-start !transition-all"
+      class="navbar-items__form min-w-[360px] flex items-start !transition-all"
       :class="{
             '_form-active': show,
             hideDetailsOnLocationChange: hideDetailsOnLocationChange
@@ -235,7 +313,8 @@ onMounted(() => {
   >
     <div class="navbar-items__divider"/>
     <div
-        class="flex flex-col h-full gap-4 !p-[16px]">
+        ref="mainWrapper"
+        class="flex flex-col h-full w-full gap-4 !p-[16px]">
       <LocationItem :location="values.from_location" as="div" class="col-span-full" name="from_location"
                     @click="setLocation('from_location')"/>
 
@@ -280,8 +359,10 @@ onMounted(() => {
                 </div>
                 <RadioButton
                     :model-value="values.details?.load_weight.name"
-                    :inputId="`name.${slotProps.option.value}`" :name="field.name"
-                    :value="slotProps.option.value"/>
+                    :inputId="`name.${slotProps.option.value}`"
+                    :name="field.name"
+                    :value="slotProps.option.value"
+                />
               </div>
             </template>
 
@@ -377,15 +458,26 @@ onMounted(() => {
       </Field>
       <button
           @click="submit"
-          class="bg-[#66C61C] !mt-auto w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]">
+          class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-auto w-full"
+      >
+
         E’lonni joylash
+
+        <svg v-if="isSubmited" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
       </button>
     </div>
     <div
         v-show="show && showDetails"
+        ref="detailsWrapper"
         @click.stop
         class="bg-white rounded-[24px] !p-[16px] w-full absolute
-              gap-y-[13px] left-[110%] bottom-0 top-[0] max-h-[100vh] h-auto overflow-y-auto"
+              gap-y-[13px] left-[110%] bottom-0 top-[0] max-h-[100vh] h-max !mt-auto !mb-auto overflow-y-auto"
         style="box-shadow: 0 32px 100px 0 #292D3229;"
     >
       <div>
@@ -418,6 +510,43 @@ onMounted(() => {
               as="div" name="details.load_service_id" v-for="item in loadTypes"
               :key="item.label" :item="item" :value="item.value"/>
         </Field>
+        <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
+          <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
+
+          <div class="grid grid-cols-2 gap-4 !mt-[8px] rounded-2xl">
+            <div v-for="(img, index) in images" :key="index" class="relative group !mr-0 w-[105px] h-[105px]">
+              <img class="w-full h-full object-cover rounded-2xl"
+                   :src="img" alt="img"
+                   width="105">
+
+              <div
+                  class="group-hover:flex hidden absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 rounded-2xl items-center justify-center">
+                <button @click="deleteImage(index)">
+                  <i class="pi pi-trash cursor-pointer" style="font-size: 1.5rem; color: red"></i>
+                </button>
+              </div>
+            </div>
+
+            <label for="fileAnnouncement" class="relative cursor-pointer">
+              <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="0.5" y="0.5" width="109" height="109" rx="15.5" stroke="#66C61C" stroke-dasharray="8 8"/>
+                <path d="M55.5046 62V55" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path d="M53.3164 57L55.5033 54.833L57.6902 57" stroke="#66C61C" stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"/>
+                <path
+                    d="M59.5406 62H62.124C64.0697 62 65.6562 60.428 65.6562 58.5C65.6562 56.572 64.0697 55 62.124 55H61.685V54C61.685 50.69 58.9704 48 55.63 48C52.6257 48 50.135 50.178 49.6628 53.023C47.2639 53.144 45.3516 55.093 45.3516 57.5C45.3516 59.985 47.385 62 49.8928 62H51.4672"
+                    stroke="#66C61C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+
+              <input @change="handleFileUpload" class="absolute opacity-0 inset-0 cursor-pointer"
+                     id="fileAnnouncement" type="file"
+                     accept="image/*">
+
+            </label>
+          </div>
+        </div>
         <Field as="div" name="note" class="flex flex-col gap-2 w-full !mb-[24px]">
           <label for="description" class="text-[#292D3280] text-[12px]">Izoh</label>
           <Textarea :model-value="values.note" id="description" class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
@@ -475,6 +604,8 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .hideDetailsOnLocationChange {
+  transform: translateX(-100%) !important;
+  visibility: hidden !important;
   width: 0 !important;
 }
 

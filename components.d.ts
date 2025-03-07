@@ -40,6 +40,7 @@ declare module 'vue' {
     ServiceNavbar: typeof import('./src/components/ServiceNavbar.vue')['default']
     ServiceSideBar: typeof import('./src/components/ServiceSideBar.vue')['default']
     ShippingForm: typeof import('./src/components/forms/ShippingForm.vue')['default']
+    SidebarTransportsGrid: typeof import('./src/components/SidebarTransportsGrid.vue')['default']
     SpecialTransportRentForm: typeof import('./src/components/forms/SpecialTransportRentForm.vue')['default']
     Textarea: typeof import('primevue/textarea')['default']
     TransportTransferForm: typeof import('./src/components/forms/TransportTransferForm.vue')['default']

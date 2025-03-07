@@ -9,6 +9,7 @@ import {ADV_TYPES} from '@/constants'
 
 const $api = inject('api')
 const mapStore = useMapStore()
+const emit = defineEmits(['on:success'])
 const props = defineProps({
   serviceTypeId: {
     type: Number,
@@ -21,6 +22,7 @@ const props = defineProps({
 })
 const dateRef = ref(null)
 const mainForm = ref(null)
+const mainWrapper = ref(null)
 const hideDetailsOnLocationChange = ref(false)
 
 const setLocation = (name) => {
@@ -127,6 +129,7 @@ const onSaveDetails = () => {
   }
 }
 
+
 const staticValues = ref({
   service_type_id: props.serviceTypeId,
   adv_type: ADV_TYPES.receive,
@@ -142,14 +145,20 @@ const staticValues = ref({
 const transports = ref([])
 const selectedTransports = ref(null)
 const transportLoading = ref(false)
+const isSubmited = ref(false)
 const submit = () => {
   mainForm.value.validate()
       .then(res => {
         if (res.valid) {
+          isSubmited.value = true
           $api.advertisement.createAdvertisement(mainForm.value.getValues())
               .then(response => {
-                console.log(response, 'res')
-              })
+                mainForm.value.resetForm()
+                emit('on:success')
+                selectedTransports.value = null
+              }).finally(() => {
+            isSubmited.value = false
+          })
         }
       })
 }
@@ -175,7 +184,7 @@ onMounted(() => {
       as="div"
       :initial-values="staticValues"
       :validation-schema="deliverySchema"
-      class="navbar-items__form w flex items-start !transition-all"
+      class="navbar-items__form min-w-[360px] flex items-start !transition-all"
       :class="{
             '_form-active': show,
             hideDetailsOnLocationChange: hideDetailsOnLocationChange
@@ -183,7 +192,8 @@ onMounted(() => {
   >
     <div class="navbar-items__divider"/>
     <div
-        class="flex flex-col h-full gap-4 !p-[16px]">
+        ref="mainWrapper"
+        class="flex flex-col h-full w-full gap-4 !p-[16px]">
       <LocationItem :location="values.from_location" as="div" class="col-span-full" name="from_location"
                     @click="setLocation('from_location')"/>
 
@@ -279,15 +289,25 @@ onMounted(() => {
       </Field>
       <button
           @click="submit"
-          class="bg-[#66C61C] !mt-auto w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]">
+          class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-auto w-full"
+      >
+
         E’lonni joylash
+
+        <svg v-if="isSubmited" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
       </button>
     </div>
     <div
         v-show="show && showDetails"
         @click.stop
         class="bg-white rounded-[24px] !p-[16px] w-full absolute
-              gap-y-[13px] left-[110%] bottom-0 top-[0] max-h-[100vh] h-auto overflow-y-auto"
+              gap-y-[13px] left-[110%] bottom-0 top-[0] max-h-[100vh] h-max !mt-auto !mb-auto overflow-y-auto"
         style="box-shadow: 0 32px 100px 0 #292D3229;"
     >
       <div>

@@ -81,30 +81,38 @@ class Auth {
     async init() {
         const tokenStatus = this.token.status()
         const refreshTokenStatus = this.refreshToken.status()
-        console.log(tokenStatus, refreshTokenStatus, 'init tokenStatus')
-        console.log([
-            tokenStatus.valid(),
-            tokenStatus.expired(),
-            tokenStatus.unknown()
-        ])
+        // console.log(tokenStatus, refreshTokenStatus, 'init tokenStatus')
+        // console.log([
+        //     tokenStatus.valid(),
+        //     tokenStatus.expired(),
+        //     tokenStatus.unknown()
+        // ])
         if (tokenStatus.valid()) {
             await this.initializeRequestInterceptor()
             if (this.options.user.fetchUser) {
                 await this.fetchUser()
             }
             this.loggedIn = true
+            return Promise.resolve()
+        } else if (this.options.isRefreshable && refreshTokenStatus.valid()) {
+            return await this.refreshTokens().then(async () => {
+                await this.initializeRequestInterceptor()
+                return Promise.resolve(true)
+            })
         }
-        // return this.request._request('http://localhost:3000')
     }
 
     check(checkStatus = false) {
         const response = {
             valid: false,
-            tokenExpired: false
+            tokenExpired: false,
+            refreshTokenExpired: false,
+            isRefreshable: true
         }
 
         // Sync token
         const token = this.token.sync()
+        const refreshToken = this.refreshToken.sync()
 
         // Token is required but not available
         if (!token) {
@@ -119,9 +127,14 @@ class Auth {
 
         // Get status
         const tokenStatus = this.token.status()
+        const refreshTokenStatus = this.refreshToken.status()
 
         // Token has expired. Attempt `tokenCallback`
-        console.log(tokenStatus)
+        console.log(tokenStatus, refreshTokenStatus, this.refreshToken.get(), 'test')
+        if (refreshTokenStatus.expired()) {
+            response.refreshTokenExpired = true
+            return response
+        }
         if (tokenStatus.expired()) {
             response.tokenExpired = true
             return response
@@ -148,7 +161,7 @@ class Auth {
             }
         }
         options.method = request.method
-        return this.request._request(request.url, options).then(res => {
+        return this.request._request(request.url, options).then(async res => {
 
             if (res.status === 200) {
                 const token = res.data[this.options.token.property]
@@ -161,7 +174,7 @@ class Auth {
                 this.initializeRequestInterceptor(this.options.endpoints.refresh)
 
                 if (this.options.user.fetchUser) {
-                    this.fetchUser()
+                    await this.fetchUser()
                 } else {
                     this.user = {}
                 }
@@ -186,7 +199,6 @@ class Auth {
     }
 
     fetchUser() {
-
         const request = {}, options = {}
         if (!this.options.endpoints.user) {
             throw new Error('Login endpoint is not defined')
@@ -204,6 +216,11 @@ class Auth {
         return this.request._request(request.url, options)
             .then(res => {
                 this.user = res.data[this.options.user.property]
+                return Promise.resolve(res)
+            }).catch(err => {
+                if (err.status === 401) {
+                    return this.refreshTokens()
+                }
             })
     }
 
@@ -221,13 +238,13 @@ class Auth {
                 refreshTokenExpired,
                 isRefreshable
             } = this.check(true)
-            let isValid = valid
             console.log({
                 valid,
                 tokenExpired,
                 refreshTokenExpired,
                 isRefreshable
             })
+            let isValid = valid
 
             // Refresh token has expired. There is no way to refresh. Force reset.
             if (refreshTokenExpired) {
@@ -241,7 +258,7 @@ class Auth {
                     this.reset()
                 }
 
-                if (this.options.isRefreshable) {
+                if (isRefreshable) {
                     isValid = await this
                         .refreshTokens()
                         .then(() => true)
@@ -262,8 +279,8 @@ class Auth {
     }
 
     reset() {
-        this.token.set(false)
-        this.refreshToken.set(false)
+        this.token.set(false, false)
+        this.refreshToken.set(false, false)
         this.interceptor = null
     }
 
@@ -277,9 +294,46 @@ class Auth {
     }
 
 
-    refreshTokens() {
+    async refreshTokens() {
 
+        const request = {}, options = {}
+        if (!this.options.endpoints.refresh) {
+            throw new Error('Refresh token endpoint is not defined')
+        }
+        if (typeof this.options.endpoints.refresh === 'string') {
+            request.url = this.options.endpoints.refresh
+            request.method = Methods.post
+        } else {
+            request.url = this.options.endpoints.refresh.url
+            request.method = Methods[this.options.endpoints.refresh.method?.toLocaleLowerCase()] || Methods['post']
+            if (request.method === 'POST') {
+                options.body = {
+                    refreshToken: this.refreshToken.get()
+                }
+            } else {
+                options.params = {
+                    refreshToken: this.refreshToken.get()
+                }
+            }
+        }
+        options.method = request.method
+        return this.request._request(request.url, options)
+            .then(res => {
+                if (res.status === 200) {
+                    const token = res.data[this.options.token.property]
+                    const tokenExpiration = res.data[this.options.token.expiration] || this.options.token.expiration
+                    const refreshTokenExpiration = res.data[this.options.refreshToken.expiration] || this.options.refreshToken.expiration
+                    const refreshToken = res.data[this.options.refreshToken.property]
+                    this.token.set(token, tokenExpiration)
+                    this.refreshToken.set(refreshToken, refreshTokenExpiration)
+                    return Promise.resolve(res)
+                }
 
+            }).catch(err => {
+                this.reset()
+
+                return Promise.reject(err)
+            })
     }
 
     private _needToken(config): boolean {

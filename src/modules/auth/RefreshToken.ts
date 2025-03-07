@@ -33,7 +33,7 @@ class RefreshToken {
     }
 
     set(tokenValue: string | false, expiration: number | false): string | false {
-        const token = addTokenPrefix(tokenValue, this.options.type)
+        const token = addTokenPrefix(tokenValue)
         this._setToken(token)
 
         this._updateExpiration(expiration)
