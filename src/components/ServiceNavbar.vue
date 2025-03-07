@@ -148,7 +148,6 @@ watchEffect(() => {
 
             <!--dropdown 2-->
             <div class="mega-drop-menu" @click.stop v-if="list.children && currentIndex === index2 && list.isDetail">
-
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards"
                      v-for="(item, index) in Truck"

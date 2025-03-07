@@ -89,17 +89,17 @@ const confirm1 = (id: number) => {
 
       <div>
         <div class="grid grid-cols-2 gap-4">
-          <div class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
+          <div v-if="announcement?.from_location?.name" class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
             <p class="text-[12px] text-[#292D324D] !mb-[6px]">Qayerdan</p>
             <h6 class="text-[#292D32] text-[16px]">{{announcement?.from_location?.name}}</h6>
           </div>
 
-          <div class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
+          <div v-if="announcement?.to_location?.name" class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
             <p class="text-[12px] text-[#292D324D] !mb-[6px]">Qayerga</p>
             <h6 class="text-[#292D32] text-[16px]">{{announcement?.to_location?.name}}</h6>
           </div>
 
-          <div class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
+          <div v-if="announcement.details?.from_date" class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
             <p class="text-[12px] text-[#292D324D] !mb-[6px]">Jo‘natish sanasi</p>
             <div class="flex items-center gap-2">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -138,7 +138,7 @@ const confirm1 = (id: number) => {
             </div>
           </div>
 
-          <div class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
+          <div v-if="announcement.details?.load_weight?.amount" class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
             <p class="text-[12px] text-[#292D324D] !mb-[6px]">Yuk vazni</p>
             <div class="flex items-center justify-between">
               <span class="text-[#292D32] text-[16px]">{{announcement.details?.load_weight?.amount}}</span>
@@ -146,7 +146,7 @@ const confirm1 = (id: number) => {
             </div>
           </div>
 
-          <div class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
+          <div v-if="announcement.transport_name" class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
             <p class="text-[12px] text-[#292D324D] !mb-[6px]">Transport turi</p>
             <div class="flex items-center gap-10">
               <span class="text-[#292D32] text-[16px]">{{announcement.transport_name}}</span>
@@ -163,12 +163,12 @@ const confirm1 = (id: number) => {
               <span class="text-[#000000] text-[16px] !mr-1">Boshqa materiallar</span>
             </div>
 
-            <div class="flex items-center">
+            <div v-if="announcement.details?.pay_type" class="flex items-center">
               <span class="text-[#AFAFAF] text-[16px] !mr-1">To‘lov turi:</span>
               <span class="text-[#000000] text-[16px] !mr-1">{{announcement.details?.pay_type}}</span>
             </div>
 
-            <div class="flex items-center">
+            <div v-if="announcement?.note" class="flex items-center">
               <span class="text-[#AFAFAF] text-[16px] !mr-1">Izoh:</span>
               <span class="text-[#000000] text-[16px] !mr-1">{{announcement?.note}}</span>
             </div>
@@ -180,7 +180,7 @@ const confirm1 = (id: number) => {
               <span class="text-[#000000] text-[16px] !mr-1">Haydovchi yuklarni tashishi kerak</span>
             </div>
 
-            <div class="flex items-center">
+            <div v-if="announcement?.price" class="flex items-center">
               <span class="text-[#AFAFAF] text-[16px] !mr-1">Narxi:</span>
               <span class="text-[#000000] text-[16px] !mr-1">{{formatNumber(announcement?.price)}} UZS</span>
             </div>
@@ -188,11 +188,11 @@ const confirm1 = (id: number) => {
           </div>
         </div>
 
-        <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
+        <div v-if="announcement?.images?.length" class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
           <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
 
           <div class="flex items-center gap-6 !mt-[8px]">
-            <img v-for="(image, index) in announcement?.images" :key="index" class="rounded-2xl" :src="`https://api.carting.uz/uploads/files/${image}`" alt="img" width="109">
+            <img v-for="(image, index) in announcement?.images" :key="index" class="rounded-2xl aspect-square object-cover" :src="`https://api.carting.uz/uploads/files/${image}`" alt="img" width="109">
           </div>
         </div>
 

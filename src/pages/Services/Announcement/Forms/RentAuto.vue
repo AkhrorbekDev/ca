@@ -283,54 +283,215 @@ const oilTypes = [
                 v-model="addAnnouncement.details.company_name"
                 id="company_name"
                 variant="filled"
+                type="number"
                 :class="['w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
                 { '!border !border-red-500': hasNestedError('details', 'company_name') },
                 { '!border-0': !hasNestedError('details', 'company_name') }
               ]"
             />
-            <label for="company_name" class="!text-[#292D324D]">Kompaniya nomi</label>
+            <label for="company_name" class="!text-[#292D324D]">1 sutkalik narx</label>
           </FloatLabel>
           <small v-if="hasNestedError('details', 'company_name')" class="text-red-500 ml-2">
-            Kompaniya nomini kiriting
+            Summani kiriting
           </small>
         </div>
+      </div>
 
-        <div>
-          <FloatLabel variant="in">
-            <InputText
-                v-model="addAnnouncement.details.capacity"
-                id="capacity"
-                variant="filled"
-                type="number"
-                :class="['w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+<!--      Technical characteristics   -->
+      <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
+        <span class="block !mb-[16px] text-[#000000] text-[16px] font-medium">Yoqilg'i turi va narxlari</span>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <FloatLabel variant="in">
+              <InputText
+                  v-model="addAnnouncement.details.company_name"
+                  id="company_name"
+                  variant="filled"
+                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                { '!border !border-red-500': hasNestedError('details', 'company_name') },
+                { '!border-0': !hasNestedError('details', 'company_name') }
+              ]"
+              />
+              <label for="company_name" class="!text-[#292D324D]">Model</label>
+            </FloatLabel>
+            <small v-if="hasNestedError('details', 'company_name')" class="text-red-500 ml-2">
+              Modelni kiriting
+            </small>
+          </div>
+
+          <div>
+            <FloatLabel variant="in">
+              <InputText
+                  v-model="addAnnouncement.details.company_name"
+                  id="company_name"
+                  variant="filled"
+                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                { '!border !border-red-500': hasNestedError('details', 'company_name') },
+                { '!border-0': !hasNestedError('details', 'company_name') }
+              ]"
+              />
+              <label for="company_name" class="!text-[#292D324D]">Kuzov turi</label>
+            </FloatLabel>
+            <small v-if="hasNestedError('details', 'company_name')" class="text-red-500 ml-2">
+              Kuzov turini kiriting
+            </small>
+          </div>
+
+          <div>
+            <FloatLabel variant="in">
+              <Select
+                  :options="oilTypes"
+                  optionLabel="name"
+                  optionValue="name"
+                  placeholder="Tanlang"
+                  :class="[
+                    'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
+                    { '!border !border-red-500': formSubmitted && !item.type },
+                    { '!border-0': !(formSubmitted && !item.type) }
+                  ]"
+              />
+              <label for="in_label" class="!text-[#292D324D]">Uzatmalar qutisi</label>
+            </FloatLabel>
+            <small v-if="hasNestedError('details', 'company_name')" class="text-red-500 ml-2">
+              Uzatmalar qutisini kiriting
+            </small>
+          </div>
+
+          <div>
+            <FloatLabel variant="in">
+              <InputText
+                  v-model="addAnnouncement.details.capacity"
+                  id="capacity"
+                  variant="filled"
+                  type="text"
+                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
                 { '!border !border-red-500': hasNestedError('details', 'capacity') },
                 { '!border-0': !hasNestedError('details', 'capacity') }
               ]"
-            />
-            <label for="capacity" class="!text-[#292D324D]">Maksimal yuk sig'imi</label>
-          </FloatLabel>
-          <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">
-            Yuk sig'imni kiriting
-          </small>
-        </div>
+              />
+              <label for="capacity" class="!text-[#292D324D]">Dvigatel hajmi</label>
+            </FloatLabel>
+            <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">
+              Dvigatel hajmi kiriting
+            </small>
+          </div>
 
-        <div>
-          <FloatLabel variant="in">
-            <InputText
-                v-model="addAnnouncement.price"
-                id="price"
-                variant="filled"
-                type="number"
-                :class="['w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                { '!border !border-red-500': hasError('price') },
-                { '!border-0': !hasError('price') }
+          <div>
+            <FloatLabel variant="in">
+              <InputText
+                  v-model="addAnnouncement.details.capacity"
+                  id="capacity"
+                  variant="filled"
+                  type="text"
+                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                { '!border !border-red-500': hasNestedError('details', 'capacity') },
+                { '!border-0': !hasNestedError('details', 'capacity') }
               ]"
-            />
-            <label for="price" class="!text-[#292D324D]">Yetkazib berish narxi</label>
-          </FloatLabel>
-          <small v-if="hasError('price')" class="text-red-500 ml-2">
-            Narxni kiriting
-          </small>
+              />
+              <label for="capacity" class="!text-[#292D324D]">Rangi</label>
+            </FloatLabel>
+            <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">
+              Rangini kiriting
+            </small>
+          </div>
+
+          <div>
+            <FloatLabel variant="in">
+              <InputText
+                  v-model="addAnnouncement.details.capacity"
+                  id="capacity"
+                  variant="filled"
+                  type="number"
+                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                { '!border !border-red-500': hasNestedError('details', 'capacity') },
+                { '!border-0': !hasNestedError('details', 'capacity') }
+              ]"
+              />
+              <span class="absolute right-5 top-9">litr</span>
+              <label for="capacity" class="!text-[#292D324D]">Bagaj hajmi</label>
+            </FloatLabel>
+            <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">
+              Bagaj hajmini kiriting
+            </small>
+          </div>
+
+          <div>
+            <FloatLabel variant="in">
+              <InputText
+                  v-model="addAnnouncement.details.capacity"
+                  id="capacity"
+                  variant="filled"
+                  type="number"
+                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                { '!border !border-red-500': hasNestedError('details', 'capacity') },
+                { '!border-0': !hasNestedError('details', 'capacity') }
+              ]"
+              />
+              <label for="capacity" class="!text-[#292D324D]">O‘rindiqlar soni</label>
+            </FloatLabel>
+            <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">
+              O‘rindiqlar sonini kiriting
+            </small>
+          </div>
+
+          <div>
+            <FloatLabel variant="in">
+              <Select
+                  :options="oilTypes"
+                  optionLabel="name"
+                  optionValue="name"
+                  placeholder="Tanlang"
+                  :class="[
+                    'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
+                    { '!border !border-red-500': formSubmitted && !item.type },
+                    { '!border-0': !(formSubmitted && !item.type) }
+                  ]"
+              />
+              <label for="in_label" class="!text-[#292D324D]">Konditsioner</label>
+            </FloatLabel>
+            <small v-if="hasNestedError('details', 'company_name')" class="text-red-500 ml-2">
+              Tanlang
+            </small>
+          </div>
+
+          <div>
+            <FloatLabel variant="in">
+              <InputText
+                  v-model="addAnnouncement.details.capacity"
+                  id="capacity"
+                  variant="filled"
+                  type="number"
+                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                { '!border !border-red-500': hasNestedError('details', 'capacity') },
+                { '!border-0': !hasNestedError('details', 'capacity') }
+              ]"
+              />
+              <label for="capacity" class="!text-[#292D324D]">Sug’urta</label>
+            </FloatLabel>
+            <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">
+              Sug’urtani kiriting
+            </small>
+          </div>
+
+          <div>
+            <FloatLabel variant="in">
+              <InputText
+                  v-model="addAnnouncement.details.capacity"
+                  id="capacity"
+                  variant="filled"
+                  type="number"
+                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                { '!border !border-red-500': hasNestedError('details', 'capacity') },
+                { '!border-0': !hasNestedError('details', 'capacity') }
+              ]"
+              />
+              <label for="capacity" class="!text-[#292D324D]">Sutkalik km limiti</label>
+            </FloatLabel>
+            <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">
+              Sutkalik km limitini kiriting
+            </small>
+          </div>
         </div>
       </div>
 
@@ -345,19 +506,18 @@ const oilTypes = [
           <template v-for="(item, index) in oilList" :key="index">
             <div>
               <FloatLabel variant="in">
-                <Select
-                    v-model="item.type"
-                    :options="oilTypes"
-                    optionLabel="name"
-                    optionValue="name"
-                    placeholder="Tanlang"
+                <InputText
+                    v-model="item.price"
+                    id="oil_price"
+                    variant="filled"
+                    type="number"
                     :class="[
-                    'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
-                    { '!border !border-red-500': formSubmitted && !item.type },
-                    { '!border-0': !(formSubmitted && !item.type) }
+                    'w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                    { '!border !border-red-500': formSubmitted && (item.price === '' || item.price === null) },
+                    { '!border-0': !(formSubmitted && (item.price === '' || item.price === null)) }
                   ]"
                 />
-                <label for="in_label" class="!text-[#292D324D]">Yoqilg'i turi</label>
+                <label for="oil_price" class="!text-[#292D324D]">Kun</label>
               </FloatLabel>
             </div>
 

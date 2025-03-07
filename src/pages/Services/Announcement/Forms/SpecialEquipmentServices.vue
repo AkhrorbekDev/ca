@@ -7,7 +7,6 @@ import {
   minValue,
   maxLength
 } from '@vuelidate/validators';
-import { Announcement } from "../types";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
 import getGeoObject from "@/composables/getGeoObject";
 import useMapStore from "@/stores/map.store";
@@ -27,38 +26,29 @@ const props = defineProps({
 const $api = inject('api');
 
 // Refs for form data and lists
-const oilList = ref<{ type: string; price: number }[] | []>([]);
 const imageList = ref<string[] | []>([]);
-const categoriesAllList = ref([]);
-const servicesAllList = ref([]);
 const formSubmitted = ref(false);
 
 const collectImages = ref([]);
 
-const addList = () => {
-  oilList.value.push({ type: '', price: '' });
-};
-
 const addAnnouncement = ref({
   adv_type: 'PROVIDE',
-  service_type_id: 8,
-  from_location: {
+  service_type_id: 3,
+  to_location: {
     lat: null,
     lng: null,
     name: null,
   },
   price: null,
   details: {
-    company_name: null,
-    capacity: null,
-    fuels: [],
+    transportation_type_id: 1,
   },
   note: null,
 });
 
 // Enhanced validation rules
 const rules = {
-  from_location: {
+  to_location: {
     name: { required },
   },
   price: {
@@ -66,29 +56,8 @@ const rules = {
     numeric,
     minValue: minValue(0)
   },
-  details: {
-    company_name: {
-      required,
-    },
-    capacity: {
-      required,
-      numeric,
-    },
-  },
   note: { maxLength: maxLength(1000) }
 };
-
-// Custom validation for fuels list
-const isOilListValid = computed(() => {
-  if (oilList.value.length === 0) return false;
-
-  for (const item of oilList.value) {
-    if (!item.type || item.price === '' || item.price === null) {
-      return false;
-    }
-  }
-  return true;
-});
 
 const hideDetailsOnLocationChange = ref(false);
 
@@ -129,29 +98,6 @@ const hasError = (field) => {
   return formSubmitted.value && v$.value[field].$invalid;
 };
 
-// Helper function for nested fields
-const hasNestedError = (parent, field) => {
-  return formSubmitted.value && v$.value[parent][field].$invalid;
-};
-
-// Fetch lists on component mount
-onMounted(async () => {
-  try {
-    const responseCategory = await $api.workshop.getWorkshopCategory();
-    categoriesAllList.value = responseCategory?.data;
-
-    const responseService = await $api.workshop.getWorkshopService();
-    servicesAllList.value = responseService?.data;
-
-    // Initialize with one empty oil item
-    if (oilList.value.length === 0) {
-      addList();
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-});
-
 // File upload handler
 const handleFileUpload = (event) => {
   const file = event.target.files[0];
@@ -175,15 +121,6 @@ const deleteImage = (index) => {
   collectImages.value.splice(index, 1);
 };
 
-// Remove oil type item
-const removeOilItem = (index) => {
-  oilList.value.splice(index, 1);
-
-  // Ensure there's always at least one oil item
-  if (oilList.value.length === 0) {
-    addList();
-  }
-};
 
 // Create announcement submission handler
 const createAnnouncement = async (announce) => {
@@ -191,17 +128,11 @@ const createAnnouncement = async (announce) => {
 
   const isFormValid = await v$.value.$validate();
 
-  // Check if oil list is valid
-  if (!isOilListValid.value) {
-    return;
-  }
-
   if (!isFormValid) {
     return;
   }
 
   try {
-    announce.details.fuels = oilList.value;
 
     const announcementResponse = await $api.workshop.createWorkshop(announce);
     const advertisementId = announcementResponse?.data?.id;
@@ -219,23 +150,20 @@ const createAnnouncement = async (announce) => {
     addAnnouncement.value = {
       adv_type: 'PROVIDE',
       service_type_id: 8,
-      from_location: {
+      to_location: {
         lat: null,
         lng: null,
         name: null,
       },
       price: null,
-      details: {
-        company_name: null,
-        capacity: null,
-        fuels: [],
-      },
+      // details: {
+      //   transportation_type_id: '',
+      // },
       note: null,
     };
 
     imageList.value = [];
     collectImages.value = [];
-    oilList.value = [{ type: '', price: '' }];
     formSubmitted.value = false;
 
     // Close dialog/form
@@ -245,16 +173,6 @@ const createAnnouncement = async (announce) => {
   }
 };
 
-const oilTypes = [
-  { name: 'AI 80' },
-  { name: 'AI 91' },
-  { name: 'AI 92' },
-  { name: 'AI 95' },
-  { name: 'AI 98' },
-  { name: 'AI 100' },
-  { name: 'Dizel' },
-  { name: 'Gaz' },
-];
 </script>
 
 <template>
@@ -263,54 +181,18 @@ const oilTypes = [
         v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
+      <pre>{{addAnnouncement}}</pre>
       <div class="grid grid-cols-2 gap-4">
         <div>
           <LocationItem
-              :location="addAnnouncement.from_location"
+              :location="addAnnouncement.to_location"
               as="div"
-              :class="['', { 'border border-red-500 rounded-[24px]': formSubmitted && !addAnnouncement.from_location.name }]"
+              :class="['', { 'border border-red-500 rounded-[24px]': formSubmitted && !addAnnouncement.to_location.name }]"
               name="from_location"
-              @click="setLocation('from_location')"
+              @click="setLocation('to_location')"
           />
-          <small v-if="formSubmitted && !addAnnouncement.from_location.name" class="text-red-500 ml-2">
+          <small v-if="formSubmitted && !addAnnouncement.to_location.name" class="text-red-500 ml-2">
             Joylashuvni kiriting
-          </small>
-        </div>
-
-        <div>
-          <FloatLabel variant="in">
-            <InputText
-                v-model="addAnnouncement.details.company_name"
-                id="company_name"
-                variant="filled"
-                :class="['w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                { '!border !border-red-500': hasNestedError('details', 'company_name') },
-                { '!border-0': !hasNestedError('details', 'company_name') }
-              ]"
-            />
-            <label for="company_name" class="!text-[#292D324D]">Kompaniya nomi</label>
-          </FloatLabel>
-          <small v-if="hasNestedError('details', 'company_name')" class="text-red-500 ml-2">
-            Kompaniya nomini kiriting
-          </small>
-        </div>
-
-        <div>
-          <FloatLabel variant="in">
-            <InputText
-                v-model="addAnnouncement.details.capacity"
-                id="capacity"
-                variant="filled"
-                type="number"
-                :class="['w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                { '!border !border-red-500': hasNestedError('details', 'capacity') },
-                { '!border-0': !hasNestedError('details', 'capacity') }
-              ]"
-            />
-            <label for="capacity" class="!text-[#292D324D]">Maksimal yuk sig'imi</label>
-          </FloatLabel>
-          <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">
-            Yuk sig'imni kiriting
           </small>
         </div>
 
@@ -326,82 +208,12 @@ const oilTypes = [
                 { '!border-0': !hasError('price') }
               ]"
             />
-            <label for="price" class="!text-[#292D324D]">Yetkazib berish narxi</label>
+            <label for="price" class="!text-[#292D324D]">Narx</label>
           </FloatLabel>
           <small v-if="hasError('price')" class="text-red-500 ml-2">
             Narxni kiriting
           </small>
         </div>
-      </div>
-
-      <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-        <span class="block !mb-[16px] text-[#000000] text-[16px] font-medium">Yoqilg'i turi va narxlari</span>
-
-        <small v-if="formSubmitted && !isOilListValid" class="text-red-500 mb-4 block">
-          Yoqilg'i turi va narxi to'ldirilishi shart
-        </small>
-
-        <div class="grid grid-cols-2 gap-4">
-          <template v-for="(item, index) in oilList" :key="index">
-            <div>
-              <FloatLabel variant="in">
-                <Select
-                    v-model="item.type"
-                    :options="oilTypes"
-                    optionLabel="name"
-                    optionValue="name"
-                    placeholder="Tanlang"
-                    :class="[
-                    'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
-                    { '!border !border-red-500': formSubmitted && !item.type },
-                    { '!border-0': !(formSubmitted && !item.type) }
-                  ]"
-                />
-                <label for="in_label" class="!text-[#292D324D]">Yoqilg'i turi</label>
-              </FloatLabel>
-            </div>
-
-            <div class="relative">
-              <FloatLabel variant="in">
-                <InputText
-                    v-model="item.price"
-                    id="oil_price"
-                    variant="filled"
-                    type="number"
-                    :class="[
-                    'w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                    { '!border !border-red-500': formSubmitted && (item.price === '' || item.price === null) },
-                    { '!border-0': !(formSubmitted && (item.price === '' || item.price === null)) }
-                  ]"
-                />
-                <label for="oil_price" class="!text-[#292D324D]">Narx</label>
-              </FloatLabel>
-
-              <!-- Remove button for oil items (except the first one if it's the only one) -->
-              <button
-                  v-if="oilList.length > 1"
-                  type="button"
-                  @click="removeOilItem(index)"
-                  class="absolute right-2 top-2 text-red-500 p-2"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </div>
-          </template>
-        </div>
-
-        <button
-            type="button"
-            @click="addList"
-            class="!mt-4 flex items-center text-[#66C61C] !pl-[115px] !py-[12px] !pr-[107px] rounded-[24px] border-[1px] border-[#66C61C]">
-          <svg class="!mr-[16px]" width="10" height="10" viewBox="0 0 10 10" fill="none"
-               xmlns="http://www.w3.org/2000/svg">
-            <path d="M1 5H9M5 1L5 9" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
-          Qo'shish
-        </button>
       </div>
 
       <div class="flex flex-col gap-2 w-full !mt-[24px]">
@@ -416,7 +228,7 @@ const oilTypes = [
             :class="{ 'border border-red-500': hasError('note') }"
         />
         <small v-if="hasError('note')" class="text-red-500">
-          Izoh 1000 belgidan oshmasligi kerak
+          Izoh kiriting
         </small>
       </div>
 

@@ -172,7 +172,6 @@ const createAnnouncement = async (announce) => {
         images: collectImages.value.map(img => ({
           fileName: img.fileName,
           base64: img.base64, // This is already the clean base64 data
-          mimeType: img.mimeType, // Include MIME type if the API requires it
         })),
       };
 
