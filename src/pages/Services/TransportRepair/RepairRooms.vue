@@ -3,7 +3,7 @@ import Cards from '@/pages/Services/Components/Cards.vue'
 import {useRoute, useRouter} from "vue-router";
 import {services} from "@/components/fakeJson"
 import {useCommonStore} from "@/stores/common.store";
-import {onMounted, ref} from "vue";
+import {inject, onMounted, ref, watchEffect} from "vue";
 
 const store = useCommonStore()
 
@@ -72,6 +72,18 @@ const pushRating = (index) => {
 
   rating.value.push(index)
 }
+const $api = inject('api')
+const advertisementData = ref([])
+
+watchEffect(() => {
+  $api.advertisement.getAdvertisement({
+    service_id: 5,
+    repair_type_id: route.params.id
+  }).then(res => {
+    advertisementData.value = res.data;
+  });
+})
+
 </script>
 
 <template>
@@ -168,15 +180,27 @@ const pushRating = (index) => {
       </button>
     </div>
 
-    <div class="grid md:grid-cols-6 gap-5">
-      <Cards
-          v-for="(item, index) in 30"
-          :key="index"
-          :item="item"
-          :is-room="true"
-          @click="enterToDetail(item)"
-      />
-    </div>
+    <template v-if="advertisementData.length > 0">
+      <div class="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
+        <Cards
+            v-for="(item, index) in advertisementData"
+            :key="index"
+            :item="item"
+            :is-room="true"
+            @click="enterToDetail(item?.id)"
+        />
+      </div>
+    </template>
+    <template v-else>
+      <div class="w-full h-[100vh]">
+        <div class="flex flex-col items-center gap-[10px] max-w-[300px] !mx-auto !my-auto">
+          <img src="@/assets/images/empty.png" class="w-full" alt="">
+          <p>
+            Ma’lumot yo’q
+          </p>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
