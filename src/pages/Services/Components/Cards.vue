@@ -23,7 +23,9 @@ const baseUrlImage = 'https://api.carting.uz/uploads/files/'
         :src="item.images && item.images.length > 0 ? `${baseUrlImage}${item.images[0]}` : emptyImage"
         class="w-full min-h-[190px] max-h-[190px] object-cover" alt="car"/>
     <div class="!px-[16px] !py-[12px]">
-      <h1 class="text-[#000000] text-[14px] font-400">{{ isRoom ? 'Carbox' : item.transport_name }}</h1>
+      <h1 class="text-[#000000] text-[14px] font-400">{{
+          isRoom ? item.details.company_name : item.transport_name
+        }}</h1>
       <h2 class="text-[16px] text-[#000000] font-500 !mt-[4px]" v-if="!isRoom">{{ formatNumber(item?.price) }} UZS</h2>
 
       <div class="!mt-[8px] flex items-center">
