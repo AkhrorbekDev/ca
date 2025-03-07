@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {Menu, services} from '@/components/fakeJson'
-import {inject, onMounted, onUnmounted, ref, watch, watchEffect} from "vue";
+import {inject, onMounted, onUnmounted, ref, watchEffect} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {useCommonStore} from "@/stores/common.store"
 import useMapStore from '@/stores/map.store'
@@ -126,7 +126,6 @@ watchEffect(async () => {
   // }
 
 })
-
 
 
 const isLoadingTransports = ref(false)
@@ -286,20 +285,33 @@ onMounted(() => {
         <PersonTransferForm v-if="selectedService && selectedService.id === 2" :service-type-id="selectedService.id"
                             :show="showForm"/>
         <TransportTransferForm v-if="selectedService && selectedService.id === 6" :service-type-id="selectedService.id"
-                               :show="showForm" />
+                               :show="showForm"/>
         <SpecialTransportRentForm v-if="selectedService && selectedService.id === 3"
                                   :service-type-id="selectedService.id"
                                   :show="showForm"/>
 
         <SidebarTransportsGrid v-if="showTransportGrid" :service-id="selectedService?.id" :loading="isLoadingTransports"
                                :transports="transports"
-                               @on:click="changeRoute"></SidebarTransportsGrid>
+                               @on:click="changeRoute"/>
+        <!--        <AutoRepair v-if="showTransportGrid" :service-id="selectedService?.id" :loading="isLoadingTransports"-->
+        <!--                               :transports="transports"-->
+        <!--                               @on:click="changeRoute"/>-->
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss">
+
+._invalid {
+  border: 1px solid #EA5455 !important;
+  border-radius: 24px;
+
+  .p-inputtext {
+    border-color: #EA5455 !important;
+
+  }
+}
 
 .navbar-items {
   display: flex;

@@ -13,6 +13,7 @@ declare module 'vue' {
     AccordionHeader: typeof import('primevue/accordionheader')['default']
     AccordionPanel: typeof import('primevue/accordionpanel')['default']
     AutoComplete: typeof import('primevue/autocomplete')['default']
+    AutoRepair: typeof import('./src/components/forms/AutoRepair.vue')['default']
     Avatar: typeof import('primevue/avatar')['default']
     AvatarGroup: typeof import('primevue/avatargroup')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
@@ -42,6 +43,7 @@ declare module 'vue' {
     SidebarTransportsGrid: typeof import('./src/components/SidebarTransportsGrid.vue')['default']
     SpecialTransportRentForm: typeof import('./src/components/forms/SpecialTransportRentForm.vue')['default']
     Textarea: typeof import('primevue/textarea')['default']
+    Toast: typeof import('primevue/toast')['default']
     TransportTransferForm: typeof import('./src/components/forms/TransportTransferForm.vue')['default']
   }
 }

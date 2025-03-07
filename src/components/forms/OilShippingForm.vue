@@ -56,7 +56,7 @@ const setLocation = (name) => {
       }
     }
   }, name)
-  hideDetailsOnLocationChange.value = true
+  // hideDetailsOnLocationChange.value = true
 }
 const onChangeDate = (e: Date, name) => {
   mainForm.value.setFieldValue(name, dateRef.value.formatDate(e, 'dd.mm.yy'))
@@ -106,16 +106,12 @@ const oilTypes = ref([
 const onSaveDetails = () => {
   const errors = mainForm.value.getErrors()
   if (errors) {
-    if (!errors.details?.company_id) {
+    if (!errors['details.company_id']) {
       showDetails.value = false
       onSelectOilCompany(fuelCompanies.value.find(item => item.id === mainForm.value.values.details.company_id))
-    } else {
-      return
-
     }
-  } else {
-    showDetails.value = false
   }
+  showDetails.value = false
 }
 
 const staticValues = ref({
@@ -171,7 +167,7 @@ onMounted(() => {
 
 <template>
   <Form
-      v-slot="{values}"
+      v-slot="{values, errors}"
       ref="mainForm"
       as="div"
       :initial-values="staticValues"
@@ -186,9 +182,13 @@ onMounted(() => {
     <div
         class="flex flex-col h-full gap-4 w-full !p-[16px]">
 
-      <LocationItem :location="values.to_location" as="div" class="col-span-full" name="to_location"
+      <LocationItem :class="{
+        _invalid: (errors['to_location.lat'] || errors['to_location.lng'])
+      }" :location="values.to_location" as="div" class="col-span-full" name="to_location"
                     @click="setLocation('to_location')"/>
-      <Field v-slot="{field}" name="shipment_date" class="col-span-full">
+      <Field v-slot="{field}" as="div" :class="{
+        _invalid: errors.shipment_date
+      }" name="shipment_date" class="  !px-[4px]  col-span-full">
         <FloatLabel variant="in">
           <DatePicker
               :model-value="values.shipment_date"
@@ -204,9 +204,12 @@ onMounted(() => {
           <label for="in_label" class="!text-[#292D324D]">Jo‘natish sanasi</label>
         </FloatLabel>
       </Field>
-      <Field as="div" name="details.fuel_amount" class="formItem flex flex-col">
+      <Field as="div" :class="{
+        _invalid: errors['details.fuel_amount']
+      }" name="details.fuel_amount" class="formItem flex flex-col">
         <label for="price" class="text-[#292D324D] txt-[12px]">Hajmi (litrr)</label>
         <InputText
+
             :model-value="values.details.fuel_amount"
             type="number"
             class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"
@@ -214,7 +217,9 @@ onMounted(() => {
             placeholder="Miqdorni kiriting"
         />
       </Field>
-      <Field v-slot="{handleChange, field}" name="details.fuel_type_id" as="div" class="col-span-full">
+      <Field v-slot="{handleChange, field}" :class="{
+        _invalid: errors['details.fuel_type_id']
+      }" name="details.fuel_type_id" as="div" class="col-span-full">
         <FloatLabel variant="in">
           <Select :loading="isLoading" :model-value="selectedOil?.id"
                   @update:model-value="onChangeOil"
@@ -253,7 +258,10 @@ onMounted(() => {
 
         <div
             @click="toggleShowDetails"
-            class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
+            :class="{
+        _invalid: !selectedOilCompany
+      }"
+            class="w-full !bg-[#FAFAFA] border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
         >
             <span class="text-[#292D324D] text-[12px] !mb-2">
               Kompaniyalar ro'yhati

@@ -8,7 +8,6 @@ const route = useRoute()
 <template>
   <div class="bg-[#FAFAFA] min-h-screen">
     <ServiceNavbar class="z-50"/>
-
     <div class="!pt-[118px] !px-[24px]">
       <slot/>
     </div>

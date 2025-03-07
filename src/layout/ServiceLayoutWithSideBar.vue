@@ -18,6 +18,7 @@ onMounted(() => {
 <template>
   <div class="bg-[#FAFAFA] min-h-screen flex items-start">
     <ServiceSideBar class="z-50"/>
+    <Toast position="bottom-right" group="br"/>
 
     <div class="w-full">
       <slot/>
