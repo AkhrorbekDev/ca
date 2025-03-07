@@ -46,7 +46,7 @@ const useMapStore = defineStore({
             console.log(this.markers, index, id)
         },
         clearMarkers() {
-            console.trace('clear marrkers')
+            // console.trace('clear marrkers')
         }
     },
     getters: {

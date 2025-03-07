@@ -159,18 +159,15 @@ const warehouseSchema = yup.object({
 
 const oilTransfer = yup.object({
     shipment_date: yup.string().required(),
-    from_location: yup.object({
+    to_location: yup.object({
         lat: yup.string().required(),
         lng: yup.string().required(),
         name: yup.string().required()
     }).nonNullable(),
     details: yup.object({
-        company_name: yup.string().required(),
-        fuels: yup.array(yup.object({
-            id: yup.number().required(),
-            type: yup.string().required(),
-            price: yup.string().required()
-        }))
+        company_id: yup.string().required(),
+        fuel_amount: yup.number().required(),
+        fuel_type_id: yup.string().required(),
     }),
     ...baseSchema
 })

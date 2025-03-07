@@ -14,15 +14,24 @@ interface ApiCoreFetchInterface {
 
 }
 
+const getPropertyValue = (parent, child) => {
+    const isInvalid = (parent !== undefined) && (parent[child] !== undefined) && (parent !== '')
+    if (isInvalid) {
+        return parent[child]
+    }
+    return ''
+}
+
 class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
 
     _fetch: $Fetch;
 
     async onRequest(context: FetchContext, app) {
+        console.log(context)
         context.options = context.options || {}
         context.options.headers = {
             ...context.options.headers,
-            'Content-Type': 'application/json',
+            Accept: '*/*',
             'Authorization': `Basic ${btoa('root:GJA4TI8zQciHrXq')}`,
         }
         if (app.config.globalProperties.$auth.interceptor) {
@@ -33,8 +42,23 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
         }
     }
 
-    async onResponseError(context: FetchContext, app) {
-        console.log(context, 'res error')
+    async onResponseError({
+                              response,
+                              options
+                          }
+    ) {
+        const message = getPropertyValue(response._data, 'message')
+        const statusText = getPropertyValue(response, 'statusText')
+        const statusCode = getPropertyValue(response, 'status')
+        const sendingMessage = message !== '' ? message : statusText
+
+        return Promise.reject({
+            data: response._data,
+            message: sendingMessage,
+            statusText: sendingMessage,
+            statusCode,
+            status: statusCode,
+        })
     }
 
     constructor(context, options) {
@@ -53,10 +77,11 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
         return this._fetch(url, {params});
     }
 
-    async post(url: string, data: any): Promise<any> {
+    async post(url: string, data: any, config): Promise<any> {
         return this._fetch(url, {
             method: 'POST',
-            body: data
+            body: data,
+
         });
     }
 

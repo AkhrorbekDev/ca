@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import ConfirmDialog from 'primevue/confirmdialog';
-import { Announcement } from "../types";
-import { useConfirm } from "primevue/useconfirm";
-import { inject, onMounted, ref } from "vue";
-import services from "@/api/Services";
+import {Announcement} from "../types";
+import {useConfirm} from "primevue/useconfirm";
+import {inject, onMounted, ref} from "vue";
 import RepairMaster from "@/pages/Services/Announcement/Forms/RepairMaster.vue";
 import DeliveryShippingPassengerTransfer
   from "@/pages/Services/Announcement/Forms/DeliveryShippingPassengerTransfer.vue";
@@ -42,8 +40,10 @@ const confirm1 = () => {
     acceptProps: {
       label: 'Save',
     },
-    accept: () => {},
-    reject: () => {},
+    accept: () => {
+    },
+    reject: () => {
+    },
   });
 };
 
@@ -182,7 +182,8 @@ const createAnnouncement = async (announce) => {
             :activeTab="activeTab"
         />
 
-        <RepairMaster v-if="announceValue.unique === 'repair' || announceValue.unique === 'master'" :announceValue="announceValue.unique" />
+        <RepairMaster v-if="announceValue.unique === 'repair' || announceValue.unique === 'master'"
+                      :announceValue="announceValue.unique"/>
 
         <div
             v-if="announceValue.unique === 'technical'">
@@ -248,7 +249,7 @@ const createAnnouncement = async (announce) => {
           </div>
         </div>
 
-        <Oil v-if="announceValue.unique === 'oil'" />
+        <Oil v-if="announceValue.unique === 'oil'"/>
 
         <div v-if="announceValue.unique === 'rent'">
           <div class="grid grid-cols-2 gap-4">
@@ -426,13 +427,13 @@ const createAnnouncement = async (announce) => {
 
 
         <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[56px]">
-          <ServiceItem />
-<!--          <iframe-->
-<!--              src="https://yandex.uz/map-widget/v1/?ll=69.279737%2C41.311151&z=12"-->
-<!--              width="100%"-->
-<!--              style="height: 300px"-->
-<!--              frameborder="0"-->
-<!--          />-->
+          <ServiceItem/>
+          <!--          <iframe-->
+          <!--              src="https://yandex.uz/map-widget/v1/?ll=69.279737%2C41.311151&z=12"-->
+          <!--              width="100%"-->
+          <!--              style="height: 300px"-->
+          <!--              frameborder="0"-->
+          <!--          />-->
         </div>
 
       </div>

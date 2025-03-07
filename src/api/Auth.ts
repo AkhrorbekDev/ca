@@ -9,4 +9,8 @@ export default class Auth extends ApiCoreFetch {
     sendSmsCode(data): Promise<any> {
         return this.post("/mobile/v1/phone/register", data);
     }
+
+    updateUserProfile(data): Promise<any> {
+        return this.put("/mobile/v1/user", data);
+    }
 }
