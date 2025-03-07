@@ -37,7 +37,7 @@ app.use(auth, {
         property: 'user',
     }
 })
-
+app.use(ToastService);
 app.use(PrimeVue, {
     theme: {
         preset: Aura,

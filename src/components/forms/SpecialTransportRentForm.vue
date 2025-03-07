@@ -54,7 +54,7 @@ const setLocation = (name) => {
       }
     }
   }, name)
-  hideDetailsOnLocationChange.value = true
+  // hideDetailsOnLocationChange.value = true
 }
 
 const onChangeDate = (e: Date, name) => {
@@ -115,20 +115,7 @@ const paymentTypes = ref([
 ])
 
 const onSaveDetails = () => {
-  const errors = mainForm.value.getErrors()
-  if (errors) {
-    if (!errors.details?.cargo_type && !errors.details?.load_type &&
-        !errors.pay_type && !errors.price
-    ) {
-      showDetails.value = false
-
-    } else {
-      return
-
-    }
-  } else {
-    showDetails.value = false
-  }
+  showDetails.value = false
 }
 
 const staticValues = ref({
@@ -177,7 +164,7 @@ onMounted(() => {
 
 <template>
   <Form
-      v-slot="{values}"
+      v-slot="{values, errors}"
       ref="mainForm"
       as="div"
       :initial-values="staticValues"
@@ -192,9 +179,15 @@ onMounted(() => {
     <div
         class="flex flex-col h-full w-full gap-4 !p-[16px]">
 
-      <LocationItem :location="values.to_location" as="div" class="col-span-full" name="to_location"
-                    @click="setLocation('to_location')"/>
-      <Field v-slot="{field}" name="details.from_date" class="col-span-full">
+      <LocationItem
+          :class="{
+        _invalid: (errors['to_location.lat'] || errors['to_location.lng'])
+      }"
+          :location="values.to_location" as="div" class="col-span-full" name="to_location"
+          @click="setLocation('to_location')"/>
+      <Field v-slot="{field}" name="details.from_date" :class="{
+                _invalid: errors['details.from_date']
+              }" as="div" class=" !px-[4px]  col-span-full">
         <FloatLabel variant="in">
           <DatePicker
               :model-value="values.details.from_date"
@@ -210,7 +203,9 @@ onMounted(() => {
           <label for="in_label" class="!text-[#292D324D]">Qaysi sanadan</label>
         </FloatLabel>
       </Field>
-      <Field v-slot="{field}" name="details.to_date" class="col-span-full">
+      <Field v-slot="{field}" name="details.to_date" :class="{
+                _invalid: errors['details.to_date']
+              }" as="div" class=" !px-[4px]  col-span-full">
         <FloatLabel variant="in">
           <DatePicker
               :model-value="values.details.to_date"
@@ -231,7 +226,10 @@ onMounted(() => {
 
         <div
             @click="toggleShowDetails"
-            class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
+            :class="{
+                _invalid: errors.price
+              }"
+            class="w-full !bg-[#FAFAFA] border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
         >
             <span class="text-[#292D324D] text-[12px] !mb-2">
               Qo‘shimcha ma’lumotlar
@@ -252,7 +250,9 @@ onMounted(() => {
         </div>
 
       </div>
-      <Field name="details.transportation_type_id" as="div" class="col-span-full">
+      <Field name="details.transportation_type_id" as="div" :class="{
+                _invalid: (errors['details.transportation_type_id'])
+              }" class="col-span-full !px-[4px]">
         <FloatLabel variant="in">
           <Select :loading="isLoading" :model-value="selectedTransports"
                   @update:model-value="updateTransportType" :options="transports"
@@ -358,7 +358,10 @@ onMounted(() => {
           <InputText
               :model-value="values.price"
               type="number"
-              class="!py-[12px] !px-[16px] !rounded-[16px] border !border-[#C2C2C233] !placeholder-[#292D324D]"
+              :class="{
+                _invalid: errors['price']
+              }"
+              class="!py-[12px] !px-[16px] !rounded-[16px] border border-[#C2C2C233] !placeholder-[#292D324D]"
               id="price" aria-describedby="username-help"
               placeholder="Narxni kiriting"/>
         </Field>
