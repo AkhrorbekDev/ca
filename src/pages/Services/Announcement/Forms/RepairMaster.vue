@@ -90,7 +90,6 @@ onMounted(async () => {
 const hideDetailsOnLocationChange = ref(false);
 
 const setLocation = (name) => {
-  console.log('Start MAP: ', name);
   mapStore.setMarker({
     id: name,
     marker: {
@@ -117,7 +116,6 @@ const setLocation = (name) => {
       }
     }
   }, name)
-  console.log('End MAP: ', name);
   hideDetailsOnLocationChange.value = true
 }
 
@@ -245,8 +243,7 @@ const createAnnouncement = async (announce) => {
         <label for="in_label" class="!text-[#292D324D]">Kompaniya nomi</label>
       </FloatLabel>
     </div>
-
-    <div v-if="announceValue.unique == 'master'"
+    <div v-if="announceValue === 'repair'"
          class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px] !mb-[24px]">
       <span class="text-[#292D324D] text-[12px] !mb-[8px]">Toifalar</span>
 
@@ -324,13 +321,13 @@ const createAnnouncement = async (announce) => {
     </div>
 
     <!-- Example validation error display -->
-    <div v-if="v$.$errors.length" class="text-red-500 mb-4">
-      <p v-for="error in v$.$errors" :key="error.$uid">
-        {{ error.$message }}
-      </p>
-    </div>
+      <div v-if="v$.$errors.length" class="text-red-500 mb-4">
+        <p>
+          {{ v$.$errors[0].$message }}
+        </p>
+      </div>
 
-    <div class="w-full flex justify-end">
+    <div class="w-full flex justify-end !mt-5">
       <button
           type="submit"
           :disabled="v$.$invalid"
