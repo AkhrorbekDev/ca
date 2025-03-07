@@ -113,17 +113,17 @@ const handleClickCard = (item: any) => {
 
 watchEffect(async () => {
   console.log('test watchEffect')
-  if (route.name === menuItems.value[0].unique) {
-    selectedMenu.value = menuItems.value[0]
-    selectedService.value = selectedMenu.value.children.find(item => item.unique === route.params.type)
-    menuVisible.value = true
-    showForm.value = true
-  } else if (route.name === menuItems.value[1].unique) {
-    menuVisible.value = false
-    showForm.value = false
-    showTransportGrid.value = false
-    selectedService.value = null
-  }
+  // if (route.name === menuItems.value[0].unique) {
+  //   selectedMenu.value = menuItems.value[0]
+  //   selectedService.value = selectedMenu.value.children.find(item => item.unique === route.params.type)
+  //   menuVisible.value = true
+  //   showForm.value = true
+  // } else if (route.name === menuItems.value[1].unique) {
+  //   menuVisible.value = false
+  //   showForm.value = false
+  //   showTransportGrid.value = false
+  //   selectedService.value = null
+  // }
 
 })
 
@@ -158,6 +158,8 @@ const openChildMenu = (index: number, item: MenuItems) => {
     showForm.value = false
     showTransportGrid.value = false
     selectedMenu.value = null
+    selectedService.value = null
+
     return
   } else {
     selectedMenu.value = item
