@@ -11,10 +11,12 @@ interface DataValue {
   phone: null;
   agree: string;
 }
+const isLoading = ref(false)
 
 const router = useRouter()
 const showPersonalData = ref(false)
 const mainForm = ref(null)
+const clForm = ref(null)
 const $api = inject('api')
 const dataValue = ref<DataValue>({
   company: null,
@@ -28,7 +30,11 @@ const options = reactive<MaskInputOptions>({
   mask: "+998 (##) ###-##-##",
   reversed: true,
   postProcess: (event, name) => {
-    mainForm.value.setFieldValue(name, `${prefix}${event.detail.unmasked}`)
+    if (selectedUserType.value.value === 'CLIENT') {
+      clForm.value.setFieldValue(name, `${prefix}${event.detail.unmasked}`)
+    } else {
+      mainForm.value.setFieldValue(name, `${prefix}${event.detail.unmasked}`)
+    }
   }
 })
 
@@ -36,12 +42,13 @@ const options = reactive<MaskInputOptions>({
 const physicalSchema = yup.object({
   call_phone: yup.string().required().min(12),
   agree: yup.bool().notOneOf([false]).required(),
+  org_name: yup.string().required().nonNullable(),
+  stir: yup.number().required().nonNullable(),
   user_type: yup.string().required().nonNullable()
 })
 
 const clientSchema = yup.object({
-  org_name: yup.string().required().nonNullable(),
-  stir: yup.number().required().nonNullable(),
+
   phone_number: yup.string().required().min(12),
   agree: yup.bool().oneOf([true]).required(),
   user_type: yup.string().required().nonNullable()
@@ -68,39 +75,61 @@ const initialValues = ref({
   agree: false
 })
 
-
+const agreeValue = ref(false)
 const updateAgreeValue = (e) => {
-  mainForm.value.setFieldValue('agree', e)
+  agreeValue.value = e
+  if (selectedUserType.value.value === 'CLIENT') {
+    clForm.value.setFieldValue('agree', e)
+  } else {
+    mainForm.value.setFieldValue('agree', e)
+  }
 }
 
-const saveUserType = () => {
-  selectedUserType.value = userTypes.value.find(item => item.value === mainForm.value.getValues().user_type)
+const saveUserType = (item) => {
+  // selectedUserType.value = userTypes.value.find(item => item.value === mainForm.value.getValues().user_type)
   showPersonalData.value = true
 }
 const submit = () => {
-  mainForm.value.validate()
-      .then(res => {
-        console.log(res)
-        if (res.valid) {
-          $api.auth.updateUserProfile(mainForm.value.getValues())
-              .then(res => {
-                router.push({
-                  name: 'services'
+  if (selectedUserType.value.value === 'CLIENT') {
+    clForm.value.validate()
+        .then(res => {
+          if (res.valid) {
+            isLoading.value = true
+            $api.auth.updateUserProfile(mainForm.value.getValues())
+                .then(res => {
+                  router.push({
+                    name: 'services'
+                  })
                 })
-              })
-        }
-      })
+                .finally(() => {
+                  isLoading.value = false
+                })
+          }
+        })
+  } else {
+    mainForm.value.validate()
+        .then(res => {
+          if (res.valid) {
+            isLoading.value = true
+            $api.auth.updateUserProfile(mainForm.value.getValues())
+                .then(res => {
+                  router.push({
+                    name: 'services'
+                  })
+                })
+                .finally(() => {
+                  isLoading.value = false
+                })
+          }
+        })
+  }
 }
 
 </script>
 <template>
-  <Form
-      v-slot="{values}"
-      ref="mainForm"
-      :initial-values="initialValues"
-      :validation-schema="physicalSchema"
+  <div
       class="bg-[#FAFAFA]">
-    <router-link to="/public">
+    <router-link to="/">
       <img src="../../assets/images/logo2.svg" class="!p-[24px] absolute right-0" alt="logo"/>
     </router-link>
     <div v-show="!showPersonalData">
@@ -113,23 +142,23 @@ const submit = () => {
             foydalanmoqchisiz?
           </p>
 
-          <Field as="div" name="user_type" class="flex flex-col items-center !mt-[24px] gap-y-[8px]">
+          <div as="div" name="user_type" class="flex flex-col items-center !mt-[24px] gap-y-[8px]">
             <template v-for="type in userTypes" :key="type.value">
               <label :for="type.value"
                      class="bg-[#FFFFFF] !p-[16px] w-full flex items-center justify-between rounded-[20px] cursor-pointer">
                 <span class="text-[16px] text-[#292D324D]">{{ type.name }}</span>
-                <RadioButton :model-value="values.user_type" :inputId="type.value" name="user_type"
-                             :value="type.value"/>
+                <RadioButton :model-value="selectedUserType.value" :inputId="type.value" name="user_type"
+                             :value="type.value" @update:model-value="() => {
+                               selectedUserType = type
+                             }"/>
               </label>
             </template>
-          </Field>
+          </div>
 
           <button
               @click="saveUserType"
               type="button"
-              :disabled="!values.user_type"
-              :class="!values.user_type ? '!bg-[#8ccc5a]' : '!bg-[#66C61C]'"
-              class="!py-[16px] text-white text-[16px] rounded-[20px] !mt-[24px] w-full"
+              class="!py-[16px] !bg-[#66C61C] text-white text-[16px] rounded-[20px] !mt-[24px] w-full"
           >
             Keyingisi
           </button>
@@ -153,84 +182,95 @@ const submit = () => {
           </p>
 
           <div class="flex flex-col gap-y-4 !mt-[24px]">
-            <template v-if="values.user_type === 'PHYSICAL'">
-              <Field :rules="yup.string().required()" as="div" class="flex flex-col" name="org_name">
+            <Form
+                v-slot="{values}"
+                v-if="selectedUserType.value !== 'CLIENT'"
+                ref="mainForm"
+                :validation-schema="physicalSchema"
+                :initial-values="initialValues"
+            >
+              <Field as="div" class="flex flex-col" name="org_name">
                 <label for="org_name" class="text-[#292D324D] text-[14px] !mb-[8px]">Kompaniya nomi</label>
                 <input
                     id="org_name"
                     :model-value="values.org_name"
                     placeholder="Kiriting"
                     :class="{
-                    _invalid: mainForm?.errors.org_name
+                    _invalid: mainForm?.errors?.org_name
                   }"
                     class="!bg-[#fff] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
                 />
               </Field>
 
-              <Field :rules="yup.string().required()" as="div" class="flex flex-col" name="stir">
-                <label for="stir" class="text-[#292D324D] text-[14px] !mb-[8px]">Kompaniya nomi</label>
+              <Field as="div" class="flex flex-col" name="stir">
+                <label for="stir" class="text-[#292D324D] text-[14px] !mb-[8px]">STIR</label>
                 <input
                     id="stir"
                     :model-value="values.stir"
                     placeholder="Kiriting"
                     :class="{
-                    _invalid: mainForm?.errors.stir
+                    _invalid: mainForm?.errors?.stir
                   }"
                     class="!bg-[#fff] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
                 />
               </Field>
-            </template>
-            <template v-else>
-              <Field :rules="yup.string().required()" as="div" class="flex flex-col" name="first_name">
+              <div class="flex flex-col">
+                <label for="call_phone" class="text-[#292D324D] text-[14px] !mb-[8px]">Telefon</label>
+                <input
+                    id="call_phone"
+
+                    v-maska
+                    :data-maska="options.mask"
+                    @maska="(e) => options.postProcess(e, 'call_phone')"
+                    placeholder="+998"
+                    class="!bg-[#FAFAFA] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
+                    :class="{
+                    _invalid: mainForm?.errors?.call_phone
+
+                  }"
+                />
+              </div>
+            </Form>
+            <Form
+                ref="clForm"
+                v-slot="{values}"
+                v-else
+                :validation-schema="clientSchema"
+                :initial-values="initialValues"
+            >
+              <Field as="div" class="flex flex-col" name="first_name">
                 <label for="first_name" class="text-[#292D324D] text-[14px] !mb-[8px]">Ismingiz</label>
                 <input
                     id="first_name"
                     :model-value="values.first_name"
                     placeholder="Kiriting"
                     :class="{
-                      _invalid: mainForm?.errors.first_name
+                      _invalid: clForm?.errors?.first_name
                     }"
                     class="!bg-[#fff] border-0 !p-[16px] outline-none rounded-[20px]"
                 />
               </Field>
-              <Field :rules="yup.string().required()" as="div" class="flex flex-col" name="last_name">
+              <Field as="div" class="flex flex-col" name="last_name">
                 <label for="last_name" class="text-[#292D324D] text-[14px] !mb-[8px]">Familyangiz</label>
                 <input
                     id="last_name"
                     :model-value="values.last_name"
                     placeholder="Kiriting"
                     :class="{
-                      _invalid: mainForm?.errors.last_name
+                      _invalid: clForm?.errors?.last_name
                     }"
                     class="!bg-[#fff] border-0 !p-[16px] outline-none rounded-[20px]"
                 />
               </Field>
-            </template>
-
-            <div class="flex flex-col">
-              <label for="call_phone" class="text-[#292D324D] text-[14px] !mb-[8px]">Telefon</label>
-              <input
-                  id="call_phone"
-
-                  v-maska
-                  :data-maska="options.mask"
-                  @maska="(e) => options.postProcess(e, 'call_phone')"
-                  placeholder="+998"
-                  class="!bg-[#FAFAFA] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
-                  :class="{
-                    _invalid: mainForm?.errors.call_phone
-
-                  }"
-              />
-            </div>
+            </Form>
 
             <div
                 as="div" name="agree" class="flex items-center !mt-[36px]">
               <Checkbox
                   :class="{
-                          _invalid: mainForm?.errors.agree
+                          _invalid: !agreeValue
                         }"
-                  :invalid="!values.agree"
+                  :invalid="!agreeValue"
                   v-model="initialValues.agree"
                   inputId="agree"
                   binary
@@ -246,10 +286,18 @@ const submit = () => {
 
           <button
               @click="submit"
-              type="button"
-              class="!bg-[#66C61C] !py-[16px] text-white text-[16px] rounded-[20px] !mt-[24px] w-full"
+              type="submit"
+              class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-[16px] w-full"
           >
+
             Kirish
+            <svg v-if="isLoading" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
+                 fill="none"
+                 viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
           </button>
 
           <div class="!mt-[24px]  text-gray-600">
@@ -263,7 +311,7 @@ const submit = () => {
       </div>
     </div>
 
-  </Form>
+  </div>
 </template>
 
 <style scoped lang="scss">

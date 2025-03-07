@@ -3,7 +3,7 @@ import * as yup from "yup";
 const baseSchema = {
     adv_type: yup.string().required(),
     service_type_id: yup.number().required(),
-    price: yup.string().required(),
+    price: yup.number().required().moreThan(0),
     note: yup.string().notRequired()
 }
 
@@ -200,7 +200,13 @@ const shippingSchema = yup.object({
         name: yup.string().required()
     }).nonNullable(),
     details: yup.object({
-        transportation_type_id: yup.number().required()
+        transportation_type_id: yup.number().required(),
+        load_weight: yup.object({
+            amount: yup.number().required().moreThan(0),
+            name: yup.string().required()
+        }),
+        load_type_id: yup.number().required(),
+        load_service_id: yup.number().required()
     }),
     ...baseSchema
 })
