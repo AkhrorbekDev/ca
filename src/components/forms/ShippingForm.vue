@@ -212,7 +212,9 @@ const staticValues = ref({
     load_weight: {
       name: 'kg',
       amount: 0
-    }
+    },
+    load_type_id: cargoTypes[0].value,
+    load_service_id: loadTypes[0].value
   }, price: 0,
   note: '',
   pay_type: 'CASH'
@@ -224,6 +226,7 @@ const transportLoading = ref(false)
 const submit = () => {
   mainForm.value.validate()
       .then(res => {
+        console.log(res)
         if (res.valid && collectImages.value.length > 0) {
           isSubmited.value = true
           $api.advertisement.createAdvertisement(mainForm.value.getValues())
@@ -234,12 +237,13 @@ const submit = () => {
                   images: collectImages.value,
                 }
                 await $api.image.sendImage(imagePayload).then(() => {
-                  mainForm.value.resetForm()
-                  emit('on:success')
-                  selectedTransports.value = null
-                  collectImages.value = []
-                  images.value = []
+
                 })
+                mainForm.value.resetForm()
+                emit('on:success')
+                selectedTransports.value = null
+                collectImages.value = []
+                images.value = []
               })
               .finally(() => {
                 isSubmited.value = false
@@ -300,7 +304,7 @@ onMounted(() => {
 
 <template>
   <Form
-      v-slot="{values}"
+      v-slot="{values, errors}"
       ref="mainForm"
       as="div"
       :initial-values="staticValues"
@@ -315,14 +319,24 @@ onMounted(() => {
     <div
         ref="mainWrapper"
         class="flex flex-col h-full w-full gap-4 !p-[16px]">
-      <LocationItem :location="values.from_location" as="div" class="col-span-full" name="from_location"
+      <LocationItem label="Qayerdan"
+                    :class="{
+        _invalid: (errors['from_location.lat'] || errors['from_location.lng'])
+      }"
+                    :location="values.from_location" as="div" class="col-span-full" name="from_location"
                     @click="setLocation('from_location')"/>
 
-      <LocationItem :location="values.to_location" as="div" class="col-span-full" name="to_location"
-                    @click="setLocation('to_location')"/>
+      <LocationItem
+          :class="{
+        _invalid: (errors['to_location.lat'] || errors['to_location.lng'])
+      }"
+          :location="values.to_location" as="div" class="col-span-full" name="to_location"
+          @click="setLocation('to_location')"/>
 
       <Field as="div" name="details.load_weight.amount"
-             class="load_weight_select formItem flex items-center justify-between">
+             :class="{
+        _invalid: (errors['details.load_weight.amount'] || errors['details.load_weight.amount'])
+      }" class="load_weight_select formItem flex items-center justify-between">
         <div class="flex flex-col  items-start justify-center">
 
           <label for="load_weight.amount" class="!text-[#292D324D]">Yuk vazni</label>
@@ -482,7 +496,7 @@ onMounted(() => {
     >
       <div>
 
-        <Field name="details.cargo_type">
+        <Field name="details.load_type_id">
           <div>
             <span class="bg-[#FAFAFA] rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
               Yuk turi
@@ -623,5 +637,10 @@ onMounted(() => {
   right: 0 !important;
   left: auto !important;
   min-width: 200px !important;
+}
+
+._invalid {
+  border: 1px solid #EA5455;
+  border-radius: 24px;
 }
 </style>

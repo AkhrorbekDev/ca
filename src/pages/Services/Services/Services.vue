@@ -7,16 +7,34 @@ import {services, transportAdvertising, advertising} from './fakeJson'
 
 import 'swiper/css';
 import 'swiper/css/navigation';
+import {inject} from "vue";
 
 
 const router = useRouter()
 const modules = [Navigation];
+const $auth = inject('auth')
 
 const openDetail = (item: any) => {
+  if (!$auth.loggedIn) {
+
+  }
   if (item.route) {
     router.push({name: item.route, params: {type: item.unique}})
   }
 };
+
+const changeTransportRoute = (e) => {
+  if (e.id) {
+    router.push({
+      name: 'transport-id',
+      params: {
+        id: e.id
+      }
+    })
+  } else {
+
+  }
+}
 </script>
 
 <template>
@@ -75,7 +93,7 @@ const openDetail = (item: any) => {
               <img :src="item2.img" class="!mb-[42px] !m-auto !mt-[24px]" alt="motobike">
 
               <div class="text-center !mb-[25px]">
-                <button class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
+                <button @click="changeTransportRoute(item2)" class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
                   E’lon berish
                 </button>
               </div>

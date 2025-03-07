@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import {ref} from 'vue';
-
+import {inject, ref} from 'vue';
+import {services} from '@/components/fakeJson'
 const selectedCity = ref();
+const selectedTransport = ref();
 const cities = ref([
   {name: 'New York', code: 'NY'},
   {name: 'Rome', code: 'RM'},
@@ -9,6 +10,17 @@ const cities = ref([
   {name: 'Istanbul', code: 'IST'},
   {name: 'Paris', code: 'PRS'}
 ]);
+
+const $api = inject('api')
+const transports = ref([])
+
+const onSelectService = (e) => {
+  $api.transport.getTransportByServiceId(e.id)
+      .then(res => {
+        transports.value = res.data
+      })
+}
+
 </script>
 
 <template>
@@ -18,31 +30,31 @@ const cities = ref([
           class="bg-white rounded-[24px] !p-[40px] grid grid-cols-3 gap-6 shadow-custom absolute top-[-80px] w-full left-0">
         <div class="flex flex-col gap-2 w-full">
           <label for="username" class="text-[#292D32] font-medium text-[16px]">Xizmat turi</label>
-          <Select v-model="selectedCity" :options="cities" optionLabel="name" placeholder="Manzilni tanlang"
-                  class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-select"/>
+          <Select v-model="selectedCity" :options="services" optionLabel="title" placeholder="Xizmat turini tanlang"
+                  class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-select" @update:model-value="onSelectService"/>
         </div>
 
-        <div class="flex flex-col gap-2 w-full">
-          <label for="username" class="text-[#292D32] font-medium text-[16px]">Qayerdan</label>
-          <InputText type="text" class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-input"
-                     placeholder="Manzilni kiriting"/>
-        </div>
+<!--        <div class="flex flex-col gap-2 w-full">-->
+<!--          <label for="username" class="text-[#292D32] font-medium text-[16px]">Qayerdan</label>-->
+<!--          <InputText type="text" class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-input"-->
+<!--                     placeholder="Manzilni kiriting"/>-->
+<!--        </div>-->
 
-        <div class="flex flex-col gap-2 w-full">
-          <label for="username" class="text-[#292D32] font-medium text-[16px]">Qayerga</label>
-          <InputText type="text" class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-input"
-                     placeholder="Manzilni kiriting"/>
-        </div>
+<!--        <div class="flex flex-col gap-2 w-full">-->
+<!--          <label for="username" class="text-[#292D32] font-medium text-[16px]">Qayerga</label>-->
+<!--          <InputText type="text" class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-input"-->
+<!--                     placeholder="Manzilni kiriting"/>-->
+<!--        </div>-->
 
-        <div class="flex flex-col gap-2 w-full">
-          <label for="username" class="text-[#292D32] font-medium text-[16px]">Qachon</label>
-          <InputText type="text" class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-input"
-                     placeholder="Kiriting"/>
-        </div>
+<!--        <div class="flex flex-col gap-2 w-full">-->
+<!--          <label for="username" class="text-[#292D32] font-medium text-[16px]">Qachon</label>-->
+<!--          <InputText type="text" class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-input"-->
+<!--                     placeholder="Kiriting"/>-->
+<!--        </div>-->
 
         <div class="flex flex-col gap-2 w-full">
           <label for="username" class="text-[#292D32] font-medium text-[16px]">Transport turi</label>
-          <Select v-model="selectedCity" :options="cities" optionLabel="name" placeholder="Transportni tanlang"
+          <Select v-model="selectedTransport" :options="transports" optionLabel="name" placeholder="Transportni tanlang"
                   class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-select"/>
         </div>
 
