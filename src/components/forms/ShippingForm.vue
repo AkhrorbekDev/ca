@@ -220,7 +220,7 @@ const staticValues = ref({
 const transports = ref([])
 const selectedTransports = ref(null)
 const transportLoading = ref(false)
-const toast = useToast()
+// const toast = useToast()
 const submit = () => {
   mainForm.value.validate()
       .then(res => {
@@ -239,10 +239,7 @@ const submit = () => {
                   selectedTransports.value = null
                   collectImages.value = []
                   images.value = []
-                }).catch(err => {
-                  toast.add({severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 3000});
-
-                });
+                })
               })
               .finally(() => {
                 isSubmited.value = false
