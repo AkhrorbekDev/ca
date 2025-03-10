@@ -245,15 +245,15 @@ const createAnnouncement = async (announce) => {
   }
 };
 
-const oilTypes = [
-  { name: 'AI 80' },
-  { name: 'AI 91' },
-  { name: 'AI 92' },
-  { name: 'AI 95' },
-  { name: 'AI 98' },
-  { name: 'AI 100' },
-  { name: 'Dizel' },
-  { name: 'Gaz' },
+const modelCar = [
+  { id: 1, name: 'Sonata' },
+  { id: 2, name: 'Chevrolet' },
+  { id: 3, name: 'Hyundai' },
+];
+
+const kuzuvCar = [
+  { id: 1, name: 'Sedan' },
+  { id: 2, name: 'Jip' },
 ];
 </script>
 
@@ -304,14 +304,16 @@ const oilTypes = [
         <div class="grid grid-cols-2 gap-4">
           <div>
             <FloatLabel variant="in">
-              <InputText
-                  v-model="addAnnouncement.details.company_name"
-                  id="company_name"
-                  variant="filled"
-                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                { '!border !border-red-500': hasNestedError('details', 'company_name') },
-                { '!border-0': !hasNestedError('details', 'company_name') }
-              ]"
+              <Select
+                  :options="modelCar"
+                  optionLabel="name"
+                  optionValue="name"
+                  placeholder="Tanlang"
+                  :class="[
+                    'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
+                    { '!border !border-red-500': formSubmitted && !item.type },
+                    { '!border-0': !(formSubmitted && !item.type) }
+                  ]"
               />
               <label for="company_name" class="!text-[#292D324D]">Model</label>
             </FloatLabel>
@@ -322,14 +324,16 @@ const oilTypes = [
 
           <div>
             <FloatLabel variant="in">
-              <InputText
-                  v-model="addAnnouncement.details.company_name"
-                  id="company_name"
-                  variant="filled"
-                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                { '!border !border-red-500': hasNestedError('details', 'company_name') },
-                { '!border-0': !hasNestedError('details', 'company_name') }
-              ]"
+              <Select
+                  :options="kuzuvCar"
+                  optionLabel="name"
+                  optionValue="name"
+                  placeholder="Tanlang"
+                  :class="[
+                    'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
+                    { '!border !border-red-500': formSubmitted && !item.type },
+                    { '!border-0': !(formSubmitted && !item.type) }
+                  ]"
               />
               <label for="company_name" class="!text-[#292D324D]">Kuzov turi</label>
             </FloatLabel>
@@ -360,15 +364,16 @@ const oilTypes = [
 
           <div>
             <FloatLabel variant="in">
-              <InputText
-                  v-model="addAnnouncement.details.capacity"
-                  id="capacity"
-                  variant="filled"
-                  type="text"
-                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                { '!border !border-red-500': hasNestedError('details', 'capacity') },
-                { '!border-0': !hasNestedError('details', 'capacity') }
-              ]"
+              <Select
+                  :options="oilTypes"
+                  optionLabel="name"
+                  optionValue="name"
+                  placeholder="Tanlang"
+                  :class="[
+                    'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
+                    { '!border !border-red-500': formSubmitted && !item.type },
+                    { '!border-0': !(formSubmitted && !item.type) }
+                  ]"
               />
               <label for="capacity" class="!text-[#292D324D]">Dvigatel hajmi</label>
             </FloatLabel>
@@ -379,15 +384,16 @@ const oilTypes = [
 
           <div>
             <FloatLabel variant="in">
-              <InputText
-                  v-model="addAnnouncement.details.capacity"
-                  id="capacity"
-                  variant="filled"
-                  type="text"
-                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                { '!border !border-red-500': hasNestedError('details', 'capacity') },
-                { '!border-0': !hasNestedError('details', 'capacity') }
-              ]"
+              <Select
+                  :options="oilTypes"
+                  optionLabel="name"
+                  optionValue="name"
+                  placeholder="Tanlang"
+                  :class="[
+                    'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
+                    { '!border !border-red-500': formSubmitted && !item.type },
+                    { '!border-0': !(formSubmitted && !item.type) }
+                  ]"
               />
               <label for="capacity" class="!text-[#292D324D]">Rangi</label>
             </FloatLabel>
@@ -398,17 +404,17 @@ const oilTypes = [
 
           <div>
             <FloatLabel variant="in">
-              <InputText
-                  v-model="addAnnouncement.details.capacity"
-                  id="capacity"
-                  variant="filled"
-                  type="number"
-                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                { '!border !border-red-500': hasNestedError('details', 'capacity') },
-                { '!border-0': !hasNestedError('details', 'capacity') }
-              ]"
+              <Select
+                  :options="oilTypes"
+                  optionLabel="name"
+                  optionValue="name"
+                  placeholder="Tanlang"
+                  :class="[
+                    'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
+                    { '!border !border-red-500': formSubmitted && !item.type },
+                    { '!border-0': !(formSubmitted && !item.type) }
+                  ]"
               />
-              <span class="absolute right-5 top-9">litr</span>
               <label for="capacity" class="!text-[#292D324D]">Bagaj hajmi</label>
             </FloatLabel>
             <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">
@@ -418,15 +424,16 @@ const oilTypes = [
 
           <div>
             <FloatLabel variant="in">
-              <InputText
-                  v-model="addAnnouncement.details.capacity"
-                  id="capacity"
-                  variant="filled"
-                  type="number"
-                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                { '!border !border-red-500': hasNestedError('details', 'capacity') },
-                { '!border-0': !hasNestedError('details', 'capacity') }
-              ]"
+              <Select
+                  :options="oilTypes"
+                  optionLabel="name"
+                  optionValue="name"
+                  placeholder="Tanlang"
+                  :class="[
+                    'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
+                    { '!border !border-red-500': formSubmitted && !item.type },
+                    { '!border-0': !(formSubmitted && !item.type) }
+                  ]"
               />
               <label for="capacity" class="!text-[#292D324D]">O‘rindiqlar soni</label>
             </FloatLabel>
@@ -457,15 +464,16 @@ const oilTypes = [
 
           <div>
             <FloatLabel variant="in">
-              <InputText
-                  v-model="addAnnouncement.details.capacity"
-                  id="capacity"
-                  variant="filled"
-                  type="number"
-                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                { '!border !border-red-500': hasNestedError('details', 'capacity') },
-                { '!border-0': !hasNestedError('details', 'capacity') }
-              ]"
+              <Select
+                  :options="oilTypes"
+                  optionLabel="name"
+                  optionValue="name"
+                  placeholder="Tanlang"
+                  :class="[
+                    'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
+                    { '!border !border-red-500': formSubmitted && !item.type },
+                    { '!border-0': !(formSubmitted && !item.type) }
+                  ]"
               />
               <label for="capacity" class="!text-[#292D324D]">Sug’urta</label>
             </FloatLabel>
