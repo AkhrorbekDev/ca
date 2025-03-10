@@ -1,14 +1,9 @@
 <script lang="ts" setup>
-import { ref, onMounted, inject } from 'vue';
-import { useVuelidate } from '@vuelidate/core';
+import {inject, onMounted, ref} from 'vue';
+import {useVuelidate} from '@vuelidate/core';
 import useMapStore from "@/stores/map.store";
-import {
-  required,
-  numeric,
-  minValue,
-  maxLength
-} from '@vuelidate/validators';
-import { Announcement } from "../types";
+import {maxLength, minValue, numeric, required} from '@vuelidate/validators';
+import {Announcement} from "../types";
 import getGeoObject from "@/composables/getGeoObject";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
 
@@ -51,7 +46,7 @@ const addAnnouncement = ref<Announcement>({
 // Validation rules
 const rules = {
   to_location: {
-    name: { required },
+    name: {required},
   },
   price: {
     required,
@@ -65,7 +60,7 @@ const rules = {
       minValue: minValue(0)
     },
   },
-  note: { maxLength: maxLength(1000) }
+  note: {maxLength: maxLength(1000)}
 };
 
 const v$ = useVuelidate(rules, addAnnouncement);
@@ -126,7 +121,7 @@ const setLocation = (name) => {
       callback: async (e) => {
         await getGeoObject({cord: e.coordinates}).then(res => {
           const marker = mapStore.getMarker(name)
-          addAnnouncement.value[name] =  {
+          addAnnouncement.value[name] = {
             lat: marker.markerProps.geometry.coordinates[0],
             lng: marker.markerProps.geometry.coordinates[1],
             name: res.data.description
@@ -138,7 +133,7 @@ const setLocation = (name) => {
       }
     }
   }, name)
-  hideDetailsOnLocationChange.value = true
+  // hideDetailsOnLocationChange.value = true
 }
 
 // Delete image
@@ -232,7 +227,8 @@ const createAnnouncement = async (announce) => {
 
       <div class="flex flex-col gap-2 w-full !mt-[24px]">
         <label for="description" class="text-[#292D3280] text-[16px]">Izoh</label>
-        <Textarea v-model="addAnnouncement.note" id="description" class="w-full   custom-placeholder-input" rows="3" cols="30"
+        <Textarea v-model="addAnnouncement.note" id="description" class="w-full   custom-placeholder-input" rows="3"
+                  cols="30"
                   placeholder="Yuk haqida izoh qoldiring!"/>
       </div>
 
@@ -301,9 +297,11 @@ const createAnnouncement = async (announce) => {
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }
+
 .bounce-leave-active {
   animation: bounce-in 0.5s reverse;
 }
+
 @keyframes bounce-in {
   0% {
     transform: scale(0);

@@ -28,13 +28,16 @@ app.use(auth, {
         },
         register: '/mobile/v1/phone/register',
         user: '/mobile/v2/user',
-        refresh: 'refresh',
+        refresh: {
+            url: '/mobile/v1/refresh_token',
+            method: 'post'
+        },
     },
     user: {
         property: 'user',
     }
 })
-
+app.use(ToastService);
 app.use(PrimeVue, {
     theme: {
         preset: Aura,

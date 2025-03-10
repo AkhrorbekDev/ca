@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import ModalAnnouncement from "@/pages/Services/Announcement/components/ModalAnnouncement.vue";
 import AddAnnouncementModal from "@/pages/Services/Announcement/components/AddAnnouncementModal.vue";
-import { announcement } from "@/pages/Services/Announcement/constants";
-import { inject, nextTick, onMounted, onUnmounted, ref } from 'vue';
-import { AnnouncementType } from "@/pages/Services/Announcement/announcement.types";
+import {announcement} from "@/pages/Services/Announcement/constants";
+import {inject, nextTick, onMounted, onUnmounted, ref} from 'vue';
+import {AnnouncementType} from "@/pages/Services/Announcement/announcement.types";
 import {useRouter} from "vue-router";
 import Services from "@/api/Services";
 
@@ -104,7 +104,7 @@ const openModal = (item: any) => {
 // Toggle menu visibility
 const toggleMenu = () => {
   if (activeTab.value === 1) {
-    return router.push({ path: 'services' });
+    return router.push({path: 'services'});
   }
   menuVisible.value = !menuVisible.value;
 };
@@ -224,21 +224,25 @@ onMounted(() => {
               </div>
             </div>
 
-            <img v-if="item?.transport_icon" class="h-[50px] object-contain " :src="item?.transport_icon" alt="image" height="50px">
+            <img v-if="item?.transport_icon" class="h-[50px] object-contain " :src="item?.transport_icon" alt="image"
+                 height="50px">
           </div>
 
           <h5 class="text-[#292D324D] text-lg !mb-[4px] line-clamp-1">{{ item.service_name ?? '' }}</h5>
 
           <div class="!mb-[4px]">
             <div class="flex items-center">
-              <span v-if="item.from_location?.name" class="text-[#1A1F23] font-medium !mr-[7px] line-clamp-1">{{ item.from_location?.name }}</span>
-              <svg v-if="item.from_location?.name && item.to_location?.name" width="11" height="12" viewBox="0 0 11 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <span v-if="item.from_location?.name"
+                    class="text-[#1A1F23] font-medium !mr-[7px] line-clamp-1">{{ item.from_location?.name }}</span>
+              <svg v-if="item.from_location?.name && item.to_location?.name" width="11" height="12" viewBox="0 0 11 12"
+                   fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0.667969 4.72792H10.0013L6.10825 1.33398" stroke="#1A1F23" stroke-linecap="round"
                       stroke-linejoin="round"/>
                 <path d="M10 7.27305L0.666668 7.27305L4.55972 10.667" stroke="#1A1F23" stroke-linecap="round"
                       stroke-linejoin="round"/>
               </svg>
-              <span v-if="item.to_location?.name" class="text-[#1A1F23] font-medium !ml-[7px] line-clamp-1">{{ item.to_location?.name }}</span>
+              <span v-if="item.to_location?.name"
+                    class="text-[#1A1F23] font-medium !ml-[7px] line-clamp-1">{{ item.to_location?.name }}</span>
             </div>
           </div>
 

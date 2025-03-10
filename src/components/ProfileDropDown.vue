@@ -15,6 +15,7 @@ const logOut = () => {
       })
     }
   })
+  menuVisible.value = false
 }
 const user = computed(() => {
   return $auth.user

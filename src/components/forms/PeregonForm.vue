@@ -9,6 +9,8 @@ import {ADV_TYPES} from '@/constants'
 
 const $api = inject('api')
 const mapStore = useMapStore()
+const emit = defineEmits(['on:success'])
+
 const props = defineProps({
   serviceTypeId: {
     type: Number,
@@ -22,6 +24,7 @@ const props = defineProps({
 const dateRef = ref(null)
 const mainForm = ref(null)
 const hideDetailsOnLocationChange = ref(false)
+const isSubmited = ref(false)
 
 const setLocation = (name) => {
   mapStore.setMarker({
@@ -50,7 +53,7 @@ const setLocation = (name) => {
       }
     }
   }, name)
-  hideDetailsOnLocationChange.value = true
+  // hideDetailsOnLocationChange.value = true
 }
 
 const onChangeDate = (e: Date, name) => {
@@ -140,9 +143,14 @@ const submit = () => {
   mainForm.value.validate()
       .then(res => {
         if (res.valid) {
+          isSubmited.value = true
           $api.advertisement.createAdvertisement(mainForm.value.getValues())
               .then(response => {
-                console.log(response, 'res')
+                mainForm.value.resetForm()
+                emit('on:success')
+              })
+              .finally(() => {
+                isSubmited.value = false
               })
         }
       })
@@ -151,12 +159,12 @@ const submit = () => {
 
 <template>
   <Form
-      v-slot="{values}"
+      v-slot="{values, errors}"
       ref="mainForm"
       as="div"
       :initial-values="staticValues"
       :validation-schema="peregonSchema"
-      class="navbar-items__form w flex items-start !transition-all"
+      class="navbar-items__form min-w-[360px] flex items-start !transition-all"
       :class="{
             '_form-active': show,
             hideDetailsOnLocationChange: hideDetailsOnLocationChange
@@ -164,13 +172,19 @@ const submit = () => {
   >
     <div class="navbar-items__divider"/>
     <div
-        class="flex flex-col h-full gap-4 !p-[16px]">
-      <LocationItem :location="values.from_location" as="div" class="col-span-full" name="from_location"
+        class="flex flex-col h-full w-full gap-4 !p-[16px]">
+      <LocationItem label="Qayerdan" :class="{
+        _invalid: (errors['from_location.lat'] || errors['from_location.lng'])
+      }" :location="values.from_location" as="div" class="col-span-full" name="from_location"
                     @click="setLocation('from_location')"/>
 
-      <LocationItem :location="values.to_location" as="div" class="col-span-full" name="to_location"
+      <LocationItem :class="{
+        _invalid: (errors['to_location.lat'] || errors['to_location.lng'])
+      }" :location="values.to_location" as="div" class="col-span-full" name="to_location"
                     @click="setLocation('to_location')"/>
-      <Field v-slot="{field}" name="shipment_date" class="col-span-full">
+      <Field v-slot="{field}" as="div" :class="{
+        _invalid: errors.shipment_date
+      }" name="shipment_date" class="  !px-[4px]  col-span-full">
         <FloatLabel variant="in">
           <DatePicker
               :model-value="values.shipment_date"
@@ -191,7 +205,10 @@ const submit = () => {
 
         <div
             @click="toggleShowDetails"
-            class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
+            :class="{
+        _invalid: errors.price
+      }"
+            class="w-full !bg-[#FAFAFA] !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
         >
             <span class="text-[#292D324D] text-[12px] !mb-2">
               Qo‘shimcha ma’lumotlar
@@ -217,16 +234,25 @@ const submit = () => {
       </Field>
       <button
           @click="submit"
+          class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-auto w-full"
+      >
 
-          class="bg-[#66C61C] !mt-auto w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]">
         E’lonni joylash
+
+        <svg v-if="isSubmited" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
+             fill="none"
+             viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
       </button>
     </div>
     <div
         v-show="show && showDetails"
         @click.stop
         class="bg-white rounded-[24px] !p-[16px] w-full absolute
-              gap-y-[13px] left-[110%] bottom-0 top-[0] max-h-[100vh] h-auto overflow-y-auto"
+              gap-y-[13px] left-[110%] bottom-0 top-[0] max-h-[100vh] h-max !mt-auto !mb-auto overflow-y-auto"
         style="box-shadow: 0 32px 100px 0 #292D3229;"
     >
       <div>
@@ -266,7 +292,10 @@ const submit = () => {
           <InputText
               :model-value="values.price"
               type="number"
-              class="!py-[12px] !px-[16px] !rounded-[16px] border !border-[#C2C2C233] !placeholder-[#292D324D]"
+              :class="{
+                _invalid: errors['price']
+              }"
+              class="!py-[12px] !px-[16px] !rounded-[16px] border border-[#C2C2C233] !placeholder-[#292D324D]"
               id="price" aria-describedby="username-help"
               placeholder="Narxni kiriting"/>
         </Field>

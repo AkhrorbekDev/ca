@@ -3,7 +3,6 @@ import * as yup from "yup";
 const baseSchema = {
     adv_type: yup.string().required(),
     service_type_id: yup.number().required(),
-    price: yup.string().required(),
     note: yup.string().notRequired()
 }
 
@@ -22,7 +21,7 @@ const deliverySchema = yup.object({
     details: yup.object({
         transportation_type_id: yup.number().required(),
         load_weight: yup.object({
-            amount: yup.number().required(),
+            amount: yup.number().required().moreThan(0),
             name: yup.string().required()
         })
     }),
@@ -44,10 +43,9 @@ const passengerTrafficSchema = yup.object({
     }).nonNullable(),
     details: yup.object({
         transportation_type_id: yup.number().required(),
-        passenger_count: yup.number().required()
+        passenger_count: yup.number().required().moreThan(0)
     }),
     ...baseSchema,
-    price: yup.string().notRequired(),
 })
 
 const specialTechniqueSchema = yup.object({
@@ -59,6 +57,7 @@ const specialTechniqueSchema = yup.object({
     details: yup.object({
         from_date: yup.string().required(),
         to_date: yup.string().required(),
+        transportation_type_id: yup.number().required(),
 
     }),
     ...baseSchema
@@ -82,7 +81,6 @@ const transportRentSchema = yup.object({
         }), // Texnik xarakteristikalar
         "tariffs": yup.array({
             day: yup.number().required(),
-            price: yup.number().required()
         })
     }),
     from_location: yup.object({
@@ -139,7 +137,7 @@ const transportTransferSchema = yup.object({
     }).nonNullable(),
     details: yup.object({
         transportation_type_id: yup.number().required(),
-        transport_count: yup.number().required()
+        transport_count: yup.number().required().moreThan(0)
     }),
     ...baseSchema
 })
@@ -159,18 +157,15 @@ const warehouseSchema = yup.object({
 
 const oilTransfer = yup.object({
     shipment_date: yup.string().required(),
-    from_location: yup.object({
+    to_location: yup.object({
         lat: yup.string().required(),
         lng: yup.string().required(),
         name: yup.string().required()
     }).nonNullable(),
     details: yup.object({
-        company_name: yup.string().required(),
-        fuels: yup.array(yup.object({
-            id: yup.number().required(),
-            type: yup.string().required(),
-            price: yup.string().required()
-        }))
+        company_id: yup.number().nonNullable().required(),
+        fuel_amount: yup.number().required().moreThan(0),
+        fuel_type_id: yup.string().required(),
     }),
     ...baseSchema
 })
@@ -203,7 +198,13 @@ const shippingSchema = yup.object({
         name: yup.string().required()
     }).nonNullable(),
     details: yup.object({
-        transportation_type_id: yup.number().required()
+        transportation_type_id: yup.number().required(),
+        load_weight: yup.object({
+            amount: yup.number().required().moreThan(0),
+            name: yup.string().required()
+        }),
+        load_type_id: yup.number().required(),
+        load_service_id: yup.number().required()
     }),
     ...baseSchema
 })
