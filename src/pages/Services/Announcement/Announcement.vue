@@ -60,7 +60,6 @@ const handleClickCard = (data: any) => {
     childMenu.value = data.child;
   } else {
     visible2.value = true;
-    console.log('DADADADADA', data );
     nextTick(() => {
       visible2Data.value = data;
     });
