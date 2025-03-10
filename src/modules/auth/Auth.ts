@@ -1,11 +1,16 @@
-import Request, {RequestInterface} from '@/modules/auth/core/Request';
-import {FetchContext} from "ofetch";
-import Storage, {StorageInterface} from "@/modules/auth/core/Storage";
+import Request from '@/modules/auth/core/Request';
+import type {RequestInterface} from '@/modules/auth/core/Request';
+import type {FetchContext} from "ofetch";
+import type {StorageInterface} from "@/modules/auth/core/Storage";
+import Storage from "@/modules/auth/core/Storage";
+import type { ModuleOptions} from "@/modules/auth/types";
 import {Methods} from "@/modules/auth/types";
 import {defineStore} from "pinia";
-import Token, {TokenInterface} from "@/modules/auth/Token";
-import RefreshToken, {RefreshTokenInterface} from "@/modules/auth/RefreshToken";
-import {TokenStatus} from "@/modules/auth/TokenStatus";
+import Token from "@/modules/auth/Token";
+import type {TokenInterface} from "@/modules/auth/Token";
+import RefreshToken from "@/modules/auth/RefreshToken";
+import type {RefreshTokenInterface} from "@/modules/auth/RefreshToken";
+import type {App} from 'vue'
 
 class Auth {
 
@@ -13,27 +18,26 @@ class Auth {
     storage: StorageInterface;
     token: TokenInterface
     refreshToken: RefreshTokenInterface
-    status: TokenStatus
-
     options: any
 
     onRequest(context: FetchContext) {
         context.options = context.options || {}
         console.log(context.options, 'options')
         context.options.headers = {
-            'Authorization': `Basic ${btoa('root:GJA4TI8zQciHrXq')}`,
+            Authorization: `Basic ${btoa('root:GJA4TI8zQciHrXq')}`,
             ...context.options.headers,
-        }
+        } as any
     }
+    context: App
 
-    interceptor: null
+    interceptor: null | Function
     initialState = {
         user: null,
         isLoggedIn: false
     }
     state
 
-    constructor(context, options) {
+    constructor(context: App, options: ModuleOptions) {
         this.options = options
         this.context = context
         this.storage = new Storage(this.options.cookie)
@@ -49,7 +53,7 @@ class Auth {
                 }
             },
             actions: {
-                SET(key, payload) {
+                SET(key: string, payload: any) {
                     this[key] = payload
                 }
             },
@@ -59,6 +63,7 @@ class Auth {
                 }
             }
         })
+        this.interceptor = null
     }
 
     get loggedIn() {
@@ -80,7 +85,7 @@ class Auth {
 
     async init() {
         const tokenStatus = this.token.status()
-        const refreshTokenStatus = this.refreshToken.status()
+        const refreshTokenStatus = this.refreshToken.status(true)
         // console.log(tokenStatus, refreshTokenStatus, 'init tokenStatus')
         // console.log([
         //     tokenStatus.valid(),
@@ -94,11 +99,22 @@ class Auth {
             }
             this.loggedIn = true
             return Promise.resolve()
-        } else if (this.options.isRefreshable && refreshTokenStatus.valid()) {
-            return await this.refreshTokens().then(async () => {
-                await this.initializeRequestInterceptor()
-                return Promise.resolve(true)
-            })
+        } else if (this.options.isRefreshable) {
+            if (!refreshTokenStatus.checkDisabled()) {
+                if (refreshTokenStatus.valid()) {
+                    return await this.refreshTokens().then(async () => {
+                        await this.initializeRequestInterceptor()
+                        return Promise.resolve(true)
+                    })
+                } else {
+                    this.reset()
+                }
+            } else if (!refreshTokenStatus.unknown()) {
+                return await this.refreshTokens().then(async () => {
+                    await this.initializeRequestInterceptor()
+                    return Promise.resolve(true)
+                })
+            }
         }
     }
 
@@ -130,8 +146,7 @@ class Auth {
         const refreshTokenStatus = this.refreshToken.status()
 
         // Token has expired. Attempt `tokenCallback`
-        console.log(tokenStatus, refreshTokenStatus, this.refreshToken.get(), 'test')
-        if (refreshTokenStatus.expired()) {
+        if (refreshTokenStatus.expired() && !refreshTokenStatus.checkDisabled()) {
             response.refreshTokenExpired = true
             return response
         }
@@ -238,12 +253,12 @@ class Auth {
                 refreshTokenExpired,
                 isRefreshable
             } = this.check(true)
-            console.log({
-                valid,
-                tokenExpired,
-                refreshTokenExpired,
-                isRefreshable
-            })
+            // console.log({
+            //     valid,
+            //     tokenExpired,
+            //     refreshTokenExpired,
+            //     isRefreshable
+            // })
             let isValid = valid
 
             // Refresh token has expired. There is no way to refresh. Force reset.

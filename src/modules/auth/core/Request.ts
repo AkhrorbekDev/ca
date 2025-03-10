@@ -1,9 +1,9 @@
-import {$Fetch, $fetch, FetchHooks, FetchContext} from 'ofetch'
+import type {$Fetch, FetchHooks, FetchContext} from 'ofetch'
+import {$fetch} from 'ofetch'
 
 
-interface RequestInterface implements FetchHooks {
+interface RequestInterface extends FetchHooks {
     _request: $Fetch
-
     get (url: string, params?: any): Promise<any>;
     post (url: string, data: any): Promise<any>;
     put (url: string, data: any): Promise<any>;
@@ -54,7 +54,15 @@ class Request implements RequestInterface {
             body: data
         });
     }
+
+    delete(url: string): Promise<any> {
+        return Promise.resolve(undefined);
+    }
+
+    put(url: string, data: any): Promise<any> {
+        return Promise.resolve(undefined);
+    }
 }
 
-export {RequestInterface};
+export type {RequestInterface};
 export default Request;
