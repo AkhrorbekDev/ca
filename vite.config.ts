@@ -6,8 +6,6 @@ import Components from 'unplugin-vue-components/vite';
 import {PrimeVueResolver} from '@primevue/auto-import-resolver';
 import vueDevTools from "vite-plugin-vue-devtools";
 
-console.log([import.meta.url, fileURLToPath(new URL("./src", import.meta.url))]);
-
 // https://vite.dev/config/
 export default defineConfig({
     css: {
@@ -34,4 +32,7 @@ export default defineConfig({
 
         },
     },
+    build: {
+        target: 'esnext' // This enables top-level await
+    }
 });
