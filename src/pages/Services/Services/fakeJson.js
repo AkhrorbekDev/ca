@@ -89,16 +89,19 @@ export const services = [
 export const transportAdvertising = [
     {
         title: 'Yuk tashish',
+          id: 1,
         subTitle: 'Barcha turdagi kichikdan kattagacha yuklarni tashish uchun samarali yechim',
         img: truck
     },
     {
         title: 'Yo‘lovchi tashish',
+         id: 2,
         subTitle: 'Shaxsiy, oilaviy yoki guruh bo‘lib sayohat qilish uchun transport xizmati',
         img: car
     },
     {
         title: 'Maxsus texnika',
+        id: 3,
         subTitle: 'Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati',
         img: exkavator
     },
@@ -108,6 +111,7 @@ export const transportAdvertising = [
         img: carKey
     },
     {
+        id: 6,
         title: 'Transport transferi',
         subTitle: 'Transportlarni manzilga xavfsiz va vaqtida yetkazib berish xizmati',
         img: evakvator

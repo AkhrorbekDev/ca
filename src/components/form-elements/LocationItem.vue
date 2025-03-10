@@ -16,6 +16,10 @@ defineProps({
       name: null
     })
   },
+  label: {
+    type: String,
+    default: 'Qayerga'
+  },
   name: {
     type: String,
     default: 'location'
@@ -30,8 +34,9 @@ defineProps({
     <div class="formItem">
       <div class=" w-full flex items-center justify-between">
         <div class="flex flex-col  items-start justify-center">
-          <label class="!text-[#292D324D]">Qayerga</label>
-          <InputText id="in_label" readonly :model-value="location.name" :disabled="true" variant="outline"
+          <label class="!text-[#292D324D]">{{ label }}</label>
+          <InputText id="in_label" readonly :model-value="location.name"
+                     :disabled="true" variant="outline"
                      placeholder="Manzilni tanlang"
                      class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"/>
         </div>

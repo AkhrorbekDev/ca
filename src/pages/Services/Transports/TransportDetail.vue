@@ -57,14 +57,6 @@ onMounted(async () => {
   // })
   console.log($auth.loggedIn)
   try {
-    const loginResponse = await $auth.login({
-      "phone_number": "998970175492",
-      "sms_type": "phone", // phone, mail
-      "session_token": "64430f938253f55cb6ebecbb46928523",
-      "security_code": "5555"
-    });
-    console.log(loginResponse);
-
     const response = await $api.advertisement.getAdvertisement({
       transport_id: 7
     });

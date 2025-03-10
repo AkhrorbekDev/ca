@@ -51,7 +51,7 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
         const statusText = getPropertyValue(response, 'statusText')
         const statusCode = getPropertyValue(response, 'status')
         const sendingMessage = message !== '' ? message : statusText
-
+        
         return Promise.reject({
             data: response._data,
             message: sendingMessage,
@@ -67,6 +67,7 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
             onRequest: (ctx) => this.onRequest(ctx, context),
             onResponseError: (ctx) => this.onResponseError(ctx, context),
         });
+        this.context = context
 
         this._fetch = (url, options) => {
             return fetch(url, options);

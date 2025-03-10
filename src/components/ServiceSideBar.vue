@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {Menu, services} from '@/components/fakeJson'
-import {inject, onMounted, onUnmounted, ref} from "vue";
+import {inject, onMounted, onUnmounted, ref, watchEffect} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {useCommonStore} from "@/stores/common.store"
 import useMapStore from '@/stores/map.store'
@@ -50,7 +50,7 @@ const menuItems = ref<MenuItems[]>([
   },
   {
     title: 'E’lonlar',
-    unique: 'adv',
+    unique: 'announcement',
     icon: box,
     route: '/announcement'
   },
@@ -111,6 +111,23 @@ const handleClickCard = (item: any) => {
   }
 }
 
+watchEffect(async () => {
+  console.log('test watchEffect')
+  // if (route.name === menuItems.value[0].unique) {
+  //   selectedMenu.value = menuItems.value[0]
+  //   selectedService.value = selectedMenu.value.children.find(item => item.unique === route.params.type)
+  //   menuVisible.value = true
+  //   showForm.value = true
+  // } else if (route.name === menuItems.value[1].unique) {
+  //   menuVisible.value = false
+  //   showForm.value = false
+  //   showTransportGrid.value = false
+  //   selectedService.value = null
+  // }
+
+})
+
+
 const isLoadingTransports = ref(false)
 const getTransports = serviceId => {
   isLoadingTransports.value = true
@@ -140,6 +157,8 @@ const openChildMenu = (index: number, item: MenuItems) => {
     showForm.value = false
     showTransportGrid.value = false
     selectedMenu.value = null
+    selectedService.value = null
+
     return
   } else {
     selectedMenu.value = item
@@ -159,8 +178,13 @@ const openChildMenu = (index: number, item: MenuItems) => {
 };
 
 const openDetail = (value: any, item: any) => {
-  selectedService.value = item
   showTransportGrid.value = false
+  if (selectedService.value && selectedService.value.id === item.id) {
+    showForm.value = false
+    selectedService.value = null
+    return
+  }
+  selectedService.value = item
   if (item.id === 7) {
     menuVisible.value = false
     showForm.value = false
@@ -268,13 +292,26 @@ onMounted(() => {
 
         <SidebarTransportsGrid v-if="showTransportGrid" :service-id="selectedService?.id" :loading="isLoadingTransports"
                                :transports="transports"
-                               @on:click="changeRoute"></SidebarTransportsGrid>
+                               @on:click="changeRoute"/>
+        <!--        <AutoRepair v-if="showTransportGrid" :service-id="selectedService?.id" :loading="isLoadingTransports"-->
+        <!--                               :transports="transports"-->
+        <!--                               @on:click="changeRoute"/>-->
       </div>
     </div>
   </div>
 </template>
 
 <style lang="scss">
+
+._invalid {
+  border: 1px solid #EA5455 !important;
+  border-radius: 24px;
+
+  .p-inputtext {
+    border-color: #EA5455 !important;
+
+  }
+}
 
 .navbar-items {
   display: flex;

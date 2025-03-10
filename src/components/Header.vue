@@ -33,8 +33,6 @@ const toggle = (event) => {
           <img src="/icons/youtube.svg" alt="youtube">
         </div>
 
-        <span>{{ $auth.loggedIn }} loggendin</span>
-
         <div class="flex items-center gap-6">
           <div>
             <img src="/icons/lang.svg" alt="lang" class="cursor-pointer" @click="toggle">

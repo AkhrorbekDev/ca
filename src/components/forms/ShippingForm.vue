@@ -7,6 +7,7 @@ import getGeoObject from "@/composables/getGeoObject";
 import RadioItem from "@/components/form-elements/RadioItem.vue";
 import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
+import {useToast} from "primevue/usetoast";
 
 const $api = inject('api')
 const mapStore = useMapStore()
@@ -56,7 +57,7 @@ const setLocation = (name) => {
       }
     }
   }, name)
-  hideDetailsOnLocationChange.value = true
+  // hideDetailsOnLocationChange.value = true
 }
 
 const onChangeDate = (e: Date, name) => {
@@ -189,20 +190,8 @@ const handleFileUpload = (event) => {
 };
 
 const onSaveDetails = () => {
-  const errors = mainForm.value.getErrors()
-  if (errors) {
-    if (!errors.details?.cargo_type && !errors.details?.load_type &&
-        !errors.pay_type && !errors.price
-    ) {
-      showDetails.value = false
+  showDetails.value = false
 
-    } else {
-      return
-
-    }
-  } else {
-    showDetails.value = false
-  }
 }
 
 const staticValues = ref({
@@ -212,14 +201,18 @@ const staticValues = ref({
     load_weight: {
       name: 'kg',
       amount: 0
-    }
+    },
+    load_type_id: cargoTypes[0].value,
+    load_service_id: loadTypes[0].value
   }, price: 0,
   note: '',
+  shipment_date: null,
   pay_type: 'CASH'
 })
 const transports = ref([])
 const selectedTransports = ref(null)
 const transportLoading = ref(false)
+const toast = useToast()
 // const toast = useToast()
 const submit = () => {
   mainForm.value.validate()
@@ -234,12 +227,13 @@ const submit = () => {
                   images: collectImages.value,
                 }
                 await $api.image.sendImage(imagePayload).then(() => {
-                  mainForm.value.resetForm()
-                  emit('on:success')
-                  selectedTransports.value = null
-                  collectImages.value = []
-                  images.value = []
+
                 })
+                mainForm.value.resetForm()
+                emit('on:success')
+                selectedTransports.value = null
+                collectImages.value = []
+                images.value = []
               })
               .finally(() => {
                 isSubmited.value = false
@@ -300,7 +294,7 @@ onMounted(() => {
 
 <template>
   <Form
-      v-slot="{values}"
+      v-slot="{values, errors}"
       ref="mainForm"
       as="div"
       :initial-values="staticValues"
@@ -315,14 +309,24 @@ onMounted(() => {
     <div
         ref="mainWrapper"
         class="flex flex-col h-full w-full gap-4 !p-[16px]">
-      <LocationItem :location="values.from_location" as="div" class="col-span-full" name="from_location"
+      <LocationItem label="Qayerdan"
+                    :class="{
+        _invalid: (errors['from_location.lat'] || errors['from_location.lng'])
+      }"
+                    :location="values.from_location" as="div" class="col-span-full" name="from_location"
                     @click="setLocation('from_location')"/>
 
-      <LocationItem :location="values.to_location" as="div" class="col-span-full" name="to_location"
-                    @click="setLocation('to_location')"/>
+      <LocationItem
+          :class="{
+        _invalid: (errors['to_location.lat'] || errors['to_location.lng'])
+      }"
+          :location="values.to_location" as="div" class="col-span-full" name="to_location"
+          @click="setLocation('to_location')"/>
 
       <Field as="div" name="details.load_weight.amount"
-             class="load_weight_select formItem flex items-center justify-between">
+             :class="{
+        _invalid: (errors['details.load_weight.amount'])
+      }" class="load_weight_select formItem flex items-center justify-between">
         <div class="flex flex-col  items-start justify-center">
 
           <label for="load_weight.amount" class="!text-[#292D324D]">Yuk vazni</label>
@@ -369,9 +373,12 @@ onMounted(() => {
           </Select>
         </Field>
       </Field>
-      <Field v-slot="{field}" name="shipment_date" class="col-span-full">
+      <Field v-slot="{field}" :class="{
+                _invalid: errors.shipment_date
+              }" name="shipment_date" as="div" class=" !px-[4px]  col-span-full">
         <FloatLabel variant="in">
           <DatePicker
+
               :model-value="values.shipment_date"
               ref="dateRef"
               dateFormat="dd/mm/yy"
@@ -379,10 +386,10 @@ onMounted(() => {
               showIcon
               @update:model-value="onChangeDate($event, field.name)"
               iconDisplay="input" variant="filled"
-              class="custom-date w-full"/>
+              class="custom-date w-full "/>
           <!--            <InputText id="in_label" variant="filled" placeholder="Manzilni tanlang"-->
           <!--                       class="w-full bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>-->
-          <label for="in_label" class="!text-[#292D324D]">Jo‘natish sanasi</label>
+          <label for="in_label" class="!text-[#292D324D]">Jo‘natish sanasi </label>
         </FloatLabel>
       </Field>
 
@@ -390,7 +397,10 @@ onMounted(() => {
 
         <div
             @click="toggleShowDetails"
-            class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
+            :class="{
+                _invalid: errors['price'] || images.length === 0
+              }"
+            class="w-full !bg-[#FAFAFA] !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
         >
             <span class="text-[#292D324D] text-[12px] !mb-2">
               Qo‘shimcha ma’lumotlar
@@ -412,7 +422,12 @@ onMounted(() => {
 
       </div>
 
-      <Field name="details.transportation_type_id" as="div" class="col-span-full">
+      <Field
+          name="details.transportation_type_id"
+          as="div"
+          :class="{
+                _invalid: (errors['details.transportation_type_id'])
+              }" class="col-span-full !px-[4px]">
         <FloatLabel variant="in">
           <Select :loading="transportLoading" :model-value="selectedTransports"
                   @update:model-value="updateTransportType" :options="transports" optionLabel="name"
@@ -482,7 +497,7 @@ onMounted(() => {
     >
       <div>
 
-        <Field name="details.cargo_type">
+        <Field name="details.load_type_id">
           <div>
             <span class="bg-[#FAFAFA] rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
               Yuk turi
@@ -510,7 +525,9 @@ onMounted(() => {
               as="div" name="details.load_service_id" v-for="item in loadTypes"
               :key="item.label" :item="item" :value="item.value"/>
         </Field>
-        <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
+        <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]" :class="{
+          _invalid: images.length === 0
+        }">
           <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
 
           <div class="grid grid-cols-2 gap-4 !mt-[8px] rounded-2xl">
@@ -554,7 +571,7 @@ onMounted(() => {
                     cols="30"
                     placeholder="Buyurtma haqida izoh qoldiring!"/>
         </Field>
-        <Field name="pay_type" v-slot="{handleChange }" as="div" class="!mb-[24px]">
+        <Field name="pay_type" v-slot="{handleChange }" as="div" class="!mt-[12px] !mb-[24px]">
           <span class="bg-[#FAFAFA] rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
                 To'lov
               </span>
@@ -583,8 +600,10 @@ onMounted(() => {
           <InputText
               :model-value="values.price"
               type="number"
-
-              class="!py-[12px] !px-[16px] !rounded-[16px] border !border-[#C2C2C233] !placeholder-[#292D324D]"
+              :class="{
+                _invalid: errors['price']
+              }"
+              class="!py-[12px] !px-[16px] !rounded-[16px] border border-[#C2C2C233] !placeholder-[#292D324D]"
               id="price" aria-describedby="username-help"
               placeholder="Narxni kiriting"/>
         </Field>
@@ -624,4 +643,5 @@ onMounted(() => {
   left: auto !important;
   min-width: 200px !important;
 }
+
 </style>
