@@ -158,7 +158,7 @@ export function getProp (
 // Ie "Bearer " + token
 export function addTokenPrefix (
     token: string | boolean,
-    tokenType: string | false
+    tokenType?: string | false
 ): string | boolean {
     if (
         !token ||

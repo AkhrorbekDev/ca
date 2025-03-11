@@ -7,6 +7,7 @@ import {AnnouncementType} from "@/pages/Services/Announcement/announcement.types
 import {useRouter} from "vue-router";
 
 const router = useRouter();
+const route = useRoute()
 const visible = ref(false);
 const visible2 = ref(false);
 const visible2Data = ref<any>({});
@@ -90,7 +91,13 @@ const closeMenu = () => {
 // Fetch all announcements
 const fetchAnnouncements = async () => {
   try {
-    let params: any = {};
+    let params = {};
+    if (route.query) {
+      params = {
+        service_id: route.query.service_id,
+        transport_id: route.query.transport_type_id,
+      }
+    }
     if (activeTab.value === 1) {
       params.adv_type = 'RECEIVE';
     } else if (activeTab.value === 2) {

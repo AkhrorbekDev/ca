@@ -1,12 +1,11 @@
-import {StorageInterface} from "@/modules/auth/core/Storage";
+import type {StorageInterface} from "@/modules/auth/core/Storage";
 import {addTokenPrefix} from "@/modules/auth/utils";
-import {ModuleOptions} from "@/modules/auth/types";
+import type {ModuleOptions} from "@/modules/auth/types";
 import {TokenStatus} from "@/modules/auth/TokenStatus";
 
 interface RefreshTokenInterface {
     storage: StorageInterface;
     options: ModuleOptions['token']
-    token: string | false
 
     get(): string | false
 
@@ -14,10 +13,10 @@ interface RefreshTokenInterface {
 
     sync(): string | false
 
-    status(): TokenStatus
+    status(expireInvalid: boolean): TokenStatus
 }
 
-class RefreshToken {
+class RefreshToken implements RefreshTokenInterface {
     storage: StorageInterface;
     options: ModuleOptions['refreshToken']
 
@@ -38,7 +37,7 @@ class RefreshToken {
 
         this._updateExpiration(expiration)
 
-        return token
+        return tokenValue
     }
 
 
@@ -46,12 +45,12 @@ class RefreshToken {
         return this.get()
     }
 
-    status() {
-        return new TokenStatus(this.get(), this._getExpiration())
+    status(expireInvalid = false) {
+        return new TokenStatus(this.get(), this._getExpiration(), expireInvalid)
     }
 
 
-    private _setToken(token: string | false): string | false {
+    private _setToken(token: string | boolean): string | false {
         const key = this.options.prefix
         this.storage.set(key, token)
         return token as string | false
@@ -62,7 +61,7 @@ class RefreshToken {
         return this.storage.get(key) as string | false
     }
 
-    private _setExpiration(expiration: number | false): number | false {
+    private _setExpiration(expiration: number | boolean): number | false {
         const key = this.options.prefix + '.' + this.options.expirationPrefix
         this.storage.set(key, expiration)
         return expiration as number | false
@@ -73,7 +72,7 @@ class RefreshToken {
         return this.storage.get(key) as number | false
     }
 
-    private _updateExpiration(expiration: number | false): number | false {
+    private _updateExpiration(expiration: number | boolean | bigint | any): number | false {
         let tokenExpiration
         const _tokenIssuedAtMillis = Date.now()
         const _tokenTTLMillis = Number(this.options.maxAge) * 1000
@@ -82,8 +81,9 @@ class RefreshToken {
             : 0
 
         try {
+            if (!expiration) return expiration
             tokenExpiration = expiration * 1000 || _tokenExpiresAtMillis
-        } catch (error) {
+        } catch (error: Error | any | unknown) {
             // If the token is not jwt, we can't decode and refresh it, use _tokenExpiresAt value
             tokenExpiration = _tokenExpiresAtMillis
 
@@ -93,7 +93,8 @@ class RefreshToken {
         }
         return this._setExpiration(tokenExpiration || false)
     }
+
 }
 
-export {RefreshTokenInterface}
+export type {RefreshTokenInterface}
 export default RefreshToken

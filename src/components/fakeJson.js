@@ -84,7 +84,6 @@ export const services = [
         "id": 5,
         title: 'Avto ta\'mirlash',
         unique: "repair",
-        route: 'transport-repair'
     },
 ]
 

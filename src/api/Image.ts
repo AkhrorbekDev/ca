@@ -8,8 +8,4 @@ export default class Image extends ApiCoreFetch {
             Accept: '*/*'
         });
     }
-
-    test(formData) {
-        return this.post('https://api.carting.uz/web/v1/public/files/upload/category/advertisements', formData)
-    }
 }

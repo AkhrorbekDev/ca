@@ -16,10 +16,13 @@ import car from '@/assets/icons/car.svg'
 import box from '@/assets/icons/box.svg'
 import home from '@/assets/icons/home.svg'
 import SidebarTransportsGrid from "@/components/SidebarTransportsGrid.vue";
+import useBreadcrumbs from '@/stores/breadcrumbs'
+import AutoRepair from "@/components/forms/AutoRepair.vue";
 
 const store = useCommonStore()
 const mapStore = useMapStore()
 const advStore = useAdvertisementStore()
+const breadcrumbStore = useBreadcrumbs()
 
 interface MenuItems {
   title: string;
@@ -65,6 +68,7 @@ const menuItems = ref<MenuItems[]>([
 const selectedMenu = ref<MenuItems | null>(null)
 const selectedService = ref(null)
 const showTransportGrid = ref(false)
+const showAutoRepairGrid = ref(false)
 const transports = ref([])
 
 
@@ -72,7 +76,31 @@ onMounted(() => closeMenu())
 
 onUnmounted(() => closeMenu())
 
+const changeRouteRepair = (item) => {
+  showAutoRepairGrid.value = false
+  showTransportGrid.value = false
+  selectedService.value = null
+  selectedMenu.value = null
+  menuVisible.value = false
+  showForm.value = false
+}
+
 const changeRoute = (item) => {
+  breadcrumbStore.updateBreadcrumb([
+        {
+          title: 'Transport e\'lonlari'
+
+        },
+        {
+          title: selectedMenu.value?.title
+
+        },
+        {
+          title: `${item.name} e'lonlari`,
+          last: true
+        }
+      ]
+  )
 
   if (selectedService.value.id === 7) {
     router.push({
@@ -156,6 +184,7 @@ const openChildMenu = (index: number, item: MenuItems) => {
     menuVisible.value = false
     showForm.value = false
     showTransportGrid.value = false
+    showAutoRepairGrid.value = false
     selectedMenu.value = null
     selectedService.value = null
 
@@ -164,12 +193,14 @@ const openChildMenu = (index: number, item: MenuItems) => {
     selectedMenu.value = item
     showForm.value = false
     showTransportGrid.value = false
+    showAutoRepairGrid.value = false
   }
 
   if (item.route) {
     router.push(item.route)
     selectedService.value = null
     menuVisible.value = false
+    showAutoRepairGrid.value = false
     return
   }
   mapStore.clearMarkers()
@@ -190,6 +221,13 @@ const openDetail = (value: any, item: any) => {
     showForm.value = false
     selectedMenu.value = null
     changeRoute(item)
+    return
+  }
+
+  if (item.id === 5) {
+    showForm.value = false
+    showTransportGrid.value = false
+    showAutoRepairGrid.value = true
     return
   }
   if (item.route) {
@@ -293,11 +331,13 @@ onMounted(() => {
         <SidebarTransportsGrid v-if="showTransportGrid" :service-id="selectedService?.id" :loading="isLoadingTransports"
                                :transports="transports"
                                @on:click="changeRoute"/>
-        <!--        <AutoRepair v-if="showTransportGrid" :service-id="selectedService?.id" :loading="isLoadingTransports"-->
-        <!--                               :transports="transports"-->
-        <!--                               @on:click="changeRoute"/>-->
+        <AutoRepair v-if="showAutoRepairGrid" :service="selectedService" :service-id="selectedService?.id"
+                    :loading="isLoadingTransports"
+                    :transports="transports"
+                    @on:click="changeRouteRepair"/>
       </div>
     </div>
+
   </div>
 </template>
 
