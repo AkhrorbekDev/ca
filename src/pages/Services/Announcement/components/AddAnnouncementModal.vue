@@ -18,11 +18,12 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  data: Object,
   activeTab: {
     type: Number,
   },
-  parentId: Number
 });
+const uniqueVal = ref(props.announceValue.unique);
 
 const rentList = ref<{ oil_type: string; price: number }[] | []>([]);
 const definitionList = ref<{ oil_type: string; price: number }[] | []>([]);
@@ -166,7 +167,7 @@ const createAnnouncement = async (announce) => {
   <Dialog dismissableMask v-model:visible="model" modal :style="{ width: '50rem' }"
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <template #header>
-      DATA:<pre>{{announceValue}}</pre>
+      DATA:<pre>{{data.unique}}</pre>
       <div class="grow text-center text-[#292D32] text-[24px] font-medium">
         {{ announceValue.name }}
         ma’lumotlari
