@@ -4,8 +4,9 @@ import ApiCoreFetch from "@/api/core/ApiCoreFetch";
 class Transport extends ApiCoreFetch {
 
     getTransportByServiceId(id): Promise<any> {
-        return this.get("/mobile/v1/list/transportation_types", {
-            service_id: id
+        return this.get("/public/mobile/v1/list/transportation_types", {
+            service_id: id,
+            noAuth: true
         });
     }
 
@@ -14,8 +15,10 @@ class Transport extends ApiCoreFetch {
     }
 
     getCars(id) {
-        return this.get("/mobile/v1/list/cars", {
-            service_id: id
+        return this.get("/public/mobile/v1/list/cars", {
+            service_id: id,
+            noAuth: true
+
         });
     }
 }

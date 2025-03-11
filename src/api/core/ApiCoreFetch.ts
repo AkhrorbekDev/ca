@@ -1,4 +1,5 @@
 import {$Fetch, $fetch, FetchContext, FetchHooks} from 'ofetch'
+import {getQuery} from 'ufo'
 
 interface ApiCoreFetchInterface {
 
@@ -27,19 +28,25 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
     _fetch: $Fetch;
 
     async onRequest(context: FetchContext, app) {
-        console.log(context)
+        const query = getQuery(context.request)
         context.options = context.options || {}
         context.options.headers = {
             ...context.options.headers,
-            Accept: '*/*',
-            'Authorization': `Basic ${btoa('root:GJA4TI8zQciHrXq')}`,
+
         }
-        if (app.config.globalProperties.$auth.interceptor) {
-            context.options = await app.config.globalProperties.$auth.interceptor({
-                ...context.options,
-                url: context.request
-            });
+        if (context.options.params && !context.options.params.noAuth) {
+            context.options.headers.Authorization = `Basic ${btoa('root:GJA4TI8zQciHrXq')}`
+            if (app.config.globalProperties.$auth.interceptor) {
+                context.options = await app.config.globalProperties.$auth.interceptor({
+                    ...context.options,
+                    url: context.request
+                });
+            }
+        } else {
+            delete context.options.params?.noAuth
+
         }
+
     }
 
     async onResponseError({
@@ -51,7 +58,7 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
         const statusText = getPropertyValue(response, 'statusText')
         const statusCode = getPropertyValue(response, 'status')
         const sendingMessage = message !== '' ? message : statusText
-        
+
         return Promise.reject({
             data: response._data,
             message: sendingMessage,
@@ -68,7 +75,6 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
             onResponseError: (ctx) => this.onResponseError(ctx, context),
         });
         this.context = context
-
         this._fetch = (url, options) => {
             return fetch(url, options);
         }

@@ -43,7 +43,6 @@ const useMapStore = defineStore({
             if (index !== -1) {
                 this.markers.splice(index, 1)
             }
-            console.log(this.markers, index, id)
         },
         clearMarkers() {
             // console.trace('clear marrkers')

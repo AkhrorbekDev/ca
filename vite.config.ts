@@ -34,8 +34,5 @@ export default defineConfig({
                 "./node_modules/@yandex/ymaps3-types"
 
         },
-    },
-    build: {
-        target: 'esnext' // This enables top-level await
     }
 });

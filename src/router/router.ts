@@ -38,6 +38,11 @@ const routes: RouteRecordRaw[] = [
         component: () => import("@/views/Login/PersonalData.vue"),
         meta: {layout: "PersonalData"},
     },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: () => import('@/pages/404.vue')
+    },
     ...Service
 ];
 
