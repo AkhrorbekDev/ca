@@ -11,60 +11,70 @@ const route = useRoute()
 const visible = ref(false);
 const visible2 = ref(false);
 const visible2Data = ref<any>({});
-const childMenu = ref([]);
+const childMenu = ref<any[]>([]);
 const menuVisible = ref<boolean>(false);
-const selectedAnnouncement = ref<any>(null); // Track the selected announcement
+const selectedAnnouncement = ref<any>(null);
+const isLoading = ref(false);
+const announcementAllData = ref<any[]>([]);
+const activeTab = ref(0);
+const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
 
-onMounted(() => closeMenu());
-onUnmounted(() => closeMenu());
+const $api = inject('api'); // Ensure $api is injected
 
+// Fetch data for a specific announcement by ID
+const fetchDataForAnnouncement = async (id: number) => {
+  isLoading.value = true;
+  if(id) {
+    try {
+      const response = await $api.transport.getTransportByServiceId(id);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+};
+
+const dataTo = ref()
+// Handle menu item click
+const openDetail = async (item: any) => {
+  if (item?.id) {
+    const data = await fetchDataForAnnouncement(item?.id); // Fetch new data
+    item.child = data.map(child => ({ ...child, parentId: item.unique })); // Update the child property
+    childMenu.value = data // Set the childMenu for dropdown
+    dataTo.value = { ...item, parentId: item.unique };
+    console.log('DSSSSSRR: ', dataTo.value)
+  } else if (item.child && item.child.length > 0) {
+    childMenu.value = item.child; // Use existing child data
+  } else {
+    visible2.value = true;
+    nextTick(() => {
+      visible2Data.value = { ...item, parentId: item?.id };
+    });
+  }
+};
+
+// Handle child item click
+const handleClickCard = (data: any) => {
+  if (data.child && data.child.length > 0) {
+    childMenu.value = data.child;
+  } else {
+    visible2.value = true;
+    nextTick(() => {
+      visible2Data.value =  { ...data, parentId: data.parentId, unique: data.unique };
+    });
+  }
+};
+
+// Close the dropdown menu
 const closeMenu = () => {
-  document.body.addEventListener("click", () => {
+  document.body.addEventListener('click', () => {
     menuVisible.value = false;
   });
 };
 
-const openDetail = (item) => {
-  if (item.child) {
-    childMenu.value = item.child;
-  } else {
-    visible2.value = true;
-    nextTick(() => {
-      visible2Data.value = item;
-    });
-  }
-};
-
-const handleClickCard = (data) => {
-  if (data) {
-    if (data.child) {
-      childMenu.value = data.child;
-      return;
-    }
-    visible2.value = true;
-    nextTick(() => {
-      visible2Data.value = data;
-    });
-  }
-};
-
-const $api = inject('api');
-const announcementAllData = ref<AnnouncementType>([]);
-
-const activeTab = ref(0);
-const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
-
-const toggleMenu = () => {
-  if (activeTab.value === 1) {
-    return router.push({path: 'services'});
-  }
-  menuVisible.value = !menuVisible.value;
-};
-
-onMounted(() => {
-  fetchAnnouncements();
-});
-
+// Fetch all announcements
 const fetchAnnouncements = async () => {
   try {
     let params = {};
@@ -79,23 +89,38 @@ const fetchAnnouncements = async () => {
     } else if (activeTab.value === 2) {
       params.adv_type = 'PROVIDE';
     }
-
     const response = await $api.announcement.getAnnouncement(params);
     announcementAllData.value = response?.data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
   }
 };
 
-const changeTab = (index) => {
+// Change active tab
+const changeTab = (index: number) => {
   activeTab.value = index;
   fetchAnnouncements();
 };
 
-const openModal = (item) => {
-  selectedAnnouncement.value = item; // Set the selected item
-  visible.value = true; // Open the modal
+// Open modal with selected announcement
+const openModal = (item: any) => {
+  selectedAnnouncement.value = item;
+  visible.value = true;
 };
+
+// Toggle menu visibility
+const toggleMenu = () => {
+  if (activeTab.value === 1) {
+    return router.push({path: 'services'});
+  }
+  menuVisible.value = !menuVisible.value;
+};
+
+onMounted(() => {
+  closeMenu();
+  fetchAnnouncements();
+});
+
 </script>
 
 <template>
@@ -140,7 +165,7 @@ const openModal = (item) => {
                      @click.stop="openDetail(item, index)"
                 >
                   <img :src="item.image" class="!m-auto swg !my-0" alt="#"/>
-                  <p class="text-gray-900">{{ item.title }}</p>
+                  <p class="text-gray-900">{{ item.name }}</p>
                 </div>
               </div>
             </div>
@@ -149,14 +174,15 @@ const openModal = (item) => {
             <div v-if="childMenu.length" class="mega-drop-menu" @click.stop>
               <button @click="childMenu = []" class="text-[#000]">x</button>
               <div class="grid grid-cols-2 gap-3">
+                <PRE>{{childMenu}}</PRE>
                 <div class="cards cursor-pointer"
                      v-for="(item2, index) in childMenu"
                      :key="index"
                      @click="handleClickCard(item2)"
                 >
-                  <img :src="item2.image" v-if="item2.image" class="!m-auto !my-0" alt="#"/>
-                  <h4 class="text-[#292D32] text-[14px]">{{ item2.title }}</h4>
-                  <p class="text-gray-900">{{ item2.info }}</p>
+                  <img v-if="item2.icon" :src="item2.icon" class="!m-auto !my-0 w-20 h-12 object-contain" alt="#"/>
+                  <h4 class="text-[#292D32] text-[14px]">{{ item2.name }}</h4>
+                  <p class="text-gray-900">{{ item2?.volume }}</p>
                 </div>
               </div>
             </div>
@@ -234,7 +260,7 @@ const openModal = (item) => {
 
     <ModalAnnouncement :announcement="selectedAnnouncement" v-model="visible" :tabIndex="activeTab"/>
 
-    <AddAnnouncementModal :active-tab="activeTab" v-model="visible2" :announceValue="visible2Data"/>
+    <AddAnnouncementModal :active-tab="activeTab" v-model="visible2" :announceValue="visible2Data" :data="dataTo" />
   </div>
 </template>
 

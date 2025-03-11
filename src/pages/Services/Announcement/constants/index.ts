@@ -9,28 +9,29 @@ import ekskavator from "@/assets/images/ekskavator.png"
 import ustaxona from "@/assets/images/ustaxona.png"
 import usta from "@/assets/images/usta.png"
 
+
 export const announcement = [
     {
-        title: "Yetkazib\n" +
+        name: "Yetkazib\n" +
             "berish",
         image: car,
         unique: "delivery",
         child: [
             {
-                title: "Velosiped",
-                info: "3 kg gacha",
+                name: "Velosiped",
+                volute: "3 kg gacha",
                 image: furgon,
                 unique: "delivery",
             },
             {
-                title: "Skuter",
-                info: "5 kg gacha",
+                name: "Skuter",
+                volute: "5 kg gacha",
                 image: gazel,
                 unique: "delivery",
             },
             {
-                title: "Sedan",
-                info: "20 kg gacha",
+                name: "Sedan",
+                volute: "20 kg gacha",
                 image: ochu,
                 unique: "delivery",
             },
@@ -39,179 +40,183 @@ export const announcement = [
     },
 
     {
-        title: "Peregon xizmati",
+        name: "Peregon xizmati",
         image: car,
         unique: "distillation",
     },
 
     {
-        title: "Yuk tashish",
+        name: "Yuk tashish",
         image: car,
+        id: 1,
         child: [
-            {
-                title: "Furgon",
-                info: "4.8x2.05x1.92",
-                image: furgon,
-                unique: "shipping",
-            },
-            {
-                title: "Gazel",
-                info: "3.4x1.65x1.9",
-                image: gazel,
-                unique: "shipping",
-            },
-            {
-                title: "Bortovoy",
-                info: "7.0x2.4x2.6",
-                image: ochu,
-                unique: "shipping",
-            },
-            {
-                title: "Fura",
-                info: "7.0x2.4x2.6",
-                image: truck,
-                unique: "shipping",
-            },
-
-            {
-                title: "Amerika furasi",
-                info: "16.6x2.45x2.7",
-                image: shalanda,
-                unique: "shipping",
-            },
-
-            {
-                title: "Bitumovoz",
-                info: "13.6x2.45x2.7",
-                image: gaz,
-                unique: "shipping",
-            }
+            // {
+            //     title: "Furgon",
+            //     info: "4.8x2.05x1.92",
+            //     image: furgon,
+            //     unique: "shipping",
+            // },
+            // {
+            //     title: "Gazel",
+            //     info: "3.4x1.65x1.9",
+            //     image: gazel,
+            //     unique: "shipping",
+            // },
+            // {
+            //     title: "Bortovoy",
+            //     info: "7.0x2.4x2.6",
+            //     image: ochu,
+            //     unique: "shipping",
+            // },
+            // {
+            //     title: "Fura",
+            //     info: "7.0x2.4x2.6",
+            //     image: truck,
+            //     unique: "shipping",
+            // },
+            //
+            // {
+            //     title: "Amerika furasi",
+            //     info: "16.6x2.45x2.7",
+            //     image: shalanda,
+            //     unique: "shipping",
+            // },
+            //
+            // {
+            //     title: "Bitumovoz",
+            //     info: "13.6x2.45x2.7",
+            //     image: gaz,
+            //     unique: "shipping",
+            // }
         ],
         unique: "shipping",
     },
 
     {
-        title: "Yoqilg‘i\n" +
+        name: "Yoqilg‘i\n" +
             "yetkazish",
         image: car,
         unique: "oil",
     },
 
     {
-        title: "Yo'lovchilarni\n" +
+        name: "Yo'lovchilarni\n" +
             "tashish",
         image: car,
         unique: "passenger",
+        id: 2,
         child: [
-            {
-                title: "Avto",
-                info: "5 o‘rindiqli",
-                image: furgon,
-                unique: "passenger",
-            },
-            {
-                title: "Miniven",
-                info: "8 o‘rindiqli",
-                image: gazel,
-                unique: "passenger",
-            },
-            {
-                title: "Mikroavtobus",
-                info: "20 o‘rindiqli",
-                image: ochu,
-                unique: "passenger",
-            },
-            {
-                title: "Avtobus",
-                info: "30 o‘rindiqli",
-                image: truck,
-                unique: "passenger",
-            },
 
-            {
-                title: "Avtobus",
-                info: "50 o‘rindiqli",
-                image: shalanda,
-                unique: "passenger",
-            }
+            // {
+            //     title: "Avto",
+            //     info: "5 o‘rindiqli",
+            //     image: furgon,
+            //     unique: "passenger",
+            // },
+            // {
+            //     title: "Miniven",
+            //     info: "8 o‘rindiqli",
+            //     image: gazel,
+            //     unique: "passenger",
+            // },
+            // {
+            //     title: "Mikroavtobus",
+            //     info: "20 o‘rindiqli",
+            //     image: ochu,
+            //     unique: "passenger",
+            // },
+            // {
+            //     title: "Avtobus",
+            //     info: "30 o‘rindiqli",
+            //     image: truck,
+            //     unique: "passenger",
+            // },
+            //
+            // {
+            //     title: "Avtobus",
+            //     info: "50 o‘rindiqli",
+            //     image: shalanda,
+            //     unique: "passenger",
+            // }
         ]
     },
 
     {
-        title: "Transport\n" +
+        name: "Transport\n" +
             "ijarasi",
         image: car,
         unique: "rent",
     },
 
     {
-        title: "Maxsus texnika\n" +
+        name: "Maxsus texnika\n" +
             "xizmatlari",
         image: car,
         unique: "technical",
+        id: 3,
         child: [
-            {
-                title: "Ekskavator",
-                info: "Qazish ishlari uchun",
-                image: ekskavator,
-                unique: "technical",
-            },
-            {
-                title: "Miniven",
-                info: "8 o‘rindiqli",
-                image: ekskavator,
-                unique: "technical",
-            },
-            {
-                title: "Mikroavtobus",
-                info: "20 o‘rindiqli",
-                image: ekskavator,
-                unique: "technical",
-            },
-            {
-                title: "Avtobus",
-                info: "30 o‘rindiqli",
-                image: ekskavator,
-                unique: "technical",
-            },
-
-            {
-                title: "Avtobus",
-                info: "50 o‘rindiqli",
-                image: ekskavator,
-                unique: "technical",
-            }
+            // {
+            //     title: "Ekskavator",
+            //     info: "Qazish ishlari uchun",
+            //     image: ekskavator,
+            //     unique: "technical",
+            // },
+            // {
+            //     title: "Miniven",
+            //     info: "8 o‘rindiqli",
+            //     image: ekskavator,
+            //     unique: "technical",
+            // },
+            // {
+            //     title: "Mikroavtobus",
+            //     info: "20 o‘rindiqli",
+            //     image: ekskavator,
+            //     unique: "technical",
+            // },
+            // {
+            //     title: "Avtobus",
+            //     info: "30 o‘rindiqli",
+            //     image: ekskavator,
+            //     unique: "technical",
+            // },
+            //
+            // {
+            //     title: "Avtobus",
+            //     info: "50 o‘rindiqli",
+            //     image: ekskavator,
+            //     unique: "technical",
+            // }
         ]
     },
 
     {
-        title: "Transport\n" +
+        name: "Transport\n" +
             "transferi",
         image: car,
         unique: "transfer",
         child: [
             {
-                title: "Avtovozlar",
-                info: "Maxsus yuk mashinalari",
+                name: "Avtovozlar",
+                volute: "Maxsus yuk mashinalari",
                 image: '',
                 unique: "transfer",
             },
             {
-                title: "Evakuator",
-                info: "Maxsus yuk mashinalari",
+                name: "Evakuator",
+                volute: "Maxsus yuk mashinalari",
                 image: '',
                 unique: "transfer",
             },
             {
-                title: "Maxsus texnika\n" +
+                name: "Maxsus texnika\n" +
                     "transferi",
-                info: "Maxsus yuk mashinalari",
+                volute: "Maxsus yuk mashinalari",
                 image: '',
                 unique: "transfer",
             },
             {
-                title: "Yaxtalar va qayiqlar",
-                info: "Maxsus yuk mashinalari",
+                name: "Yaxtalar va qayiqlar",
+                volute: "Maxsus yuk mashinalari",
                 image: '',
                 unique: "transfer",
             }
@@ -219,53 +224,51 @@ export const announcement = [
     },
 
     {
-        title: "Saqlash\n" +
+        name: "Saqlash\n" +
             "xizmati",
         image: car,
         unique: "keeping",
     },
 
     {
-        title: "Avto\n" +
+        name: "Avto\n" +
             "ta'mirlash",
         image: car,
         unique: "repair",
         child: [
             {
-                title: "Ustaxonalar",
-                info: "Xizmat ko’rsatish",
+                name: "Ustaxonalar",
+                volute: "Xizmat ko’rsatish",
                 image: ustaxona,
                 unique: "repair",
             },
             {
-                title: "Ustalar",
-                info: "Bir turdagi xizmat",
+                name: "Ustalar",
+                volute: "Bir turdagi xizmat",
                 image: usta,
                 unique: "master",
                 child: [
                     {
-                        title: "Kuzov ustasi",
-                        info: "Polirovka, bo‘yoq, qirilish,\n" +
+                        name: "Kuzov ustasi",
+                        volute: "Polirovka, bo‘yoq, qirilish,\n" +
                             "buklanish",
                         image: '',
                         unique: "master",
                     },
                     {
-                        title: "Avtoelektrik",
-                        info: "Elektrga oid barcha ishlar, fara, tablo",
+                        name: "Avtoelektrik",
+                        volute: "Elektrga oid barcha ishlar, fara, tablo",
                         image: '',
                         unique: "master",
                     },
                     {
-                        title: "Mator ustasi",
-                        info: "Dvigitel motor ishlari",
+                        name: "Mator ustasi",
+                        volute: "Dvigitel motor ishlari",
                         image: '',
                         unique: "master",
                     },
-
                 ]
             },
         ]
     },
-
 ]
