@@ -48,6 +48,7 @@ export const announcement = [
     {
         name: "Yuk tashish",
         image: car,
+        unique: "shipping",
         id: 1,
         child: [
             // {
@@ -89,7 +90,7 @@ export const announcement = [
             //     unique: "shipping",
             // }
         ],
-        unique: "shipping",
+
     },
 
     {
