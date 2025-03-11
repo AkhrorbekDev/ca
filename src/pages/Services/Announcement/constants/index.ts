@@ -267,10 +267,8 @@ export const announcement = [
                         image: '',
                         unique: "master",
                     },
-
                 ]
             },
         ]
     },
-
 ]

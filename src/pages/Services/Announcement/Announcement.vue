@@ -36,15 +36,16 @@ const fetchDataForAnnouncement = async (id: number) => {
   }
 };
 
+const dataTo = ref()
 // Handle menu item click
 const openDetail = async (item: any) => {
   if (item?.id) {
-    console.log('One', item?.id );
     const data = await fetchDataForAnnouncement(item?.id); // Fetch new data
     item.child = data.map(child => ({ ...child, parentId: item.unique })); // Update the child property
     childMenu.value = data // Set the childMenu for dropdown
+    dataTo.value = { ...item, parentId: item.unique };
+    console.log('DSSSSSRR: ', dataTo.value)
   } else if (item.child && item.child.length > 0) {
-    console.log('Two', item?.id );
     childMenu.value = item.child; // Use existing child data
   } else {
     visible2.value = true;
@@ -61,7 +62,7 @@ const handleClickCard = (data: any) => {
   } else {
     visible2.value = true;
     nextTick(() => {
-      visible2Data.value = data;
+      visible2Data.value =  { ...data, parentId: data.parentId, unique: data.unique };
     });
   }
 };
@@ -175,7 +176,7 @@ onMounted(() => {
                 >
                   <img v-if="item2.icon" :src="item2.icon" class="!m-auto !my-0 w-20 h-12 object-contain" alt="#"/>
                   <h4 class="text-[#292D32] text-[14px]">{{ item2.name }}</h4>
-                  <p class="text-gray-900">{{ item2?.volute }}</p>
+                  <p class="text-gray-900">{{ item2?.volume }}</p>
                 </div>
               </div>
             </div>
@@ -253,7 +254,7 @@ onMounted(() => {
 
     <ModalAnnouncement :announcement="selectedAnnouncement" v-model="visible" :tabIndex="activeTab"/>
 
-    <AddAnnouncementModal :active-tab="activeTab" v-model="visible2" :announceValue="visible2Data" />
+    <AddAnnouncementModal :active-tab="activeTab" v-model="visible2" :announceValue="visible2Data" :data="dataTo" />
   </div>
 </template>
 
