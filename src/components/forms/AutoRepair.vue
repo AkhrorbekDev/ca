@@ -1,8 +1,10 @@
 <script setup lang="ts">
 
 import {ref} from "vue";
+import {useRouter} from "vue-router";
+import useBreadcrumbs from "@/stores/breadcrumbs";
 
-defineProps({
+const props = defineProps({
   transports: {
     type: Array,
     default: () => ([])
@@ -19,10 +21,14 @@ defineProps({
     type: Boolean,
     default: true
   },
-
+  service: {
+    type: Object,
+    default: () => ({})
+  }
 })
-
-const masterRoom = ref<Car[]>([
+const breadcrumbStore = useBreadcrumbs()
+const router = useRouter()
+const smasterRoom = ref<Car[]>([
   {
     title: 'Mannol center'
   },
@@ -37,17 +43,57 @@ const masterRoom = ref<Car[]>([
   },
 ])
 
-const master = ref<Car[]>([
+const master = ref([
   {
-    title: 'Kuzov ustasi'
+    title: "Kuzov ustasi",
+    info: "Polirovka, bo‘yoq, qirilish,\n" +
+        "buklanish",
+    image: '',
+    id: 1,
+    unique: "master",
   },
   {
-    title: 'Avtoelektrik'
+    title: "Avtoelektrik",
+    info: "Elektrga oid barcha ishlar, fara, tablo",
+    image: '',
+    id: 2,
+    unique: "master",
   },
   {
-    title: 'Mator ustasi'
+    title: "Mator ustasi",
+    info: "Dvigitel motor ishlari",
+    image: '',
+    id: 3,
+    unique: "master",
   },
 ])
+const emit = defineEmits(['on:click'])
+const handleSubmit = (item?: any) => {
+  let query = {}
+  const crumbs = [
+    {
+      title: props.service.title
+
+    },
+    {
+      title: item?.id ? 'Ustalar' : 'Ustaxonalar'
+    }
+  ]
+  if (item?.id) {
+    query.repair_type_id = item.id
+    crumbs.push({
+      title: `${item.title} e'lonlari`,
+      last: true
+    })
+  }
+
+  breadcrumbStore.updateBreadcrumb(crumbs)
+  router.push({
+    name: 'transport-repair-rooms-id',
+    query
+  })
+  emit('on:click')
+}
 </script>
 
 <template>
@@ -59,38 +105,25 @@ const master = ref<Car[]>([
   >
     <div class="navbar-items__divider"/>
 
-    <div class="bg-[#FAFAFA] !w-[200px] col-span-full text-[12px] text-[#292D324D] px-[8px] !mb-[12px]">
-      Sedan
-    </div>
-    <div v-for="(item, index) in transports"
-         :key="index"
-         class="flex items-center col-span-full justify-between border-[#F5F5F7] border-b !mb-[12px] !pb-[12px] cursor-pointer"
-         @click="$emit('on:click',item)"
-    >
+    <div class="grid grid-cols-1  gap-4 !p-[16px]">
 
-      <div class="flex flex-col">
-        <h3 class="text-[#292D32] text-[14px]">{{ item.name }}</h3>
-        <h5 class="text-[#292D324D] text-[12px]">{{ item.fuel_type }}</h5>
+      <div @click="handleSubmit" class="flex items-center justify-between !py-[16px] cursor-pointer">
+        <span class="text-[#292D32] text-[14px]">Ustaxonalar</span>
+        <img src="@/assets/images/arrowUp.svg" class="-rotate-90" alt="arrow"/>
       </div>
+      <div v-for="(item, index) in master"
+           :key="index"
+           class="flex items-center col-span-full justify-between border-[#F5F5F7] border-b !mb-[12px] !pb-[12px] cursor-pointer"
+           @click="handleSubmit(item)"
+      >
 
-      <img src="@/assets/images/arrowsR.svg" alt="right">
-    </div>
+        <div class="flex flex-col">
+          <h3 class="text-[#292D32] text-[14px]">{{ item.title }}</h3>
+          <h5 class="text-[#292D324D] text-[12px]">{{ item.info }}</h5>
+        </div>
 
-    <div class="bg-[#FAFAFA] !w-[200px] col-span-full text-[12px] text-[#292D324D] px-[8px] !mb-[12px]">
-      Sedan
-    </div>
-    <div v-for="(item, index) in master"
-         :key="index"
-         class="flex items-center col-span-full justify-between border-[#F5F5F7] border-b !mb-[12px] !pb-[12px] cursor-pointer"
-         @click="$emit('on:click',item)"
-    >
-
-      <div class="flex flex-col">
-        <h3 class="text-[#292D32] text-[14px]">{{ item.name }}</h3>
-        <h5 class="text-[#292D324D] text-[12px]">{{ item.fuel_type }}</h5>
+        <img src="@/assets/images/arrowsR.svg" alt="right">
       </div>
-
-      <img src="@/assets/images/arrowsR.svg" alt="right">
     </div>
   </div>
 </template>

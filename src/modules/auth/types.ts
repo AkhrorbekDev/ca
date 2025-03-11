@@ -59,4 +59,5 @@ type ModuleOptions = {
     }
 }
 
-export {ModuleOptions, Methods}
+export type {ModuleOptions}
+export { Methods}

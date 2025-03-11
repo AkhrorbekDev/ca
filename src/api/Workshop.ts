@@ -4,11 +4,11 @@ import ApiCoreFetch from "@/api/core/ApiCoreFetch";
 class Workshop extends ApiCoreFetch {
 
     getWorkshopService(): Promise<any> {
-        return this.get("/mobile/v1/list/workshop_services");
+        return this.get("/public/mobile/v1/list/workshop_services");
     }
 
     getWorkshopCategory(): Promise<any> {
-        return this.get(`/mobile/v1/list/workshop_categories`);
+        return this.get(`/public/mobile/v1/list/workshop_categories`);
     }
 
     createWorkshop(data): Promise<any> {
