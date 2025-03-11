@@ -5,7 +5,6 @@ import {announcement} from "@/pages/Services/Announcement/constants";
 import {inject, nextTick, onMounted, onUnmounted, ref} from 'vue';
 import {AnnouncementType} from "@/pages/Services/Announcement/announcement.types";
 import {useRouter} from "vue-router";
-import Services from "@/api/Services";
 
 const router = useRouter();
 const visible = ref(false);
@@ -36,33 +35,47 @@ const fetchDataForAnnouncement = async (id: number) => {
   }
 };
 
-const dataTo = ref()
+const dataTo = ref<any>();
 // Handle menu item click
 const openDetail = async (item: any) => {
   if (item?.id) {
     const data = await fetchDataForAnnouncement(item?.id); // Fetch new data
-    item.child = data.map(child => ({ ...child, parentId: item.unique })); // Update the child property
-    childMenu.value = data // Set the childMenu for dropdown
-    dataTo.value = { ...item, parentId: item.unique };
-    console.log('DSSSSSRR: ', dataTo.value)
+    if (data && data.length > 0) {
+      item.child = data.map(child => ({ ...child, parentId: item.unique })); // Update the child property
+      childMenu.value = data; // Set the childMenu for dropdown
+      dataTo.value = { ...item, parentId: item.id }; // Set dataTo with the item's id
+    } else {
+      // If data is empty or null, set dataTo with the item's id and open the form
+      dataTo.value = { ...item, parentId: item.id };
+      visible2.value = true;
+      nextTick(() => {
+        visible2Data.value = { ...item, parentId: item.id };
+      });
+    }
   } else if (item.child && item.child.length > 0) {
     childMenu.value = item.child; // Use existing child data
+    dataTo.value = { ...item, parentId: item.id }; // Set dataTo with the item's id
   } else {
+    // If no child data, set dataTo with the item's id and open the form
+    dataTo.value = { ...item, parentId: item.id };
     visible2.value = true;
     nextTick(() => {
-      visible2Data.value = { ...item, parentId: item?.id };
+      visible2Data.value = { ...item, parentId: item.id };
     });
   }
 };
 
 // Handle child item click
 const handleClickCard = (data: any) => {
+  
   if (data.child && data.child.length > 0) {
+    console.log('If Data', data);
     childMenu.value = data.child;
   } else {
+    console.log('Else Data', data);
     visible2.value = true;
     nextTick(() => {
-      visible2Data.value =  { ...data, parentId: data.parentId, unique: data.unique };
+      visible2Data.value =  { ...data, parentId: data.parentId };
     });
   }
 };
@@ -110,6 +123,16 @@ const toggleMenu = () => {
   menuVisible.value = !menuVisible.value;
 };
 
+const getServicesData = ref<any[]>([]);
+onMounted( async () => {
+  try {
+    const response = await $api.services.getServices();
+    getServicesData.value = response.data;
+  } catch (error) {
+    console.error('Error fetching services:', error);
+  }
+});
+
 onMounted(() => {
   closeMenu();
   fetchAnnouncements();
@@ -154,11 +177,11 @@ onMounted(() => {
             <div v-if="menuVisible && !childMenu.length" class="mega-drop-menu">
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards card-wrap cursor-pointer"
-                     v-for="(item, index) in announcement"
+                     v-for="(item, index) in getServicesData"
                      :key="index"
-                     @click.stop="openDetail(item, index)"
+                     @click.stop="openDetail(item, item?.id)"
                 >
-                  <img :src="item.image" class="!m-auto swg !my-0" alt="#"/>
+                  <img src="@/assets/images/icons/car.svg" class="!m-auto w-10 object-contain swg !my-0" alt="icon"/>
                   <p class="text-gray-900">{{ item.name }}</p>
                 </div>
               </div>
@@ -168,11 +191,10 @@ onMounted(() => {
             <div v-if="childMenu.length" class="mega-drop-menu" @click.stop>
               <button @click="childMenu = []" class="text-[#000]">x</button>
               <div class="grid grid-cols-2 gap-3">
-                <PRE>{{childMenu}}</PRE>
                 <div class="cards cursor-pointer"
                      v-for="(item2, index) in childMenu"
                      :key="index"
-                     @click="handleClickCard(item2)"
+                     @click="handleClickCard(item2, item2?.id)"
                 >
                   <img v-if="item2.icon" :src="item2.icon" class="!m-auto !my-0 w-20 h-12 object-contain" alt="#"/>
                   <h4 class="text-[#292D32] text-[14px]">{{ item2.name }}</h4>
@@ -210,7 +232,6 @@ onMounted(() => {
               class="flex items-center"
               :class="activeTab !== 0 ? 'justify-between' : 'justify-center'"
           >
-
             <div
                 v-if="activeTab !== 0"
                 :class="['!px-[11px] !py-[4px] rounded-[50px] text-[10px] font-medium flex items-center gap-3', item.status ? 'bg-[#F0FAE9] text-[#66C61C]' : 'bg-[#FEEDEC] text-[#F04438]']">
@@ -224,7 +245,7 @@ onMounted(() => {
                 5 kun 12 soat
               </div>
             </div>
-
+            
             <img v-if="item?.transport_icon" class="h-[50px] object-contain " :src="item?.transport_icon" alt="image"
                  height="50px">
           </div>

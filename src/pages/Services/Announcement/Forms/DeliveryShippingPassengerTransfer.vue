@@ -12,17 +12,25 @@ const mapStore = useMapStore()
 const model = defineModel();
 const props = defineProps({
   announceValue: {
-    type: String,
+    type: Number,
     default: '',
   },
   activeTab: {
     type: Number,
-  }
+  },
+  childForm: {
+    type: Object,
+  },
 });
 
 const pageValue = ref(props.announceValue);
 watch(() => props.announceValue, (newValue) => {
   pageValue.value = newValue;
+});
+
+const transportType = ref(props.childForm?.id);
+watch(() => props.childForm, (newValue) => {
+  transportType.value = newValue?.id;
 });
 
 const $api = inject('api');
@@ -33,13 +41,15 @@ const imageList = ref<string[] | []>([]);
 const collectImages = ref([]);
 
 const serviceTypeId = computed(() => {
-  switch (props.announceValue.unique) {
-    case 'shipping':
-      return 1;
-    case 'passenger':
-      return 2;
-    case 'transfer':
-      return 6;
+  switch (pageValue.value) {
+    case 1:
+      return pageValue.value;
+    case 2:
+      return pageValue.value;
+    case 6:
+      return pageValue.value;
+    case 9:
+      return pageValue.value;
     default:
       return null;
   }
@@ -60,7 +70,7 @@ const addAnnouncement = ref({
   },
   price: null,
   details: {
-    transportation_type_id: 1,
+    transportation_type_id: transportType,
     transport_count: null,
     passenger_count: null,
     company_name: null,
@@ -98,13 +108,13 @@ const v$ = useVuelidate(rules, addAnnouncement);
 
 const computedModelValue = computed({
   get() {
-    return pageValue.value?.unique === 'passenger' ? addAnnouncement.value.details.passenger_count : pageValue.value.unique === 'transfer' ? addAnnouncement.value.details.transport_count : addAnnouncement.value.details.load_weight.amount;
+    return pageValue.value === 2 ? addAnnouncement.value.details.passenger_count : pageValue.value === 6 ? addAnnouncement.value.details.transport_count : addAnnouncement.value.details.load_weight.amount;
   },
 
   set(value) {
-    if (pageValue.value?.unique === 'passenger') {
+    if (pageValue.value === 2) {
       addAnnouncement.value.details.passenger_count = value;
-    } else if (pageValue.value?.unique === 'transfer') {
+    } else if (pageValue.value === 6) {
       addAnnouncement.value.details.transport_count = value;
     } else {
       addAnnouncement.value.details.load_weight.amount = value;
@@ -166,7 +176,7 @@ const setLocation = (name) => {
     }
   }, name)
   console.log('End MAP: ', name);
-  // hideDetailsOnLocationChange.value = true
+  hideDetailsOnLocationChange.value = true
 }
 
 // Create announcement submission handler
@@ -217,6 +227,9 @@ const createAnnouncement = async (announce) => {
       note: null,
     };
 
+    imageList.value = [];
+    collectImages.value = [];
+
     // Optional: Show success message or close dialog
     model.value = false;
   } catch (error) {
@@ -234,23 +247,30 @@ watch(() => props.announceValue, (newValue) => {
 <template>
   <Transition name="bounce">
     <form
-        v-if="!hideDetailsOnLocationChange"
+        v-if="!hideDetailsOnLocationChange"                                   
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
       <div class="grid grid-cols-2 gap-4">
-        <LocationItem :location="addAnnouncement.from_location" as="div" class="" name="from_location"
-                      @click="setLocation('from_location')"/>
+        <LocationItem 
+          :location="addAnnouncement.from_location" as="div" class="" name="from_location"
+          @click="setLocation('from_location')"
+        />
 
         <LocationItem :location="addAnnouncement.to_location" as="div" class="" name="to_location"
                       @click="setLocation('to_location')"/>
 
         <FloatLabel variant="in">
-          <InputText v-model="computedModelValue" id="in_label" variant="filled" type="number"
-                     class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
+          <InputText 
+            v-model="computedModelValue" id="in_label" variant="filled" type="number"
+            :class="[
+              'w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0',
+              
+            ]"
+          />
           <label for="in_label"
                  class="!text-[#292D324D]">
             {{
-              pageValue?.unique === 'passenger' ? 'Maksimal yo‘lovchi soni' : pageValue?.unique === 'transfer' ? 'Maksimal transport soni' : 'Maksimal yuk sig‘imi(kg)'
+              pageValue === 2 ? 'Maksimal yo‘lovchi soni' : pageValue === 6 ? 'Maksimal transport soni' : 'Maksimal yuk sig‘imi(kg)'
             }}
           </label>
         </FloatLabel>
@@ -310,17 +330,9 @@ watch(() => props.announceValue, (newValue) => {
         </div>
       </div>
 
-      <!-- Example validation error display -->
-      <div v-if="v$.$errors.length" class="text-red-500 mb-4">
-        <p>
-          {{ v$.$errors[0].$message }}
-        </p>
-      </div>
-
       <div class="w-full flex justify-end !mt-5">
         <button
             type="submit"
-            :disabled="v$.$invalid"
             class="text-white bg-[#66C61C] !py-4 !px-11 rounded-3xl disabled:opacity-50"
         >
           Joylash
