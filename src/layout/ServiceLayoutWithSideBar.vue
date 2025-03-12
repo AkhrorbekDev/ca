@@ -34,7 +34,7 @@ const breadcrumbs = computed(() => {
     <ServiceSideBar class="z-50"/>
     <Toast position="bottom-right" group="br"/>
 
-    <ConfirmDialog group="headless"/>
+    <ConfirmDialog group="auth"/>
     <div
         class="fixed z-[2] profile_shadow   !rounded-[100px] top-[24px] !px-[32px] !py-[20px] right-[24px] bg-[#ffffff] ">
       <ProfileDropDown class=" "/>

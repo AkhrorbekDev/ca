@@ -219,7 +219,7 @@ const openChildMenu = (index: number, item: MenuItems) => {
 const confirm = useConfirm();
 const showConfirmModal = () => {
   confirm.require({
-    group: 'headless',
+    group: 'auth',
     message: 'Bu amal avtorizatsiya talab etadi',
     header: 'Avtorizatsiya',
     icon: 'pi pi-exclamation-triangle',
