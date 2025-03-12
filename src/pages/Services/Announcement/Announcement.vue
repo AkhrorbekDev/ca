@@ -4,7 +4,7 @@ import AddAnnouncementModal from "@/pages/Services/Announcement/components/AddAn
 import {announcement} from "@/pages/Services/Announcement/constants";
 import {inject, nextTick, onMounted, onUnmounted, ref} from 'vue';
 import {AnnouncementType} from "@/pages/Services/Announcement/announcement.types";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import { set } from "@vueuse/core";
 
 const router = useRouter();
@@ -95,18 +95,8 @@ const loadingAnnouncement = ref(false);
 // Fetch all announcements
 const fetchAnnouncements = async () => {
   try {
-<<<<<<< HEAD
     loadingAnnouncement.value = false;
     let params: any = {};
-=======
-    let params = {};
-    if (route.query) {
-      params = {
-        service_id: route.query.service_id,
-        transport_id: route.query.transport_type_id,
-      }
-    }
->>>>>>> 6359987f4c9503e5fae5c21964a35d98c7ce5546
     if (activeTab.value === 1) {
       params.adv_type = 'RECEIVE';
     } else if (activeTab.value === 2) {
