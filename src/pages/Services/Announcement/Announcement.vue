@@ -5,6 +5,7 @@ import {announcement} from "@/pages/Services/Announcement/constants";
 import {inject, nextTick, onMounted, onUnmounted, ref} from 'vue';
 import {AnnouncementType} from "@/pages/Services/Announcement/announcement.types";
 import {useRouter} from "vue-router";
+import { set } from "@vueuse/core";
 
 const router = useRouter();
 const visible = ref(false);
@@ -44,6 +45,8 @@ const openDetail = async (item: any) => {
       item.child = data.map(child => ({ ...child, parentId: item.unique })); // Update the child property
       childMenu.value = data; // Set the childMenu for dropdown
       dataTo.value = { ...item, parentId: item.id }; // Set dataTo with the item's id
+      // visible2.value = true; // Open the form
+
     } else {
       // If data is empty or null, set dataTo with the item's id and open the form
       dataTo.value = { ...item, parentId: item.id };
@@ -87,9 +90,11 @@ const closeMenu = () => {
   });
 };
 
+const loadingAnnouncement = ref(false);
 // Fetch all announcements
 const fetchAnnouncements = async () => {
   try {
+    loadingAnnouncement.value = false;
     let params: any = {};
     if (activeTab.value === 1) {
       params.adv_type = 'RECEIVE';
@@ -97,7 +102,12 @@ const fetchAnnouncements = async () => {
       params.adv_type = 'PROVIDE';
     }
     const response = await $api.announcement.getAnnouncement(params);
-    announcementAllData.value = response?.data;
+    
+    setTimeout(() => {
+      announcementAllData.value = response?.data;
+    }, 1000);
+
+    loadingAnnouncement.value = true;
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -174,7 +184,7 @@ onMounted(() => {
 
           <div v-if="menuVisible">
             <!--dropdown 1-->
-            <div v-if="menuVisible && !childMenu.length" class="mega-drop-menu">
+            <div class="mega-drop-menu">
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards card-wrap cursor-pointer"
                      v-for="(item, index) in getServicesData"
@@ -188,7 +198,7 @@ onMounted(() => {
             </div>
 
             <!--dropdown 2-->
-            <div v-if="childMenu.length" class="mega-drop-menu" @click.stop>
+            <div v-if="childMenu.length" class="mega-drop-menu !left-[185%]" @click.stop>
               <button @click="childMenu = []" class="text-[#000]">x</button>
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards cursor-pointer"
@@ -224,7 +234,14 @@ onMounted(() => {
     </div>
 
     <div class="!mt-[31px]">
-      <div class="grid xl:grid-cols-5 grid-cols-4 gap-6">
+
+      <div v-if="!loadingAnnouncement" class="grid xl:grid-cols-5 grid-cols-4 gap-6 animate-pulse">
+      
+          <div v-for="item in 20" :key="item" class="h-32 bg-gray-200 rounded-3xl w-full mb-4"></div>
+       
+      </div>
+
+      <div v-else class="grid xl:grid-cols-5 grid-cols-4 gap-6">
         <div class="bg-white rounded-[24px] !py-[7px] !px-[18px] cursor-pointer"
              v-for="(item) in announcementAllData"
              :key="item?.id" @click="openModal(item)">
