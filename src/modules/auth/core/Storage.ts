@@ -1,8 +1,11 @@
 import Cookies from 'universal-cookie'
-import {ModuleOptions} from "@/modules/auth/types";
+import type {ModuleOptions} from "@/modules/auth/types";
 import {defu} from 'defu'
 
-interface StorageInterface extends Cookies {
+interface StorageInterface {
+    get: Cookies['get']
+    set: Cookies['set']
+    remove: Cookies['remove']
 }
 
 
@@ -10,7 +13,7 @@ class Storage implements StorageInterface {
     _cookies: Cookies;
     options: ModuleOptions['cookie']
 
-    constructor(options) {
+    constructor(options: ModuleOptions['cookie']) {
         this.options = options
         this._cookies = new Cookies();
     }
@@ -35,5 +38,5 @@ class Storage implements StorageInterface {
     }
 }
 
-export {StorageInterface}
+export type {StorageInterface}
 export default Storage

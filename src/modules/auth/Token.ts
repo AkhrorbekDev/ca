@@ -1,16 +1,15 @@
-import {StorageInterface} from "@/modules/auth/core/Storage";
+import type {StorageInterface} from "@/modules/auth/core/Storage";
 import {addTokenPrefix} from "@/modules/auth/utils";
-import {ModuleOptions} from "@/modules/auth/types";
+import type {ModuleOptions} from "@/modules/auth/types";
 import {TokenStatus} from "@/modules/auth/TokenStatus";
 
 interface TokenInterface {
     storage: StorageInterface;
     options: ModuleOptions['token']
-    token: string | false
 
     get(): string | false
 
-    set(tokenValue: string | false, expiration: number | false): string | false
+    set(tokenValue: string | boolean, expiration: number | false): string | boolean
 
     sync(): string | false
 
@@ -18,7 +17,7 @@ interface TokenInterface {
 
 }
 
-class Token {
+class Token implements TokenInterface {
     storage: StorageInterface;
     options: ModuleOptions['token']
 
@@ -32,11 +31,11 @@ class Token {
         return this.storage.get(token)
     }
 
-    set(tokenValue: string | false, expiration: number | false): string | false {
+    set(tokenValue: string | boolean, expiration: number | false): string | boolean {
         const token = addTokenPrefix(tokenValue, this.options.type)
         this._setToken(token)
         this._updateExpiration(expiration)
-        return token
+        return tokenValue
     }
 
     sync() {
@@ -47,18 +46,18 @@ class Token {
         return new TokenStatus(this.get(), this._getExpiration())
     }
 
-    private _setToken(token: string | false): string | false {
+    private _setToken(token: string | boolean): string | false {
         const key = this.options.prefix
         this.storage.set(key, token)
         return token as string | false
     }
 
-    private _getToken(): string | false {
+    private _getToken(): string | boolean {
         const key = this.options.prefix
         return this.storage.get(key) as string | false
     }
 
-    private _setExpiration(expiration: number | false): number | false {
+    private _setExpiration(expiration: number | boolean): number | false {
         const key = this.options.prefix + '.' + this.options.expirationPrefix
         this.storage.set(key, expiration)
         return expiration as number | false
@@ -69,7 +68,7 @@ class Token {
         return this.storage.get(key) as number | false
     }
 
-    private _updateExpiration(expiration: number | false): number | false {
+    private _updateExpiration(expiration: number | boolean | bigint | any): number | boolean {
         let tokenExpiration
         const _tokenIssuedAtMillis = Date.now()
         const _tokenTTLMillis = Number(this.options.maxAge) * 1000
@@ -79,7 +78,7 @@ class Token {
 
         try {
             tokenExpiration = expiration * 1000 || _tokenExpiresAtMillis
-        } catch (error) {
+        } catch (error: Error | unknown | any) {
             // If the token is not jwt, we can't decode and refresh it, use _tokenExpiresAt value
             tokenExpiration = _tokenExpiresAtMillis
 
@@ -91,5 +90,5 @@ class Token {
     }
 }
 
-export {TokenInterface}
+export type {TokenInterface}
 export default Token

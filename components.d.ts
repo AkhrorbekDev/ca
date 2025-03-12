@@ -16,6 +16,8 @@ declare module 'vue' {
     AutoRepair: typeof import('./src/components/forms/AutoRepair.vue')['default']
     Avatar: typeof import('primevue/avatar')['default']
     AvatarGroup: typeof import('primevue/avatargroup')['default']
+    Breadcrumb: typeof import('primevue/breadcrumb')['default']
+    Breadcrumbs: typeof import('./src/components/Breadcrumbs.vue')['default']
     Checkbox: typeof import('primevue/checkbox')['default']
     DatePicker: typeof import('primevue/datepicker')['default']
     DatePickeritem: typeof import('./src/components/form-elements/DatePickeritem.vue')['default']

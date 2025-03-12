@@ -6,6 +6,7 @@ class Advertisement extends ApiCoreFetch {
     getAdvertisement(params): Promise<any> {
         return this.get("/public/mobile/v1/advertisement", {
             adv_type: 'PROVIDE', // RECEIVE,
+            noAuth: true,
             ...params
         });
     }

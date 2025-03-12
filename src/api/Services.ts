@@ -4,15 +4,19 @@ import ApiCoreFetch from "@/api/core/ApiCoreFetch";
 class Services extends ApiCoreFetch {
 
     getServices(): Promise<any> {
-        return this.get("/mobile/v1/list/services");
+        return this.get("/public/mobile/v1/list/services", {
+            noAuth: true,
+        });
     }
 
     getService(id): Promise<any> {
-        return this.get(`/mobile/v1/list/services/${id}`);
+        return this.get(`/public/mobile/v1/list/services/${id}`, {
+            noAuth: true,
+        });
     }
 
     createService(data): Promise<any> {
-        return this.post("/mobile/v1/list/services", data);
+        return this.post("/public/mobile/v1/list/services", data);
     }
 
     updateService(id, data): Promise<any> {
@@ -24,7 +28,10 @@ class Services extends ApiCoreFetch {
     }
 
     getFuelCompanies(params) {
-        return this.get('/mobile/v1/list/fuels', params)
+        return this.get('/public/mobile/v1/list/fuels', {
+            noAuth: true,
+            ...params
+        })
     }
 }
 

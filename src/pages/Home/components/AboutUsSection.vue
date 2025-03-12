@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import {inject, ref} from 'vue';
 import {services} from '@/components/fakeJson'
-const selectedCity = ref();
-const selectedTransport = ref();
-const cities = ref([
-  {name: 'New York', code: 'NY'},
-  {name: 'Rome', code: 'RM'},
-  {name: 'London', code: 'LDN'},
-  {name: 'Istanbul', code: 'IST'},
-  {name: 'Paris', code: 'PRS'}
-]);
+import {useRouter} from "vue-router";
 
+const selectedService = ref();
+const selectedTransport = ref();
+const router = useRouter()
 const $api = inject('api')
 const transports = ref([])
 
@@ -19,6 +14,16 @@ const onSelectService = (e) => {
       .then(res => {
         transports.value = res.data
       })
+}
+
+const changeRoute = () => {
+  router.push({
+    name: "announcement",
+    query: {
+      service_id: selectedService.value?.id,
+      transport_type_id: selectedTransport.value?.id
+    }
+  })
 }
 
 </script>
@@ -30,27 +35,28 @@ const onSelectService = (e) => {
           class="bg-white rounded-[24px] !p-[40px] grid grid-cols-3 gap-6 shadow-custom absolute top-[-80px] w-full left-0">
         <div class="flex flex-col gap-2 w-full">
           <label for="username" class="text-[#292D32] font-medium text-[16px]">Xizmat turi</label>
-          <Select v-model="selectedCity" :options="services" optionLabel="title" placeholder="Xizmat turini tanlang"
-                  class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-select" @update:model-value="onSelectService"/>
+          <Select v-model="selectedService" :options="services" optionLabel="title" placeholder="Xizmat turini tanlang"
+                  class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-select"
+                  @update:model-value="onSelectService"/>
         </div>
 
-<!--        <div class="flex flex-col gap-2 w-full">-->
-<!--          <label for="username" class="text-[#292D32] font-medium text-[16px]">Qayerdan</label>-->
-<!--          <InputText type="text" class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-input"-->
-<!--                     placeholder="Manzilni kiriting"/>-->
-<!--        </div>-->
+        <!--        <div class="flex flex-col gap-2 w-full">-->
+        <!--          <label for="username" class="text-[#292D32] font-medium text-[16px]">Qayerdan</label>-->
+        <!--          <InputText type="text" class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-input"-->
+        <!--                     placeholder="Manzilni kiriting"/>-->
+        <!--        </div>-->
 
-<!--        <div class="flex flex-col gap-2 w-full">-->
-<!--          <label for="username" class="text-[#292D32] font-medium text-[16px]">Qayerga</label>-->
-<!--          <InputText type="text" class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-input"-->
-<!--                     placeholder="Manzilni kiriting"/>-->
-<!--        </div>-->
+        <!--        <div class="flex flex-col gap-2 w-full">-->
+        <!--          <label for="username" class="text-[#292D32] font-medium text-[16px]">Qayerga</label>-->
+        <!--          <InputText type="text" class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-input"-->
+        <!--                     placeholder="Manzilni kiriting"/>-->
+        <!--        </div>-->
 
-<!--        <div class="flex flex-col gap-2 w-full">-->
-<!--          <label for="username" class="text-[#292D32] font-medium text-[16px]">Qachon</label>-->
-<!--          <InputText type="text" class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-input"-->
-<!--                     placeholder="Kiriting"/>-->
-<!--        </div>-->
+        <!--        <div class="flex flex-col gap-2 w-full">-->
+        <!--          <label for="username" class="text-[#292D32] font-medium text-[16px]">Qachon</label>-->
+        <!--          <InputText type="text" class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-input"-->
+        <!--                     placeholder="Kiriting"/>-->
+        <!--        </div>-->
 
         <div class="flex flex-col gap-2 w-full">
           <label for="username" class="text-[#292D32] font-medium text-[16px]">Transport turi</label>
@@ -58,7 +64,7 @@ const onSelectService = (e) => {
                   class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-select"/>
         </div>
 
-        <button class="bg-[#66C61C] h-[40px] text-white rounded-full !mt-auto" @click="$router.push('/services')">
+        <button class="bg-[#66C61C] h-[40px] text-white rounded-full !mt-auto" @click="changeRoute">
           Izlash
         </button>
       </div>

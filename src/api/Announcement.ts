@@ -4,13 +4,13 @@ import ApiCoreFetch from "@/api/core/ApiCoreFetch";
 class Announcement extends ApiCoreFetch {
 
     getAnnouncement(params): Promise<any> {
-        return this.get("/mobile/v1/user/advertisement", {
+        return this.get("/public/mobile/v1/user/advertisement", {
+            noAuth: true,
             ...params
         });
     }
 
-    editAnnouncement({ id, data }: { id: number; data: any }): Promise<any> {
-        console.log('data', data);
+    editAnnouncement({id, data}: { id: number; data: any }): Promise<any> {
         return this.put(`/mobile/v1/advertisement`, {data});
     }
 }

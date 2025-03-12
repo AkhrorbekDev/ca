@@ -107,18 +107,8 @@ const averageRating = computed(() => {
 
 <template>
   <div class="max-w-screen-xl lg:mx-auto relative">
-    <button @click="$router.go(-1)"
-            class="text-[#000000] text-[16px] flex items-center gap-2 !py-[8px] !px-[16px] bg-white rounded-[100px] !mb-4 absolute top-0 right-[102%]">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-            d="M9.57141 18.8201C9.38141 18.8201 9.19141 18.7501 9.04141 18.6001L2.97141 12.5301C2.68141 12.2401 2.68141 11.7601 2.97141 11.4701L9.04141 5.40012C9.33141 5.11012 9.81141 5.11012 10.1014 5.40012C10.3914 5.69012 10.3914 6.17012 10.1014 6.46012L4.56141 12.0001L10.1014 17.5401C10.3914 17.8301 10.3914 18.3101 10.1014 18.6001C9.96141 18.7501 9.76141 18.8201 9.57141 18.8201Z"
-            fill="#292D32"/>
-        <path
-            d="M20.5019 12.75H3.67188C3.26188 12.75 2.92188 12.41 2.92188 12C2.92188 11.59 3.26188 11.25 3.67188 11.25H20.5019C20.9119 11.25 21.2519 11.59 21.2519 12C21.2519 12.41 20.9119 12.75 20.5019 12.75Z"
-            fill="#292D32"/>
-      </svg>
-      Ortga
-    </button>
+    <Breadcrumbs/>
+
     <div class="flex flex-col lg:flex-row bg-gray-50">
 
       <div class="flex flex-col items-center">
@@ -159,11 +149,6 @@ const averageRating = computed(() => {
             </swiper-slide>
 
           </swiper>
-          <!--          <img v-for="(index) in 5" :key="index"-->
-          <!--               src="@/assets/images/cars/sonet.png"-->
-          <!--               alt="Thumbnail 1"-->
-          <!--               class="lg:w-[117px] md:w-[117px] w-full h-[100px] !mr-[18px] rounded-md object-cover cursor-pointer"-->
-          <!--          />-->
         </div>
       </div>
 

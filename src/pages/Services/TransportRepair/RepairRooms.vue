@@ -4,6 +4,7 @@ import {useRoute, useRouter} from "vue-router";
 import {services} from "@/components/fakeJson"
 import {useCommonStore} from "@/stores/common.store";
 import {inject, onMounted, ref, watchEffect} from "vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 const store = useCommonStore()
 
@@ -78,18 +79,28 @@ const advertisementData = ref([])
 watchEffect(() => {
   $api.advertisement.getAdvertisement({
     service_id: 5,
-    repair_type_id: route.params.id
+    repair_type_id: route.query?.repair_type_id
   }).then(res => {
     advertisementData.value = res.data;
   });
 })
 
+const clearFilters = () => {
+  rating.value = []
+  categories.value = []
+  service.value = []
+}
+
 </script>
 
 <template>
   <div>
+    <Breadcrumbs/>
+
     <div class="flex items-center justify-between !mb-4">
-      <span class="text-[#292D32] font-medium text-[24px]">Ustaxonalar</span>
+      <span class="text-[#292D32] font-medium text-[24px]">{{
+          $route.query?.repair_type_id ? 'Ustalar' : 'Ustaxonalar'
+        }}</span>
 
 
       <button @click="toggleFilter"
@@ -106,7 +117,7 @@ watchEffect(() => {
              class="w-[375px] absolute z-[999] top-[130%] right-[0] bg-white text-start !p-[16px] rounded-[24px]">
           <div class="flex items-center justify-between !mb-[24px]">
             <span class="text-[#1A1F23] font-medium text-[16px]">Filter</span>
-            <span class="text-[#F04438] font-medium">Tozalash</span>
+            <span @click="clearFilters" class="text-[#F04438] font-medium">Tozalash</span>
           </div>
 
           <div

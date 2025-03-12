@@ -8,6 +8,7 @@ import {useRouter} from "vue-router";
 import { set } from "@vueuse/core";
 
 const router = useRouter();
+const route = useRoute()
 const visible = ref(false);
 const visible2 = ref(false);
 const visible2Data = ref<any>({});
@@ -94,8 +95,18 @@ const loadingAnnouncement = ref(false);
 // Fetch all announcements
 const fetchAnnouncements = async () => {
   try {
+<<<<<<< HEAD
     loadingAnnouncement.value = false;
     let params: any = {};
+=======
+    let params = {};
+    if (route.query) {
+      params = {
+        service_id: route.query.service_id,
+        transport_id: route.query.transport_type_id,
+      }
+    }
+>>>>>>> 6359987f4c9503e5fae5c21964a35d98c7ce5546
     if (activeTab.value === 1) {
       params.adv_type = 'RECEIVE';
     } else if (activeTab.value === 2) {

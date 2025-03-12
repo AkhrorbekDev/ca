@@ -31,7 +31,7 @@ const baseUrlImage = 'https://api.carting.uz/uploads/files/'
       <div class="!mt-[8px] flex items-center">
         <img src="@/assets/images/icons/location.svg" alt="mark"/>
         <p class="text-[#292D324D] text-[12px] font-400 !ml-[4px] whitespace-nowrap overflow-hidden text-ellipsis">
-          {{ !isRoom ? item.from_location.name : item.from_location.name }}
+          {{ !isRoom ? item.to_location.name : item.from_location.name }}
         </p>
       </div>
 
