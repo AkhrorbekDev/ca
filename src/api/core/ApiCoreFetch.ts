@@ -75,6 +75,7 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
             onResponseError: (ctx) => this.onResponseError(ctx, context),
         });
         this.context = context
+        console.log(context)
         this._fetch = (url, options) => {
             return fetch(url, options);
         }
@@ -84,11 +85,36 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
         return this._fetch(url, {params});
     }
 
-    async post(url: string, data: any, config): Promise<any> {
+    async post(url: string, data: any, config = {}): Promise<any> {
+        let _continue = true
+        if (!config.noAuth && !this.context.config.globalProperties.$auth.loggedIn) {
+            if (this.context.config.globalProperties.$confirm) {
+                this.context.config.globalProperties.$confirm.require({
+                    message: 'Do you want to delete this record?',
+                    header: 'Danger Zone',
+                    icon: 'pi pi-info-circle',
+                    rejectLabel: 'Cancel',
+                    rejectProps: {
+                        label: 'Cancel',
+                        severity: 'secondary',
+                        outlined: true
+                    },
+                    acceptProps: {
+                        label: 'Delete',
+                        severity: 'danger'
+                    },
+                    accept: () => {
+                        _continue = true
+                    },
+                    reject: () => {
+                        _continue = false
+                    }
+                })
+            }
+        }
         return this._fetch(url, {
             method: 'POST',
             body: data,
-
         });
     }
 

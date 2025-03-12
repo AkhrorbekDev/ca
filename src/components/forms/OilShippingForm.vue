@@ -2,12 +2,13 @@
 import {Field, Form} from 'vee-validate'
 import {oilTransfer} from "@/components/form-elements/schema";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
-import {inject, onMounted, ref} from 'vue'
+import {inject, onMounted, ref, watch} from 'vue'
 import getGeoObject from "@/composables/getGeoObject";
 import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
 
 const $api = inject('api')
+const $auth = inject('auth')
 const mapStore = useMapStore()
 const emit = defineEmits(['on:success'])
 
@@ -69,7 +70,32 @@ const showDetails = ref(false)
 const toggleShowDetails = () => {
   showDetails.value = !showDetails.value
 }
+const detailsWrapper = ref(null)
 
+const clickOutSideDetails = e => {
+  if (!detailsWrapper.value.contains(e.target)) {
+    showDetails.value = false
+  }
+}
+
+const registerClickOutside = (e) => {
+  if (e) {
+    // Use setTimeout to add the listener on the next event cycle
+    setTimeout(() => {
+      document.addEventListener('click', clickOutSideDetails)
+    }, 0)
+  } else {
+    document.removeEventListener('click', clickOutSideDetails)
+  }
+}
+
+watch(showDetails, (e) => {
+  if (e) {
+    registerClickOutside(e)
+  } else {
+    registerClickOutside(e)
+  }
+})
 const oilTypes = ref([
   {
     "id": 1,
@@ -128,6 +154,9 @@ const submit = () => {
   mainForm.value.validate()
       .then(res => {
         if (res.valid) {
+          if (!$auth.loggedIn) {
+            return emit('auth:invalid')
+          }
           isSubmited.value = true
           $api.advertisement.createAdvertisement(mainForm.value.getValues())
               .then(response => {
@@ -305,6 +334,8 @@ onMounted(() => {
     <div
         v-show="show && showDetails"
         @click.stop
+        ref="detailsWrapper"
+
         class="bg-white rounded-[24px] !p-[16px] w-full absolute
               gap-y-[13px] left-[110%] bottom-0 top-[0] max-h-[100vh] h-max !mt-auto !mb-auto overflow-y-auto"
         style="box-shadow: 0 32px 100px 0 #292D3229;"

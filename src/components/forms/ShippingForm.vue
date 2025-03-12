@@ -2,12 +2,13 @@
 import {Field, Form} from 'vee-validate'
 import {shippingSchema} from "@/components/form-elements/schema";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
-import {inject, onMounted, ref, watch} from 'vue'
+import {inject, onMounted, onUnmounted, ref, watch} from 'vue'
 import getGeoObject from "@/composables/getGeoObject";
 import RadioItem from "@/components/form-elements/RadioItem.vue";
 import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
 import {useToast} from "primevue/usetoast";
+
 
 const $api = inject('api')
 const mapStore = useMapStore()
@@ -24,10 +25,10 @@ const props = defineProps({
 const dateRef = ref(null)
 const mainForm = ref(null)
 const mainWrapper = ref(null)
-const detailsWrapper = ref(null)
 const hideDetailsOnLocationChange = ref(false)
 const isSubmited = ref(false)
-const emit = defineEmits(['on:success'])
+const emit = defineEmits(['on:success', 'auth:invalid'])
+const $auth = inject('auth')
 
 const setLocation = (name) => {
   mapStore.setMarker({
@@ -64,9 +65,6 @@ const onChangeDate = (e: Date, name) => {
   mainForm.value.setFieldValue(name, dateRef.value.formatDate(e, 'dd.mm.yy'))
 }
 const showDetails = ref(false)
-const toggleShowDetails = () => {
-  showDetails.value = !showDetails.value
-}
 
 const images = ref([])
 const collectImages = ref([]);
@@ -217,7 +215,11 @@ const toast = useToast()
 const submit = () => {
   mainForm.value.validate()
       .then(res => {
+
         if (res.valid && collectImages.value.length > 0) {
+          if (!$auth.loggedIn) {
+            return emit('auth:invalid')
+          }
           isSubmited.value = true
           $api.advertisement.createAdvertisement(mainForm.value.getValues())
               .then(async response => {
@@ -246,34 +248,35 @@ const updateTransportType = (e) => {
   mainForm.value.setFieldValue('details.transportation_type_id', e.id)
   selectedTransports.value = e
 }
+const toggleShowDetails = () => {
+  showDetails.value = !showDetails.value
+}
+const detailsWrapper = ref(null)
 
-const registerClickOutSide = (register = false) => {
-  if (register) {
-    document.addEventListener('click', (e) => {
-      console.log(detailsWrapper.value.contains(e.target))
-      if (!detailsWrapper.value.contains(e.target)) {
-        // showDetails.value = false
-      }
-    })
-  } else {
-    document.removeEventListener('click', (e) => {
-      if (!detailsWrapper.value.contains(e.target)) {
-        showDetails.value = false
-      }
-    })
+const clickOutSideDetails = e => {
+  if (!detailsWrapper.value.contains(e.target)) {
+    showDetails.value = false
   }
 }
-//
-// watch(showDetails, (newVal) => {
-//   console.log(newVal, 'newVal')
-//   if (newVal) {
-//     registerClickOutSide(newVal)
-//   } else {
-//     registerClickOutSide(newVal)
-//   }
-// }, {
-//   immediate: false
-// })
+
+const registerClickOutside = (e) => {
+  if (e) {
+    // Use setTimeout to add the listener on the next event cycle
+    setTimeout(() => {
+      document.addEventListener('click', clickOutSideDetails)
+    }, 0)
+  } else {
+    document.removeEventListener('click', clickOutSideDetails)
+  }
+}
+
+watch(showDetails, (e) => {
+  if (e) {
+    registerClickOutside(e)
+  } else {
+    registerClickOutside(e)
+  }
+})
 watch(() => props.serviceTypeId, () => {
   mainForm.value.resetForm(staticValues.value)
   selectedTransports.value = null
@@ -285,10 +288,15 @@ watch(() => props.serviceTypeId, () => {
 })
 onMounted(() => {
   transportLoading.value = true
+
   $api.transport.getTransportByServiceId(props.serviceTypeId)
       .then(res => {
         transports.value = res.data
       }).finally(() => transportLoading.value = false)
+})
+
+onUnmounted(() => {
+  document.removeEventListener("click", clickOutSideDetails)
 })
 </script>
 
@@ -306,6 +314,7 @@ onMounted(() => {
           }"
   >
     <div class="navbar-items__divider"/>
+
     <div
         ref="mainWrapper"
         class="flex flex-col h-full w-full gap-4 !p-[16px]">

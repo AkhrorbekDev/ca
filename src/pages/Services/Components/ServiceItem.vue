@@ -3,7 +3,6 @@ import velosiped from "@/assets/images/velosiped.png"
 import skuter from "@/assets/images/skuter.png"
 import sedan from "@/assets/images/sedan.png"
 import {useCommonStore} from "@/stores/common.store"
-import {services} from "@/components/fakeJson"
 import {
   clusterByGrid,
   YMap,
@@ -19,7 +18,7 @@ import {
 } from '@/lib/ymaps';
 import type {YMapLocationRequest} from '@yandex/ymaps3-types';
 import useMapStore from "@/stores/map.store";
-import {onMounted, ref, watch} from 'vue'
+import {ref, watch} from 'vue'
 import {useRoute, useRouter} from "vue-router";
 
 const mapStore = useMapStore()
@@ -151,6 +150,9 @@ const mapCluster = ref(null)
 const lastChangedMarker = ref(0)
 const changeMarkerPosition = (o, e) => {
   let marker
+  if (_markers.value?.length === 0) {
+    return
+  }
   if (_markers.value?.length > 1 && lastChangedMarker.value < _markers.value?.length) {
     marker = _markers.value[lastChangedMarker.value > 0 ? lastChangedMarker.value + 1 : lastChangedMarker.value]
 

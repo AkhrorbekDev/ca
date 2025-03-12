@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import {Menu, services} from '@/components/fakeJson'
-import {inject, onMounted, onUnmounted, ref, watchEffect} from "vue";
+import {inject, onMounted, onUnmounted, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {useCommonStore} from "@/stores/common.store"
 import useMapStore from '@/stores/map.store'
-import DeliveryForm from "@/components/forms/DeliveryForm.vue";
 import useAdvertisementStore from "@/stores/advertisement";
 import PeregonForm from "@/components/forms/PeregonForm.vue";
 import ShippingForm from "@/components/forms/ShippingForm.vue";
@@ -18,6 +17,8 @@ import home from '@/assets/icons/home.svg'
 import SidebarTransportsGrid from "@/components/SidebarTransportsGrid.vue";
 import useBreadcrumbs from '@/stores/breadcrumbs'
 import AutoRepair from "@/components/forms/AutoRepair.vue";
+import ConfirmDialog from "primevue/confirmdialog";
+import {useConfirm} from "primevue/useconfirm";
 
 const store = useCommonStore()
 const mapStore = useMapStore()
@@ -70,6 +71,7 @@ const selectedService = ref(null)
 const showTransportGrid = ref(false)
 const showAutoRepairGrid = ref(false)
 const transports = ref([])
+const activeRouteName = ref('')
 
 
 onMounted(() => closeMenu())
@@ -96,7 +98,7 @@ const changeRoute = (item) => {
 
         },
         {
-          title: `${item.name} e'lonlari`,
+          title: `${item.name}`,
           last: true
         }
       ]
@@ -114,8 +116,11 @@ const changeRoute = (item) => {
   router.replace({
     name: 'transport-id',
     params: {
-      id: item.id
-    }
+      id: selectedService.value.id,
+      transport_id: item.id
+
+    },
+    query: {}
   })
   showTransportGrid.value = false
   selectedService.value = null
@@ -139,20 +144,25 @@ const handleClickCard = (item: any) => {
   }
 }
 
-watchEffect(async () => {
-  console.log('test watchEffect')
-  // if (route.name === menuItems.value[0].unique) {
-  //   selectedMenu.value = menuItems.value[0]
-  //   selectedService.value = selectedMenu.value.children.find(item => item.unique === route.params.type)
-  //   menuVisible.value = true
-  //   showForm.value = true
-  // } else if (route.name === menuItems.value[1].unique) {
-  //   menuVisible.value = false
-  //   showForm.value = false
-  //   showTransportGrid.value = false
-  //   selectedService.value = null
-  // }
+watch(() => route.name, async () => {
+  if (route.name === menuItems.value[0].unique) {
+    selectedMenu.value = menuItems.value[0]
+    selectedService.value = selectedMenu.value.children.find(item => item.unique === route.params.type)
+    menuVisible.value = true
+    showForm.value = true
+    activeRouteName.value = selectedMenu.value.unique
+  } else if (route.name === menuItems.value[1].unique) {
+    menuVisible.value = false
+    showForm.value = false
+    showTransportGrid.value = false
+    selectedService.value = null
+    activeRouteName.value = menuItems.value[1].unique
+  } else if (route.name === 'transport-id') {
+    activeRouteName.value = menuItems.value[2].unique
+  }
 
+}, {
+  immediate: true
 })
 
 
@@ -181,33 +191,53 @@ const getTransports = serviceId => {
 
 const openChildMenu = (index: number, item: MenuItems) => {
   if (selectedMenu.value && item.unique === selectedMenu.value.unique) {
+    menuVisible.value = !menuVisible.value
+    showForm.value = false
+    showTransportGrid.value = false
+    showAutoRepairGrid.value = false
+    return
+  }
+  selectedMenu.value = item
+  activeRouteName.value = selectedMenu.value.unique
+
+  if (item.route) {
+    router.push(item.route)
     menuVisible.value = false
     showForm.value = false
     showTransportGrid.value = false
     showAutoRepairGrid.value = false
     selectedMenu.value = null
-    selectedService.value = null
-
-    return
-  } else {
-    selectedMenu.value = item
-    showForm.value = false
-    showTransportGrid.value = false
-    showAutoRepairGrid.value = false
-  }
-
-  if (item.route) {
-    router.push(item.route)
-    selectedService.value = null
-    menuVisible.value = false
-    showAutoRepairGrid.value = false
     return
   }
+  showForm.value = false
+  showTransportGrid.value = false
+  showAutoRepairGrid.value = false
   mapStore.clearMarkers()
   menuVisible.value = !!item.children;
 
 };
-
+const confirm = useConfirm();
+const showConfirmModal = () => {
+  confirm.require({
+    group: 'headless',
+    message: 'Bu amal avtorizatsiya talab etadi',
+    header: 'Avtorizatsiya',
+    icon: 'pi pi-exclamation-triangle',
+    rejectProps: {
+      label: 'Bekor qilish',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Avtorizatsiyadan o\'tish'
+    },
+    accept: () => {
+      router.push({
+        name: 'login'
+      })
+    }
+  });
+}
 const openDetail = (value: any, item: any) => {
   showTransportGrid.value = false
   if (selectedService.value && selectedService.value.id === item.id) {
@@ -243,17 +273,20 @@ const openDetail = (value: any, item: any) => {
 };
 
 onMounted(() => {
-  if (route.params.type) {
-    if (route.name === menuItems.value[0].unique) {
-      selectedMenu.value = menuItems.value[0]
-      selectedService.value = selectedMenu.value.children.find(item => item.unique === route.params.type)
-    }/* else if (route.name === menuItems.value[2].unique) {
-      selectedMenu.value = menuItems.value[2]
-      selectedService.value = selectedMenu.value.children.find(item => item.unique === route.params.type)
-    }*/
-    menuVisible.value = true
-    showForm.value = true
-  }
+  // if (route.params.type) {
+  //   if (route.name === menuItems.value[0].unique) {
+  //     selectedMenu.value = menuItems.value[0]
+  //     selectedService.value = selectedMenu.value.children.find(item => item.unique === route.params.type)
+  //     activeRouteName.value = selectedMenu.value.unique
+  //   } else if (route.name === menuItems.value[2].unique) {
+  //     selectedMenu.value = menuItems.value[2]
+  //     selectedService.value = selectedMenu.value.children.find(item => item.unique === route.params.type)
+  //     activeRouteName.value = selectedMenu.value.unique
+  //   }
+  //   menuVisible.value = true
+  //   showForm.value = true
+  // }
+  console.log(activeRouteName.value, route.params, 'asd')
 })
 
 
@@ -265,20 +298,21 @@ onMounted(() => {
           'rounded-r-[32px] !shadow-header': !menuVisible
        }">
     <div class="navbar-items relative h-[100vh]  max-w-max ">
+      <ConfirmDialog group="headless"/>
       <div class="navbar-items__menu  !py-[16px] !px-[12px] !mx-[12px]">
         <router-link to="/">
           <img class="!mb-[40px] !mt-[10px]" src="@/assets/icons/logo-new.svg" alt="logo" width="130"/>
         </router-link>
         <div class="navbar-items__menu-items">
           <div v-for="(list, index2) in menuItems" :key="index2" class="navbar-items__menu-item"
-               :class="{_active: selectedMenu && selectedMenu.unique === list.unique}"
+               :class="{_active: activeRouteName === list.unique}"
                @click.stop="openChildMenu(index2, list)"
           >
             <div class="navbar-items__menu-item-image">
               <img :src="list.icon" alt="">
             </div>
             <div class="navbar-items__menu-item-text"
-                 :class="{'!text-[#66C61C]' : selectedMenu && selectedMenu.unique === list.unique}"
+                 :class="{'!text-[#66C61C]' : activeRouteName === list.unique}"
             >
               {{ list.title }}
             </div>
@@ -313,28 +347,44 @@ onMounted(() => {
         </div>
         <ShippingForm v-if="selectedService && (selectedService.id === 1 || selectedService.id === 9)"
                       :service-type-id="selectedService.id"
-                      :show="showForm"/>
-        <DeliveryForm v-if="selectedService && selectedService.id === 123" :service-type-id="selectedService.id"
-                      :show="showForm"/>
+                      :show="showForm"
+                      @auth:invalid="showConfirmModal"
+        />
+        <!--        <DeliveryForm v-if="selectedService && selectedService.id === 123" :service-type-id="selectedService.id"-->
+        <!--                      :show="showForm"/>-->
         <PeregonForm v-if="selectedService && selectedService.id === 10" :service-type-id="selectedService.id"
-                     :show="showForm"/>
+                     :show="showForm"
+                     @auth:invalid="showConfirmModal"
+        />
         <OilShippingForm v-if="selectedService && selectedService.id === 8" :service-type-id="selectedService.id"
-                         :show="showForm"/>
+                         :show="showForm"
+                         @auth:invalid="showConfirmModal"
+        />
         <PersonTransferForm v-if="selectedService && selectedService.id === 2" :service-type-id="selectedService.id"
-                            :show="showForm"/>
+                            :show="showForm"
+                            @auth:invalid="showConfirmModal"
+        />
         <TransportTransferForm v-if="selectedService && selectedService.id === 6" :service-type-id="selectedService.id"
-                               :show="showForm"/>
+                               :show="showForm"
+                               @auth:invalid="showConfirmModal"
+        />
         <SpecialTransportRentForm v-if="selectedService && selectedService.id === 3"
                                   :service-type-id="selectedService.id"
-                                  :show="showForm"/>
+                                  :show="showForm"
+                                  @auth:invalid="showConfirmModal"
+        />
 
         <SidebarTransportsGrid v-if="showTransportGrid" :service-id="selectedService?.id" :loading="isLoadingTransports"
                                :transports="transports"
-                               @on:click="changeRoute"/>
+                               @on:click="changeRoute"
+                               @auth:invalid="showConfirmModal"
+        />
         <AutoRepair v-if="showAutoRepairGrid" :service="selectedService" :service-id="selectedService?.id"
                     :loading="isLoadingTransports"
                     :transports="transports"
-                    @on:click="changeRouteRepair"/>
+                    @on:click="changeRouteRepair"
+                    @auth:invalid="showConfirmModal"
+        />
       </div>
     </div>
 

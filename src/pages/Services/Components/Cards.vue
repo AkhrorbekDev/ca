@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {formatNumber} from "@/utils/helper";
+import {formatNumber, max, min} from "@/utils/helper";
 import emptyImage from '@/assets/images/empty.png'
 
 defineProps({
@@ -38,18 +38,24 @@ const baseUrlImage = 'https://api.carting.uz/uploads/files/'
       <div class="flex !mt-[13px]">
         <div class="flex items-center">
           <img src="@/assets/images/icons/star.svg" alt="star"/>
-          <p class="text-[#000000] text-[12px] font-400 !ml-[4px]">4.5</p>
+          <p class="text-[#000000] text-[12px] font-400 !ml-[4px]">{{ max(item.rating, 0) }}</p>
         </div>
 
         <div class="flex items !ml-[8px] relative">
           <AvatarGroup>
             <Avatar
-                image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg"
+                v-for="(in2) in min(item.comments?.length || 0, 4)" :key="in2.comment_text"
+                :image="item.user?.avatar ? item.user.avatar : ''"
+                :icon="item.user?.avatar ? '' : 'pi pi-user'"
                 shape="circle"
-                class="!h-[24px] !w-[24px]" alt="avatar"
-                v-for="(in2) in 4" :key="in2"
+                class="!h-[24px] !w-[24px] !bg-[#F3F3F3] !text-[#B7B8BA]" alt="avatar"
             />
-            <Avatar label="+2" shape="circle" class="!h-[24px] !w-[24px] !text-[8px] !text-[#1A1F23]"/>
+            <Avatar
+                v-if="item.commenst?.length > 4"
+                :label="`+${item.comments.length}`"
+                shape="circle"
+                class="!h-[24px] !w-[24px] !text-[8px] !text-[#1A1F23]"
+            />
           </AvatarGroup>
         </div>
       </div>
