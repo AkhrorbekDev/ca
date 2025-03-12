@@ -36,6 +36,7 @@ declare module 'vue' {
     ProfileDropDown: typeof import('./src/components/ProfileDropDown.vue')['default']
     RadioButton: typeof import('primevue/radiobutton')['default']
     RadioItem: typeof import('./src/components/form-elements/RadioItem.vue')['default']
+    Rating: typeof import('primevue/rating')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Select: typeof import('primevue/select')['default']
