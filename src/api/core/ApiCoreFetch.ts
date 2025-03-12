@@ -31,10 +31,9 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
         const query = getQuery(context.request)
         context.options = context.options || {}
         context.options.headers = {
-            ...context.options.headers,
-
+            ...context.options.headers
         }
-        if (context.options.params && !context.options.params.noAuth) {
+        if (context.options.params && !(typeof context.options.params?.noAuth === 'boolean' && context.options.params?.noAuth === true)) {
             context.options.headers.Authorization = `Basic ${btoa('root:GJA4TI8zQciHrXq')}`
             if (app.config.globalProperties.$auth.interceptor) {
                 context.options = await app.config.globalProperties.$auth.interceptor({
@@ -75,7 +74,6 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
             onResponseError: (ctx) => this.onResponseError(ctx, context),
         });
         this.context = context
-        console.log(context)
         this._fetch = (url, options) => {
             return fetch(url, options);
         }
