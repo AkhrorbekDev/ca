@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, inject, computed } from 'vue';
+import { ref, onMounted, inject, computed, watch } from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import {
   required,
@@ -20,7 +20,15 @@ const props = defineProps({
   },
   activeTab: {
     type: Number,
-  }
+  },
+  childForm: {
+    type: Object,
+  },
+});
+
+const transportType = ref(props.childForm?.id);
+watch(() => props.childForm, (newValue) => {
+  transportType.value = newValue?.id;
 });
 
 const $api = inject('api');
@@ -33,7 +41,7 @@ const collectImages = ref([]);
 
 const addAnnouncement = ref({
   adv_type: 'PROVIDE',
-  service_type_id: 3,
+  service_type_id: props.announceValue,
   to_location: {
     lat: null,
     lng: null,
@@ -41,7 +49,7 @@ const addAnnouncement = ref({
   },
   price: null,
   details: {
-    transportation_type_id: 1,
+    transportation_type_id: transportType,
   },
   note: null,
 });
@@ -181,7 +189,8 @@ const createAnnouncement = async (announce) => {
         v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
-      <pre>{{addAnnouncement}}</pre>
+    <pre>{{ childForm }}</pre>
+    <pre>{{ addAnnouncement }}</pre>
       <div class="grid grid-cols-2 gap-4">
         <div>
           <LocationItem
