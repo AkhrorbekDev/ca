@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import {Announcement} from "../types";
 import {useConfirm} from "primevue/useconfirm";
-import {inject, onMounted, ref} from "vue";
+import {inject, onMounted, ref, watch} from "vue";
 import RepairMaster from "@/pages/Services/Announcement/Forms/RepairMaster.vue";
 import DeliveryShippingPassengerTransfer
   from "@/pages/Services/Announcement/Forms/DeliveryShippingPassengerTransfer.vue";
@@ -161,29 +161,40 @@ const createAnnouncement = async (announce) => {
   }
 };
 
+const dynamicId = ref(0);
+
+watch(
+  () => props.data,
+  (value) => {
+    if (value) {
+      dynamicId.value = value.id;
+    }
+  },
+  { immediate: true, deep: true }
+);
+
 </script>
 
 <template>
   <Dialog dismissableMask v-model:visible="model" modal :style="{ width: '50rem' }"
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <template #header>
-      DATA:<pre>{{data.unique}}</pre>
       <div class="grow text-center text-[#292D32] text-[24px] font-medium">
         {{ announceValue.name }}
         ma’lumotlari
       </div>
     </template>
     <div>
-
       <div>
         <DeliveryShippingPassengerTransfer
-            v-if="announceValue.unique === 'delivery' || announceValue.unique === 'shipping' || announceValue.unique === 'passenger' || announceValue.unique === 'transfer'"
-            :announceValue="announceValue"
+            v-if="dynamicId === 9 || dynamicId  === 1 || dynamicId === 2 || dynamicId === 6"
+            :announceValue="dynamicId"
+            :childForm="announceValue"
             :activeTab="activeTab"
         />
 
         <Warehouse
-            v-if="announceValue.unique === 'keeping'"
+            v-if="dynamicId === 7"
             :announceValue="announceValue"
             :activeTab="activeTab"
         />
@@ -191,186 +202,17 @@ const createAnnouncement = async (announce) => {
         <RepairMaster v-if="announceValue.unique === 'repair' || announceValue.unique === 'master'"
                       :announceValue="announceValue.unique"/>
 
-        <SpecialEquipmentServices v-if="announceValue.unique === 'technical'" />
+        <SpecialEquipmentServices 
+          v-if="dynamicId === 3" 
+          :announceValue="dynamicId"
+          :childForm="announceValue"
+          :activeTab="activeTab"
+        />
 
-        <Oil v-if="announceValue.unique === 'oil'"/>
+        <Oil v-if="dynamicId === 8"/>
 
-        <RentAuto v-if="announceValue.unique === 'rent'" />
-
-        <div v-if="!announceValue.unique === 'rent'">
-          <div class="grid grid-cols-2 gap-4">
-            <FloatLabel variant="in">
-              <InputText id="in_label" variant="filled"
-                         class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-              <label for="in_label" class="!text-[#292D324D]">Qayerda</label>
-            </FloatLabel>
-
-            <FloatLabel variant="in">
-              <InputText id="in_label" variant="filled" type="number"
-                         class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-              <label for="in_label" class="!text-[#292D324D]">1 sutkalik narx</label>
-            </FloatLabel>
-
-          </div>
-
-          <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-            <span class="block !mb-[16px] text-[#000000] text-[16px] font-medium">Texnik xarakteristikalar</span>
-
-            <div class="">
-              <div class="grid grid-cols-2 gap-4 border-b !pb-4 !mb-4" v-for="item in rentList">
-                <FloatLabel variant="in">
-                  <Select :options="[]" optionLabel="name" placeholder="AI 80"
-                          class="w-full !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center"/>
-                  <label for="in_label" class="!text-[#292D324D]">Model</label>
-                </FloatLabel>
-
-                <FloatLabel variant="in">
-                  <InputText id="in_label" variant="filled"
-                             class="w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-                  <label for="in_label" class="!text-[#292D324D]">Kuzov turi</label>
-                </FloatLabel>
-
-                <FloatLabel variant="in">
-                  <Select :options="[]" optionLabel="name" placeholder="AI 80"
-                          class="w-full !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center"/>
-                  <label for="in_label" class="!text-[#292D324D]">Uzatmalar qutisi</label>
-                </FloatLabel>
-
-                <FloatLabel variant="in">
-                  <InputText id="in_label" variant="filled"
-                             class="w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-                  <label for="in_label" class="!text-[#292D324D]">Dvigatel hajmi</label>
-                </FloatLabel>
-
-                <FloatLabel variant="in">
-                  <InputText id="in_label" variant="filled"
-                             class="w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-                  <label for="in_label" class="!text-[#292D324D]">Rangi</label>
-                </FloatLabel>
-
-                <FloatLabel variant="in">
-                  <InputText id="in_label" variant="filled"
-                             class="w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-                  <label for="in_label" class="!text-[#292D324D]">Bagaj hajmi</label>
-                </FloatLabel>
-
-                <FloatLabel variant="in">
-                  <InputText id="in_label" variant="filled"
-                             class="w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-                  <label for="in_label" class="!text-[#292D324D]">O‘rindiqlar soni</label>
-                </FloatLabel>
-
-                <FloatLabel variant="in">
-                  <Select :options="[]" optionLabel="name" placeholder=""
-                          class="w-full !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center"/>
-                  <label for="in_label" class="!text-[#292D324D]">Konditsioner</label>
-                </FloatLabel>
-
-                <FloatLabel variant="in">
-                  <InputText id="in_label" variant="filled"
-                             class="w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-                  <label for="in_label" class="!text-[#292D324D]">Sug’urta</label>
-                </FloatLabel>
-
-                <FloatLabel variant="in">
-                  <InputText id="in_label" variant="filled"
-                             class="w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-                  <label for="in_label" class="!text-[#292D324D]">Sutkalik km limiti</label>
-                </FloatLabel>
-              </div>
-
-            </div>
-
-            <button
-                @click="addRentList"
-                class="!mt-[16px] flex items-center text-[#66C61C] !pl-[115px] !py-[12px] !pr-[107px] rounded-[24px] border-[1px] border-[#66C61C]">
-              <svg class="!mr-[16px]" width="10" height="10" viewBox="0 0 10 10" fill="none"
-                   xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 5H9M5 1L5 9" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-              Qo’shish
-            </button>
-          </div>
-
-          <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-            <span class="block !mb-[16px] text-[#000000] text-[16px] font-medium">Ta’riflar</span>
-
-            <div class="grid grid-cols-2 gap-4">
-              <template v-for="item in definitionList">
-                <FloatLabel variant="in">
-                  <InputText id="in_label" variant="filled" type="number"
-                             class="w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-                  <label for="in_label" class="!text-[#292D324D]">Kun</label>
-                </FloatLabel>
-
-                <FloatLabel variant="in">
-                  <InputText id="in_label" variant="filled" type="number"
-                             class="w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-                  <label for="in_label" class="!text-[#292D324D]">Narx</label>
-                </FloatLabel>
-              </template>
-
-            </div>
-
-            <button
-                @click="addDefinitionList"
-                class="!mt-[16px] flex items-center text-[#66C61C] !pl-[115px] !py-[12px] !pr-[107px] rounded-[24px] border-[1px] border-[#66C61C]">
-              <svg class="!mr-[16px]" width="10" height="10" viewBox="0 0 10 10" fill="none"
-                   xmlns="http://www.w3.org/2000/svg">
-                <path d="M1 5H9M5 1L5 9" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-              Qo’shish
-            </button>
-          </div>
-
-          <!--          <div class="flex flex-col gap-2 w-full !mt-[24px]">-->
-          <!--            <label for="description" class="text-[#292D3280] text-[16px]">Izoh</label>-->
-          <!--            <Textarea id="description" class="w-full   custom-placeholder-input" rows="3" cols="30"-->
-          <!--                      placeholder="Yuk haqida izoh qoldiring!"/>-->
-          <!--          </div>-->
-
-          <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-            <span class="text-[#292D324D] text-[12px]">Mashina rasmlari</span>
-            <!--          {{ imageList }}-->
-
-            <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl">
-              <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px]">
-                <img class="w-full h-full object-cover rounded-2xl"
-                     :src="img" alt="img"
-                     width="105">
-
-                <div
-                    class="group-hover:flex hidden absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 rounded-2xl items-center justify-center">
-                  <button @click="deleteImage(index)">
-                    <i class="pi pi-trash cursor-pointer" style="font-size: 1.5rem; color: red"></i>
-                  </button>
-                </div>
-              </div>
-
-              <label for="fileAnnouncement" class="relative">
-                <button>
-                  <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="0.5" y="0.5" width="109" height="109" rx="15.5" stroke="#66C61C" stroke-dasharray="8 8"/>
-                    <path d="M55.5046 62V55" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                    <path d="M53.3164 57L55.5033 54.833L57.6902 57" stroke="#66C61C" stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                    <path
-                        d="M59.5406 62H62.124C64.0697 62 65.6562 60.428 65.6562 58.5C65.6562 56.572 64.0697 55 62.124 55H61.685V54C61.685 50.69 58.9704 48 55.63 48C52.6257 48 50.135 50.178 49.6628 53.023C47.2639 53.144 45.3516 55.093 45.3516 57.5C45.3516 59.985 47.385 62 49.8928 62H51.4672"
-                        stroke="#66C61C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-
-                  <input @change="handleFileUpload" class="absolute opacity-0 inset-0 cursor-pointer"
-                         id="fileAnnouncement" type="file"
-                         accept="image/*">
-
-                </button>
-              </label>
-            </div>
-          </div>
-        </div>
-
+        <RentAuto v-if="dynamicId === 4" />
+        
 
         <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[56px]">
           <ServiceItem/>

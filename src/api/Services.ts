@@ -10,8 +10,9 @@ class Services extends ApiCoreFetch {
     }
 
     getService(id): Promise<any> {
-        return this.get(`/public/mobile/v1/list/services/${id}`, {
+        return this.get(`/public/mobile/v1/list/services`, {
             noAuth: true,
+            id: id
         });
     }
 

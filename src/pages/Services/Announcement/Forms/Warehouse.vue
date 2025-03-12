@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {inject, onMounted, ref} from 'vue';
+import {inject, onMounted, ref, watch} from 'vue';
 import {useVuelidate} from '@vuelidate/core';
 import useMapStore from "@/stores/map.store";
 import {maxLength, minValue, numeric, required} from '@vuelidate/validators';
@@ -16,8 +16,13 @@ const props = defineProps({
   },
   activeTab: {
     type: Number,
-  }
+  },
 });
+
+const pageValue = ref(props.announceValue);
+watch(() => props.announceValue, (newValue) => {
+  pageValue.value = newValue;
+}, {immediate: true});
 
 const $api = inject('api');
 
@@ -30,7 +35,7 @@ const collectImages = ref([]);
 
 const addAnnouncement = ref<Announcement>({
   adv_type: 'PROVIDE',
-  service_type_id: 7,
+  service_type_id: pageValue.value.parentId,
   to_location: {
     lat: null,
     lng: null,
@@ -206,6 +211,8 @@ const createAnnouncement = async (announce) => {
         v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
+    <pre>{{ pageValue.id }}</pre>
+    <pre>{{ addAnnouncement }}</pre>
       <div class="grid grid-cols-2 gap-4">
         <LocationItem :location="addAnnouncement.to_location" as="div" class="" name="to_location"
                       @click="setLocation('to_location')"/>

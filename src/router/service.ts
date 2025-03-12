@@ -27,7 +27,7 @@ export default [
     },
 
     {
-        path: "/transport/:id",
+        path: "/transport/:id/:transport_id?",
         name: "transport-id",
         component: () => import("@/pages/Services/Transports/Transports.vue"),
         meta: {layout: "ServiceLayout"},
