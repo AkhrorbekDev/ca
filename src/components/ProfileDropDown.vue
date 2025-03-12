@@ -1,12 +1,13 @@
 <script setup lang="ts">
 
 
-import {computed, inject, ref} from "vue";
+import {computed, inject, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 
 const $auth = inject('auth')
 const route = useRoute()
 const router = useRouter()
+const detailsWrapper = ref(null)
 const logOut = () => {
   $auth.logout().then(res => {
     if (route.name === 'profile') {
@@ -26,24 +27,51 @@ const menuVisible = ref(false);
 const toggleMenu = () => {
   menuVisible.value = !menuVisible.value;
 };
+const clickOutSideDetails = e => {
+  if (!detailsWrapper.value.contains(e.target)) {
+    menuVisible.value = false
+  }
+}
+const registerClickOutside = (e) => {
+  if (e) {
+    // Use setTimeout to add the listener on the next event cycle
+    setTimeout(() => {
+      document.addEventListener('click', clickOutSideDetails)
+    }, 0)
+  } else {
+    document.removeEventListener('click', clickOutSideDetails)
+  }
+}
+
+
+watch(menuVisible, (e) => {
+  if (e) {
+    registerClickOutside(e)
+  } else {
+    registerClickOutside(e)
+  }
+})
 
 </script>
 
 <template>
   <div class="flex items-center relative z-50 cursor-pointer">
     <template v-if="$auth.loggedIn">
-      <h4 class="text-[#292D3266] text-[18px] !mr-[18px]">{{ user.first_name }}</h4>
+      <div class="flex items-center" @click="toggleMenu">
+        <h4 class="text-[#292D3266] text-[18px] !mr-[18px]">{{ user.first_name }}</h4>
 
-      <template v-if="user.photo">
-        <img @click="toggleMenu" src="@/assets/images/avatar.jpg" alt="avatar"
-             class="h-[40px] w-[40px] !rounded-full cursor-pointer"/>
-      </template>
-      <template v-else>
-        <Avatar icon="pi pi-user" class="bg-[#F3F3F3] text-[#B7B8BA]" shape="circle" @click="toggleMenu"/>
-      </template>
+        <template v-if="user.photo">
+          <img src="@/assets/images/avatar.jpg" alt="avatar"
+               class="h-[40px] w-[40px] !rounded-full cursor-pointer"/>
+        </template>
+        <template v-else>
+          <Avatar icon="pi pi-user" class="bg-[#F3F3F3] text-[#B7B8BA]" shape="circle"/>
+        </template>
+      </div>
 
       <div v-if="menuVisible"
-           class="bg-white rounded-[24px] !p-[16px] absolute z-50 top-[180%] right-[-30px] w-[300px]">
+           ref="detailsWrapper"
+           class="bg-white profile_shadow rounded-[24px] !p-[16px] absolute z-50 top-[180%] right-[-30px] w-[300px]">
         <div class="flex flex-col items-center">
           <template v-if="user.photo">
             <img :src="user.photo" alt="avatar"

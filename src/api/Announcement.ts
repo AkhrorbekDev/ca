@@ -4,8 +4,7 @@ import ApiCoreFetch from "@/api/core/ApiCoreFetch";
 class Announcement extends ApiCoreFetch {
 
     getAnnouncement(params): Promise<any> {
-        return this.get("/public/mobile/v1/user/advertisement", {
-            noAuth: true,
+        return this.get("/mobile/v1/user/advertisement", {
             ...params
         });
     }
