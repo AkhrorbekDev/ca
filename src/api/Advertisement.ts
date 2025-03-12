@@ -28,7 +28,6 @@ class Advertisement extends ApiCoreFetch {
 
     createAdvertisement(data): Promise<any> {
         return this.post('/mobile/v1/advertisement', data).then(res => {
-            console.log(this.context)
             if (this.context.config.globalProperties.$toast) {
                 this.context.config.globalProperties.$toast.add({
                     severity: 'success',

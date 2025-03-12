@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Cards from '@/pages/Services/Components/Cards.vue'
 import {useRoute, useRouter} from "vue-router";
-import {inject, onMounted, ref, watchEffect} from "vue";
+import {inject, onMounted, ref, watch} from "vue";
 import useBreadcrumbs from "@/stores/breadcrumbs";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
@@ -11,62 +11,118 @@ const route = useRoute()
 const enterToDetail = (value: number) => {
   router.push(`/transport-view/${value}`)
 }
+const openFilter = ref(false)
 
+const toggleFilter = () => {
+  openFilter.value = !openFilter.value
+}
 const $auth = inject('auth')
 const $api = inject('api')
+const categories = ref([])
 const advertisementData = ref([])
-const transport = ref({})
+const services = ref([])
+const transport = ref(null)
+const service = ref(null)
 const breadcrumbStore = useBreadcrumbs()
-watchEffect(() => {
-  $api.advertisement.getAdvertisement({
-    transport_id: route.params.id
-  }).then(res => {
-    advertisementData.value = res.data;
-  });
+
+const pushCategory = (index) => {
+  if (categories.value.includes(index)) {
+    return
+  }
+
+  categories.value.push(index)
+}
+
+const pushRating = (index) => {
+  if (rating.value.includes(index)) {
+    return
+  }
+
+  rating.value.push(index)
+}
+watch(() => route.params, () => {
+  $api.services.getServices(route.params.id)
+      .then(async res => {
+        service.value = res.data.find(item => item.id === Number(route.params.id))
+        if (!service.value) {
+          router.push({
+            name: 'NotFound',
+            params: {pathMatch: route.path.substring(1).split('/')},
+            // preserve existing query and hash if any
+            query: route.query,
+            hash: route.hash,
+          })
+          return Promise.reject(err)
+        }
+        const advertisementQuery = {
+          service_id: route.params.id,
+
+        }
+        const requests = []
+        if (route.params.transport_id) {
+          advertisementQuery.transport_id = route.params.transport_id
+          requests.push(
+              $api.transport.getTransportByServiceId(route.params.transport_id)
+                  .then((res) => {
+                    const _transport = res.data.find(item => item.id === Number(route.params.transport_id))
+                    if (_transport) transport.value = _transport
+                  })
+                  .catch(() => {
+                    return Promise.resolve(undefined)
+                  }))
+        }
+        requests.push($api.advertisement.getAdvertisement(advertisementQuery).then(res => {
+          advertisementData.value = res.data;
+          return Promise.resolve(res)
+        }).catch(err => {
+          return Promise.resolve()
+        }))
+        await Promise.all(requests)
+      })
+      .catch(err => {
+        if (err.status === 404) {
+          router.push({
+            name: 'NotFound',
+            params: {pathMatch: route.path.substring(1).split('/')},
+            // preserve existing query and hash if any
+            query: route.query,
+            hash: route.hash,
+          })
+          return Promise.reject(err)
+        }
+      })
+
+}, {
+  immediate: true
 })
 
 onMounted(async () => {
-  try {
-    await $api.transport.getTransportByServiceId().then(res => {
-      const _transport = res.data.find(item => item.id === Number(route.params.id))
-      if (!_transport) {
-        return router.push({
-          name: 'NotFound',
-          params: {pathMatch: route.path.substring(1).split('/')},
-          // preserve existing query and hash if any
-          query: route.query,
-          hash: route.hash,
-        })
-      }
-      transport.value = _transport
-      // breadcrumbStore.updateBreadcrumb([
-      //       {
-      //         title: 'Transport e\'lonlari'
-      //
-      //       },
-      //       {
-      //         title: selectedMenu.value?.title
-      //
-      //       },
-      //       {
-      //         title: `${item.name} e'lonlari`
-      //
-      //       }
-      //     ]
-      // )
-    });
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
+  // try {
+  //   await $api.transport.getTransportByServiceId().then(res => {
+  //     const _transport = res.data.find(item => item.id === Number(route.params.id))
+  //     if (!_transport) {
+  //       return router.push({
+  //         name: 'NotFound',
+  //         params: {pathMatch: route.path.substring(1).split('/')},
+  //         // preserve existing query and hash if any
+  //         query: route.query,
+  //         hash: route.hash,
+  //       })
+  //     }
+  //     transport.value = _transport
+  //   });
+  // } catch (error) {
+  //   console.error("Error fetching data:", error);
+  // }
 })
 </script>
 
 <template>
   <div :key="$route.params.id">
-    <Breadcrumbs/>
+    <Breadcrumbs :items="breadcrumbItems"/>
     <div class="flex items-center justify-start !mb-[32px] gap-[32px]">
-      <h1 v-if="transport.name" class="text-[#292D32] !mb-0 text-[32px] leading-[48px] font-500">
-        {{ transport.name }} e'lonlari
+      <h1 class="text-[#292D32] !mb-0 text-[32px] leading-[48px] font-500">
+        {{ transport?.name ? transport.name : service?.name }}
       </h1>
       <button
           class="flex items-center relative justify-center gap-[8px] w-[105px] h-[48px] filter-btn__shadow rounded-[18px] bg-[#ffffff]">
@@ -102,7 +158,7 @@ onMounted(async () => {
             <div class="flex items-center gap-2">
               <button
                   v-for="(item, index) in servicesList" @click="pushService(index)"
-                  :class="['!py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px] bg-[#FFFFFF]', service.includes(index) && '!bg-[#66C61C] text-white']">
+                  :class="['!py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px] bg-[#FFFFFF]', services.includes(index) && '!bg-[#66C61C] text-white']">
                 {{
                   item
                 }}

@@ -25,7 +25,7 @@ const $api = inject('api'); // Ensure $api is injected
 // Fetch data for a specific announcement by ID
 const fetchDataForAnnouncement = async (id: number) => {
   isLoading.value = true;
-  if(id) {
+  if (id) {
     try {
       const response = await $api.transport.getTransportByServiceId(id);
       return response.data;
@@ -43,35 +43,35 @@ const openDetail = async (item: any) => {
   if (item?.id) {
     const data = await fetchDataForAnnouncement(item?.id); // Fetch new data
     if (data && data.length > 0) {
-      item.child = data.map(child => ({ ...child, parentId: item.unique })); // Update the child property
+      item.child = data.map(child => ({...child, parentId: item.unique})); // Update the child property
       childMenu.value = data; // Set the childMenu for dropdown
       dataTo.value = { ...item, parentId: item.id }; // Set dataTo with the item's id
       // visible2.value = true; // Open the form
 
     } else {
       // If data is empty or null, set dataTo with the item's id and open the form
-      dataTo.value = { ...item, parentId: item.id };
+      dataTo.value = {...item, parentId: item.id};
       visible2.value = true;
       nextTick(() => {
-        visible2Data.value = { ...item, parentId: item.id };
+        visible2Data.value = {...item, parentId: item.id};
       });
     }
   } else if (item.child && item.child.length > 0) {
     childMenu.value = item.child; // Use existing child data
-    dataTo.value = { ...item, parentId: item.id }; // Set dataTo with the item's id
+    dataTo.value = {...item, parentId: item.id}; // Set dataTo with the item's id
   } else {
     // If no child data, set dataTo with the item's id and open the form
-    dataTo.value = { ...item, parentId: item.id };
+    dataTo.value = {...item, parentId: item.id};
     visible2.value = true;
     nextTick(() => {
-      visible2Data.value = { ...item, parentId: item.id };
+      visible2Data.value = {...item, parentId: item.id};
     });
   }
 };
 
 // Handle child item click
 const handleClickCard = (data: any) => {
-  
+
   if (data.child && data.child.length > 0) {
     console.log('If Data', data);
     childMenu.value = data.child;
@@ -79,7 +79,7 @@ const handleClickCard = (data: any) => {
     console.log('Else Data', data);
     visible2.value = true;
     nextTick(() => {
-      visible2Data.value =  { ...data, parentId: data.parentId };
+      visible2Data.value = {...data, parentId: data.parentId};
     });
   }
 };
@@ -135,7 +135,7 @@ const toggleMenu = () => {
 };
 
 const getServicesData = ref<any[]>([]);
-onMounted( async () => {
+onMounted(async () => {
   try {
     const response = await $api.services.getServices();
     getServicesData.value = response.data;
@@ -263,7 +263,7 @@ onMounted(() => {
                 5 kun 12 soat
               </div>
             </div>
-            
+
             <img v-if="item?.transport_icon" class="h-[50px] object-contain " :src="item?.transport_icon" alt="image"
                  height="50px">
           </div>
@@ -293,7 +293,7 @@ onMounted(() => {
 
     <ModalAnnouncement :announcement="selectedAnnouncement" v-model="visible" :tabIndex="activeTab"/>
 
-    <AddAnnouncementModal :active-tab="activeTab" v-model="visible2" :announceValue="visible2Data" :data="dataTo" />
+    <AddAnnouncementModal :active-tab="activeTab" v-model="visible2" :announceValue="visible2Data" :data="dataTo"/>
   </div>
 </template>
 

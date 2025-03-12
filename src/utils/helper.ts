@@ -1,7 +1,4 @@
-import { StatusType } from "@/types/common.type";
-import { RouteLocationRaw } from "vue-router";
-import { ElNotification } from "element-plus";
-import {useRouter} from "vue-router";
+import {StatusType} from "@/types/common.type";
 
 export const formatDate = (date: Date) => {
     const daysOfWeek = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
@@ -66,7 +63,7 @@ export const setStatus = (status: boolean): StatusType => {
     return status ? "active" : "inactive";
 };
 
-export const deepEqual = (obj1:Record<string, any>, obj2: Record<string, any>) => {
+export const deepEqual = (obj1: Record<string, any>, obj2: Record<string, any>) => {
     if (obj1 === obj2) return true;
 
     if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
@@ -85,5 +82,19 @@ export const deepEqual = (obj1:Record<string, any>, obj2: Record<string, any>) =
     }
 
     return true;
+}
+
+export const min = (value: number, _default: number) => {
+    if (!value && value !== 0) {
+        return _default
+    }
+    return value < _default ? value : _default
+}
+
+export const max = (value: number, _default: number) => {
+    if (!value) {
+        return _default
+    }
+    return value > _default ? value : _default
 }
 
