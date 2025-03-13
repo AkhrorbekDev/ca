@@ -89,13 +89,13 @@ export const services = [
 export const transportAdvertising = [
     {
         title: 'Yuk tashish',
-          id: 1,
+        id: 1,
         subTitle: 'Barcha turdagi kichikdan kattagacha yuklarni tashish uchun samarali yechim',
         img: truck
     },
     {
         title: 'Yo‘lovchi tashish',
-         id: 2,
+        id: 2,
         subTitle: 'Shaxsiy, oilaviy yoki guruh bo‘lib sayohat qilish uchun transport xizmati',
         img: car
     },

@@ -3,7 +3,7 @@ import {Swiper, SwiperSlide} from "swiper/vue";
 import {Navigation} from 'swiper/modules';
 import {useRouter} from "vue-router";
 
-import {services, transportAdvertising, advertising} from './fakeJson'
+import {advertising, services, transportAdvertising} from './fakeJson'
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -93,7 +93,8 @@ const changeTransportRoute = (e) => {
               <img :src="item2.img" class="!mb-[42px] !m-auto !mt-[24px]" alt="motobike">
 
               <div class="text-center !mb-[25px]">
-                <button @click="changeTransportRoute(item2)" class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
+                <button @click="changeTransportRoute(item2)"
+                        class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
                   E’lon berish
                 </button>
               </div>

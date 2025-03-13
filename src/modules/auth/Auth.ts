@@ -1,15 +1,15 @@
-import Request from '@/modules/auth/core/Request';
 import type {RequestInterface} from '@/modules/auth/core/Request';
+import Request from '@/modules/auth/core/Request';
 import type {FetchContext} from "ofetch";
 import type {StorageInterface} from "@/modules/auth/core/Storage";
 import Storage from "@/modules/auth/core/Storage";
-import type { ModuleOptions} from "@/modules/auth/types";
+import type {ModuleOptions} from "@/modules/auth/types";
 import {Methods} from "@/modules/auth/types";
 import {defineStore} from "pinia";
-import Token from "@/modules/auth/Token";
 import type {TokenInterface} from "@/modules/auth/Token";
-import RefreshToken from "@/modules/auth/RefreshToken";
+import Token from "@/modules/auth/Token";
 import type {RefreshTokenInterface} from "@/modules/auth/RefreshToken";
+import RefreshToken from "@/modules/auth/RefreshToken";
 import type {App} from 'vue'
 
 class Auth {
@@ -28,6 +28,7 @@ class Auth {
             ...context.options.headers,
         } as any
     }
+
     context: App
 
     interceptor: null | Function
@@ -213,7 +214,7 @@ class Auth {
         return this.reset()
     }
 
-    fetchUser() {
+    fetchUser(refreshToken: boolean = true) {
         const request = {}, options = {}
         if (!this.options.endpoints.user) {
             throw new Error('Login endpoint is not defined')
@@ -232,9 +233,13 @@ class Auth {
             .then(res => {
                 this.user = res.data[this.options.user.property]
                 return Promise.resolve(res)
-            }).catch(err => {
-                if (err.status === 401) {
-                    return this.refreshTokens()
+            }).catch(async err => {
+                if (err.status === 401 && refreshToken) {
+                    return await this.refreshTokens().then(async () => {
+                        return await this.fetchUser(false)
+                    })
+                } else {
+                    return Promise.reject(err)
                 }
             })
     }

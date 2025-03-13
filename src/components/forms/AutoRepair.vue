@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {ref} from "vue";
+import {inject, ref} from "vue";
 import {useRouter} from "vue-router";
 import useBreadcrumbs from "@/stores/breadcrumbs";
 
@@ -42,6 +42,7 @@ const smasterRoom = ref<Car[]>([
     title: 'Black star'
   },
 ])
+const $auth = inject('auth')
 
 const master = ref([
   {
@@ -82,7 +83,7 @@ const handleSubmit = (item?: any) => {
   if (item?.id) {
     query.repair_type_id = item.id
     crumbs.push({
-      title: `${item.title} e'lonlari`,
+      title: `${item.title}`,
       last: true
     })
   }

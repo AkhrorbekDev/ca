@@ -6,6 +6,7 @@ import useAdvertisementStore from '@/stores/advertisement'
 import useBreadcrumbs from '@/stores/breadcrumbs'
 import {ADV_TYPES} from "@/constants";
 import ProfileDropDown from "@/components/ProfileDropDown.vue";
+import ConfirmDialog from "primevue/confirmdialog";
 
 const breadcrumbsStore = useBreadcrumbs()
 
@@ -32,8 +33,11 @@ const breadcrumbs = computed(() => {
   <div class="bg-[#FAFAFA] min-h-screen flex items-start">
     <ServiceSideBar class="z-50"/>
     <Toast position="bottom-right" group="br"/>
-    <div class="fixed z-[2] top-[24px] right-[24px] bg-[#ffffff] !py-[8px] !px-[14px]">
-      <ProfileDropDown/>
+
+    <ConfirmDialog group="auth"/>
+    <div
+        class="fixed z-[2] profile_shadow   !rounded-[100px] top-[24px] !px-[32px] !py-[20px] right-[24px] bg-[#ffffff] ">
+      <ProfileDropDown class=" "/>
     </div>
     <div class="w-full !px-[24px]">
       <slot/>
@@ -45,5 +49,10 @@ const breadcrumbs = computed(() => {
 <style>
 .support a {
   box-shadow: 0 24px 32px 0 #66C61C40;
+}
+
+.profile_shadow {
+  box-shadow: 0px 32px 100px 0px #292D3229;
+
 }
 </style>
