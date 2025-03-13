@@ -320,13 +320,6 @@ const createAnnouncement = async (announce) => {
       </div>
     </div>
 
-    <!-- Example validation error display -->
-      <div v-if="v$.$errors.length" class="text-red-500 mb-4">
-        <p>
-          {{ v$.$errors[0].$message }}
-        </p>
-      </div>
-
     <div class="w-full flex justify-end !mt-5">
       <button
           type="submit"

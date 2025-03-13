@@ -261,7 +261,7 @@ const averageRating = computed(() => {
               <div class="flex-1 !ml-[12px]">
                 <div class="flex justify-between">
                   <h4 class="text-[#292D32] text-[16px] font-500 !mb-0">Anvar Egamberdiyev</h4>
-                  <Rating :value="item?.rating"  />
+                  <Rating :modelValue="item?.rating" :stars="5" :cancel="false" />
                 </div>
                 <p class="text-[#292D324D] text-[12px]">{{formatDate(item.created_at)}}</p>
                 <p class="text-[#292D324D] text-[16px] !mt-[16px]">
