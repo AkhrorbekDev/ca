@@ -199,8 +199,11 @@ watch(
             :activeTab="activeTab"
         />
 
-        <RepairMaster v-if="announceValue.unique === 'repair' || announceValue.unique === 'master'"
-                      :announceValue="announceValue.unique"/>
+        <RepairMaster
+            v-if="dynamicId === 5"
+            :announceValue="announceValue"
+            :activeTab="activeTab"
+        />
 
         <SpecialEquipmentServices 
           v-if="dynamicId === 3" 

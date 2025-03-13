@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Menu, services} from '@/components/fakeJson'
+import {Menu, Announcements, services} from '@/components/fakeJson'
 import {inject, onMounted, onUnmounted, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {useCommonStore} from "@/stores/common.store"
@@ -56,7 +56,9 @@ const menuItems = ref<MenuItems[]>([
     title: 'E’lonlar',
     unique: 'announcement',
     icon: box,
-    route: '/announcement'
+    isOpen: false,
+    route: '/announcement',
+    // children: Announcements
   },
   {
     title: "Transport e'lonlari",
@@ -299,7 +301,7 @@ onMounted(() => {
        }">
     <div class="navbar-items relative h-[100vh]  max-w-max ">
       <ConfirmDialog group="headless"/>
-      <div class="navbar-items__menu  !py-[16px] !px-[12px] !mx-[12px]">
+      <div class="navbar-items__menu !py-[16px] !px-[12px] !mx-[12px]">
         <router-link to="/">
           <img class="!mb-[40px] !mt-[10px]" src="@/assets/icons/logo-new.svg" alt="logo" width="130"/>
         </router-link>
