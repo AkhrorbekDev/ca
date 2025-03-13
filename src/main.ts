@@ -5,7 +5,6 @@ import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import {createPinia} from "pinia";
 import router from "@/router/router";
-import i18n from "@/localization";
 import ConfirmationService from 'primevue/confirmationservice';
 import DialogService from 'primevue/dialogservice'
 import ToastService from 'primevue/toastservice';
@@ -14,9 +13,11 @@ import api from '@/plugins/api'
 import {vMaska} from "maska"
 //// PRIME ICONS
 import 'primeicons/primeicons.css'
+import i18n from "@/i18n";
 
 const app = createApp(App);
 app.use(createPinia())
+app.use(i18n)
 app.directive('maska', vMaska)
 app.use(auth, {
     appId: '#app',

@@ -142,13 +142,14 @@ const verifySMSCode = () => {
              class="w-[217px] hidden md:block cursor-pointer" alt="logo">
 
         <div class="bg-white rounded-[24px] !w-[400px] !px-[40px] !py-[32px] md:-translate-x-8">
-          <h2 class="text-[#282B30] text-[36px] !mb-[20px] text-center font-600">Kirish</h2>
+          <h2 class="text-[#282B30] text-[36px] !mb-[20px] text-center font-600">{{ $t('login') }}</h2>
           <p class="text-[#292D324D] text-[16px] text-center !mb-[24px]">
-            Profilingizga kirish uchun ro'yxatdan o'tgan raqamingizni kiriting!
+
+            {{ $t('enterRegisteredNumber') }}
           </p>
 
           <div name="phone" as="div" class="flex flex-col !mt-[24px]">
-            <label for="phone" class="text-[#292D324D] text-[14px]">Telefon</label>
+            <label for="phone" class="text-[#292D324D] text-[14px]">{{ $t('phone') }}</label>
             <input
                 id="phone"
                 v-maska
@@ -157,8 +158,8 @@ const verifySMSCode = () => {
                 placeholder="+998"
                 class="!bg-[#FAFAFA] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
                 :class="{
-                _invalid: vForm?.errors.phone
-              }"
+                  _invalid: vForm?.errors.phone
+                }"
             />
           </div>
           <div class="flex justify-center items-center w-full !mt-[36px] min-h-[24px]">
@@ -173,7 +174,7 @@ const verifySMSCode = () => {
               class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-[16px] w-full"
           >
 
-            Kirish
+            {{ $t('phone') }}
             <svg v-if="isLoading" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
                  fill="none"
                  viewBox="0 0 24 24">
@@ -185,12 +186,13 @@ const verifySMSCode = () => {
 
           <div v-if="authType === 1" class="!mt-[24px] text-center text-gray-600">
           <span class="text-[#292D32] !text-[15px] text-nowrap">
-            Platformamizda yangimisiz? <a href="#" @click="changeAuthType" class="text-[#0BA5EC] !ml-1 !text-[15px]">Ro'yxatdan o'tish</a>
+           {{ $t('newUserInfo') }} <a href="#" @click="changeAuthType"
+                                      class="text-[#0BA5EC] !ml-1 !text-[15px]">{{ $t('register') }}</a>
           </span>
           </div>
           <div v-else class="!mt-[24px] text-center text-gray-600">
-            <span class="text-[#292D32] !text-[15px]">Avval ro‘yhatdan o‘tganmisiz?</span>
-            <a href="#" @click="changeAuthType" class="text-[#0BA5EC] !ml-1 !text-[15px]">Kirish</a>
+            <span class="text-[#292D32] !text-[15px]">{{ $t('oldUserInfo') }}</span>
+            <a href="#" @click="changeAuthType" class="text-[#0BA5EC] !ml-1 !text-[15px]">{{ $t('login') }}</a>
           </div>
         </div>
         <Field name="session_token" type="hidden"></Field>
@@ -205,11 +207,13 @@ const verifySMSCode = () => {
     >
       <div class="flex items-center justify-center h-[100vh]">
         <div class="bg-white rounded-[24px] !w-[400px]">
-          <h2 class="text-[#282B30] text-[36px] !mb-[20px] text-center font-600">Kodni kiriting</h2>
+          <h2 class="text-[#282B30] text-[36px] !mb-[20px] text-center font-600">
+            {{ $t('enterCode') }}
+          </h2>
           <p class="text-[#292D324D] text-[16px] text-center !mb-[24px]">
-            Tasdiqlash kodini {{ maskedPhone }} raqamiga yubordik.
-            Quyidagi maydonga mobil
-            kodingizni kiriting.
+            {{
+              $t('enterCodeWithPhone', {phone: maskedPhone})
+            }}
           </p>
 
           <div as="div" name="security_code" class="flex flex-col items-center !mt-[24px]">
@@ -231,7 +235,7 @@ const verifySMSCode = () => {
               class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-[16px] w-full"
           >
 
-            Kirish
+            {{ $t('login') }}
             <svg v-if="isLoading" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
                  fill="none"
                  viewBox="0 0 24 24">
@@ -242,8 +246,8 @@ const verifySMSCode = () => {
           </button>
 
           <div class="!mt-[24px] text-center text-gray-600">
-            <span class="text-[#292D32] !text-[15px]">Kod olmadingizmi?</span>
-            <a href="#" @click.prevent="resendSmsCode" class="text-[#0BA5EC] !ml-1 !text-[15px]">Qayta yuborish</a>
+            <span class="text-[#292D32] !text-[15px]">{{ $t('didNotReceiveCode') }}</span>
+            <a href="#" @click.prevent="resendSmsCode" class="text-[#0BA5EC] !ml-1 !text-[15px]">{{ $t('resend') }}</a>
           </div>
         </div>
       </div>

@@ -19,6 +19,9 @@ import useBreadcrumbs from '@/stores/breadcrumbs'
 import AutoRepair from "@/components/forms/AutoRepair.vue";
 import ConfirmDialog from "primevue/confirmdialog";
 import {useConfirm} from "primevue/useconfirm";
+import {useI18n} from 'vue-i18n'
+
+const {t} = useI18n()
 
 const store = useCommonStore()
 const mapStore = useMapStore()
@@ -46,20 +49,20 @@ const toggleMenu = () => {
 
 const menuItems = ref<MenuItems[]>([
   {
-    title: 'Xizmatlar',
+    title: t('services'),
     unique: 'service-detail',
     isOpen: false,
     icon: home,
     children: services
   },
   {
-    title: 'E’lonlar',
+    title: t('announcement'),
     unique: 'announcement',
     icon: box,
     route: '/announcement'
   },
   {
-    title: "Transport e'lonlari",
+    title: t('transportAnnouncements'),
     unique: 'transportAdv',
     isOpen: false,
     icon: car,
@@ -160,6 +163,7 @@ watch(() => route.name, async () => {
   } else if (route.name === 'transport-id') {
     activeRouteName.value = menuItems.value[2].unique
   }
+  console.log(route.name, 'route.name')
 
 }, {
   immediate: true
@@ -229,7 +233,7 @@ const showConfirmModal = () => {
       outlined: true
     },
     acceptProps: {
-      label: 'Avtorizatsiyadan o\'tish'
+      label: t('register')
     },
     accept: () => {
       router.push({

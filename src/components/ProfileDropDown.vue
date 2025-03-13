@@ -107,7 +107,7 @@ watch(menuVisible, (e) => {
                     d="M3 13.4597C3 17.6241 6.4742 21 10.7598 21C14.0591 21 16.8774 18.9993 18 16.1783C17.1109 16.5841 16.1181 16.8109 15.0709 16.8109C11.2614 16.8109 8.17323 13.8101 8.17323 10.1084C8.17323 8.56025 8.71338 7.13471 9.62054 6C5.87502 6.5355 3 9.67132 3 13.4597Z"
                     stroke="#BFC0C2" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-              <span class="text-[#292D32]">Mavzu</span>
+              <span class="text-[#292D32]">{{ $t('theme') }}</span>
             </div>
 
 
@@ -133,7 +133,7 @@ watch(menuVisible, (e) => {
                       stroke-linejoin="round"/>
               </svg>
 
-              <span class="text-[#292D32]">Til</span>
+              <span class="text-[#292D32]">{{ $t('lenguage') }}</span>
             </div>
 
 
@@ -154,7 +154,7 @@ watch(menuVisible, (e) => {
               </svg>
 
 
-              <span class="text-[#292D32]">Chiqish</span>
+              <span class="text-[#292D32]">{{ $t('logOut') }}</span>
             </div>
 
 
@@ -172,7 +172,7 @@ watch(menuVisible, (e) => {
         <div class="flex items-center gap-4">
           <Avatar icon="pi pi-user" class="bg-[#F3F3F3] text-[#B7B8BA]" shape="circle"/>
 
-          <span class="text-[#A8AAAE]">Kirish</span>
+          <span class="text-[#A8AAAE]">{{ $t('login') }}</span>
         </div>
       </router-link>
     </template>

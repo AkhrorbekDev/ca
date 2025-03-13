@@ -28,7 +28,7 @@ const props = defineProps({
 })
 const breadcrumbStore = useBreadcrumbs()
 const router = useRouter()
-const smasterRoom = ref<Car[]>([
+const masterRoom = ref<Car[]>([
   {
     title: 'Mannol center'
   },

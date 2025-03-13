@@ -42,7 +42,7 @@ const changeTransportRoute = (e) => {
     <div class="max-w-screen-xl lg:mx-auto">
       <!-- Xizmatlar-->
       <div class="!mb-[64px]">
-        <h1 class="text-[#292D32] text-[32px] font-semibold">Xizmatlar</h1>
+        <h1 class="text-[#292D32] text-[32px] font-semibold">{{ $t('services') }}</h1>
         <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">
           Bu yerda umumiy xizmatlar haqida tushuntiruvchi text bo’ladi
         </p>
@@ -63,7 +63,7 @@ const changeTransportRoute = (e) => {
             <div class="text-center !mb-[25px]">
               <button @click="openDetail(item)"
                       class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
-                E’lon berish
+                {{ $t('createAdvertisement') }}
               </button>
             </div>
           </div>
@@ -74,7 +74,7 @@ const changeTransportRoute = (e) => {
     <div class="bg-[#fff]">
       <div class="max-w-screen-xl lg:mx-auto !pt-[32px] !pb-[56px]">
         <div>
-          <h1 class="text-[#292D32] text-[32px] font-semibold">Transport e’lonlari</h1>
+          <h1 class="text-[#292D32] text-[32px] font-semibold">{{ $t('transportAnnouncements') }}</h1>
           <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">
             Bu yerda transport e’lonlari haqida tushuntiruvchi text bo’ladi
           </p>
@@ -95,7 +95,7 @@ const changeTransportRoute = (e) => {
               <div class="text-center !mb-[25px]">
                 <button @click="changeTransportRoute(item2)"
                         class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
-                  E’lon berish
+                  {{ $t('createAdvertisement') }}
                 </button>
               </div>
             </div>
@@ -105,7 +105,7 @@ const changeTransportRoute = (e) => {
     </div>
 
     <div class="max-w-screen-xl !pt-[64px] lg:mx-auto !pb-[50px]">
-      <h1 class="text-[#292D32] text-[32px] font-semibold">E’lonlar</h1>
+      <h1 class="text-[#292D32] text-[32px] font-semibold">{{ $t('announcements') }}</h1>
       <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">
         Bu yerda e’lonlar haqida tushuntiruvchi text bo’ladi
       </p>
@@ -145,7 +145,7 @@ const changeTransportRoute = (e) => {
 
             <div class="text-center !mb-[25px]">
               <button class="!px-[16px] !py-[10px] bg-[#66C61C] text-white text-[14px] rounded-full">
-                Batafsil
+                {{ $t('more') }}
               </button>
             </div>
           </div>

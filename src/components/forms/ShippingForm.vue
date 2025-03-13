@@ -9,7 +9,9 @@ import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
 import {useToast} from "primevue/usetoast";
 
+import {useI18n} from 'vue-i18n'
 
+const {t} = useI18n()
 const $api = inject('api')
 const mapStore = useMapStore()
 const props = defineProps({
@@ -106,7 +108,7 @@ const loadTypes = [
 ]
 const paymentTypes = ref([
   {
-    name: 'Naqd',
+    name: t('cash'),
     value: 'CASH',
     icon: `
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

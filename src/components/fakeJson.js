@@ -56,7 +56,8 @@ export const services = [
         img: carKey,
         "id": 4,
         title: 'Transport ijarasi',
-        unique: "rent",
+        unique: "transport-rental",
+        route: "service-detail"
     },
     {
         img: exkavator,
