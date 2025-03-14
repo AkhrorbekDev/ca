@@ -54,6 +54,7 @@ export const services = [
         title: 'Transport ijarasi',
         subTitle: 'Bu transport vositalarini vaqtinchalik foydalanish uchun to\'lov asosida berish xizmati',
         img: carKey,
+        unique: "transport-rental",
         route: "transport-rental"
     },
     {

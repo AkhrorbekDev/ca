@@ -211,8 +211,8 @@ const createAnnouncement = async (announce) => {
         v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
-    <pre>{{ pageValue.id }}</pre>
-    <pre>{{ addAnnouncement }}</pre>
+      <pre>{{ pageValue.id }}</pre>
+      <pre>{{ addAnnouncement }}</pre>
       <div class="grid grid-cols-2 gap-4">
         <LocationItem :location="addAnnouncement.to_location" as="div" class="" name="to_location"
                       @click="setLocation('to_location')"/>
@@ -220,7 +220,7 @@ const createAnnouncement = async (announce) => {
         <FloatLabel variant="in">
           <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
                      class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-          <label for="in_label" class="!text-[#292D324D]">Narx</label>
+          <label for="in_label" class="!text-[#292D324D]">{{ $t('price') }}</label>
         </FloatLabel>
 
         <FloatLabel variant="in">
@@ -233,7 +233,7 @@ const createAnnouncement = async (announce) => {
       </div>
 
       <div class="flex flex-col gap-2 w-full !mt-[24px]">
-        <label for="description" class="text-[#292D3280] text-[16px]">Izoh</label>
+        <label for="description" class="text-[#292D3280] text-[16px]">{{ $t('description') }}</label>
         <Textarea v-model="addAnnouncement.note" id="description" class="w-full   custom-placeholder-input" rows="3"
                   cols="30"
                   placeholder="Yuk haqida izoh qoldiring!"/>

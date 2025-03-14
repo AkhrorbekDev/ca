@@ -91,11 +91,11 @@ const closeMenu = () => {
   });
 };
 
-const loadingAnnouncement = ref(false);
+const loadingAnnouncement = ref(true);
 // Fetch all announcements
 const fetchAnnouncements = async () => {
   try {
-    loadingAnnouncement.value = false;
+    loadingAnnouncement.value = true;
     let params: any = {};
     if (activeTab.value === 1) {
       params.adv_type = 'RECEIVE';
@@ -103,12 +103,12 @@ const fetchAnnouncements = async () => {
       params.adv_type = 'PROVIDE';
     }
     const response = await $api.announcement.getAnnouncement(params);
-    
+
     setTimeout(() => {
       announcementAllData.value = response?.data;
+      loadingAnnouncement.value = false;
     }, 1000);
 
-    loadingAnnouncement.value = true;
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -236,10 +236,9 @@ onMounted(() => {
 
     <div class="!mt-[31px]">
 
-      <div v-if="!loadingAnnouncement" class="grid xl:grid-cols-5 grid-cols-4 gap-6 animate-pulse">
-      
+      <div v-if="loadingAnnouncement" class="grid xl:grid-cols-5 grid-cols-4 gap-6 animate-pulse">
           <div v-for="item in 20" :key="item" class="h-32 bg-gray-200 rounded-3xl w-full mb-4"></div>
-       
+
       </div>
 
       <div v-else class="grid xl:grid-cols-5 grid-cols-4 gap-6">

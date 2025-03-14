@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import {useCommonStore} from "@/stores/common.store"
-import {inject, onMounted, ref} from "vue";
+import {computed, inject, onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import KeepingCard from "@/pages/Services/Components/KeepingCard.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import {useI18n} from 'vue-i18n'
 
+const {t} = useI18n()
 const store = useCommonStore()
 const openFilter = ref(false)
 
@@ -75,32 +78,45 @@ onMounted(() => {
   })
 })
 
+const breadcrumbItems = computed(() => {
+  return [
+    {
+      title: t('warehouses')
+    },
+  ]
+})
+
 </script>
 
 <template>
-  <div class="!mt-[40px]">
-    <div class="flex items-center justify-between !mb-4">
-      <span class="text-[#292D32] font-medium text-[24px]">Omborxonalar</span>
-      <button @click="toggleFilter"
-              class="flex items-center gap-2 bg-white !px-[16px] !py-[12px] rounded-[16px] relative">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path
-              d="M14.3229 2.5H5.54773C3.92225 2.5 2.9757 4.3362 3.91865 5.66022L6.86104 9.79167C7.34357 10.4692 7.60288 11.2803 7.60288 12.1121V15.2744C7.60288 16.5036 8.59932 17.5 9.82848 17.5C11.0576 17.5 12.0541 16.5036 12.0541 15.2744V12.1719C12.0541 11.3032 12.3369 10.4581 12.8597 9.76435L15.9201 5.70375C16.9133 4.38587 15.9731 2.5 14.3229 2.5Z"
-              stroke="#363853" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-
-        Filtr
-
+  <div class="">
+    <Breadcrumbs :breadcrumbs="breadcrumbItems"/>
+    <div class="flex items-center justify-start !mb-[32px] gap-[32px]">
+      <h1 class="text-[#292D32] !mb-0 text-[32px] leading-[48px] font-500">
+        {{ $t('warehouses') }}
+      </h1>
+      <button
+          class="flex items-center relative justify-center gap-[8px] w-[105px] h-[48px] filter-btn__shadow rounded-[18px] bg-[#ffffff]">
+        <img src="@/assets/icons/filter.svg" alt="">
+        <span>
+          {{ $t('filter') }}
+        </span>
         <div @click.stop v-if="openFilter"
              class="w-[375px] absolute z-[999] top-[130%] right-[0] bg-white text-start !p-[16px] rounded-[24px]">
           <div class="flex items-center justify-between !mb-[24px]">
-            <span class="text-[#1A1F23] font-medium text-[16px]">Filter</span>
-            <span class="text-[#F04438] font-medium">Tozalash</span>
+            <span class="text-[#1A1F23] font-medium text-[16px]">
+              {{ $t('filter') }}
+            </span>
+            <span @click="clearFilters" class="text-[#F04438] font-medium">
+              {{ $t('clear') }}
+            </span>
           </div>
 
           <div
               class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px] !mb-[24px]">
-            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">Toifalar</span>
+            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">
+              {{ $t('categories') }}
+            </span>
 
             <div class="grid grid-cols-3 gap-4">
               <button
@@ -114,12 +130,14 @@ onMounted(() => {
           </div>
 
           <div class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px]">
-            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">Xizmatlar</span>
+            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">
+              {{ $t('services') }}
+            </span>
 
             <div class="flex items-center gap-2">
               <button
                   v-for="(item, index) in servicesList" @click="pushService(index)"
-                  :class="['!py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px] bg-[#FFFFFF]', service.includes(index) && '!bg-[#66C61C] text-white']">
+                  :class="['!py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px] bg-[#FFFFFF]', services.includes(index) && '!bg-[#66C61C] text-white']">
                 {{
                   item
                 }}
@@ -132,18 +150,23 @@ onMounted(() => {
               <Select placeholder="Hududni tanlang"
                       class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
               </Select>
-              <label for="in_label" class="!text-[#292D324D]">Hudud</label>
+              <label for="in_label" class="!text-[#292D324D]">
+                {{ $t('region') }}
+              </label>
             </FloatLabel>
           </div>
 
           <div
               class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px] !mb-[24px]">
-            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">Reyting</span>
+            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">
+              {{ $t('rating') }}
+            </span>
 
             <div class="grid grid-cols-5 gap-4">
               <button
                   v-for="(item, index) in 5" @click="pushRating(index)"
-                  :class="['flex items-center gap-1 !py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px] bg-[#FFFFFF]', rating.includes(index) && '!bg-[#66C61C] text-white']">
+                  :class="['flex items-center gap-1 !py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px] bg-[#FFFFFF]',
+                  rating.includes(index) && '!bg-[#66C61C] text-white']">
 
                 <svg :style="rating.includes(index) &&  'filter: brightness(100);'" width="15" height="14"
                      viewBox="0 0 15 14" fill="none"
@@ -162,10 +185,11 @@ onMounted(() => {
 
           <button @click="openFilter = false"
                   class="w-full bg-[#66C61C] rounded-[24px] !p-[16px] text-white !mt-[148px]">
-            Saqlash
+            {{ $t('save') }}
           </button>
 
         </div>
+
       </button>
     </div>
 
@@ -184,7 +208,7 @@ onMounted(() => {
         <div class="flex flex-col items-center gap-[10px] max-w-[300px] !mx-auto !my-auto">
           <img src="@/assets/images/empty.png" class="w-full" alt="">
           <p>
-            Ma’lumot yo’q
+            {{ $t('noData') }}
           </p>
         </div>
       </div>

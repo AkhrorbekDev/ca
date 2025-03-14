@@ -4,7 +4,7 @@ export default async function getGeoObject(options: {
     address: string
 }) {
     const httpApiUrl = 'https://geocode-maps.yandex.ru/1.x';
-    const {cord} = options
+    const {cord, address} = options
     const query = {
         format: 'json'
     }

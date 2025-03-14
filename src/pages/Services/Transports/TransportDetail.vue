@@ -16,12 +16,11 @@ import 'swiper/css/thumbs';
 
 // import required modules
 import {FreeMode, Navigation, Thumbs} from 'swiper/modules';
-import { useDateFormat } from "@vueuse/core";
-import { all } from "axios";
-import { id } from "element-plus/es/locale";
+import {useDateFormat} from "@vueuse/core";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 
 const formatDate = (date: string) => {
-  return useDateFormat(date, 'DD MMMM YYYY', { locales: 'en-US' }).value;
+  return useDateFormat(date, 'DD MMMM YYYY', {locales: 'en-US'}).value;
 }
 
 const thumbsSwiper = ref(null);
@@ -79,7 +78,7 @@ onMounted(async () => {
 
 const ratingComment = computed(() => {
   if (Array.isArray(advertisementData?.comments)) {
-    return advertisementData?.comments.reduce((acc, item) => acc + item.rating / advertisementData?.comments?.length ,0)
+    return advertisementData?.comments.reduce((acc, item) => acc + item.rating / advertisementData?.comments?.length, 0)
   }
   return 0
 })
@@ -87,18 +86,18 @@ const ratingComment = computed(() => {
 const averageRating = computed(() => {
 
   console.log(`ratingComment`, advertisementData.value?.comments);
-  
+
   if (Array.isArray(advertisementData.value?.comments)) {
-      // Sum all ratings
-  const sum = advertisementData.value?.comments.reduce((total, item) => total + item.rating, 0);
-  
-  // Divide by the number of ratings
-  const average = sum / advertisementData.value?.comments.length;
-  
-  // Return with one decimal place precision
-  return parseFloat(average.toFixed(1));
+    // Sum all ratings
+    const sum = advertisementData.value?.comments.reduce((total, item) => total + item.rating, 0);
+
+    // Divide by the number of ratings
+    const average = sum / advertisementData.value?.comments.length;
+
+    // Return with one decimal place precision
+    return parseFloat(average.toFixed(1));
   }
-  
+
   return 0
 
 });
@@ -126,7 +125,8 @@ const averageRating = computed(() => {
               class="mySwiper2"
           >
             <swiper-slide v-for="(image, index) in advertisementData?.images" :key="index">
-              <img class="rounded-xl h-full object-cover" :src="`https://api.carting.uz/uploads/files/${image}`" alt="img">
+              <img class="rounded-xl h-full object-cover" :src="`https://api.carting.uz/uploads/files/${image}`"
+                   alt="img">
             </swiper-slide>
 
           </swiper>
@@ -145,18 +145,20 @@ const averageRating = computed(() => {
           >
 
             <swiper-slide v-for="(image, index) in advertisementData?.images" :key="index">
-              <img class="rounded-xl h-full object-cover" :src="`https://api.carting.uz/uploads/files/${image}`" alt="img">
+              <img class="rounded-xl h-full object-cover" :src="`https://api.carting.uz/uploads/files/${image}`"
+                   alt="img">
             </swiper-slide>
 
           </swiper>
         </div>
       </div>
 
-    
+
       <div class="flex flex-col md:!ml-[100px] lg:w-1/2">
         <h2 class="text-[#292D32] text-[32px] font-500" v-if="route.name === 'transport-repair-room-id-id2'">
           AVTOritet</h2>
-        <h2 class="text-[#292D32] text-[32px] font-500" v-if="route.name === 'transport-view-id'">{{ advertisementData?.service_name }}</h2>
+        <h2 class="text-[#292D32] text-[32px] font-500" v-if="route.name === 'transport-view-id'">
+          {{ advertisementData?.service_name }}</h2>
         <!--        <h2 class="text-[#292D32] text-[32px] font-500" >Kia Sonet classic</h2>-->
 
         <div class="flex items-center text-gray-500 !mt-[16px] !mb-[40px]">
@@ -166,7 +168,7 @@ const averageRating = computed(() => {
             {{ advertisementData.comments?.length }} ta izoh
           </span>
         </div>
-      
+
         <p class="text-[16px] text-[#292D32] font-500 !mb-[40px]" v-if="route.name === 'transport-view-id'">
           <span class="text-[#292D324D] font-500">Yuk og'irligi:</span>
           {{ advertisementData?.details?.load_weight?.amount }} {{ advertisementData?.details?.load_weight?.name }}
@@ -242,28 +244,30 @@ const averageRating = computed(() => {
       <template v-else>
         <div class="p-6 max-w-lg !mx-auto">
           <form @submit.prevent="sendComment">
-            <Rating class="w-full flex justify-center" v-model="allComments.rating" />
+            <Rating class="w-full flex justify-center" v-model="allComments.rating"/>
 
-            <span class="text-[#292D324D] text-[12px] !mb-[6px]">Izoh</span>
+            <span class="text-[#292D324D] text-[12px] !mb-[6px]">{{ $t('description') }}</span>
             <textarea
                 v-model="allComments.comment_text"
                 class="w-full !py-[12px] !px-[16px] border rounded-lg text-[#292D324D] text-[14px] outline-none"
                 placeholder="O‘z fikringizni yozib qoldiring!"
                 rows="4"
             />
-            <button type="submit" class="bg-[#66C61C] text-white !py-[12px] !px-[20px] rounded-full !mt-[16px]">Publikatsiya qilish</button>
+            <button type="submit" class="bg-[#66C61C] text-white !py-[12px] !px-[20px] rounded-full !mt-[16px]">
+              Publikatsiya qilish
+            </button>
           </form>
 
-          
+
           <div class="space-y-6 !mt-[56px]" v-for="(item, index) in advertisementData?.comments" :key="index">
             <div class="flex items-start space-x-4">
               <img src="@/assets/images/avatar.jpg" alt="User Avatar" class="w-10 h-10 rounded-full">
               <div class="flex-1 !ml-[12px]">
                 <div class="flex justify-between">
                   <h4 class="text-[#292D32] text-[16px] font-500 !mb-0">Anvar Egamberdiyev</h4>
-                  <Rating :value="item?.rating"  />
+                  <Rating :modelValue="item?.rating" :stars="5" :cancel="false" />
                 </div>
-                <p class="text-[#292D324D] text-[12px]">{{formatDate(item.created_at)}}</p>
+                <p class="text-[#292D324D] text-[12px]">{{ formatDate(item.created_at) }}</p>
                 <p class="text-[#292D324D] text-[16px] !mt-[16px]">
                   {{ item.comment_text }}
                 </p>
