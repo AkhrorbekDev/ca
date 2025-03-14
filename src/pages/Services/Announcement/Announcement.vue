@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import ModalAnnouncement from "@/pages/Services/Announcement/components/ModalAnnouncement.vue";
 import AddAnnouncementModal from "@/pages/Services/Announcement/components/AddAnnouncementModal.vue";
-import {computed, inject, nextTick, onMounted, ref} from 'vue';
+import {announcement} from "@/pages/Services/Announcement/constants";
+import {inject, nextTick, onMounted, onUnmounted, ref} from 'vue';
+import {AnnouncementType} from "@/pages/Services/Announcement/announcement.types";
 import {useRoute, useRouter} from "vue-router";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
-import {useI18n} from 'vue-i18n';
-
-const {t} = useI18n();
+import { set } from "@vueuse/core";
 
 const router = useRouter();
 const route = useRoute()
 const visible = ref(false);
 const visible2 = ref(false);
 const visible2Data = ref<any>({});
-const selectedService = ref<any>(null);
 const childMenu = ref<any[]>([]);
 const menuVisible = ref<boolean>(false);
 const selectedAnnouncement = ref<any>(null);
@@ -47,7 +45,7 @@ const openDetail = async (item: any) => {
     if (data && data.length > 0) {
       item.child = data.map(child => ({...child, parentId: item.unique})); // Update the child property
       childMenu.value = data; // Set the childMenu for dropdown
-      dataTo.value = {...item, parentId: item.id}; // Set dataTo with the item's id
+      dataTo.value = { ...item, parentId: item.id }; // Set dataTo with the item's id
       // visible2.value = true; // Open the form
 
     } else {
@@ -93,29 +91,24 @@ const closeMenu = () => {
   });
 };
 
-const loadingAnnouncement = ref(false);
+const loadingAnnouncement = ref(true);
 // Fetch all announcements
 const fetchAnnouncements = async () => {
   try {
-    loadingAnnouncement.value = false;
-    let params: any = {
-      ...route.query
-    };
-    // if (route.query?.service_id) {
-    //   params.service_id = route.query.service_id;
-    // }
-    // if (activeTab.value === 1) {
-    //   params.adv_type = 'RECEIVE';
-    // } else if (activeTab.value === 2) {
-    //   params.adv_type = 'PROVIDE';
-    // }
+    loadingAnnouncement.value = true;
+    let params: any = {};
+    if (activeTab.value === 1) {
+      params.adv_type = 'RECEIVE';
+    } else if (activeTab.value === 2) {
+      params.adv_type = 'PROVIDE';
+    }
     const response = await $api.announcement.getAnnouncement(params);
 
     setTimeout(() => {
       announcementAllData.value = response?.data;
+      loadingAnnouncement.value = false;
     }, 1000);
 
-    loadingAnnouncement.value = true;
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -124,12 +117,6 @@ const fetchAnnouncements = async () => {
 // Change active tab
 const changeTab = (index: number) => {
   activeTab.value = index;
-  const query = {
-    adv_type: activeTab.value === 1 ? 'RECEIVE' : activeTab.value === 2 ? 'PROVIDE' : undefined
-  }
-  router.push({
-    query
-  });
   fetchAnnouncements();
 };
 
@@ -150,28 +137,13 @@ const toggleMenu = () => {
 const getServicesData = ref<any[]>([]);
 onMounted(async () => {
   try {
-    await $api.services.getServices().then((res) => {
-      if (res.data) {
-        getServicesData.value = res.data;
-        if (route.query?.service_id) {
-          const service = getServicesData.value.find((item: any) => item.id == route.query.service_id);
-          if (service) {
-            selectedService.value = service;
-          }
-        }
-      }
-    });
+    const response = await $api.services.getServices();
+    getServicesData.value = response.data;
   } catch (error) {
     console.error('Error fetching services:', error);
   }
 });
-const breadcrumbItems = computed(() => {
-  return [
-    {
-      title: t('announcements')
-    }
-  ]
-})
+
 onMounted(() => {
   closeMenu();
   fetchAnnouncements();
@@ -181,12 +153,6 @@ onMounted(() => {
 
 <template>
   <div>
-    <Breadcrumbs :breadcrumbs="breadcrumbItems"/>
-    <div class="flex items-center justify-start !mb-[32px] gap-[32px]">
-      <h1 class="text-[#292D32] !mb-0 text-[32px] leading-[48px] font-500">
-        {{ selectedService?.name || $t('announcements') }}
-      </h1>
-    </div>
     <div class="flex items-center justify-between">
       <div class="flex items-center space-x-4 bg-white rounded-lg !p-1.5">
         <button
@@ -251,14 +217,12 @@ onMounted(() => {
         </div>
 
         <div class="flex flex-col gap-2 w-full">
-          <Select :model-value="selectedService" :options="getServicesData" optionLabel="name" optionValue="id"
-                  placeholder="Xizmatlar"
+          <Select v-model="selectedCity" :options="[]" optionLabel="name" placeholder="Xizmatlar"
                   class="w-full !border-0 !rounded-[16px] custom-placeholder-select h-[56px] flex items-center"/>
         </div>
 
         <div class="flex flex-col gap-2 w-full">
-          <Select :model-value="advertisementStatus" :options="statuses" optionLabel="name" optionValue="value"
-                  placeholder="Status"
+          <Select v-model="selectedCity" :options="[]" optionLabel="name" placeholder="Status"
                   class="w-full !border-0 !rounded-[16px] custom-placeholder-select h-[56px] flex items-center"/>
         </div>
 
@@ -272,9 +236,8 @@ onMounted(() => {
 
     <div class="!mt-[31px]">
 
-      <div v-if="!loadingAnnouncement" class="grid xl:grid-cols-5 grid-cols-4 gap-6 animate-pulse">
-
-        <div v-for="item in 20" :key="item" class="h-32 bg-gray-200 rounded-3xl w-full mb-4"></div>
+      <div v-if="loadingAnnouncement" class="grid xl:grid-cols-5 grid-cols-4 gap-6 animate-pulse">
+          <div v-for="item in 20" :key="item" class="h-32 bg-gray-200 rounded-3xl w-full mb-4"></div>
 
       </div>
 

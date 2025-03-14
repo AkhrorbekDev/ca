@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Menu, services} from '@/components/fakeJson'
+import {Menu, Announcements, services} from '@/components/fakeJson'
 import {inject, onMounted, onUnmounted, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {useCommonStore} from "@/stores/common.store"

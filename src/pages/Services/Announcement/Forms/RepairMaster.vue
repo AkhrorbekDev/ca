@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import {inject, onMounted, ref} from 'vue';
-import {useVuelidate} from '@vuelidate/core';
+import { ref, onMounted, inject } from 'vue';
+import { useVuelidate } from '@vuelidate/core';
 import useMapStore from "@/stores/map.store";
 import {maxLength, minValue, numeric, required} from '@vuelidate/validators';
 import {Announcement} from "../types";

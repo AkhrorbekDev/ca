@@ -164,3 +164,61 @@ export const Menu = [
     },
 ]
 
+export const Announcements = [
+    {
+        img: moto,
+        id: 1,
+        title: 'Yetkazib berish',
+        // child: Truck
+    },
+    {
+        img: rul,
+        id: 2,
+        title: 'Peregon xizmati',
+        // child: Truck
+    },
+    {
+        img: truck2,
+        id: 3,
+        title: 'Yuk tashish',
+        // child: Truck
+    },
+    {
+        img: pistol,
+        id: 4,
+        title: 'Yoqilg‘i yetkazish',
+    },
+    {
+        img: car,
+        id: 5,
+        title: 'Yo\'lovchilarni tashish'
+    },
+    {
+        img: carKey,
+        id: 6,
+        title: 'Transport ijarasi',
+        // child: Truck
+    },
+    {
+        img: exkavator,
+        id: 7,
+        title: 'Maxsus texnika xizmatlari',
+        // child: Truck
+    },
+    {
+        img: evakvator,
+        id: 8,
+        title: 'Transport transferi',
+        // child: Truck
+    },
+    {
+        img: home,
+        id: 9,
+        title: 'Saqlash xizmati',
+    },
+    {
+        img: settings,
+        id: 10,
+        title: "Avto ta'mirlash"
+    },
+]
