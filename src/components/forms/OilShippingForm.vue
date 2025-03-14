@@ -2,7 +2,7 @@
 import {Field, Form} from 'vee-validate'
 import {oilTransfer} from "@/components/form-elements/schema";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
-import {inject, onMounted, ref, watch} from 'vue'
+import {inject, onMounted, onUnmounted, ref, watch} from 'vue'
 import getGeoObject from "@/composables/getGeoObject";
 import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
@@ -192,6 +192,9 @@ onMounted(() => {
   //     })
   //     .finally(() => isLoading.value = false)
 })
+onUnmounted(() => {
+  registerClickOutside(false)
+})
 </script>
 
 <template>
@@ -293,7 +296,7 @@ onMounted(() => {
         <div
             @click="toggleShowDetails"
             :class="{
-        _invalid: !selectedOilCompany
+        _invalid: errors['details.company_id']
       }"
             class="w-full !bg-[#FAFAFA] border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
         >

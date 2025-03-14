@@ -2,7 +2,7 @@
 import {Field, Form} from 'vee-validate'
 import {passengerTrafficSchema} from "@/components/form-elements/schema";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
-import {inject, onMounted, ref, watch} from 'vue'
+import {inject, onMounted, onUnmounted, ref, watch} from 'vue'
 import getGeoObject from "@/composables/getGeoObject";
 import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
@@ -201,6 +201,9 @@ onMounted(() => {
       .then(res => {
         transports.value = res.data
       }).finally(() => isLoading.value = false)
+})
+onUnmounted(() => {
+  registerClickOutside(false)
 })
 </script>
 

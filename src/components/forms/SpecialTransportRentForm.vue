@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {Field, Form} from 'vee-validate'
 import LocationItem from "@/components/form-elements/LocationItem.vue";
-import {inject, onMounted, ref, watch} from 'vue'
+import {inject, onMounted, onUnmounted, ref, watch} from 'vue'
 import getGeoObject from "@/composables/getGeoObject";
 import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
@@ -191,6 +191,9 @@ onMounted(() => {
         transports.value = res.data
       })
       .finally(() => isLoading.value = false)
+})
+onUnmounted(() => {
+  registerClickOutside(false)
 })
 </script>
 

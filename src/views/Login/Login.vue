@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {inject, reactive, ref} from "vue";
+import {computed, inject, reactive, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 import {ErrorMessage, Field, Form, useField} from 'vee-validate';
 
@@ -29,7 +29,9 @@ const optCode = ref(null)
 const vCodeForm = ref(null)
 const authType = ref(1)
 const showCodeField = ref(false)
-
+const counter = ref(60 * 5)
+const interval = ref(null)
+const resendDisabled = ref(true)
 const validationSchema = yup.object({
   phone: yup.string().required().min(12),
 })
@@ -81,6 +83,7 @@ const onSubmit = () => {
               showCodeField.value = true
               maskedPhone.value = maskNumber(vForm.value.values.phone)
               vForm.value.setFieldValue('session_token', response.data.session_token)
+              counterInterval()
             } else {
               vForm.value.setFieldError('globalErrorField', response.message)
             }
@@ -96,6 +99,7 @@ const onSubmit = () => {
 }
 
 const resendSmsCode = () => {
+  if (resendDisabled.value) return
   onSubmit()
 }
 const route = useRoute()
@@ -125,6 +129,27 @@ const verifySMSCode = () => {
   })
 }
 
+
+function counterInterval() {
+  interval.value = setInterval(() => {
+    counter.value--
+    if (!counter.value) {
+      clearInterval(interval.value)
+      resendDisabled.value = true
+      counter.value = 60 * 5
+    }
+    if (counter.value === 0) {
+      resendDisabled.value = false
+      clearInterval(inverval.value)
+    }
+  }, 1000)
+}
+
+const formatTime = computed(() => {
+  const minutes = Math.floor(counter.value / 60)
+  const seconds = counter.value % 60
+  return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`
+})
 </script>
 <template>
   <div>
@@ -135,6 +160,7 @@ const verifySMSCode = () => {
 
       <Form
           ref="vForm"
+          v-slot="{errors}"
           :validationSchema="validationSchema"
           @submit="onSubmit"
           class="absolute flex justify-around md:w-[60%] w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -147,8 +173,11 @@ const verifySMSCode = () => {
 
             {{ $t('enterRegisteredNumber') }}
           </p>
+          <Field name="phone">
+            <input type="hidden">
+          </Field>
 
-          <div name="phone" as="div" class="flex flex-col !mt-[24px]">
+          <div class="flex flex-col !mt-[24px]">
             <label for="phone" class="text-[#292D324D] text-[14px]">{{ $t('phone') }}</label>
             <input
                 id="phone"
@@ -158,12 +187,12 @@ const verifySMSCode = () => {
                 placeholder="+998"
                 class="!bg-[#FAFAFA] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
                 :class="{
-                  _invalid: vForm?.errors.phone
+                  _invalid: errors.phone
                 }"
             />
           </div>
           <div class="flex justify-center items-center w-full !mt-[36px] min-h-[24px]">
-            <ErrorMessage v-if="vForm?.errors?.globalErrorField" name="globalErrorField" as="span"
+            <ErrorMessage v-if="errors.globalErrorField" name="globalErrorField" as="span"
                           class="text-[#EA5455]">
               {{ vForm.errors.globalErrorField }}
             </ErrorMessage>
@@ -202,6 +231,7 @@ const verifySMSCode = () => {
     <Form
         v-show="showCodeField"
         ref="vCodeForm"
+        v-slot="{errors}"
         :validation-schema="validationSchema2"
         @submit="verifySMSCode"
     >
@@ -215,10 +245,12 @@ const verifySMSCode = () => {
               $t('enterCodeWithPhone', {phone: maskedPhone})
             }}
           </p>
-
+          <Field name="security_code">
+            <input type="hidden">
+          </Field>
           <div as="div" name="security_code" class="flex flex-col items-center !mt-[24px]">
             <InputOtp :class="{
-                _invalid: vCodeForm?.errors.security_code
+                _invalid: errors.security_code
               }" :model-value="optCode" @update:model-value="updateOptCode" class="!border-none !outline-none"/>
           </div>
 
@@ -229,6 +261,7 @@ const verifySMSCode = () => {
               {{ vForm.errors.globalErrorField }}
             </span>
           </div>
+
 
           <button
               type="submit"
@@ -247,7 +280,8 @@ const verifySMSCode = () => {
 
           <div class="!mt-[24px] text-center text-gray-600">
             <span class="text-[#292D32] !text-[15px]">{{ $t('didNotReceiveCode') }}</span>
-            <a href="#" @click.prevent="resendSmsCode" class="text-[#0BA5EC] !ml-1 !text-[15px]">{{ $t('resend') }}</a>
+            <a href="#" @click.prevent="resendSmsCode"
+               class="text-[#0BA5EC] !ml-1 !text-[15px]">{{ resendDisabled ? formatTime : $t('resend') }}</a>
           </div>
         </div>
       </div>

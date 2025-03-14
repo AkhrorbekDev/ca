@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import Cards from '@/pages/Services/Components/Cards.vue'
 import {useRoute, useRouter} from "vue-router";
-import {inject, onMounted, ref, watch} from "vue";
-import useBreadcrumbs from "@/stores/breadcrumbs";
+import {computed, inject, onMounted, ref, watch} from "vue";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import {useI18n} from 'vue-i18n'
 
@@ -25,7 +24,6 @@ const advertisementData = ref([])
 const services = ref([])
 const transport = ref(null)
 const service = ref(null)
-const breadcrumbStore = useBreadcrumbs()
 
 const pushCategory = (index) => {
   if (categories.value.includes(index)) {
@@ -58,15 +56,15 @@ watch(() => route.params, () => {
         }
         const advertisementQuery = {
           service_id: route.params.id,
-
         }
         const requests = []
         if (route.params.transport_id) {
           advertisementQuery.transport_id = route.params.transport_id
           requests.push(
-              $api.transport.getTransportByServiceId(route.params.transport_id)
+              $api.transport.getTransportByServiceId(route.params.id)
                   .then((res) => {
                     const _transport = res.data.find(item => item.id === Number(route.params.transport_id))
+                    console.log(_transport, res.data, route.params.transport_id)
                     if (_transport) transport.value = _transport
                   })
                   .catch(() => {
@@ -98,6 +96,20 @@ watch(() => route.params, () => {
   immediate: true
 })
 
+const breadcrumbItems = computed(() => {
+  return [
+    {
+      title: t('transportAnnouncements')
+    },
+    {
+      title: service.value?.name,
+    },
+    {
+      title: transport.value?.name,
+    }
+  ]
+})
+
 onMounted(async () => {
   // try {
   //   await $api.transport.getTransportByServiceId().then(res => {
@@ -121,7 +133,7 @@ onMounted(async () => {
 
 <template>
   <div :key="$route.params.id">
-    <Breadcrumbs :items="breadcrumbItems"/>
+    <Breadcrumbs :breadcrumbs="breadcrumbItems"/>
     <div class="flex items-center justify-start !mb-[32px] gap-[32px]">
       <h1 class="text-[#292D32] !mb-0 text-[32px] leading-[48px] font-500">
         {{ transport?.name ? transport.name : service?.name }}

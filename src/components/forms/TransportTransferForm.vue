@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {Field, Form} from 'vee-validate'
 import LocationItem from "@/components/form-elements/LocationItem.vue";
-import {inject, onMounted, ref, watch} from 'vue'
+import {inject, onMounted, onUnmounted, ref, watch} from 'vue'
 import getGeoObject from "@/composables/getGeoObject";
 import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
@@ -194,6 +194,9 @@ onMounted(() => {
       })
       .finally(() => isLoading.value = false)
 })
+onUnmounted(() => {
+  registerClickOutside(false)
+})
 </script>
 
 <template>
@@ -281,7 +284,7 @@ onMounted(() => {
 
       </div>
       <Field name="details.transportation_type_id" as="div" :class="{
-                _invalid: !selectedTransports
+                _invalid: errors['details.transportation_type_id']
               }" class="col-span-full">
         <FloatLabel variant="in">
           <Select :loading="isLoading" :model-value="selectedTransports"

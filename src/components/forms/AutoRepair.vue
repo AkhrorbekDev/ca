@@ -76,7 +76,6 @@ const handleSubmit = (item?: any) => {
     query.repair_type_id = item.id
   }
 
-  breadcrumbStore.updateBreadcrumb(crumbs)
   router.push({
     name: 'transport-repair-rooms-id',
     query

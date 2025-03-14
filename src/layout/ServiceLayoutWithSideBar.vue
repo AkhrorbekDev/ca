@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import {useRoute} from "vue-router";
 import ServiceSideBar from "@/components/ServiceSideBar.vue";
-import {computed, inject, onMounted, ref} from "vue";
+import {inject, onMounted, ref} from "vue";
 import useAdvertisementStore from '@/stores/advertisement'
-import useBreadcrumbs from '@/stores/breadcrumbs'
 import {ADV_TYPES} from "@/constants";
 import ProfileDropDown from "@/components/ProfileDropDown.vue";
 import ConfirmDialog from "primevue/confirmdialog";
-
-const breadcrumbsStore = useBreadcrumbs()
 
 const adv_store = useAdvertisementStore()
 const route = useRoute()
@@ -24,9 +21,6 @@ const home = ref({
   class: '!text-[#292D3266]'
 });
 
-const breadcrumbs = computed(() => {
-  return breadcrumbsStore.getBreadcrumbs
-})
 </script>
 
 <template>

@@ -67,6 +67,7 @@ const onChangeDate = (e: Date, name) => {
   mainForm.value.setFieldValue(name, dateRef.value.formatDate(e, 'dd.mm.yy'))
 }
 const showDetails = ref(false)
+const imagesNotUploaded = ref(false)
 
 const images = ref([])
 const collectImages = ref([]);
@@ -186,6 +187,7 @@ const handleFileUpload = (event) => {
       event.value = ''
     };
     reader.readAsDataURL(file);
+    imagesNotUploaded.value = false
   }
 };
 
@@ -218,7 +220,12 @@ const submit = () => {
   mainForm.value.validate()
       .then(res => {
 
-        if (res.valid && collectImages.value.length > 0) {
+        if (collectImages.value.length <= 0) {
+          imagesNotUploaded.value = true
+          return
+        }
+
+        if (res.valid) {
           if (!$auth.loggedIn) {
             return emit('auth:invalid')
           }
@@ -408,7 +415,7 @@ onUnmounted(() => {
         <div
             @click="toggleShowDetails"
             :class="{
-                _invalid: errors['price'] || images.length === 0
+                _invalid: errors['price'] || imagesNotUploaded
               }"
             class="w-full !bg-[#FAFAFA] !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
         >
@@ -437,7 +444,7 @@ onUnmounted(() => {
           name="details.transportation_type_id"
           as="div"
           :class="{
-                _invalid: (errors['details.transportation_type_id'])
+                _invalid: errors['details.transportation_type_id']
               }" class="col-span-full !px-[4px]">
         <FloatLabel variant="in">
           <Select :loading="transportLoading" :model-value="selectedTransports"
@@ -538,7 +545,7 @@ onUnmounted(() => {
               :key="item.label" :item="item" :value="item.value"/>
         </Field>
         <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[24px]" :class="{
-          _invalid: images.length === 0
+          _invalid: imagesNotUploaded
         }">
           <span class="text-[#292D324D] text-[12px]">
             {{ $t('cargoImage') }}

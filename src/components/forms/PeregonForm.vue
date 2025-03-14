@@ -2,11 +2,13 @@
 import {Field, Form} from 'vee-validate'
 import {peregonSchema} from "@/components/form-elements/schema";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
-import {inject, ref, watch} from 'vue'
+import {inject, onUnmounted, ref, watch} from 'vue'
 import getGeoObject from "@/composables/getGeoObject";
 import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
+import {useI18n} from 'vue-i18n'
 
+const {t} = useI18n()
 const $api = inject('api')
 const mapStore = useMapStore()
 const emit = defineEmits(['on:success', 'auth:invalid'])
@@ -92,7 +94,7 @@ watch(showDetails, (e) => {
 })
 const paymentTypes = ref([
   {
-    name: 'Naqd',
+    name: t('cash'),
     value: 'CASH',
     icon: `
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -113,7 +115,7 @@ const paymentTypes = ref([
     `
   },
   {
-    name: 'Karta',
+    name: t('card'),
     value: 'CARD',
     icon: `
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -184,6 +186,10 @@ const submit = () => {
         }
       })
 }
+
+onUnmounted(() => {
+  registerClickOutside(false)
+})
 </script>
 
 <template>
@@ -244,7 +250,7 @@ const submit = () => {
             </span>
           <div class="flex items-center justify-between">
             <span class="text-[#292D32]">
-              {{ $t('additionalInfoDescription') }}
+               {{ $t('description') }}, {{ $t('paymentType') }}, {{ $t('price') }}
             </span>
             <svg :style="{
               transform: showDetails ? 'rotate(90deg)' : 'rotate(180deg)'
