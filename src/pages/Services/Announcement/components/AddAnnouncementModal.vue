@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+ <script lang="ts" setup>
 import {Announcement} from "../types";
 import {useConfirm} from "primevue/useconfirm";
 import {inject, onMounted, ref, watch} from "vue";
@@ -11,6 +11,7 @@ import ServiceItem from "@/pages/Services/Components/ServiceItem.vue";
 import SpecialEquipmentServices from "@/pages/Services/Announcement/Forms/SpecialEquipmentServices.vue";
 import Rental from "@/pages/Services/TransportRental/Rental.vue";
 import RentAuto from "@/pages/Services/Announcement/Forms/RentAuto.vue";
+import Stage from "@/pages/Services/Announcement/Forms/Stage.vue";
 
 const model = defineModel();
 const props = defineProps({
@@ -195,6 +196,12 @@ watch(
 
         <Warehouse
             v-if="dynamicId === 7"
+            :announceValue="announceValue"
+            :activeTab="activeTab"
+        />
+
+        <Stage
+            v-if="dynamicId === 10"
             :announceValue="announceValue"
             :activeTab="activeTab"
         />
