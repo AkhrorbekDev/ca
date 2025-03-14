@@ -59,8 +59,9 @@ const changeRoute = () => {
         <!--        </div>-->
 
         <div class="flex flex-col gap-2 w-full">
-          <label for="username" class="text-[#292D32] font-medium text-[16px]">Transport turi</label>
-          <Select v-model="selectedTransport" :options="transports" optionLabel="name" placeholder="Transportni tanlang"
+          <label for="username" class="text-[#292D32] font-medium text-[16px]">{{ $t('transportType') }}</label>
+          <Select v-model="selectedTransport" :options="transports" optionLabel="name"
+                  :placeholder="$t('pickTransport')"
                   class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-select"/>
         </div>
 

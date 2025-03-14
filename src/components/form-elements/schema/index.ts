@@ -163,7 +163,7 @@ const oilTransfer = yup.object({
         name: yup.string().required()
     }).nonNullable(),
     details: yup.object({
-        company_id: yup.number().nonNullable().required(),
+        company_id: yup.number().required(),
         fuel_amount: yup.number().required().moreThan(0),
         fuel_type_id: yup.string().required(),
     }),

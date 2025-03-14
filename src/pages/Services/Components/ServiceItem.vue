@@ -92,31 +92,6 @@ const oilStaion = ref([
 ]);
 
 const transport = ref();
-const transportList = ref([
-  {
-    name: "Avtovozlar",
-    info: "Maxsus yuk mashinalari",
-    disabled: false
-  },
-
-  {
-    name: "Evakuator",
-    info: "Maxsus yuk mashinalari",
-    disabled: true
-  },
-
-  {
-    name: "Maxsus texnikalarni transferi",
-    info: "Maxsus yuk mashinalari",
-    disabled: false
-  },
-
-  {
-    name: "Yaxtalar va qayiqlarni transferi",
-    info: "Maxsus yuk mashinalari",
-    disabled: false
-  },
-])
 
 const extraToggleMenu = () => {
   extraMenu.value = !extraMenu.value

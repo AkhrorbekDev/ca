@@ -1,22 +1,27 @@
 <script setup lang="ts">
-import useBreadcrumbs from '@/stores/breadcrumbs'
 import {computed, ref} from "vue";
 
-const breadcrumbsStore = useBreadcrumbs()
+const props = defineProps({
+  breadcrumbs: {
+    type: Array,
+    default: () => ([])
+  }
+})
 const home = ref({
   icon: 'pi pi-home',
   route: '/',
   class: '!text-[#292D3266]'
 });
 
-const breadcrumbs = computed(() => {
-  return breadcrumbsStore.getBreadcrumbs
+const _breadcrumbs = computed(() => {
+  return props.breadcrumbs.filter((item) => item.title)
 })
+
 </script>
 
 <template>
   <div class="card flex justify-start">
-    <Breadcrumb :home="home" :model="breadcrumbs" class="!px-0 !py-[24px]">
+    <Breadcrumb :home="home" :model="_breadcrumbs" class="!px-0 !py-[24px]">
       <template #item="{ item, props }">
         <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
           <a :href="href" v-bind="props.action" @click="navigate">

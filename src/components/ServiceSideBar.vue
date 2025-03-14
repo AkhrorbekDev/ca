@@ -19,6 +19,9 @@ import useBreadcrumbs from '@/stores/breadcrumbs'
 import AutoRepair from "@/components/forms/AutoRepair.vue";
 import ConfirmDialog from "primevue/confirmdialog";
 import {useConfirm} from "primevue/useconfirm";
+import {useI18n} from 'vue-i18n'
+
+const {t} = useI18n()
 
 const store = useCommonStore()
 const mapStore = useMapStore()
@@ -46,22 +49,20 @@ const toggleMenu = () => {
 
 const menuItems = ref<MenuItems[]>([
   {
-    title: 'Xizmatlar',
+    title: t('services'),
     unique: 'service-detail',
     isOpen: false,
     icon: home,
     children: services
   },
   {
-    title: 'E’lonlar',
+    title: t('announcements'),
     unique: 'announcement',
     icon: box,
-    isOpen: false,
-    route: '/announcement',
-    // children: Announcements
+    route: '/announcement'
   },
   {
-    title: "Transport e'lonlari",
+    title: t('transportAnnouncements'),
     unique: 'transportAdv',
     isOpen: false,
     icon: car,
@@ -90,22 +91,6 @@ const changeRouteRepair = (item) => {
 }
 
 const changeRoute = (item) => {
-  breadcrumbStore.updateBreadcrumb([
-        {
-          title: 'Transport e\'lonlari'
-
-        },
-        {
-          title: selectedMenu.value?.title
-
-        },
-        {
-          title: `${item.name}`,
-          last: true
-        }
-      ]
-  )
-
   if (selectedService.value.id === 7) {
     router.push({
       name: item.route,
@@ -162,6 +147,7 @@ watch(() => route.name, async () => {
   } else if (route.name === 'transport-id') {
     activeRouteName.value = menuItems.value[2].unique
   }
+  console.log(route.name, 'route.name')
 
 }, {
   immediate: true
@@ -231,7 +217,7 @@ const showConfirmModal = () => {
       outlined: true
     },
     acceptProps: {
-      label: 'Avtorizatsiyadan o\'tish'
+      label: t('register')
     },
     accept: () => {
       router.push({
@@ -261,6 +247,8 @@ const openDetail = (value: any, item: any) => {
     showTransportGrid.value = false
     showAutoRepairGrid.value = true
     return
+  } else {
+    showAutoRepairGrid.value = false
   }
   if (item.route) {
     router.push({name: item.route, params: {type: item.unique}})
@@ -301,23 +289,24 @@ onMounted(() => {
        }">
     <div class="navbar-items relative h-[100vh]  max-w-max ">
       <ConfirmDialog group="headless"/>
-      <div class="navbar-items__menu !py-[16px] !px-[12px] !mx-[12px]">
+      <div class="navbar-items__menu  !py-[16px] !mx-[12px]">
         <router-link to="/">
           <img class="!mb-[40px] !mt-[10px]" src="@/assets/icons/logo-new.svg" alt="logo" width="130"/>
         </router-link>
         <div class="navbar-items__menu-items">
-          <div v-for="(list, index2) in menuItems" :key="index2" class="navbar-items__menu-item"
+          <div v-for="(list, index2) in menuItems"
+               :key="index2" class="navbar-items__menu-item"
                :class="{_active: activeRouteName === list.unique}"
                @click.stop="openChildMenu(index2, list)"
           >
             <div class="navbar-items__menu-item-image">
               <img :src="list.icon" alt="">
             </div>
-            <div class="navbar-items__menu-item-text"
-                 :class="{'!text-[#66C61C]' : activeRouteName === list.unique}"
+            <p class="navbar-items__menu-item-text"
+               :class="{'!text-[#66C61C]' : activeRouteName === list.unique}"
             >
               {{ list.title }}
-            </div>
+            </p>
           </div>
         </div>
       </div>
@@ -342,7 +331,7 @@ onMounted(() => {
               <div class="navbar-items__menu-item-text"
                    :class="{'!text-[#66C61C]' : selectedService && selectedService.id === list.id}"
               >
-                {{ list.title }}
+                {{ $t(list.title) }}
               </div>
             </div>
           </div>
@@ -429,7 +418,7 @@ onMounted(() => {
   }
 
   &__menu {
-    width: 64px;
+    width: 76px;
     height: 100%;
     overflow: hidden auto;
 
@@ -502,6 +491,7 @@ onMounted(() => {
         line-height: 16px;
         color: #292D32;
         text-align: center;
+        word-break: break-word;
       }
 
     }

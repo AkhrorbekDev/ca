@@ -30,7 +30,7 @@ defineProps({
   >
     <div class="navbar-items__divider"/>
 
-    <div v-if="transports.length > 0" class="grid grid-cols-1  gap-4 !p-[16px]">
+    <div v-if="transports.length > 0" class="grid grid-cols-3  gap-4 !p-[16px]">
       <!--      <template v-if="loading">-->
       <!--        <div class="cards animate-pulse"-->
       <!--             v-for="(item, index) in 6"-->
@@ -78,7 +78,7 @@ defineProps({
       <div class="flex !p-[16px] flex-col !mt-auto !mb-auto items-center justify-center">
         <img src="@/assets/images/empty.png" class="w-full" alt="">
         <p>
-          Ma’lumot yo’q
+          {{ $t('noData') }}
         </p>
       </div>
     </template>

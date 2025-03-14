@@ -2,6 +2,9 @@
 import {Field} from 'vee-validate'
 import geoIcon from "@/assets/icons/geo.svg";
 import {PropType} from "vue";
+import {useI18n} from 'vue-i18n';
+
+const {t} = useI18n()
 
 defineProps({
   location: {
@@ -18,7 +21,7 @@ defineProps({
   },
   label: {
     type: String,
-    default: 'Qayerga'
+    default: null
   },
   name: {
     type: String,
@@ -34,11 +37,14 @@ defineProps({
     <div class="formItem">
       <div class=" w-full flex items-center justify-between">
         <div class="flex flex-col  items-start justify-center">
-          <label class="!text-[#292D324D]">{{ label }}</label>
-          <InputText id="in_label" readonly :model-value="location.name"
-                     :disabled="true" variant="outline"
-                     placeholder="Manzilni tanlang"
-                     class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"/>
+          <label class="!text-[#292D324D]">{{ label || $t('to') }}</label>
+          <InputText id="in_label"
+                     readonly :model-value="location.name"
+                     :disabled="true"
+                     variant="outline"
+                     :placeholder="$t('pickAddress')"
+                     class=" !bg-transparent  !py-[8px] !px-[0]
+                     shadow-none !border-0"/>
         </div>
         <div class="geo-icon">
           <img :src="geoIcon" alt="">

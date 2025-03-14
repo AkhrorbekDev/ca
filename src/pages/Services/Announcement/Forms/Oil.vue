@@ -1,13 +1,7 @@
 <script lang="ts" setup>
-import { ref, onMounted, inject, computed } from 'vue';
-import { useVuelidate } from '@vuelidate/core';
-import {
-  required,
-  numeric,
-  minValue,
-  maxLength
-} from '@vuelidate/validators';
-import { Announcement } from "../types";
+import {computed, inject, onMounted, ref} from 'vue';
+import {useVuelidate} from '@vuelidate/core';
+import {maxLength, minValue, numeric, required} from '@vuelidate/validators';
 import LocationItem from "@/components/form-elements/LocationItem.vue";
 import getGeoObject from "@/composables/getGeoObject";
 import useMapStore from "@/stores/map.store";
@@ -36,7 +30,7 @@ const formSubmitted = ref(false);
 const collectImages = ref([]);
 
 const addList = () => {
-  oilList.value.push({ type: '', price: '' });
+  oilList.value.push({type: '', price: ''});
 };
 
 const addAnnouncement = ref({
@@ -59,7 +53,7 @@ const addAnnouncement = ref({
 // Enhanced validation rules
 const rules = {
   from_location: {
-    name: { required },
+    name: {required},
   },
   price: {
     required,
@@ -75,7 +69,7 @@ const rules = {
       numeric,
     },
   },
-  note: { maxLength: maxLength(1000) }
+  note: {maxLength: maxLength(1000)}
 };
 
 // Custom validation for fuels list
@@ -107,7 +101,7 @@ const setLocation = (name) => {
       callback: async (e) => {
         await getGeoObject({cord: e.coordinates}).then(res => {
           const marker = mapStore.getMarker(name)
-          addAnnouncement.value[name] =  {
+          addAnnouncement.value[name] = {
             lat: marker.markerProps.geometry.coordinates[0],
             lng: marker.markerProps.geometry.coordinates[1],
             name: res.data.description
@@ -235,7 +229,7 @@ const createAnnouncement = async (announce) => {
 
     imageList.value = [];
     collectImages.value = [];
-    oilList.value = [{ type: '', price: '' }];
+    oilList.value = [{type: '', price: ''}];
     formSubmitted.value = false;
 
     // Close dialog/form
@@ -246,14 +240,14 @@ const createAnnouncement = async (announce) => {
 };
 
 const oilTypes = [
-  { name: 'AI 80' },
-  { name: 'AI 91' },
-  { name: 'AI 92' },
-  { name: 'AI 95' },
-  { name: 'AI 98' },
-  { name: 'AI 100' },
-  { name: 'Dizel' },
-  { name: 'Gaz' },
+  {name: 'AI 80'},
+  {name: 'AI 91'},
+  {name: 'AI 92'},
+  {name: 'AI 95'},
+  {name: 'AI 98'},
+  {name: 'AI 100'},
+  {name: 'Dizel'},
+  {name: 'Gaz'},
 ];
 </script>
 
@@ -374,7 +368,7 @@ const oilTypes = [
                     { '!border-0': !(formSubmitted && (item.price === '' || item.price === null)) }
                   ]"
                 />
-                <label for="oil_price" class="!text-[#292D324D]">Narx</label>
+                <label for="oil_price" class="!text-[#292D324D]">{{ $t('price') }}</label>
               </FloatLabel>
 
               <!-- Remove button for oil items (except the first one if it's the only one) -->
@@ -385,7 +379,8 @@ const oilTypes = [
                   class="absolute right-2 top-2 text-red-500 p-2"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round"/>
                 </svg>
               </button>
             </div>
@@ -405,7 +400,7 @@ const oilTypes = [
       </div>
 
       <div class="flex flex-col gap-2 w-full !mt-[24px]">
-        <label for="description" class="text-[#292D3280] text-[16px]">Izoh</label>
+        <label for="description" class="text-[#292D3280] text-[16px]">{{ $t('description') }}</label>
         <Textarea
             v-model="addAnnouncement.note"
             id="description"
@@ -476,9 +471,11 @@ const oilTypes = [
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }
+
 .bounce-leave-active {
   animation: bounce-in 0.5s reverse;
 }
+
 @keyframes bounce-in {
   0% {
     transform: scale(0);

@@ -5,24 +5,23 @@ import sedan from "@/assets/images/sedan.png"
 import {useCommonStore} from "@/stores/common.store"
 import {services} from "@/components/fakeJson"
 import {
+  clusterByGrid,
   YMap,
-  YMapDefaultSchemeLayer,
-  YMapDefaultFeaturesLayer,
-  YMapMarker,
   YMapClusterer,
-  clusterByGrid, YMapLayer,
-  YMapDefaultMarker,
-  YMapListener,
-  YMapFeatureDataSource,
   YMapControls,
-  YMapZoomControl,
+  YMapDefaultFeaturesLayer,
+  YMapDefaultSchemeLayer,
+  YMapFeatureDataSource,
   YMapGeolocationControl,
-  YMapControl
+  YMapLayer,
+  YMapListener,
+  YMapMarker,
+  YMapZoomControl
 } from '@/lib/ymaps';
-import type {LngLatBounds, LngLat, YMapLocationRequest, Margin} from '@yandex/ymaps3-types';
-import type {Feature} from '@yandex/ymaps3-clusterer';
+import type {YMapLocationRequest} from '@yandex/ymaps3-types';
 import useMapStore from "@/stores/map.store";
-import {watch, computed} from 'vue'
+import {onMounted, ref, watch} from 'vue'
+import {useRoute, useRouter} from "vue-router";
 
 const mapStore = useMapStore()
 const refreshMarkers = (m) => {
@@ -47,9 +46,6 @@ const LOCATION: YMapLocationRequest = {
 };
 const store = useCommonStore()
 
-
-import {onMounted, ref} from "vue";
-import {useRoute, useRouter} from "vue-router";
 
 const route = useRoute()
 const router = useRouter()
@@ -211,7 +207,7 @@ const changeMarkerPosition = (o, e) => {
                         class="custom-date"/>
             <!--            <InputText id="in_label" variant="filled" placeholder="Manzilni tanlang"-->
             <!--                       class="w-full bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>-->
-            <label for="in_label" class="!text-[#292D324D]">Jo‘natish sanasi</label>
+            <label for="in_label" class="!text-[#292D324D]">{{ $t('departureDate') }}</label>
           </FloatLabel>
         </div>
 
@@ -220,7 +216,7 @@ const changeMarkerPosition = (o, e) => {
           <div
               @click="extraToggleMenu"
               class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative">
-            <span class="text-[#292D324D] text-[12px] !mb-2">Qo‘shimcha ma’lumotlar</span>
+            <span class="text-[#292D324D] text-[12px] !mb-2">{{ $t('additionalInfo') }}</span>
             <div class="flex items-center justify-between">
               <span class="text-[#292D32]">Yuk turi, rasmi, yuklash xizmati, to‘lov...</span>
               <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -238,11 +234,11 @@ const changeMarkerPosition = (o, e) => {
                 style="box-shadow: 0px 32px 100px 0px #292D3229;">
 
               <div class="flex flex-col gap-2 w-full !mb-[24px]">
-                <label for="description" class="text-[#292D3280] text-[12px]">Izoh</label>
+                <label for="description" class="text-[#292D3280] text-[12px]">{{ $t('description') }}</label>
                 <Textarea id="description" class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
                           style="border: 1px solid #C2C2C233" rows="3"
                           cols="30"
-                          placeholder="Buyurtma haqida izoh qoldiring!"/>
+                          :placeholder="$t('leaveOrderComment')"/>
               </div>
 
               <div class="!mb-[24px]">
@@ -301,18 +297,18 @@ const changeMarkerPosition = (o, e) => {
               </div>
 
               <div class="flex flex-col gap-2">
-                <label for="price" class="text-[#292D324D] txt-[12px]">Narx</label>
+                <label for="price" class="text-[#292D324D] txt-[12px]">{{ $t('price') }}</label>
                 <InputText
                     class="!py-[12px] !px-[16px] !rounded-[16px] border !border-[#C2C2C233] !placeholder-[#292D324D]"
                     id="price" aria-describedby="username-help"
-                    placeholder="Narxni kiriting"/>
+                    :placeholder="$t('enterPrice')"/>
               </div>
 
 
               <div class="footer">
                 <button
                     class="!p-[16px] bg-[#66C61C] rounded-[24px] text-white text-center w-full !mt-[72px] text-[16px]">
-                  Tasdiqlash
+                  {{ $t('confirm') }}
                 </button>
               </div>
 
@@ -325,7 +321,7 @@ const changeMarkerPosition = (o, e) => {
 
         <div class="col-span-2">
           <FloatLabel variant="in">
-            <Select v-model="selectedCountry" :options="countries" optionLabel="name" placeholder="Transportni tanlang"
+            <Select v-model="selectedCountry" :options="countries" optionLabel="name" :placeholder="$t('pickTransport')"
                     class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
               <template #value="slotProps">
                 <div v-if="slotProps.value" class="flex items-center">
@@ -359,7 +355,7 @@ const changeMarkerPosition = (o, e) => {
                 </div>
               </template>
             </Select>
-            <label for="in_label" class="!text-[#292D324D]">Transport turi</label>
+            <label for="in_label" class="!text-[#292D324D]">{{ $t('transportType') }}</label>
           </FloatLabel>
         </div>
       </div>
@@ -387,7 +383,7 @@ const changeMarkerPosition = (o, e) => {
                         class="custom-date"/>
             <!--            <InputText id="in_label" variant="filled" placeholder="Manzilni tanlang"-->
             <!--                       class="w-full bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>-->
-            <label for="in_label" class="!text-[#292D324D]">Jo‘natish sanasi</label>
+            <label for="in_label" class="!text-[#292D324D]">{{ $t('departureDate') }}</label>
           </FloatLabel>
         </div>
 
@@ -396,7 +392,7 @@ const changeMarkerPosition = (o, e) => {
           <div
               @click="extraToggleMenu"
               class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative">
-            <span class="text-[#292D324D] text-[12px] !mb-2">Qo‘shimcha ma’lumotlar</span>
+            <span class="text-[#292D324D] text-[12px] !mb-2">{{ $t('additionalInfo') }}</span>
             <div class="flex items-center justify-between">
               <span class="text-[#292D32]">Yuk turi, rasmi, yuklash xizmati, to‘lov...</span>
               <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -414,11 +410,11 @@ const changeMarkerPosition = (o, e) => {
                 style="box-shadow: 0px 32px 100px 0px #292D3229;">
 
               <div class="flex flex-col gap-2 w-full !mb-[24px]">
-                <label for="description" class="text-[#292D3280] text-[12px]">Izoh</label>
+                <label for="description" class="text-[#292D3280] text-[12px]">{{ $t('description') }}</label>
                 <Textarea id="description" class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
                           style="border: 1px solid #C2C2C233" rows="3"
                           cols="30"
-                          placeholder="Buyurtma haqida izoh qoldiring!"/>
+                          :placeholder="$t('leaveOrderComment')"/>
               </div>
 
               <div class="!mb-[24px]">
@@ -477,18 +473,18 @@ const changeMarkerPosition = (o, e) => {
               </div>
 
               <div class="flex flex-col gap-2">
-                <label for="price" class="text-[#292D324D] txt-[12px]">Narx</label>
+                <label for="price" class="text-[#292D324D] txt-[12px]">{{ $t('price') }}</label>
                 <InputText
                     class="!py-[12px] !px-[16px] !rounded-[16px] border !border-[#C2C2C233] !placeholder-[#292D324D]"
                     id="price" aria-describedby="username-help"
-                    placeholder="Narxni kiriting"/>
+                    :placeholder="$t('enterPrice')"/>
               </div>
 
 
               <div class="footer">
                 <button
                     class="!p-[16px] bg-[#66C61C] rounded-[24px] text-white text-center w-full !mt-[72px] text-[16px]">
-                  Tasdiqlash
+                  {{ $t('confirm') }}
                 </button>
               </div>
 
@@ -524,7 +520,7 @@ const changeMarkerPosition = (o, e) => {
                         class="custom-date"/>
             <!--            <InputText id="in_label" variant="filled" placeholder="Manzilni tanlang"-->
             <!--                       class="w-full bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>-->
-            <label for="in_label" class="!text-[#292D324D]">Jo‘natish sanasi</label>
+            <label for="in_label" class="!text-[#292D324D]">{{ $t('departureDate') }}</label>
           </FloatLabel>
         </div>
 
@@ -541,7 +537,7 @@ const changeMarkerPosition = (o, e) => {
           <div
               @click="extraToggleMenu"
               class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative">
-            <span class="text-[#292D324D] text-[12px] !mb-2">Qo‘shimcha ma’lumotlar</span>
+            <span class="text-[#292D324D] text-[12px] !mb-2">{{ $t('additionalInfo') }}</span>
             <div class="flex items-center justify-between">
               <span class="text-[#292D32]">Yuk turi, rasmi, yuklash xizmati, to‘lov...</span>
               <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -679,11 +675,11 @@ const changeMarkerPosition = (o, e) => {
               <!--              Yuk rasmlari (10 tagacha)-->
 
               <div class="flex flex-col gap-2 w-full !mb-[24px]">
-                <label for="description" class="text-[#292D3280] text-[12px]">Izoh</label>
+                <label for="description" class="text-[#292D3280] text-[12px]">{{ $t('description') }}</label>
                 <Textarea id="description" class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
                           style="border: 1px solid #C2C2C233" rows="3"
                           cols="30"
-                          placeholder="Buyurtma haqida izoh qoldiring!"/>
+                          :placeholder="$t('leaveOrderComment')"/>
               </div>
 
               <div class="!mb-[24px]">
@@ -742,18 +738,18 @@ const changeMarkerPosition = (o, e) => {
               </div>
 
               <div class="flex flex-col gap-2">
-                <label for="price" class="text-[#292D324D] txt-[12px]">Narx</label>
+                <label for="price" class="text-[#292D324D] txt-[12px]">{{ $t('price') }}</label>
                 <InputText
                     class="!py-[12px] !px-[16px] !rounded-[16px] border !border-[#C2C2C233] !placeholder-[#292D324D]"
                     id="price" aria-describedby="username-help"
-                    placeholder="Narxni kiriting"/>
+                    :placeholder="$t('enterPrice')"/>
               </div>
 
 
               <div class="footer">
                 <button
                     class="!p-[16px] bg-[#66C61C] rounded-[24px] text-white text-center w-full !mt-[72px] text-[16px]">
-                  Tasdiqlash
+                  {{ $t('confirm') }}
                 </button>
               </div>
 
@@ -766,7 +762,7 @@ const changeMarkerPosition = (o, e) => {
 
         <div class="col-span-2">
           <FloatLabel variant="in">
-            <Select v-model="selectedCountry" :options="countries" optionLabel="name" placeholder="Transportni tanlang"
+            <Select v-model="selectedCountry" :options="countries" optionLabel="name" :placeholder="$t('pickTransport')"
                     class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
               <template #value="slotProps">
                 <div v-if="slotProps.value" class="flex items-center">
@@ -800,7 +796,7 @@ const changeMarkerPosition = (o, e) => {
                 </div>
               </template>
             </Select>
-            <label for="in_label" class="!text-[#292D324D]">Transport turi</label>
+            <label for="in_label" class="!text-[#292D324D]">{{ $t('transportType') }}</label>
           </FloatLabel>
         </div>
       </div>
@@ -816,7 +812,7 @@ const changeMarkerPosition = (o, e) => {
 
         <div class="col-span-1">
           <FloatLabel variant="in">
-            <InputText id="in_label" variant="filled" placeholder="Miqdorni kiriting" type="number"
+            <InputText id="in_label" variant="filled" :placeholder="$t('enterAmount')" type="number"
                        class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
             <label for="in_label" class="!text-[#292D324D]">Hamji (litr)</label>
           </FloatLabel>
@@ -916,7 +912,7 @@ const changeMarkerPosition = (o, e) => {
           <FloatLabel variant="in">
             <DatePicker v-model="value2" inputId="in_label" showIcon iconDisplay="input" variant="filled"
                         class="custom-date"/>
-            <label for="in_label" class="!text-[#292D324D]">Jo‘natish sanasi</label>
+            <label for="in_label" class="!text-[#292D324D]">{{ $t('departureDate') }}</label>
           </FloatLabel>
         </div>
 
@@ -933,7 +929,7 @@ const changeMarkerPosition = (o, e) => {
           <div
               @click="extraToggleMenu"
               class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative">
-            <span class="text-[#292D324D] text-[12px] !mb-2">Qo‘shimcha ma’lumotlar</span>
+            <span class="text-[#292D324D] text-[12px] !mb-2">{{ $t('additionalInfo') }}</span>
             <div class="flex items-center justify-between">
               <span class="text-[#292D32]">Yuk turi, rasmi, yuklash xizmati, to‘lov...</span>
               <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1071,11 +1067,11 @@ const changeMarkerPosition = (o, e) => {
               <!--              Yuk rasmlari (10 tagacha)-->
 
               <div class="flex flex-col gap-2 w-full !mb-[24px]">
-                <label for="description" class="text-[#292D3280] text-[12px]">Izoh</label>
+                <label for="description" class="text-[#292D3280] text-[12px]">{{ $t('description') }}</label>
                 <Textarea id="description" class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
                           style="border: 1px solid #C2C2C233" rows="3"
                           cols="30"
-                          placeholder="Buyurtma haqida izoh qoldiring!"/>
+                          :placeholder="$t('leaveOrderComment')"/>
               </div>
 
               <div class="!mb-[24px]">
@@ -1134,18 +1130,18 @@ const changeMarkerPosition = (o, e) => {
               </div>
 
               <div class="flex flex-col gap-2">
-                <label for="price" class="text-[#292D324D] txt-[12px]">Narx</label>
+                <label for="price" class="text-[#292D324D] txt-[12px]">{{ $t('price') }}</label>
                 <InputText
                     class="!py-[12px] !px-[16px] !rounded-[16px] border !border-[#C2C2C233] !placeholder-[#292D324D]"
                     id="price" aria-describedby="username-help"
-                    placeholder="Narxni kiriting"/>
+                    :placeholder="$t('enterPrice')"/>
               </div>
 
 
               <div class="footer">
                 <button
                     class="!p-[16px] bg-[#66C61C] rounded-[24px] text-white text-center w-full !mt-[72px] text-[16px]">
-                  Tasdiqlash
+                  {{ $t('confirm') }}
                 </button>
               </div>
 
@@ -1158,7 +1154,7 @@ const changeMarkerPosition = (o, e) => {
 
         <div class="col-span-2">
           <FloatLabel variant="in">
-            <Select v-model="selectedCountry" :options="countries" optionLabel="name" placeholder="Transportni tanlang"
+            <Select v-model="selectedCountry" :options="countries" optionLabel="name" :placeholder="$t('pickTransport')"
                     class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
               <template #value="slotProps">
                 <div v-if="slotProps.value" class="flex items-center">
@@ -1192,7 +1188,7 @@ const changeMarkerPosition = (o, e) => {
                 </div>
               </template>
             </Select>
-            <label for="in_label" class="!text-[#292D324D]">Transport turi</label>
+            <label for="in_label" class="!text-[#292D324D]">{{ $t('transportType') }}</label>
           </FloatLabel>
         </div>
       </div>
@@ -1228,7 +1224,7 @@ const changeMarkerPosition = (o, e) => {
           <div
               @click="extraToggleMenu"
               class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative">
-            <span class="text-[#292D324D] text-[12px] !mb-2">Qo‘shimcha ma’lumotlar</span>
+            <span class="text-[#292D324D] text-[12px] !mb-2">{{ $t('additionalInfo') }}</span>
             <div class="flex items-center justify-between">
               <span class="text-[#292D32]">Yuk turi, rasmi, yuklash xizmati, to‘lov...</span>
               <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1365,11 +1361,11 @@ const changeMarkerPosition = (o, e) => {
               <!--              Yuk rasmlari (10 tagacha)-->
 
               <div class="flex flex-col gap-2 w-full !mb-[24px]">
-                <label for="description" class="text-[#292D3280] text-[12px]">Izoh</label>
+                <label for="description" class="text-[#292D3280] text-[12px]">{{ $t('description') }}</label>
                 <Textarea id="description" class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
                           style="border: 1px solid #C2C2C233" rows="3"
                           cols="30"
-                          placeholder="Buyurtma haqida izoh qoldiring!"/>
+                          :placeholder="$t('leaveOrderComment')"/>
               </div>
 
               <div class="!mb-[24px]">
@@ -1428,18 +1424,18 @@ const changeMarkerPosition = (o, e) => {
               </div>
 
               <div class="flex flex-col gap-2">
-                <label for="price" class="text-[#292D324D] txt-[12px]">Narx</label>
+                <label for="price" class="text-[#292D324D] txt-[12px]">{{ $t('price') }}</label>
                 <InputText
                     class="!py-[12px] !px-[16px] !rounded-[16px] border !border-[#C2C2C233] !placeholder-[#292D324D]"
                     id="price" aria-describedby="username-help"
-                    placeholder="Narxni kiriting"/>
+                    :placeholder="$t('enterPrice')"/>
               </div>
 
 
               <div class="footer">
                 <button
                     class="!p-[16px] bg-[#66C61C] rounded-[24px] text-white text-center w-full !mt-[72px] text-[16px]">
-                  Tasdiqlash
+                  {{ $t('confirm') }}
                 </button>
               </div>
 
@@ -1452,7 +1448,7 @@ const changeMarkerPosition = (o, e) => {
 
         <div class="col-span-2">
           <FloatLabel variant="in">
-            <Select v-model="selectedCountry" :options="countries" optionLabel="name" placeholder="Transportni tanlang"
+            <Select v-model="selectedCountry" :options="countries" optionLabel="name" :placeholder="$t('pickTransport')"
                     class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
               <template #value="slotProps">
                 <div v-if="slotProps.value" class="flex items-center">
@@ -1486,7 +1482,7 @@ const changeMarkerPosition = (o, e) => {
                 </div>
               </template>
             </Select>
-            <label for="in_label" class="!text-[#292D324D]">Transport turi</label>
+            <label for="in_label" class="!text-[#292D324D]">{{ $t('transportType') }}</label>
           </FloatLabel>
         </div>
       </div>
@@ -1514,7 +1510,7 @@ const changeMarkerPosition = (o, e) => {
                         class="custom-date"/>
             <!--            <InputText id="in_label" variant="filled" placeholder="Manzilni tanlang"-->
             <!--                       class="w-full bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>-->
-            <label for="in_label" class="!text-[#292D324D]">Jo‘natish sanasi</label>
+            <label for="in_label" class="!text-[#292D324D]">{{ $t('departureDate') }}</label>
           </FloatLabel>
         </div>
 
@@ -1522,7 +1518,7 @@ const changeMarkerPosition = (o, e) => {
           <FloatLabel variant="in">
             <InputText id="in_label" variant="filled" placeholder="0" type="number"
                        class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-            <label for="in_label" class="!text-[#292D324D]">Transport soni</label>
+            <label for="in_label" class="!text-[#292D324D]">{{ $t('transportCount') }}</label>
           </FloatLabel>
         </div>
 
@@ -1531,7 +1527,7 @@ const changeMarkerPosition = (o, e) => {
           <div
               @click="extraToggleMenu"
               class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative">
-            <span class="text-[#292D324D] text-[12px] !mb-2">Qo‘shimcha ma’lumotlar</span>
+            <span class="text-[#292D324D] text-[12px] !mb-2">{{ $t('additionalInfo') }}</span>
             <div class="flex items-center justify-between">
               <span class="text-[#292D32]">Yuk turi, rasmi, yuklash xizmati, to‘lov...</span>
               <svg width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1668,11 +1664,11 @@ const changeMarkerPosition = (o, e) => {
               <!--              Yuk rasmlari (10 tagacha)-->
 
               <div class="flex flex-col gap-2 w-full !mb-[24px]">
-                <label for="description" class="text-[#292D3280] text-[12px]">Izoh</label>
+                <label for="description" class="text-[#292D3280] text-[12px]">{{ $t('description') }}</label>
                 <Textarea id="description" class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
                           style="border: 1px solid #C2C2C233" rows="3"
                           cols="30"
-                          placeholder="Buyurtma haqida izoh qoldiring!"/>
+                          :placeholder="$t('leaveOrderComment')"/>
               </div>
 
               <div class="!mb-[24px]">
@@ -1731,18 +1727,18 @@ const changeMarkerPosition = (o, e) => {
               </div>
 
               <div class="flex flex-col gap-2">
-                <label for="price" class="text-[#292D324D] txt-[12px]">Narx</label>
+                <label for="price" class="text-[#292D324D] txt-[12px]">{{ $t('price') }}</label>
                 <InputText
                     class="!py-[12px] !px-[16px] !rounded-[16px] border !border-[#C2C2C233] !placeholder-[#292D324D]"
                     id="price" aria-describedby="username-help"
-                    placeholder="Narxni kiriting"/>
+                    :placeholder="$t('enterPrice')"/>
               </div>
 
 
               <div class="footer">
                 <button
                     class="!p-[16px] bg-[#66C61C] rounded-[24px] text-white text-center w-full !mt-[72px] text-[16px]">
-                  Tasdiqlash
+                  {{ $t('confirm') }}
                 </button>
               </div>
 
@@ -1756,7 +1752,7 @@ const changeMarkerPosition = (o, e) => {
         <div class="col-span-2">
           <FloatLabel variant="in">
             <Select v-model="transport" :options="transportList" :optionDisabled="(el) => el.disabled"
-                    optionLabel="name" placeholder="Transportni tanlang"
+                    optionLabel="name" :placeholder="$t('pickTransport')"
                     class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
               <template #value="slotProps">
                 <div v-if="slotProps.value" class="flex items-center">
@@ -1784,7 +1780,7 @@ const changeMarkerPosition = (o, e) => {
                 </div>
               </template>
             </Select>
-            <label for="in_label" class="!text-[#292D324D]">Transport turi</label>
+            <label for="in_label" class="!text-[#292D324D]">{{ $t('transportType') }}</label>
           </FloatLabel>
         </div>
       </div>
@@ -1794,7 +1790,7 @@ const changeMarkerPosition = (o, e) => {
     <div v-if="route.params.type !== 'oil'"
          class="bg-white rounded-[32px] !p-[16px] absolute bottom-[20px] right-[20px] z-[100] w-[368px]">
       <button class="bg-[#66C61C] w-full text-center rounded-[24px] text-white text-[16px] !p-[16px]">
-        E’lonni joylash
+        {{ $t('createAdvertisement') }}
       </button>
     </div>
 

@@ -5,7 +5,7 @@
         <div>
           <img class="!mb-[24px]" src="@/assets/logo.svg" alt="logo" width="130">
 
-          <span class="block text-[#292D324D] text-[16px] !mb-[16px]">Transport xizmatlari <br> platformasi</span>
+          <span class="block text-[#292D324D] text-[16px] !mb-[16px]">{{ $t('footerSiteDescription') }}</span>
 
           <div class="flex items-center gap-3">
             <img src="/icons/telegram.svg" alt="telegram">

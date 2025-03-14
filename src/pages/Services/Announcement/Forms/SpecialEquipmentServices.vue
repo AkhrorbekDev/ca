@@ -1,12 +1,7 @@
 <script lang="ts" setup>
-import { ref, onMounted, inject, computed, watch } from 'vue';
-import { useVuelidate } from '@vuelidate/core';
-import {
-  required,
-  numeric,
-  minValue,
-  maxLength
-} from '@vuelidate/validators';
+import {inject, ref, watch} from 'vue';
+import {useVuelidate} from '@vuelidate/core';
+import {maxLength, minValue, numeric, required} from '@vuelidate/validators';
 import LocationItem from "@/components/form-elements/LocationItem.vue";
 import getGeoObject from "@/composables/getGeoObject";
 import useMapStore from "@/stores/map.store";
@@ -57,14 +52,14 @@ const addAnnouncement = ref({
 // Enhanced validation rules
 const rules = {
   to_location: {
-    name: { required },
+    name: {required},
   },
   price: {
     required,
     numeric,
     minValue: minValue(0)
   },
-  note: { maxLength: maxLength(1000) }
+  note: {maxLength: maxLength(1000)}
 };
 
 const hideDetailsOnLocationChange = ref(false);
@@ -84,7 +79,7 @@ const setLocation = (name) => {
       callback: async (e) => {
         await getGeoObject({cord: e.coordinates}).then(res => {
           const marker = mapStore.getMarker(name)
-          addAnnouncement.value[name] =  {
+          addAnnouncement.value[name] = {
             lat: marker.markerProps.geometry.coordinates[0],
             lng: marker.markerProps.geometry.coordinates[1],
             name: res.data.description
@@ -189,8 +184,8 @@ const createAnnouncement = async (announce) => {
         v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
-    <pre>{{ childForm }}</pre>
-    <pre>{{ addAnnouncement }}</pre>
+      <pre>{{ childForm }}</pre>
+      <pre>{{ addAnnouncement }}</pre>
       <div class="grid grid-cols-2 gap-4">
         <div>
           <LocationItem
@@ -217,7 +212,7 @@ const createAnnouncement = async (announce) => {
                 { '!border-0': !hasError('price') }
               ]"
             />
-            <label for="price" class="!text-[#292D324D]">Narx</label>
+            <label for="price" class="!text-[#292D324D]">{{ $t('price') }}</label>
           </FloatLabel>
           <small v-if="hasError('price')" class="text-red-500 ml-2">
             Narxni kiriting
@@ -226,7 +221,7 @@ const createAnnouncement = async (announce) => {
       </div>
 
       <div class="flex flex-col gap-2 w-full !mt-[24px]">
-        <label for="description" class="text-[#292D3280] text-[16px]">Izoh</label>
+        <label for="description" class="text-[#292D3280] text-[16px]">{{ $t('description') }}</label>
         <Textarea
             v-model="addAnnouncement.note"
             id="description"
@@ -297,9 +292,11 @@ const createAnnouncement = async (announce) => {
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }
+
 .bounce-leave-active {
   animation: bounce-in 0.5s reverse;
 }
+
 @keyframes bounce-in {
   0% {
     transform: scale(0);

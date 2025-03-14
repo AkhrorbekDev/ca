@@ -286,7 +286,7 @@ const details = [
             <span class="text-gray-400 text-2xl cursor-pointer">★</span>
           </div>
 
-          <span class="text-[#292D324D] text-[12px] !mb-[6px]">Izoh</span>
+          <span class="text-[#292D324D] text-[12px] !mb-[6px]">{{ $t('description') }}</span>
           <textarea
               class="w-full !py-[12px] !px-[16px] border rounded-lg text-[#292D324D] text-[14px] outline-none"
               placeholder="O‘z fikringizni yozib qoldiring!"
