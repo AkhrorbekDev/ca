@@ -35,21 +35,26 @@ const collectImages = ref([]);
 
 const addAnnouncement = ref<Announcement>({
   adv_type: 'PROVIDE',
-  service_type_id: pageValue.value.parentId,
+  service_type_id: 10,
+  from_location: {
+    lat: null,
+    lng: null,
+    name: null,
+  },
   to_location: {
     lat: null,
     lng: null,
     name: null,
   },
   price: null,
-  details: {
-    area: null,
-  },
   note: null,
 });
 
 // Validation rules
 const rules = {
+  from_location: {
+    name: {required},
+  },
   to_location: {
     name: {required},
   },
@@ -57,13 +62,6 @@ const rules = {
     required,
     numeric,
     minValue: minValue(0)
-  },
-  details: {
-    area: {
-      required,
-      numeric,
-      minValue: minValue(0)
-    },
   },
   note: {maxLength: maxLength(1000)}
 };
@@ -182,15 +180,17 @@ const createAnnouncement = async (announce) => {
     addAnnouncement.value = {
       adv_type: '',
       service_type_id: '',
+      from_location: {
+        lat: null,
+        lng: null,
+        name: null,
+      },
       to_location: {
         lat: null,
         lng: null,
         name: null,
       },
       price: null,
-      details: {
-        area: null,
-      },
       note: null,
     };
 
@@ -212,26 +212,22 @@ const createAnnouncement = async (announce) => {
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
       <div class="grid grid-cols-2 gap-4">
+        <LocationItem :location="addAnnouncement.from_location" as="div" class="" name="from_location"
+                      @click="setLocation('from_location')"/>
+
         <LocationItem :location="addAnnouncement.to_location" as="div" class="" name="to_location"
                       @click="setLocation('to_location')"/>
 
         <FloatLabel variant="in">
           <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
                      class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-          <label for="in_label" class="!text-[#292D324D]">{{ $t('price') }}</label>
-        </FloatLabel>
-
-        <FloatLabel variant="in">
-          <InputText v-model="addAnnouncement.details.area" id="in_label" variant="filled" type="number"
-                     class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-          <label for="in_label"
-                 class="!text-[#292D324D]">Maydon</label>
+          <label for="in_label" class="!text-[#292D324D]">Narx</label>
         </FloatLabel>
 
       </div>
 
       <div class="flex flex-col gap-2 w-full !mt-[24px]">
-        <label for="description" class="text-[#292D3280] text-[16px]">{{ $t('description') }}</label>
+        <label for="description" class="text-[#292D3280] text-[16px]">Izoh</label>
         <Textarea v-model="addAnnouncement.note" id="description" class="w-full   custom-placeholder-input" rows="3"
                   cols="30"
                   placeholder="Yuk haqida izoh qoldiring!"/>

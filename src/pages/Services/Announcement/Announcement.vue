@@ -6,6 +6,8 @@ import {inject, nextTick, onMounted, onUnmounted, ref} from 'vue';
 import {AnnouncementType} from "@/pages/Services/Announcement/announcement.types";
 import {useRoute, useRouter} from "vue-router";
 import { set } from "@vueuse/core";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import useBreadcrumbs from "@/stores/breadcrumbs";
 
 const router = useRouter();
 const route = useRoute()
@@ -18,7 +20,7 @@ const selectedAnnouncement = ref<any>(null);
 const isLoading = ref(false);
 const announcementAllData = ref<any[]>([]);
 const activeTab = ref(0);
-const tabs = ['Barchasi', 'Mening buyurtmalarim', 'Mening xizmatlarim'];
+const tabs = ['Barchasi', 'Buyurtmalarim', 'Xizmatlarim'];
 
 const $api = inject('api'); // Ensure $api is injected
 
@@ -149,10 +151,21 @@ onMounted(() => {
   fetchAnnouncements();
 });
 
+const breadcrumbsStore = useBreadcrumbs();
+onMounted(() => {
+  // Set initial breadcrumbs
+  breadcrumbsStore.updateBreadcrumb([
+    { route: '/announcement', title: 'E’lonlar' },
+    { title: 'E’lonlar' },
+  ]);
+});
+
 </script>
 
 <template>
   <div>
+    <Breadcrumbs :home="home" :model="breadcrumbs"/>
+    <h1 class="!my-6 text-[#292D32] text-2xl font-semibold">E’lonlar</h1>
     <div class="flex items-center justify-between">
       <div class="flex items-center space-x-4 bg-white rounded-lg !p-1.5">
         <button
@@ -169,6 +182,10 @@ onMounted(() => {
       </div>
 
       <div class="flex items-center gap-4">
+        <div class="flex flex-col gap-2 w-full">
+          <Select v-model="selectedCity" :options="[]" optionLabel="name" placeholder="Xizmatlar"
+                  class="w-full !border-0 !rounded-[16px] custom-placeholder-select h-[56px] flex items-center"/>
+        </div>
         <div class="relative">
           <button
               @click.stop="toggleMenu"
@@ -185,7 +202,7 @@ onMounted(() => {
 
           <div v-if="menuVisible">
             <!--dropdown 1-->
-            <div class="mega-drop-menu">
+            <div class="mega-drop-menu !left-[-112%]" >
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards card-wrap cursor-pointer"
                      v-for="(item, index) in getServicesData"
@@ -199,8 +216,8 @@ onMounted(() => {
             </div>
 
             <!--dropdown 2-->
-            <div v-if="childMenu.length" class="mega-drop-menu !left-[185%]" @click.stop>
-              <button @click="childMenu = []" class="text-[#000]">x</button>
+            <div v-if="childMenu.length" class="mega-drop-menu !left-[-330%]" @click.stop>
+              <button @click="childMenu = []" class="text-[#000] w-full flex justify-end">x</button>
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards cursor-pointer"
                      v-for="(item2, index) in childMenu"
@@ -216,21 +233,17 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="flex flex-col gap-2 w-full">
-          <Select v-model="selectedCity" :options="[]" optionLabel="name" placeholder="Xizmatlar"
-                  class="w-full !border-0 !rounded-[16px] custom-placeholder-select h-[56px] flex items-center"/>
-        </div>
 
-        <div class="flex flex-col gap-2 w-full">
-          <Select v-model="selectedCity" :options="[]" optionLabel="name" placeholder="Status"
-                  class="w-full !border-0 !rounded-[16px] custom-placeholder-select h-[56px] flex items-center"/>
-        </div>
+<!--        <div class="flex flex-col gap-2 w-full">-->
+<!--          <Select v-model="selectedCity" :options="[]" optionLabel="name" placeholder="Status"-->
+<!--                  class="w-full !border-0 !rounded-[16px] custom-placeholder-select h-[56px] flex items-center"/>-->
+<!--        </div>-->
 
-        <AutoComplete
-            type="text"
-            placeholder="Kerakli e’lonni qidiring"
-            :scrollHeight="'300'"
-        />
+<!--        <AutoComplete-->
+<!--            type="text"-->
+<!--            placeholder="Kerakli e’lonni qidiring"-->
+<!--            :scrollHeight="'300'"-->
+<!--        />-->
       </div>
     </div>
 
