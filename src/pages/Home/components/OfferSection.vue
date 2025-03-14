@@ -58,7 +58,7 @@ const value = ref(null);
               </div>
 
               <div class="flex flex-col gap-2 w-full">
-                <label for="username" class="text-[#344054] font-medium">Izoh</label>
+                <label for="username" class="text-[#344054] font-medium">{{ $t('description') }}</label>
                 <Textarea class="w-full !bg-[#FAFAFA]  custom-placeholder-input" rows="5" cols="30"/>
               </div>
 

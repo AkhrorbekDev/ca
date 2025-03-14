@@ -2,7 +2,7 @@
 import {Field, Form} from 'vee-validate'
 import {oilTransfer} from "@/components/form-elements/schema";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
-import {inject, onMounted, ref, watch} from 'vue'
+import {inject, onMounted, onUnmounted, ref, watch} from 'vue'
 import getGeoObject from "@/composables/getGeoObject";
 import useMapStore from "@/stores/map.store";
 import {ADV_TYPES} from '@/constants'
@@ -192,6 +192,9 @@ onMounted(() => {
   //     })
   //     .finally(() => isLoading.value = false)
 })
+onUnmounted(() => {
+  registerClickOutside(false)
+})
 </script>
 
 <template>
@@ -213,7 +216,8 @@ onMounted(() => {
 
       <LocationItem :class="{
         _invalid: (errors['to_location.lat'] || errors['to_location.lng'])
-      }" :location="values.to_location" as="div" class="col-span-full" name="to_location"
+      }" :location="values.to_location"
+                    as="div" class="col-span-full" name="to_location"
                     @click="setLocation('to_location')"/>
       <Field v-slot="{field}" as="div" :class="{
         _invalid: errors.shipment_date
@@ -230,20 +234,20 @@ onMounted(() => {
               class="custom-date w-full"/>
           <!--            <InputText id="in_label" variant="filled" placeholder="Manzilni tanlang"-->
           <!--                       class="w-full bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>-->
-          <label for="in_label" class="!text-[#292D324D]">Jo‘natish sanasi</label>
+          <label for="in_label" class="!text-[#292D324D]">{{ $t('departureDate') }}</label>
         </FloatLabel>
       </Field>
       <Field as="div" :class="{
         _invalid: errors['details.fuel_amount']
       }" name="details.fuel_amount" class="formItem flex flex-col">
-        <label for="price" class="text-[#292D324D] txt-[12px]">Hajmi (litrr)</label>
+        <label for="price" class="text-[#292D324D] txt-[12px]">{{ $t('cargoVolume') }} ({{ $t('litr') }})</label>
         <InputText
 
             :model-value="values.details.fuel_amount"
             type="number"
             class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"
             id="price" aria-describedby="username-help"
-            placeholder="Miqdorni kiriting"
+            :placeholder="$t('enterAmount')"
         />
       </Field>
       <Field v-slot="{handleChange, field}" :class="{
@@ -254,7 +258,7 @@ onMounted(() => {
                   @update:model-value="onChangeOil"
                   :options="oilTypes"
                   optionLabel="type"
-                  placeholder="Tanlang"
+                  :placeholder="$t('select')"
                   class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
             <template #value="slotProps">
               <div v-if="selectedOil" class="flex items-center">
@@ -267,7 +271,9 @@ onMounted(() => {
                   class="flex items-center min-w-[60px] w-full justify-between !py-4 border-b border-[#F5F5F7]"
               >
                 <div class="w-full flex flex-col items-start justify-start">
-                  <label for="ingredient1" class="flex items-center gap-4 cursor-pointer">
+                  <label for="ingredient1"
+                         class="flex items-center gap-4 cursor-pointer"
+                  >
                     {{ slotProps.option.type }}
                   </label>
                 </div>
@@ -280,7 +286,9 @@ onMounted(() => {
               </div>
             </template>
           </Select>
-          <label for="in_label" class="!text-[#292D324D]">Yoqilg'i turi</label>
+          <label for="in_label" class="!text-[#292D324D]">
+            {{ $t('fuelType') }}
+          </label>
         </FloatLabel>
       </Field>
       <div class="col-span-full">
@@ -288,16 +296,16 @@ onMounted(() => {
         <div
             @click="toggleShowDetails"
             :class="{
-        _invalid: !selectedOilCompany
+        _invalid: errors['details.company_id']
       }"
             class="w-full !bg-[#FAFAFA] border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
         >
             <span class="text-[#292D324D] text-[12px] !mb-2">
-              Kompaniyalar ro'yhati
+              {{ $t('companies') }}
             </span>
           <div class="flex items-center justify-between">
             <span class="text-[#292D32]">
-               {{ selectedOilCompany ? selectedOilCompany.company_name : 'Kompaniyani tanlang' }}
+               {{ selectedOilCompany ? selectedOilCompany.company_name : $t('companiesDescription') }}
             </span>
             <svg :style="{
               transform: showDetails ? 'rotate(90deg)' : 'rotate(180deg)'
@@ -320,7 +328,7 @@ onMounted(() => {
           class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-auto w-full"
       >
 
-        E’lonni joylash
+        {{ $t('createAdvertisement') }}
 
         <svg v-if="isLoading" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
              fill="none"
@@ -350,9 +358,9 @@ onMounted(() => {
           >
             <div class="flex flex-col">
               <h3 class="text-[#292D32] text-[14px]">{{ item.company_name }}</h3>
-              <h5 class="text-[#292D324D] text-[12px]">1 litr: {{ item.price }}</h5>
-              <h5 class="text-[#292D324D] text-[12px]">Yetkazib berish narxi:
-                {{ item.delivery_price ? item.delivery_price : 'Bepul' }}</h5>
+              <h5 class="text-[#292D324D] text-[12px]">1 {{ $t('litr') }}: {{ item.price }}</h5>
+              <h5 class="text-[#292D324D] text-[12px]">{{ $t('fuelDeliveryPrice') }}:
+                {{ item.delivery_price ? item.delivery_price : $t('free') }}</h5>
             </div>
 
             <RadioButton
@@ -366,7 +374,7 @@ onMounted(() => {
           <div class="flex flex-col items-center justify-center">
             <img src="@/assets/images/empty.png" class="w-full" alt="">
             <p>
-              Ma’lumot yo’q
+              {{ $t('noData') }}
             </p>
           </div>
         </template>
@@ -375,7 +383,7 @@ onMounted(() => {
         <button
             @click="onSaveDetails"
             class="!p-[16px] bg-[#66C61C] rounded-[24px] text-white text-center w-full !mt-[72px] text-[16px]">
-          Tasdiqlash
+          {{ $t('confirm') }}
         </button>
       </div>
     </div>

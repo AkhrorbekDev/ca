@@ -33,7 +33,15 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
         context.options.headers = {
             ...context.options.headers
         }
-        if (context.options.params && !(typeof context.options.params?.noAuth === 'boolean' && context.options.params?.noAuth === true)) {
+        if (app.config.globalProperties.$i18n) {
+            context.options.query = context.options.query ? {
+                ...context.options.query,
+                locale: app.config.globalProperties.$i18n.locale
+            } : {
+                locale: app.config.globalProperties.$i18n.locale
+            }
+        }
+        if (context.options.method === 'POST' || context.options.params && !(typeof context.options.params?.noAuth === 'boolean' && context.options.params?.noAuth === true)) {
             context.options.headers.Authorization = `Basic ${btoa('root:GJA4TI8zQciHrXq')}`
             if (app.config.globalProperties.$auth.interceptor) {
                 context.options = await app.config.globalProperties.$auth.interceptor({
@@ -41,10 +49,10 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
                     url: context.request
                 });
             }
-        } else {
-            delete context.options.params?.noAuth
-
         }
+
+        delete context.options.query?.noAuth
+        delete context.options.params?.noAuth
 
     }
 

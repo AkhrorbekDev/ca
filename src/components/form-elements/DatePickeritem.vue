@@ -20,7 +20,7 @@ defineProps({
                   class="custom-date w-full"/>
       <!--            <InputText id="in_label" variant="filled" placeholder="Manzilni tanlang"-->
       <!--                       class="w-full bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>-->
-      <label for="in_label" class="!text-[#292D324D]">Jo‘natish sanasi</label>
+      <label for="in_label" class="!text-[#292D324D]">{{ $t('departureDate') }}</label>
     </FloatLabel>
   </Field>
 </template>

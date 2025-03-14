@@ -3,7 +3,9 @@
 import {inject, ref} from "vue";
 import {useRouter} from "vue-router";
 import useBreadcrumbs from "@/stores/breadcrumbs";
+import {useI18n} from 'vue-i18n'
 
+const {t} = useI18n()
 const props = defineProps({
   transports: {
     type: Array,
@@ -28,7 +30,7 @@ const props = defineProps({
 })
 const breadcrumbStore = useBreadcrumbs()
 const router = useRouter()
-const smasterRoom = ref<Car[]>([
+const masterRoom = ref<Car[]>([
   {
     title: 'Mannol center'
   },
@@ -46,23 +48,22 @@ const $auth = inject('auth')
 
 const master = ref([
   {
-    title: "Kuzov ustasi",
-    info: "Polirovka, bo‘yoq, qirilish,\n" +
-        "buklanish",
+    title: t('matorMaster'),
+    info: t('matorMasterDes'),
     image: '',
     id: 1,
     unique: "master",
   },
   {
-    title: "Avtoelektrik",
-    info: "Elektrga oid barcha ishlar, fara, tablo",
+    title: t('electricMaster'),
+    info: t('electricMasterDes'),
     image: '',
     id: 2,
     unique: "master",
   },
   {
-    title: "Mator ustasi",
-    info: "Dvigitel motor ishlari",
+    title: t('bodyMaster'),
+    info: t('bodyMasterDes'),
     image: '',
     id: 3,
     unique: "master",
@@ -71,24 +72,10 @@ const master = ref([
 const emit = defineEmits(['on:click'])
 const handleSubmit = (item?: any) => {
   let query = {}
-  const crumbs = [
-    {
-      title: props.service.title
-
-    },
-    {
-      title: item?.id ? 'Ustalar' : 'Ustaxonalar'
-    }
-  ]
   if (item?.id) {
     query.repair_type_id = item.id
-    crumbs.push({
-      title: `${item.title}`,
-      last: true
-    })
   }
 
-  breadcrumbStore.updateBreadcrumb(crumbs)
   router.push({
     name: 'transport-repair-rooms-id',
     query
@@ -109,7 +96,9 @@ const handleSubmit = (item?: any) => {
     <div class="grid grid-cols-1  gap-4 !p-[16px]">
 
       <div @click="handleSubmit" class="flex items-center justify-between !py-[16px] cursor-pointer">
-        <span class="text-[#292D32] text-[14px]">Ustaxonalar</span>
+        <span class="text-[#292D32] text-[14px]">
+          {{ $t('workshops') }}
+        </span>
         <img src="@/assets/images/arrowUp.svg" class="-rotate-90" alt="arrow"/>
       </div>
       <div v-for="(item, index) in master"

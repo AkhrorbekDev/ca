@@ -103,7 +103,7 @@ const fetchAnnouncements = async () => {
       params.adv_type = 'PROVIDE';
     }
     const response = await $api.announcement.getAnnouncement(params);
-    
+
     setTimeout(() => {
       announcementAllData.value = response?.data;
       loadingAnnouncement.value = false;
@@ -238,7 +238,7 @@ onMounted(() => {
 
       <div v-if="loadingAnnouncement" class="grid xl:grid-cols-5 grid-cols-4 gap-6 animate-pulse">
           <div v-for="item in 20" :key="item" class="h-32 bg-gray-200 rounded-3xl w-full mb-4"></div>
-       
+
       </div>
 
       <div v-else class="grid xl:grid-cols-5 grid-cols-4 gap-6">
