@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import useBreadcrumbs from '@/stores/breadcrumbs'
 import {computed, ref} from "vue";
 
 const props = defineProps({
@@ -8,7 +7,6 @@ const props = defineProps({
     default: () => ([])
   }
 })
-const breadcrumbsStore = useBreadcrumbs()
 const home = ref({
   icon: 'pi pi-home',
   route: '/',

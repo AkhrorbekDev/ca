@@ -49,4 +49,8 @@ const home = ref({
   box-shadow: 0px 32px 100px 0px #292D3229;
 
 }
+
+.filter-btn__shadow {
+  box-shadow: 0px 2px 8.4px 0px #292D3214;
+}
 </style>

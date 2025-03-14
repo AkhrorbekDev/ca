@@ -261,7 +261,5 @@ onMounted(async () => {
 </template>
 
 <style class="">
-.filter-btn__shadow {
-  box-shadow: 0px 2px 8.4px 0px #292D3214;
-}
+
 </style>

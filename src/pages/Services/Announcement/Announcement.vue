@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import ModalAnnouncement from "@/pages/Services/Announcement/components/ModalAnnouncement.vue";
 import AddAnnouncementModal from "@/pages/Services/Announcement/components/AddAnnouncementModal.vue";
-import {inject, nextTick, onMounted, ref} from 'vue';
+import {computed, inject, nextTick, onMounted, ref} from 'vue';
 import {useRoute, useRouter} from "vue-router";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import {useI18n} from 'vue-i18n';
+
+const {t} = useI18n();
 
 const router = useRouter();
 const route = useRoute()
@@ -162,7 +165,13 @@ onMounted(async () => {
     console.error('Error fetching services:', error);
   }
 });
-
+const breadcrumbItems = computed(() => {
+  return [
+    {
+      title: t('announcements')
+    }
+  ]
+})
 onMounted(() => {
   closeMenu();
   fetchAnnouncements();
@@ -172,10 +181,10 @@ onMounted(() => {
 
 <template>
   <div>
-    <Breadcrumbs/>
+    <Breadcrumbs :breadcrumbs="breadcrumbItems"/>
     <div class="flex items-center justify-start !mb-[32px] gap-[32px]">
       <h1 class="text-[#292D32] !mb-0 text-[32px] leading-[48px] font-500">
-        {{ selectedService?.name || 'E\'lonlar' }}
+        {{ selectedService?.name || $t('announcements') }}
       </h1>
     </div>
     <div class="flex items-center justify-between">
