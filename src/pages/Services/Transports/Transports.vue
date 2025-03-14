@@ -4,10 +4,12 @@ import {useRoute, useRouter} from "vue-router";
 import {inject, onMounted, ref, watch} from "vue";
 import useBreadcrumbs from "@/stores/breadcrumbs";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import {useI18n} from 'vue-i18n'
 
 const router = useRouter()
 const route = useRoute()
 
+const {t} = useI18n()
 const enterToDetail = (value: number) => {
   router.push(`/transport-view/${value}`)
 }
@@ -128,18 +130,24 @@ onMounted(async () => {
           class="flex items-center relative justify-center gap-[8px] w-[105px] h-[48px] filter-btn__shadow rounded-[18px] bg-[#ffffff]">
         <img src="@/assets/icons/filter.svg" alt="">
         <span>
-          Filter
+          {{ $t('filter') }}
         </span>
         <div @click.stop v-if="openFilter"
              class="w-[375px] absolute z-[999] top-[130%] right-[0] bg-white text-start !p-[16px] rounded-[24px]">
           <div class="flex items-center justify-between !mb-[24px]">
-            <span class="text-[#1A1F23] font-medium text-[16px]">Filter</span>
-            <span @click="clearFilters" class="text-[#F04438] font-medium">Tozalash</span>
+            <span class="text-[#1A1F23] font-medium text-[16px]">
+              {{ $t('filter') }}
+            </span>
+            <span @click="clearFilters" class="text-[#F04438] font-medium">
+              {{ $t('clear') }}
+            </span>
           </div>
 
           <div
               class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px] !mb-[24px]">
-            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">Toifalar</span>
+            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">
+              {{ $t('categories') }}
+            </span>
 
             <div class="grid grid-cols-3 gap-4">
               <button
@@ -153,7 +161,9 @@ onMounted(async () => {
           </div>
 
           <div class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px]">
-            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">Xizmatlar</span>
+            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">
+              {{ $t('services') }}
+            </span>
 
             <div class="flex items-center gap-2">
               <button
@@ -171,18 +181,23 @@ onMounted(async () => {
               <Select placeholder="Hududni tanlang"
                       class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
               </Select>
-              <label for="in_label" class="!text-[#292D324D]">Hudud</label>
+              <label for="in_label" class="!text-[#292D324D]">
+                {{ $t('region') }}
+              </label>
             </FloatLabel>
           </div>
 
           <div
               class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px] !mb-[24px]">
-            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">Reyting</span>
+            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">
+              {{ $t('rating') }}
+            </span>
 
             <div class="grid grid-cols-5 gap-4">
               <button
                   v-for="(item, index) in 5" @click="pushRating(index)"
-                  :class="['flex items-center gap-1 !py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px] bg-[#FFFFFF]', rating.includes(index) && '!bg-[#66C61C] text-white']">
+                  :class="['flex items-center gap-1 !py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px] bg-[#FFFFFF]',
+                  rating.includes(index) && '!bg-[#66C61C] text-white']">
 
                 <svg :style="rating.includes(index) &&  'filter: brightness(100);'" width="15" height="14"
                      viewBox="0 0 15 14" fill="none"
@@ -201,7 +216,7 @@ onMounted(async () => {
 
           <button @click="openFilter = false"
                   class="w-full bg-[#66C61C] rounded-[24px] !p-[16px] text-white !mt-[148px]">
-            Saqlash
+            {{ $t('save') }}
           </button>
 
         </div>
@@ -224,7 +239,7 @@ onMounted(async () => {
         <div class="flex flex-col items-center gap-[10px] max-w-[300px] !mx-auto !my-auto">
           <img src="@/assets/images/empty.png" class="w-full" alt="">
           <p>
-            Ma’lumot yo’q
+            {{ $t('noData') }}
           </p>
         </div>
       </div>

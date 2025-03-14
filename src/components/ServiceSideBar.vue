@@ -56,7 +56,7 @@ const menuItems = ref<MenuItems[]>([
     children: services
   },
   {
-    title: t('announcement'),
+    title: t('announcements'),
     unique: 'announcement',
     icon: box,
     route: '/announcement'
@@ -91,22 +91,6 @@ const changeRouteRepair = (item) => {
 }
 
 const changeRoute = (item) => {
-  breadcrumbStore.updateBreadcrumb([
-        {
-          title: 'Transport e\'lonlari'
-
-        },
-        {
-          title: selectedMenu.value?.title
-
-        },
-        {
-          title: `${item.name}`,
-          last: true
-        }
-      ]
-  )
-
   if (selectedService.value.id === 7) {
     router.push({
       name: item.route,
@@ -263,6 +247,8 @@ const openDetail = (value: any, item: any) => {
     showTransportGrid.value = false
     showAutoRepairGrid.value = true
     return
+  } else {
+    showAutoRepairGrid.value = false
   }
   if (item.route) {
     router.push({name: item.route, params: {type: item.unique}})
@@ -303,23 +289,24 @@ onMounted(() => {
        }">
     <div class="navbar-items relative h-[100vh]  max-w-max ">
       <ConfirmDialog group="headless"/>
-      <div class="navbar-items__menu  !py-[16px] !px-[12px] !mx-[12px]">
+      <div class="navbar-items__menu  !py-[16px] !mx-[12px]">
         <router-link to="/">
           <img class="!mb-[40px] !mt-[10px]" src="@/assets/icons/logo-new.svg" alt="logo" width="130"/>
         </router-link>
         <div class="navbar-items__menu-items">
-          <div v-for="(list, index2) in menuItems" :key="index2" class="navbar-items__menu-item"
+          <div v-for="(list, index2) in menuItems"
+               :key="index2" class="navbar-items__menu-item"
                :class="{_active: activeRouteName === list.unique}"
                @click.stop="openChildMenu(index2, list)"
           >
             <div class="navbar-items__menu-item-image">
               <img :src="list.icon" alt="">
             </div>
-            <div class="navbar-items__menu-item-text"
-                 :class="{'!text-[#66C61C]' : activeRouteName === list.unique}"
+            <p class="navbar-items__menu-item-text"
+               :class="{'!text-[#66C61C]' : activeRouteName === list.unique}"
             >
               {{ list.title }}
-            </div>
+            </p>
           </div>
         </div>
       </div>
@@ -344,7 +331,7 @@ onMounted(() => {
               <div class="navbar-items__menu-item-text"
                    :class="{'!text-[#66C61C]' : selectedService && selectedService.id === list.id}"
               >
-                {{ list.title }}
+                {{ $t(list.title) }}
               </div>
             </div>
           </div>
@@ -431,7 +418,7 @@ onMounted(() => {
   }
 
   &__menu {
-    width: 64px;
+    width: 76px;
     height: 100%;
     overflow: hidden auto;
 
@@ -504,6 +491,7 @@ onMounted(() => {
         line-height: 16px;
         color: #292D32;
         text-align: center;
+        word-break: break-word;
       }
 
     }

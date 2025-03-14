@@ -99,7 +99,7 @@ const clearFilters = () => {
 
     <div class="flex items-center justify-between !mb-4">
       <span class="text-[#292D32] font-medium text-[24px]">{{
-          $route.query?.repair_type_id ? 'Ustalar' : 'Ustaxonalar'
+          $route.query?.repair_type_id ? $t('masters') : $t('workshops')
         }}</span>
 
 
@@ -111,18 +111,18 @@ const clearFilters = () => {
               stroke="#363853" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
 
-        Filtr
+        {{ $t('filter') }}
 
         <div @click.stop v-if="openFilter"
              class="w-[375px] absolute z-[999] top-[130%] right-[0] bg-white text-start !p-[16px] rounded-[24px]">
           <div class="flex items-center justify-between !mb-[24px]">
-            <span class="text-[#1A1F23] font-medium text-[16px]">Filter</span>
-            <span @click="clearFilters" class="text-[#F04438] font-medium">Tozalash</span>
+            <span class="text-[#1A1F23] font-medium text-[16px]">{{ $t('filter') }}</span>
+            <span @click="clearFilters" class="text-[#F04438] font-medium">{{ $t('clear') }}</span>
           </div>
 
           <div
               class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px] !mb-[24px]">
-            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">Toifalar</span>
+            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">{{ $t('categories') }}</span>
 
             <div class="grid grid-cols-3 gap-4">
               <button
@@ -136,7 +136,7 @@ const clearFilters = () => {
           </div>
 
           <div class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px]">
-            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">Xizmatlar</span>
+            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">{{ $t('services') }}</span>
 
             <div class="flex items-center gap-2">
               <button
@@ -154,13 +154,13 @@ const clearFilters = () => {
               <Select placeholder="Hududni tanlang"
                       class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
               </Select>
-              <label for="in_label" class="!text-[#292D324D]">Hudud</label>
+              <label for="in_label" class="!text-[#292D324D]">{{ $t('region') }}</label>
             </FloatLabel>
           </div>
 
           <div
               class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px] !mb-[24px]">
-            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">Reyting</span>
+            <span class="text-[#292D324D] text-[12px] !mb-[8px] block text-start">{{ $t('rating') }}</span>
 
             <div class="grid grid-cols-5 gap-4">
               <button
@@ -184,7 +184,7 @@ const clearFilters = () => {
 
           <button @click="openFilter = false"
                   class="w-full bg-[#66C61C] rounded-[24px] !p-[16px] text-white !mt-[148px]">
-            Saqlash
+            {{ $t('save') }}
           </button>
 
         </div>
@@ -207,7 +207,7 @@ const clearFilters = () => {
         <div class="flex flex-col items-center gap-[10px] max-w-[300px] !mx-auto !my-auto">
           <img src="@/assets/images/empty.png" class="w-full" alt="">
           <p>
-            Ma’lumot yo’q
+            {{ $t('noData') }}
           </p>
         </div>
       </div>

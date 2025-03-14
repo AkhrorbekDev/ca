@@ -184,7 +184,7 @@ onMounted(() => {
         <div class="flex flex-col items-center gap-[10px] max-w-[300px] !mx-auto !my-auto">
           <img src="@/assets/images/empty.png" class="w-full" alt="">
           <p>
-            Ma’lumot yo’q
+            {{ $t('noData') }}
           </p>
         </div>
       </div>

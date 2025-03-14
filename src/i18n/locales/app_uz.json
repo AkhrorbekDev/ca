@@ -94,7 +94,7 @@
   "deactivate": "Faolsizlantirish",
   "loadWeight": "Yuk vazni",
   "passengerCount": "Yo‘lovchi soni",
-  "transportCount": "Transport soni",
+  "transportCount": "{{ $t('transportCount') }}",
   "departureDate": "Jo‘natish sanasi",
   "additionalInfo": "Qo‘shimcha ma’lumotlar",
   "cargoType": "Yuk turi",
@@ -229,9 +229,92 @@
   "about_us_why_points": "✅ Qulay va tez buyurtma berish – bir necha bosqichda ilova orqali. ✅ Ishonchli ijrochilar – tajribali mutaxassislar yukingizni xavfsiz yetkazib beradi. ✅ Shaffof tariflar – yashirin to‘lovlarsiz faqat adolatli narxlar. ✅ 24/7 qo‘llab-quvvatlash – har doim yordam berishga tayyormiz.",
   "about_us_slogan": "Qayerga yo‘l olishingizdan qat’i nazar – yukingiz ishonchli qo‘llarda!",
   "select_language": "Tilni tanlang!",
+  "///": "//////////////////////",
   "newUserInfo": " Platformamizda yangimisiz?",
   "oldUserInfo": "Avval ro‘yhatdan o‘tganmisiz?",
   "enterCodeWithPhone": "Tasdiqlash kodini { phone } raqamiga yubordik.\n            Quyidagi maydonga mobil\n            kodingizni kiriting.",
-  "createAdvertisement": "E'lon berish",
-  "more": "Batafsil"
+  "createAdvertisement": "E'lon joylash",
+  "more": "Batafsil",
+  "pickAddress": "Manzilni tanlash",
+  "footerSiteDescription": "Transport xizmatlari\nplatformasi",
+  "otherMaterials": "Boshqa materiallar",
+  "otherMaterialsDescription": "Boshqa materiallar",
+  "buildingMaterials": "Qurilish mollari",
+  "buildingMaterialsDescription": "Mebel, plintus, gipsokarton",
+  "foods": "Oziq-ovqat",
+  "foodsDescription": "Ichimliklar, gazli, mineral suvlar",
+  "repairItems": "Uskunalar va ehtiyot qismlar",
+  "repairItemsDescription": "Kuzovlar, yoritgihc, generator",
+  "withoutLoader": "Yuk tashuvchilarsiz",
+  "withoutLoaderDescription": "Yordam kerak emas",
+  "withLoader": "Haydovchi yuklarni tashishi kerak",
+  "withLoaderDescription": "50kg dan ortiq bo'lmagan yuklarni tashish",
+  "kg": "kg",
+  "m3": "m³",
+  "litr": "litr",
+  "additionalInfoDescription": "Yuk turi, rasmi, yuklash xizmati, to‘lov...",
+  "pickTransport": "Transportni tanlang",
+  "enterAmount": "Miqdorni kiriting",
+  "fuelType": "Yoqilg‘i turi",
+  "companies": "Kompaniyalar ro'yhati",
+  "companiesDescription": "Kompaniyani tanlang",
+  "fuelDeliveryPrice": "Yetkazib berish narxi",
+  "free": "Bepul",
+  "noData": "Ma'lumot yo'q",
+  "fromWhatDay": "Qaysi sanadan",
+  "toWhatDay": "Qaysi sanagacha",
+  "workshops": "Ustaxonalar",
+  "masters": "Ustalar",
+  "matorMaster": "Mator ustasi",
+  "matorMasterDes": "Dvigitel motor ishlari",
+  "electricMaster": "Avtoelektrik",
+  "electricMasterDes": "Elektrga oid barcha ishlar, fara, tablo",
+  "bodyMaster": "Kuzov ustasi",
+  "bodyMasterDes": "Polirovka, bo‘yoq, qirilish, buklanish",
+  "clear": "Tozalash",
+  "categories": "Toifalar",
+  "region": "Hudud",
+  "rating": "Reyting",
+  "services_": {
+    "delivery": {
+      "title": "Yetkazib berish",
+      "subTitle": "Tovar va mahsulotlarni tez va xavfsiz manzilga yetkazib berish xizmati"
+    },
+    "distillation": {
+      "title": "Peregon",
+      "subTitle": "Malakali haydovchilar tomonidan avtomobilingizni kerakli manzilga yetkazib berish xizmati"
+    },
+    "shipping": {
+      "title": "Yuk tashish",
+      "subTitle": "Barcha turdagi kichikdan kattagacha yuklarni tashish uchun samarali yechim"
+    },
+    "oil": {
+      "title": "Yoqilg'i yetkazish",
+      "subTitle": "Avtomobilingiz uchun yoqilg'ini tez va sifatli belgilangan manzilga yetkazish"
+    },
+    "passenger": {
+      "title": "Yo'lovchi tashish",
+      "subTitle": "Shaxsiy, oilaviy yoki guruh bo'lib sayohat qilish uchun transport xizmati"
+    },
+    "transport-rental": {
+      "title": "Transport ijarasi",
+      "subTitle": "Bu transport vositalarini vaqtinchalik foydalanish uchun to'lov asosida berish xizmati"
+    },
+    "technical": {
+      "title": "Maxsus texnika",
+      "subTitle": "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo'lgan texnikalar xizmati"
+    },
+    "transfer": {
+      "title": "Transport transferi",
+      "subTitle": "Transportlarni manzilga xavfsiz va vaqtida yetkazib berish xizmati"
+    },
+    "keeping": {
+      "title": "Saqlash xizmati",
+      "subTitle": "Yuklaringizni xavfsiz va qulay saqlash uchun omborxona xizmatlari"
+    },
+    "repair": {
+      "title": "Avto ta'mirlash",
+      "subTitle": "Texnik ko'rik va boshqa zarur bo'lgan avtoservis xizmatlarini ko'rsatish"
+    }
+  }
 }

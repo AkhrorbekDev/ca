@@ -14,6 +14,7 @@ const i18n = createI18n({
         kk: app_kk
     },
     fallbackLocale: 'uz',
+    legacy: false,
     globalInjection: true
 })
 

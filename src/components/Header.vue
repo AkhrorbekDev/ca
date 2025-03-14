@@ -14,6 +14,12 @@ const items = ref<Items[]>([
   },
   {
     label: 'Русский',
+  },
+  {
+    label: 'English',
+  },
+  {
+    label: 'Ўзбекча',
   }
 ]);
 

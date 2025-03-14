@@ -20,70 +20,70 @@ export const services = [
     {
         img: moto,
         "id": 9,
-        title: 'Yetkazib berish',
+        title: 'delivery',
         unique: "delivery",
         route: "service-detail"
     },
     {
         img: rul,
         "id": 10,
-        title: 'Peregon xizmati',
+        title: 'peregonService',
         unique: "distillation",
         route: "service-detail"
     },
     {
         img: truck2,
         id: 1,
-        title: 'Yuk tashish',
+        title: 'shipping',
         unique: "shipping",
         route: "service-detail"
     },
     {
         img: pistol,
         id: 8,
-        title: 'Yoqilg‘i yetkazish',
+        title: 'fuelDelivery',
         unique: "oil",
         route: "service-detail"
     },
     {
         img: car,
         "id": 2,
-        title: 'Yo\'lovchilarni tashish',
+        title: 'passengerTransport',
         unique: "passenger",
         route: "service-detail"
     },
     {
         img: carKey,
         "id": 4,
-        title: 'Transport ijarasi',
+        title: 'carRental',
         unique: "transport-rental",
         route: "service-detail"
     },
     {
         img: exkavator,
         "id": 3,
-        title: 'Maxsus texnika',
+        title: 'specialTechServices',
         unique: "technical",
         route: "service-detail"
     },
     {
         img: evakvator,
         "id": 6,
-        title: 'Transport transferi',
+        title: 'transportTransfer',
         unique: "transfer",
         route: "service-detail"
     },
     {
         img: home,
         "id": 7,
-        title: 'Omborda saqlash',
+        title: 'warehouseStorage',
         unique: "keeping",
         route: "service-keeping"
     },
     {
         img: settings,
         "id": 5,
-        title: 'Avto ta\'mirlash',
+        title: 'autoRepair',
         unique: "repair",
     },
 ]
@@ -137,30 +137,30 @@ export const Menu = [
     {
         img: truck2,
         id: 1,
-        title: 'Yuk tashish',
+        title: 'shipping',
         // child: Truck
     },
     {
         img: car,
         id: 2,
-        title: 'Yo\'lovchilarni tashish',
+        title: 'passengerTransport',
         // child: Truck
     },
     {
         img: exkavator,
         id: 3,
-        title: 'Maxsus texnika xizmatlari',
+        title: 'specialTechServices',
         // child: Truck
     },
     {
         img: rul,
         "id": 10,
-        title: 'Peregon xizmati',
+        title: 'peregonService',
     },
     {
         img: evakvator,
         id: 6,
-        title: 'Transport transferi'
+        title: 'transportTransfer',
     },
 ]
 

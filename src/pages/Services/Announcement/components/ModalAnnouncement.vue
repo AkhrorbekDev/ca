@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import ConfirmDialog from 'primevue/confirmdialog';
 import {AnnouncementType} from "@/pages/Services/Announcement/announcement.types";
-
-const model = defineModel()
-
 import {useConfirm} from "primevue/useconfirm";
 import {formatNumber} from "@/utils/helper";
 import {inject} from "vue";
+
+const model = defineModel()
 
 const props = defineProps({
   tabIndex: {
@@ -64,7 +63,7 @@ const confirm1 = (id: number) => {
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <template #header>
       <div class="grow text-center text-[#292D32] text-[24px] font-medium">
-        {{announcement?.service_name}}
+        {{ announcement?.service_name }}
       </div>
     </template>
     <div>
@@ -91,16 +90,16 @@ const confirm1 = (id: number) => {
         <div class="grid grid-cols-2 gap-4">
           <div v-if="announcement?.from_location?.name" class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
             <p class="text-[12px] text-[#292D324D] !mb-[6px]">Qayerdan</p>
-            <h6 class="text-[#292D32] text-[16px]">{{announcement?.from_location?.name}}</h6>
+            <h6 class="text-[#292D32] text-[16px]">{{ announcement?.from_location?.name }}</h6>
           </div>
 
           <div v-if="announcement?.to_location?.name" class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
             <p class="text-[12px] text-[#292D324D] !mb-[6px]">Qayerga</p>
-            <h6 class="text-[#292D32] text-[16px]">{{announcement?.to_location?.name}}</h6>
+            <h6 class="text-[#292D32] text-[16px]">{{ announcement?.to_location?.name }}</h6>
           </div>
 
           <div v-if="announcement.details?.from_date" class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
-            <p class="text-[12px] text-[#292D324D] !mb-[6px]">Jo‘natish sanasi</p>
+            <p class="text-[12px] text-[#292D324D] !mb-[6px]">{{ $t('departureDate') }}</p>
             <div class="flex items-center gap-2">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -134,23 +133,25 @@ const confirm1 = (id: number) => {
                     d="M16 22.75H8C4.35 22.75 2.25 20.65 2.25 17V8.5C2.25 4.85 4.35 2.75 8 2.75H16C19.65 2.75 21.75 4.85 21.75 8.5V17C21.75 20.65 19.65 22.75 16 22.75ZM8 4.25C5.14 4.25 3.75 5.64 3.75 8.5V17C3.75 19.86 5.14 21.25 8 21.25H16C18.86 21.25 20.25 19.86 20.25 17V8.5C20.25 5.64 18.86 4.25 16 4.25H8Z"
                     fill="#BFC0C2"/>
               </svg>
-              <span class="text-[#292D32] text-[16px]">{{announcement.details?.from_date}}</span>
+              <span class="text-[#292D32] text-[16px]">{{ announcement.details?.from_date }}</span>
             </div>
           </div>
 
-          <div v-if="announcement.details?.load_weight?.amount" class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
+          <div v-if="announcement.details?.load_weight?.amount"
+               class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
             <p class="text-[12px] text-[#292D324D] !mb-[6px]">Yuk vazni</p>
             <div class="flex items-center justify-between">
-              <span class="text-[#292D32] text-[16px]">{{announcement.details?.load_weight?.amount}}</span>
-              <span class="text-[#292D32] text-[16px]">{{announcement.details?.load_weight?.name}}</span>
+              <span class="text-[#292D32] text-[16px]">{{ announcement.details?.load_weight?.amount }}</span>
+              <span class="text-[#292D32] text-[16px]">{{ announcement.details?.load_weight?.name }}</span>
             </div>
           </div>
 
           <div v-if="announcement.transport_name" class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
-            <p class="text-[12px] text-[#292D324D] !mb-[6px]">Transport turi</p>
+            <p class="text-[12px] text-[#292D324D] !mb-[6px]">{{ $t('transportType') }}</p>
             <div class="flex items-center gap-10">
-              <span class="text-[#292D32] text-[16px]">{{announcement.transport_name}}</span>
-              <img v-if="announcement?.transport_icon" class="object-contain w-[86px]" :src="announcement?.transport_icon" alt="truck">
+              <span class="text-[#292D32] text-[16px]">{{ announcement.transport_name }}</span>
+              <img v-if="announcement?.transport_icon" class="object-contain w-[86px]"
+                   :src="announcement?.transport_icon" alt="truck">
             </div>
           </div>
 
@@ -165,12 +166,12 @@ const confirm1 = (id: number) => {
 
             <div v-if="announcement.details?.pay_type" class="flex items-center">
               <span class="text-[#AFAFAF] text-[16px] !mr-1">To‘lov turi:</span>
-              <span class="text-[#000000] text-[16px] !mr-1">{{announcement.details?.pay_type}}</span>
+              <span class="text-[#000000] text-[16px] !mr-1">{{ announcement.details?.pay_type }}</span>
             </div>
 
             <div v-if="announcement?.note" class="flex items-center">
-              <span class="text-[#AFAFAF] text-[16px] !mr-1">Izoh:</span>
-              <span class="text-[#000000] text-[16px] !mr-1">{{announcement?.note}}</span>
+              <span class="text-[#AFAFAF] text-[16px] !mr-1">{{ $t('description') }}:</span>
+              <span class="text-[#000000] text-[16px] !mr-1">{{ announcement?.note }}</span>
             </div>
           </div>
 
@@ -182,7 +183,7 @@ const confirm1 = (id: number) => {
 
             <div v-if="announcement?.price" class="flex items-center">
               <span class="text-[#AFAFAF] text-[16px] !mr-1">Narxi:</span>
-              <span class="text-[#000000] text-[16px] !mr-1">{{formatNumber(announcement?.price)}} UZS</span>
+              <span class="text-[#000000] text-[16px] !mr-1">{{ formatNumber(announcement?.price) }} UZS</span>
             </div>
 
           </div>
@@ -192,10 +193,11 @@ const confirm1 = (id: number) => {
           <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
 
           <div class="flex items-center gap-6 !mt-[8px]">
-            <img v-for="(image, index) in announcement?.images" :key="index" class="rounded-2xl aspect-square object-cover" :src="`https://api.carting.uz/uploads/files/${image}`" alt="img" width="109">
+            <img v-for="(image, index) in announcement?.images" :key="index"
+                 class="rounded-2xl aspect-square object-cover" :src="`https://api.carting.uz/uploads/files/${image}`"
+                 alt="img" width="109">
           </div>
         </div>
-
 
 
         <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[56px]">

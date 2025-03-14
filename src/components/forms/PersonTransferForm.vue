@@ -220,10 +220,13 @@ onMounted(() => {
     <div class="navbar-items__divider"/>
     <div
         class="flex flex-col h-full w-full gap-4 !p-[16px]">
-      <LocationItem :class="{
+      <LocationItem
+          :label="$t('from')"
+          :class="{
         _invalid: (errors['from_location.lat'] || errors['from_location.lng'])
-      }" :location="values.from_location" as="div" class="col-span-full" name="from_location"
-                    @click="setLocation('from_location')"/>
+      }" :location="values.from_location"
+          as="div" class="col-span-full" name="from_location"
+          @click="setLocation('from_location')"/>
 
       <LocationItem :class="{
         _invalid: (errors['to_location.lat'] || errors['to_location.lng'])
@@ -232,14 +235,17 @@ onMounted(() => {
       <Field :class="{
         _invalid: errors['details.passenger_count']
       }" as="div" name="details.passenger_count" class="formItem flex flex-col">
-        <label for="passenger_count" class="text-[#292D324D] txt-[12px]">Yo'lovchilar soni</label>
+        <label for="passenger_count" class="text-[#292D324D] txt-[12px]">
+
+          {{ $t('passengerCount') }}
+        </label>
         <InputText
             :model-value="values.details.passenger_count"
             type="number"
 
             class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"
             id="passenger_count" aria-describedby="username-help"
-            placeholder="Yo'lovchilar soni"/>
+            :placeholder="$t('passengerCount') "/>
       </Field>
       <Field v-slot="{field}" :class="{
                 _invalid: errors.shipment_date
@@ -256,7 +262,7 @@ onMounted(() => {
               class="custom-date w-full"/>
           <!--            <InputText id="in_label" variant="filled" placeholder="Manzilni tanlang"-->
           <!--                       class="w-full bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>-->
-          <label for="in_label" class="!text-[#292D324D]">Jo‘natish sanasi</label>
+          <label for="in_label" class="!text-[#292D324D]">{{ $t('departureDate') }}</label>
         </FloatLabel>
       </Field>
 
@@ -268,11 +274,11 @@ onMounted(() => {
             class="w-full !bg-[#FAFAFA] border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
         >
             <span class="text-[#292D324D] text-[12px] !mb-2">
-              Qo‘shimcha ma’lumotlar
+              {{ $t('additionalInfo') }}
             </span>
           <div class="flex items-center justify-between">
             <span class="text-[#292D32]">
-              Izoh, to'lov turi, narx
+              {{ $t('description') }}, {{ $t('paymentType') }}, {{ $t('price') }}
             </span>
             <svg :style="{
               transform: showDetails ? 'rotate(90deg)' : 'rotate(180deg)'
@@ -293,7 +299,7 @@ onMounted(() => {
           <Select :loading="isLoading" :model-value="selectedTransports"
                   @update:model-value="updateTransportType" :options="transports"
                   optionLabel="name"
-                  placeholder="Transportni tanlang"
+                  :placeholder="$t('pickTransport')"
                   class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
             <template #value="slotProps">
               <div v-if="slotProps.value" class="flex items-center">
@@ -327,7 +333,9 @@ onMounted(() => {
               </div>
             </template>
           </Select>
-          <label for="in_label" class="!text-[#292D324D]">Transport turi</label>
+          <label for="in_label" class="!text-[#292D324D]">
+            {{ $t('transportType') }}
+          </label>
         </FloatLabel>
       </Field>
       <Field name="service_type_id">
@@ -338,7 +346,7 @@ onMounted(() => {
           class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-auto w-full"
       >
 
-        E’lonni joylash
+        {{ $t('createAdvertisement') }}
 
         <svg v-if="isSubmited" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
              fill="none"
@@ -359,15 +367,15 @@ onMounted(() => {
     >
       <div>
         <Field as="div" name="note" class="flex flex-col gap-2 w-full !mb-[24px]">
-          <label for="description" class="text-[#292D3280] text-[12px]">Izoh</label>
+          <label for="description" class="text-[#292D3280] text-[12px]">{{ $t('description') }}</label>
           <Textarea :model-value="values.note" id="description" class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
                     style="border: 1px solid #C2C2C233" rows="3"
                     cols="30"
-                    placeholder="Buyurtma haqida izoh qoldiring!"/>
+                    :placeholder="$t('leaveOrderComment')"/>
         </Field>
         <Field name="pay_type" v-slot="{handleChange }" as="div" class="!mb-[24px]">
           <span class="bg-[#FAFAFA] rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
-                To'lov
+                {{ $t('paymentType') }}
               </span>
 
           <div v-for="paymentType in paymentTypes" :key="paymentType.value">
@@ -390,20 +398,20 @@ onMounted(() => {
         </Field>
 
         <Field as="div" name="price" class="flex flex-col gap-2">
-          <label for="price" class="text-[#292D324D] txt-[12px]">Narx</label>
+          <label for="price" class="text-[#292D324D] txt-[12px]">{{ $t('price') }}</label>
           <InputText
               :model-value="values.price"
               type="number"
               class="!py-[12px] !px-[16px] !rounded-[16px] border !border-[#C2C2C233] !placeholder-[#292D324D]"
               id="price" aria-describedby="username-help"
-              placeholder="Narxni kiriting"/>
+              :placeholder="$t('enterPrice')"/>
         </Field>
       </div>
       <div class="footer">
         <button
             @click="onSaveDetails"
             class="!p-[16px] bg-[#66C61C] rounded-[24px] text-white text-center w-full !mt-[72px] text-[16px]">
-          Tasdiqlash
+          {{ $t('confirm') }}
         </button>
       </div>
     </div>

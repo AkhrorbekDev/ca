@@ -2,13 +2,24 @@
 import {Swiper, SwiperSlide} from "swiper/vue";
 import {Navigation} from 'swiper/modules';
 import {useRouter} from "vue-router";
-
-import {advertising, services, transportAdvertising} from './fakeJson'
+import moto from '@/assets/images/icons/motobike.svg'
+import rul from '@/assets/images/icons/rul.svg'
+import truck from '@/assets/images/icons/labo.svg'
+import pistol from '@/assets/images/icons/pistol.svg'
+import car from '@/assets/images/icons/car.svg'
+import carKey from '@/assets/images/icons/carKey.svg'
+import exkavator from '@/assets/images/icons/exkovator.svg'
+import evakvator from '@/assets/images/icons/evakvator.svg'
+import home from '@/assets/images/icons/home.svg'
+import settings from '@/assets/images/icons/settings.svg'
+import {advertising, transportAdvertising} from './fakeJson'
 
 import 'swiper/css';
 import 'swiper/css/navigation';
-import {inject} from "vue";
+import {inject, ref} from "vue";
+import {useI18n} from 'vue-i18n'
 
+const {t} = useI18n()
 
 const router = useRouter()
 const modules = [Navigation];
@@ -22,6 +33,111 @@ const openDetail = (item: any) => {
     router.push({name: item.route, params: {type: item.unique}})
   }
 };
+
+const services = ref([
+  {
+    title: t('services_.delivery.title'),
+    subTitle: t('services_.delivery.subTitle'),
+    img: moto,
+    unique: "delivery",
+    route: "service-detail"
+  },
+  {
+    title: t('services_.distillation.title'),
+    subTitle: t('services_.distillation.subTitle'),
+    img: rul,
+    unique: "distillation",
+    route: "service-detail"
+  },
+  {
+    title: t('services_.shipping.title'),
+    subTitle: t('services_.shipping.subTitle'),
+    img: truck,
+    unique: "shipping",
+    route: "service-detail"
+  },
+  {
+    title: t('services_.oil.title'),
+    subTitle: t('services_.oil.subTitle'),
+    img: pistol,
+    unique: "oil",
+    route: "service-detail"
+  },
+  {
+    title: t('services_.passenger.title'),
+    subTitle: t('services_.passenger.subTitle'),
+    img: car,
+    unique: "passenger",
+    route: "service-detail"
+  },
+  {
+    title: t('services_.transport-rental.title'),
+    subTitle: t('services_.transport-rental.subTitle'),
+    img: carKey,
+    unique: "transport-rental",
+    route: "transport-rental"
+  },
+  {
+    title: t('services_.technical.title'),
+    subTitle: t('services_.technical.subTitle'),
+    img: exkavator,
+    unique: "technical",
+    route: "service-detail"
+  },
+  {
+    title: t('services_.transfer.title'),
+    subTitle: t('services_.transfer.subTitle'),
+    img: evakvator,
+    unique: "transfer",
+    route: "service-detail"
+  },
+  {
+    title: t('services_.keeping.title'),
+    subTitle: t('services_.keeping.subTitle'),
+    img: home,
+    unique: "keeping",
+    route: "service-keeping"
+  },
+  {
+    title: t('services_.repair.title'),
+    subTitle: t('services_.repair.subTitle'),
+    img: settings,
+    unique: "repair",
+    route: 'transport-repair'
+  },
+])
+const transportAdvertising = ref([
+  {
+    title: t('services_.shipping.title'),
+    subTitle: t('services_.shipping.subTitle'),
+    id: 1,
+    img: truck
+  },
+  {
+    title: t('services_.passenger.title'),
+    subTitle: t('services_.passenger.subTitle'),
+    id: 2,
+    img: car
+  },
+  {
+    title: t('services_.technical.title'),
+    subTitle: t('services_.technical.subTitle'),
+    id: 3,
+    img: exkavator
+  },
+  {
+    title: t('services_.transport-rental.title'),
+    subTitle: t('services_.transport-rental.subTitle'),
+    img: carKey
+  },
+  {
+    id: 6,
+    title: t('services_.transfer.title'),
+    subTitle: t('services_.transfer.subTitle'),
+    img: evakvator
+  },
+])
+
 
 const changeTransportRoute = (e) => {
   if (e.id) {
@@ -43,9 +159,9 @@ const changeTransportRoute = (e) => {
       <!-- Xizmatlar-->
       <div class="!mb-[64px]">
         <h1 class="text-[#292D32] text-[32px] font-semibold">{{ $t('services') }}</h1>
-        <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">
-          Bu yerda umumiy xizmatlar haqida tushuntiruvchi text bo’ladi
-        </p>
+        <!--        <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">-->
+        <!--          Bu yerda umumiy xizmatlar haqida tushuntiruvchi text bo’ladi-->
+        <!--        </p>-->
 
         <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
           <div class="card-service !flex !flex-col !justify-between"
@@ -75,9 +191,9 @@ const changeTransportRoute = (e) => {
       <div class="max-w-screen-xl lg:mx-auto !pt-[32px] !pb-[56px]">
         <div>
           <h1 class="text-[#292D32] text-[32px] font-semibold">{{ $t('transportAnnouncements') }}</h1>
-          <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">
-            Bu yerda transport e’lonlari haqida tushuntiruvchi text bo’ladi
-          </p>
+          <!--          <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">-->
+          <!--            Bu yerda transport e’lonlari haqida tushuntiruvchi text bo’ladi-->
+          <!--          </p>-->
 
           <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             <div class="card-service2 bg-[#FAFAFA] hover:shadow-lg transition !flex !flex-col !justify-between"
@@ -106,9 +222,9 @@ const changeTransportRoute = (e) => {
 
     <div class="max-w-screen-xl !pt-[64px] lg:mx-auto !pb-[50px]">
       <h1 class="text-[#292D32] text-[32px] font-semibold">{{ $t('announcements') }}</h1>
-      <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">
-        Bu yerda e’lonlar haqida tushuntiruvchi text bo’ladi
-      </p>
+      <!--      <p class="text-[#292D3266] text-[16px] !mt-[4px] !mb-[24px]">-->
+      <!--        Bu yerda e’lonlar haqida tushuntiruvchi text bo’ladi-->
+      <!--      </p>-->
 
       <swiper
           :modules="modules"

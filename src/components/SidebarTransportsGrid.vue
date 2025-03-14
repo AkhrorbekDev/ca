@@ -78,7 +78,7 @@ defineProps({
       <div class="flex !p-[16px] flex-col !mt-auto !mb-auto items-center justify-center">
         <img src="@/assets/images/empty.png" class="w-full" alt="">
         <p>
-          Ma’lumot yo’q
+          {{ $t('noData') }}
         </p>
       </div>
     </template>

@@ -227,5 +227,80 @@
   "about_us_why_title": "Why Choose Carting?",
   "about_us_why_points": "✅ Convenient and fast order processing – just a few steps in the app. ✅ Verified professionals – reliable specialists ensure safe delivery. ✅ Transparent pricing – no hidden fees, only fair prices. ✅ 24/7 support – always available to assist you.",
   "about_us_slogan": "Wherever you go – your cargo is in safe hands!",
-  "select_language": "Select Language!"
+  "select_language": "Select Language!",
+  "///////": "//////",
+  "newUserInfo": "Are you new to our platform?",
+  "oldUserInfo": "Have you registered before?",
+  "enterCodeWithPhone": "We sent a confirmation code to the number {phone}. Enter your mobile code in the field below.",
+  "createAdvertisement": "Post an advertisement",
+  "more": "More details",
+  "pickAddress": "Choose address",
+  "footerSiteDescription": "Transport services platform",
+  "otherMaterials": "Other materials",
+  "otherMaterialsDescription": "Other materials",
+  "buildingMaterials": "Building materials",
+  "buildingMaterialsDescription": "Furniture, baseboards, drywall",
+  "foods": "Food products",
+  "foodsDescription": "Beverages, carbonated, mineral waters",
+  "repairItems": "Equipment and spare parts",
+  "repairItemsDescription": "Car bodies, lighting, generator",
+  "withoutLoader": "Without loaders",
+  "withoutLoaderDescription": "No help needed",
+  "withLoader": "Driver needs to carry goods",
+  "withLoaderDescription": "Carrying loads not exceeding 50kg",
+  "kg": "kg",
+  "m3": "m³",
+  "litr": "liter",
+  "additionalInfoDescription": "Type of cargo, image, loading service, payment...",
+  "pickTransport": "Choose transport",
+  "enterAmount": "Enter amount",
+  "fuelType": "Fuel type",
+  "companies": "List of companies",
+  "companiesDescription": "Select a company",
+  "fuelDeliveryPrice": "Delivery price",
+  "free": "Free",
+  "noData": "No data",
+  "//": "//",
+  "services_": {
+    "delivery": {
+      "title": "Delivery",
+      "subTitle": "Fast and safe delivery service of goods and products to the destination"
+    },
+    "distillation": {
+      "title": "Vehicle Transfer",
+      "subTitle": "Service for delivering your car to the required destination by qualified drivers"
+    },
+    "shipping": {
+      "title": "Cargo Transportation",
+      "subTitle": "Efficient solution for transporting all types of cargo from small to large"
+    },
+    "oil": {
+      "title": "Fuel Delivery",
+      "subTitle": "Fast and quality fuel delivery to the designated location for your vehicle"
+    },
+    "passenger": {
+      "title": "Passenger Transportation",
+      "subTitle": "Transport service for personal, family or group travel"
+    },
+    "transport-rental": {
+      "title": "Vehicle Rental",
+      "subTitle": "Service of providing vehicles for temporary use on a payment basis"
+    },
+    "technical": {
+      "title": "Special Equipment",
+      "subTitle": "Service of equipment necessary for construction or special works"
+    },
+    "transfer": {
+      "title": "Transport Transfer",
+      "subTitle": "Service of safe and timely delivery of vehicles to the destination"
+    },
+    "keeping": {
+      "title": "Storage Service",
+      "subTitle": "Warehouse services for safe and convenient storage of your cargo"
+    },
+    "repair": {
+      "title": "Auto Repair",
+      "subTitle": "Providing technical inspection and other necessary auto service"
+    }
+  }
 }
