@@ -63,7 +63,7 @@ const setLocation = (name) => {
   // hideDetailsOnLocationChange.value = true
 }
 
-const setSelectedLocation = (address, name) => {
+const setSelectedLocation = async (address, name) => {
   await getGeoObject({address: address})
       .then(res => {
         const marker = mapStore.getMarker(name)
