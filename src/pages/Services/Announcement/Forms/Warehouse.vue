@@ -138,7 +138,7 @@ const setLocation = (name) => {
       }
     }
   }, name)
-  // hideDetailsOnLocationChange.value = true
+  hideDetailsOnLocationChange.value = true
 }
 
 // Delete image
@@ -181,7 +181,7 @@ const createAnnouncement = async (announce) => {
     // Reset form
     addAnnouncement.value = {
       adv_type: '',
-      service_type_id: 7,
+      service_type_id: '',
       to_location: {
         lat: null,
         lng: null,
@@ -211,8 +211,6 @@ const createAnnouncement = async (announce) => {
         v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
-      <pre>{{ pageValue.id }}</pre>
-      <pre>{{ addAnnouncement }}</pre>
       <div class="grid grid-cols-2 gap-4">
         <LocationItem :location="addAnnouncement.to_location" as="div" class="" name="to_location"
                       @click="setLocation('to_location')"/>
@@ -223,9 +221,10 @@ const createAnnouncement = async (announce) => {
           <label for="in_label" class="!text-[#292D324D]">{{ $t('price') }}</label>
         </FloatLabel>
 
-        <FloatLabel variant="in">
+        <FloatLabel variant="in" class="relative">
           <InputText v-model="addAnnouncement.details.area" id="in_label" variant="filled" type="number"
                      class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
+          <span class="absolute top-8 right-5">m²</span>
           <label for="in_label"
                  class="!text-[#292D324D]">Maydon</label>
         </FloatLabel>

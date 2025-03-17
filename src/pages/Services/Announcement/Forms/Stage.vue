@@ -1,10 +1,11 @@
 <script lang="ts" setup>
-import {inject, ref, watch} from 'vue';
+import {inject, onMounted, ref, watch} from 'vue';
 import {useVuelidate} from '@vuelidate/core';
-import {maxLength, minValue, numeric, required} from '@vuelidate/validators';
-import LocationItem from "@/components/form-elements/LocationItem.vue";
-import getGeoObject from "@/composables/getGeoObject";
 import useMapStore from "@/stores/map.store";
+import {maxLength, minValue, numeric, required} from '@vuelidate/validators';
+import {Announcement} from "../types";
+import getGeoObject from "@/composables/getGeoObject";
+import LocationItem from "@/components/form-elements/LocationItem.vue";
 
 const mapStore = useMapStore()
 const model = defineModel();
@@ -16,41 +17,44 @@ const props = defineProps({
   activeTab: {
     type: Number,
   },
-  childForm: {
-    type: Object,
-  },
 });
 
-const transportType = ref(props.childForm?.id);
-watch(() => props.childForm, (newValue) => {
-  transportType.value = newValue?.id;
-});
+const pageValue = ref(props.announceValue);
+watch(() => props.announceValue, (newValue) => {
+  pageValue.value = newValue;
+}, {immediate: true});
 
 const $api = inject('api');
 
 // Refs for form data and lists
 const imageList = ref<string[] | []>([]);
-const formSubmitted = ref(false);
+const categoriesAllList = ref([]);
+const servicesAllList = ref([]);
 
 const collectImages = ref([]);
 
-const addAnnouncement = ref({
+const addAnnouncement = ref<Announcement>({
   adv_type: 'PROVIDE',
-  service_type_id: props.announceValue,
+  service_type_id: 10,
+  from_location: {
+    lat: null,
+    lng: null,
+    name: null,
+  },
   to_location: {
     lat: null,
     lng: null,
     name: null,
   },
   price: null,
-  details: {
-    transportation_type_id: transportType,
-  },
   note: null,
 });
 
-// Enhanced validation rules
+// Validation rules
 const rules = {
+  from_location: {
+    name: {required},
+  },
   to_location: {
     name: {required},
   },
@@ -60,6 +64,47 @@ const rules = {
     minValue: minValue(0)
   },
   note: {maxLength: maxLength(1000)}
+};
+
+const v$ = useVuelidate(rules, addAnnouncement);
+
+// Fetch lists on component mount
+onMounted(async () => {
+  try {
+    const responseCategory = await $api.workshop.getWorkshopCategory();
+    categoriesAllList.value = responseCategory?.data;
+
+    const responseService = await $api.workshop.getWorkshopService();
+    servicesAllList.value = responseService?.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+});
+
+// File upload handler
+const handleFileUpload = (event: Event) => {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+
+  if (file && file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = e.target?.result as string;
+
+      // Extract the base64 data without the metadata prefix
+      const base64Data = base64.split(',')[1];
+
+      collectImages.value.push({
+        fileName: file.name,
+        base64: base64Data, // Send only the base64 data without the prefix
+      });
+
+      imageList.value.push(URL.createObjectURL(file));
+    };
+    reader.readAsDataURL(file);
+  } else {
+    console.error("Invalid file type. Please upload an image.");
+  }
 };
 
 const hideDetailsOnLocationChange = ref(false);
@@ -94,88 +139,70 @@ const setLocation = (name) => {
   hideDetailsOnLocationChange.value = true
 }
 
-const v$ = useVuelidate(rules, addAnnouncement);
-
-// Helper function to check if a field has errors
-const hasError = (field) => {
-  return formSubmitted.value && v$.value[field].$invalid;
-};
-
-// File upload handler
-const handleFileUpload = (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const base64 = e.target.result as string;
-      collectImages.value.push({
-        fileName: file.name,
-        base64: base64.split(',')[1],
-      });
-      imageList.value.push(URL.createObjectURL(file));
-    };
-    reader.readAsDataURL(file);
-  }
-};
-
 // Delete image
 const deleteImage = (index) => {
   imageList.value.splice(index, 1);
   collectImages.value.splice(index, 1);
 };
 
-
 // Create announcement submission handler
 const createAnnouncement = async (announce) => {
-  formSubmitted.value = true;
-
   const isFormValid = await v$.value.$validate();
 
   if (!isFormValid) {
+    // Show error toast or notification
     return;
   }
 
   try {
+    // Set advertisement type based on active tab
+    // announce.adv_type = props.activeTab === 1 ? 'RECEIVE' :
+    //     props.activeTab === 2 ? 'PROVIDE' : '';
 
     const announcementResponse = await $api.workshop.createWorkshop(announce);
     const advertisementId = announcementResponse?.data?.id;
 
     // Send images
     if (collectImages.value.length > 0) {
+      // Send images with proper format
       const imagePayload = {
         advertisement_id: advertisementId,
-        images: collectImages.value,
+        images: collectImages.value.map(img => ({
+          fileName: img.fileName,
+          base64: img.base64, // This is already the clean base64 data
+        })),
       };
+
       await $api.image.sendImage(imagePayload);
     }
 
     // Reset form
     addAnnouncement.value = {
-      adv_type: 'PROVIDE',
-      service_type_id: 8,
+      adv_type: '',
+      service_type_id: '',
+      from_location: {
+        lat: null,
+        lng: null,
+        name: null,
+      },
       to_location: {
         lat: null,
         lng: null,
         name: null,
       },
       price: null,
-      // details: {
-      //   transportation_type_id: '',
-      // },
       note: null,
     };
 
     imageList.value = [];
     collectImages.value = [];
-    formSubmitted.value = false;
-
-    // Close dialog/form
+    // Optional: Show success message or close dialog
     model.value = false;
   } catch (error) {
     console.error("Error creating announcement: ", error);
+    // Optional: Show error toast or notification
   }
 };
-
 </script>
 
 <template>
@@ -185,57 +212,30 @@ const createAnnouncement = async (announce) => {
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
       <div class="grid grid-cols-2 gap-4">
-        <div>
-          <LocationItem
-              :location="addAnnouncement.to_location"
-              as="div"
-              :class="['', { 'border border-red-500 rounded-[24px]': formSubmitted && !addAnnouncement.to_location.name }]"
-              name="from_location"
-              @click="setLocation('to_location')"
-          />
-          <small v-if="formSubmitted && !addAnnouncement.to_location.name" class="text-red-500 ml-2">
-            Joylashuvni kiriting
-          </small>
-        </div>
+        <LocationItem :location="addAnnouncement.from_location" as="div" class="" name="from_location"
+                      @click="setLocation('from_location')"/>
 
-        <div>
-          <FloatLabel variant="in">
-            <InputText
-                v-model="addAnnouncement.price"
-                id="price"
-                variant="filled"
-                type="number"
-                :class="['w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                { '!border !border-red-500': hasError('price') },
-                { '!border-0': !hasError('price') }
-              ]"
-            />
-            <label for="price" class="!text-[#292D324D]">{{ $t('price') }}</label>
-          </FloatLabel>
-          <small v-if="hasError('price')" class="text-red-500 ml-2">
-            Narxni kiriting
-          </small>
-        </div>
+        <LocationItem :location="addAnnouncement.to_location" as="div" class="" name="to_location"
+                      @click="setLocation('to_location')"/>
+
+        <FloatLabel variant="in">
+          <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
+                     class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
+          <label for="in_label" class="!text-[#292D324D]">{{$t('price')}}</label>
+        </FloatLabel>
+
       </div>
 
       <div class="flex flex-col gap-2 w-full !mt-[24px]">
-        <label for="description" class="text-[#292D3280] text-[16px]">{{ $t('description') }}</label>
-        <Textarea
-            v-model="addAnnouncement.note"
-            id="description"
-            class="w-full custom-placeholder-input"
-            rows="3"
-            cols="30"
-            placeholder="Yuk haqida izoh qoldiring!"
-            :class="{ 'border border-red-500': hasError('note') }"
-        />
-        <small v-if="hasError('note')" class="text-red-500">
-          Izoh kiriting
-        </small>
+        <label for="description" class="text-[#292D3280] text-[16px]">{{$t('description')}}</label>
+        <Textarea v-model="addAnnouncement.note" id="description" class="w-full   custom-placeholder-input" rows="3"
+                  cols="30"
+                  :placeholder="$t('leave_cargo_comment')"/>
       </div>
 
       <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-        <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
+        <span class="text-[#292D324D] text-[12px]">{{$t('cargoImages')}}</span>
+        <!--          {{ imageList }}-->
 
         <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl">
           <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px]">
@@ -245,14 +245,14 @@ const createAnnouncement = async (announce) => {
 
             <div
                 class="group-hover:flex hidden absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 rounded-2xl items-center justify-center">
-              <button type="button" @click="deleteImage(index)">
+              <button @click="deleteImage(index)">
                 <i class="pi pi-trash cursor-pointer" style="font-size: 1.5rem; color: red"></i>
               </button>
             </div>
           </div>
 
           <label for="fileAnnouncement" class="relative">
-            <button type="button">
+            <button>
               <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="0.5" y="0.5" width="109" height="109" rx="15.5" stroke="#66C61C" stroke-dasharray="8 8"/>
                 <path d="M55.5046 62V55" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"
@@ -274,12 +274,20 @@ const createAnnouncement = async (announce) => {
         </div>
       </div>
 
-      <div class="w-full flex justify-end !mt-5">
+      <!-- Example validation error display -->
+      <div v-if="v$.$errors.length" class="text-red-500 mb-4">
+        <p>
+          {{ v$.$errors[0].$message }}
+        </p>
+      </div>
+
+      <div class="w-full flex justify-end">
         <button
             type="submit"
-            class="text-white bg-[#66C61C] !py-4 !px-11 rounded-3xl hover:bg-[#58ad18] transition-colors"
+            :disabled="v$.$invalid"
+            class="text-white bg-[#66C61C] !py-4 !px-11 rounded-3xl disabled:opacity-50"
         >
-          Joylash
+          {{$t('post')}}
         </button>
       </div>
     </form>
