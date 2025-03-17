@@ -43,6 +43,45 @@ const routes: RouteRecordRaw[] = [
         name: 'NotFound',
         component: () => import('@/pages/404.vue')
     },
+    {
+        path: '/profile',
+        name: 'profile',
+        meta: {
+            layout: 'ProfileLayout',
+        },
+        children: [
+            {
+                path: '',
+                name: 'profile-main',
+                component: () => import('@/pages/Profile/ProfilePage.vue'),
+            },
+            {
+                path: 'referral',
+                name: 'profile-referral',
+                component: () => import('@/pages/Profile/ReferralsPage.vue'),
+            },
+            {
+                path: 'theme',
+                name: 'profile-layout',
+                component: () => import('@/pages/Profile/ReferralsPage.vue'),
+            },
+            {
+                path: 'language',
+                name: 'profile-language',
+                component: () => import('@/pages/Profile/ReferralsPage.vue'),
+            },
+
+        ]
+    },
+    {
+        name: 'faq',
+        path: '/faq',
+        meta: {
+            layout: 'ServiceLayout',
+            title: 'FAQ'
+        },
+        component: () => import('@/pages/FaqPage.vue'),
+    },
     ...Service
 ];
 

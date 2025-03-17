@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import {computed, inject, reactive, ref} from "vue";
-import {useRoute, useRouter} from "vue-router";
+import {computed, inject, reactive, ref} from 'vue';
+import {useRoute, useRouter} from 'vue-router';
 import {ErrorMessage, Field, Form, useField} from 'vee-validate';
 
-import type {MaskInputOptions} from "maska"
+import type {MaskInputOptions} from 'maska'
 import * as yup from 'yup';
-import InputOtp from "primevue/inputotp";
+import InputOtp from 'primevue/inputotp';
 
 // could be plain object too
 const phoneField = useField('phone')
 const prefix = '998'
 
 const options = reactive<MaskInputOptions>({
-  mask: "+998 (##) ###-##-##",
+  mask: '+998 (##) ###-##-##',
   reversed: true,
   postProcess: (event) => {
     vForm.value.setFieldValue('phone', `${prefix}${event.detail.unmasked}`)
@@ -163,9 +163,14 @@ const formatTime = computed(() => {
           v-slot="{errors}"
           :validationSchema="validationSchema"
           @submit="onSubmit"
-          class="absolute flex justify-around md:w-[60%] w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        <img @click="$router.push('/')" src="../../assets/images/logo.svg"
-             class="w-[217px] hidden md:block cursor-pointer" alt="logo">
+          class="absolute flex justify-around md:w-[60%] w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+      >
+        <img
+            @click="$router.push('/')"
+            src="../../assets/images/logo.svg"
+            class="w-[217px] hidden md:block cursor-pointer"
+            alt="logo"
+        >
 
         <div class="bg-white rounded-[24px] !w-[400px] !px-[40px] !py-[32px] md:-translate-x-8">
           <h2 class="text-[#282B30] text-[36px] !mb-[20px] text-center font-600">{{ $t('login') }}</h2>
@@ -192,8 +197,12 @@ const formatTime = computed(() => {
             />
           </div>
           <div class="flex justify-center items-center w-full !mt-[36px] min-h-[24px]">
-            <ErrorMessage v-if="errors.globalErrorField" name="globalErrorField" as="span"
-                          class="text-[#EA5455]">
+            <ErrorMessage
+                v-if="errors.globalErrorField"
+                name="globalErrorField"
+                as="span"
+                class="text-[#EA5455]"
+            >
               {{ vForm.errors.globalErrorField }}
             </ErrorMessage>
           </div>
@@ -204,19 +213,29 @@ const formatTime = computed(() => {
           >
 
             {{ $t('phone') }}
-            <svg v-if="isLoading" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
-                 fill="none"
-                 viewBox="0 0 24 24">
+            <svg
+                v-if="isLoading"
+                class="mr-3 -ml-1 size-5 animate-spin text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+            >
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
             </svg>
           </button>
 
           <div v-if="authType === 1" class="!mt-[24px] text-center text-gray-600">
           <span class="text-[#292D32] !text-[15px] text-nowrap">
-           {{ $t('newUserInfo') }} <a href="#" @click="changeAuthType"
-                                      class="text-[#0BA5EC] !ml-1 !text-[15px]">{{ $t('register') }}</a>
+           {{ $t('newUserInfo') }} <a
+              href="#"
+              @click="changeAuthType"
+              class="text-[#0BA5EC] !ml-1 !text-[15px]"
+          >{{ $t('register') }}</a>
           </span>
           </div>
           <div v-else class="!mt-[24px] text-center text-gray-600">
@@ -249,15 +268,21 @@ const formatTime = computed(() => {
             <input type="hidden">
           </Field>
           <div as="div" name="security_code" class="flex flex-col items-center !mt-[24px]">
-            <InputOtp :class="{
+            <InputOtp
+                :class="{
                 _invalid: errors.security_code
-              }" :model-value="optCode" @update:model-value="updateOptCode" class="!border-none !outline-none"/>
+              }"
+                :model-value="optCode"
+                @update:model-value="updateOptCode"
+                class="!border-none !outline-none"
+            />
           </div>
 
           <div class="flex justify-center items-center w-full !mt-[36px] min-h-[24px]">
             <span
                 v-if="vForm?.errors?.globalErrorField"
-                class="text-[#EA5455]">
+                class="text-[#EA5455]"
+            >
               {{ vForm.errors.globalErrorField }}
             </span>
           </div>
@@ -269,19 +294,29 @@ const formatTime = computed(() => {
           >
 
             {{ $t('login') }}
-            <svg v-if="isLoading" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
-                 fill="none"
-                 viewBox="0 0 24 24">
+            <svg
+                v-if="isLoading"
+                class="mr-3 -ml-1 size-5 animate-spin text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+            >
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
             </svg>
           </button>
 
           <div class="!mt-[24px] text-center text-gray-600">
             <span class="text-[#292D32] !text-[15px]">{{ $t('didNotReceiveCode') }}</span>
-            <a href="#" @click.prevent="resendSmsCode"
-               class="text-[#0BA5EC] !ml-1 !text-[15px]">{{ resendDisabled ? formatTime : $t('resend') }}</a>
+            <a
+                href="#"
+                @click.prevent="resendSmsCode"
+                class="text-[#0BA5EC] !ml-1 !text-[15px]"
+            >{{ resendDisabled ? formatTime : $t('resend') }}</a>
           </div>
         </div>
       </div>
