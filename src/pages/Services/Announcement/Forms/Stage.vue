@@ -221,20 +221,20 @@ const createAnnouncement = async (announce) => {
         <FloatLabel variant="in">
           <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
                      class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-          <label for="in_label" class="!text-[#292D324D]">Narx</label>
+          <label for="in_label" class="!text-[#292D324D]">{{$t('price')}}</label>
         </FloatLabel>
 
       </div>
 
       <div class="flex flex-col gap-2 w-full !mt-[24px]">
-        <label for="description" class="text-[#292D3280] text-[16px]">Izoh</label>
+        <label for="description" class="text-[#292D3280] text-[16px]">{{$t('description')}}</label>
         <Textarea v-model="addAnnouncement.note" id="description" class="w-full   custom-placeholder-input" rows="3"
                   cols="30"
-                  placeholder="Yuk haqida izoh qoldiring!"/>
+                  :placeholder="$t('leave_cargo_comment')"/>
       </div>
 
       <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-        <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
+        <span class="text-[#292D324D] text-[12px]">{{$t('cargoImages')}}</span>
         <!--          {{ imageList }}-->
 
         <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl">
@@ -287,7 +287,7 @@ const createAnnouncement = async (announce) => {
             :disabled="v$.$invalid"
             class="text-white bg-[#66C61C] !py-4 !px-11 rounded-3xl disabled:opacity-50"
         >
-          Joylash
+          {{$t('post')}}
         </button>
       </div>
     </form>

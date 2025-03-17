@@ -317,5 +317,12 @@
       "subTitle": "Texnik ko'rik va boshqa zarur bo'lgan avtoservis xizmatlarini ko'rsatish"
     }
   },
-  "warehouses": "Omborxonalar"
+  "warehouses": "Omborxonalar",
+  "download": "Yuklash",
+  "announcement_time": "E’lon vaqti",
+  "max_passenger_count": "Maksimal yo‘lovchi soni",
+  "max_vehicle_count": "Maksimal transport soni",
+  "max_cargo_capacity_kg": "Maksimal yuk sig‘imi (kg)",
+  "leave_cargo_comment": "Yuk haqida izoh qoldiring!",
+  "post": "Joylash"
 }

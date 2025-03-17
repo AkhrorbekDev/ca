@@ -8,7 +8,9 @@ import {useRoute, useRouter} from "vue-router";
 import { set } from "@vueuse/core";
 import Breadcrumbs from "@/components/Breadcrumbs.vue";
 import useBreadcrumbs from "@/stores/breadcrumbs";
+import {useI18n} from "vue-i18n";
 
+const {t} = useI18n()
 const router = useRouter();
 const route = useRoute()
 const visible = ref(false);
@@ -20,7 +22,7 @@ const selectedAnnouncement = ref<any>(null);
 const isLoading = ref(false);
 const announcementAllData = ref<any[]>([]);
 const activeTab = ref(0);
-const tabs = ['Barchasi', 'Buyurtmalarim', 'Xizmatlarim'];
+const tabs = [t('all'), t('myOrders'), t('myServices')];
 
 const $api = inject('api'); // Ensure $api is injected
 
@@ -155,8 +157,8 @@ const breadcrumbsStore = useBreadcrumbs();
 onMounted(() => {
   // Set initial breadcrumbs
   breadcrumbsStore.updateBreadcrumb([
-    { route: '/announcement', title: 'E’lonlar' },
-    { title: 'E’lonlar' },
+    { route: '/announcement', title: t('announcements') },
+    { title: t('announcements') },
   ]);
 });
 
@@ -165,7 +167,7 @@ onMounted(() => {
 <template>
   <div>
     <Breadcrumbs :home="home" :model="breadcrumbs"/>
-    <h1 class="!my-6 text-[#292D32] text-2xl font-semibold">E’lonlar</h1>
+    <h1 class="!my-6 text-[#292D32] text-2xl font-semibold">{{$t('announcements')}}</h1>
     <div class="flex items-center justify-between">
       <div class="flex items-center space-x-4 bg-white rounded-lg !p-1.5">
         <button
@@ -183,7 +185,7 @@ onMounted(() => {
 
       <div class="flex items-center gap-4">
         <div class="flex flex-col gap-2 w-full">
-          <Select v-model="selectedCity" :options="[]" optionLabel="name" placeholder="Xizmatlar"
+          <Select v-model="selectedCity" :options="[]" optionLabel="name" :placeholder="$t('services')"
                   class="w-full !border-0 !rounded-[16px] custom-placeholder-select h-[56px] flex items-center"/>
         </div>
         <div class="relative">
@@ -197,12 +199,12 @@ onMounted(() => {
                   stroke="white" stroke-width="1.5"/>
               <path d="M15 12H10M12.5 14.5L12.5 9.5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
             </svg>
-            E’lon joylash
+            {{$t('createAdvertisement')}}
           </button>
 
           <div v-if="menuVisible">
             <!--dropdown 1-->
-            <div class="mega-drop-menu !left-[-112%]" >
+            <div class="mega-drop-menu !left-[-45%]" >
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards card-wrap cursor-pointer"
                      v-for="(item, index) in getServicesData"
@@ -216,7 +218,7 @@ onMounted(() => {
             </div>
 
             <!--dropdown 2-->
-            <div v-if="childMenu.length" class="mega-drop-menu !left-[-330%]" @click.stop>
+            <div v-if="childMenu.length" class="mega-drop-menu !left-[-191%]" @click.stop>
               <button @click="childMenu = []" class="text-[#000] w-full flex justify-end">x</button>
               <div class="grid grid-cols-2 gap-3">
                 <div class="cards cursor-pointer"
@@ -264,8 +266,8 @@ onMounted(() => {
           >
             <div
                 v-if="activeTab !== 0"
-                :class="['!px-[11px] !py-[4px] rounded-[50px] text-[10px] font-medium flex items-center gap-3', item.status ? 'bg-[#F0FAE9] text-[#66C61C]' : 'bg-[#FEEDEC] text-[#F04438]']">
-              {{ item.status === 'ACTIVE' ? 'Faol' : 'Faol emas' }}
+                :class="['!px-[11px] !py-[4px] rounded-[50px] text-[10px] font-medium flex items-center gap-3', item.status === 'ACTIVE' ? 'bg-[#F0FAE9] text-[#66C61C]' : 'bg-[#FEEDEC] text-[#F04438]']">
+              {{ item.status === 'ACTIVE' ? $t('active') : $t('notActive') }}
               <div v-if="!item.status && (activeTab == 1 || activeTab == 2)" class="flex items-center">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
