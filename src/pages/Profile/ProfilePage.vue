@@ -63,6 +63,7 @@ onMounted(() => {
 
 <template>
   <div class="!bg-[#FFFFFF] !rounded-[24px] !px-[40px] !py-[40px] min-w-[940px]">
+
     <h1 class="text-[32px] text-[#292D32] font-bold">
       {{ $t('personalInformation') }}
     </h1>
