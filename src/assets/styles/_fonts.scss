@@ -1,0 +1,19 @@
+@use '@/assets/styles/mixins.scss' as mixins; // Use a namespace
+$inter-family: "Lufga";
+$font-format: "truetype";
+
+$fonts: (
+        bold: 700,
+        semiBold: 600,
+        medium: 500,
+        regular: 400,
+);
+
+@each $style, $weight in $fonts {
+  @include mixins.font-face(
+                  $inter-family,
+                  "@/assets/fonts/lufga/#{$style}.ttf",
+                  $weight,
+                  $font-format
+  );
+}
