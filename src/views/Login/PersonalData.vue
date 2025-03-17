@@ -5,6 +5,10 @@ import * as yup from 'yup'
 import type {MaskInputOptions} from 'maska';
 import {Field, Form} from 'vee-validate';
 
+import {useI18n} from 'vue-i18n';
+
+const {t} = useI18n()
+
 interface DataValue {
   company: null;
   stir: null;
@@ -28,12 +32,12 @@ const dataValue = ref<DataValue>({
 const prefix = '998'
 const userTypes = ref([
   {
-    name: 'Yuridik shaxs',
-    value: 'PHYSICAL'
+    name: t('legalEntity'),
+    value: ' CLIENT'
   },
   {
-    name: 'Jismoniy shaxs',
-    value: 'CLIENT'
+    name: t('individual'),
+    value: 'PHYSICAL'
   }
 ])
 const selectedUserType = ref(userTypes.value[0])

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import {formatNumber, max, min} from "@/utils/helper";
+import {formatNumber, max, min} from '@/utils/helper';
 import emptyImage from '@/assets/images/empty.png'
+import {imageCDN} from '@/config'
 
 defineProps({
   item: {
@@ -12,16 +13,18 @@ defineProps({
     default: () => false
   }
 })
-const baseUrlImage = 'https://api.carting.uz/uploads/files/'
 </script>
 
 <template>
-  <div class="bg-[#FFFFFF] rounded-[24px] max-h-[340px] overflow-hidden cursor-pointer"
-       style="box-shadow: 0 2px 8px 0 #292D3214"
+  <div
+      class="bg-[#FFFFFF] rounded-[24px] max-h-[340px] overflow-hidden cursor-pointer"
+      style="box-shadow: 0 2px 8px 0 #292D3214"
   >
     <img
-        :src="item.images && item.images.length > 0 ? `${baseUrlImage}${item.images[0]}` : emptyImage"
-        class="w-full min-h-[190px] max-h-[190px] object-cover" alt="car"/>
+        :src="item.images && item.images.length > 0 ? `${imageCDN}${item.images[0]}` : emptyImage"
+        class="w-full min-h-[190px] max-h-[190px] object-cover"
+        alt="car"
+    />
     <div class="!px-[16px] !py-[12px]">
       <h1 class="text-[#000000] text-[14px] font-400">{{
           isRoom ? item.details.company_name : item.transport_name
@@ -44,11 +47,13 @@ const baseUrlImage = 'https://api.carting.uz/uploads/files/'
         <div class="flex items !ml-[8px] relative">
           <AvatarGroup>
             <Avatar
-                v-for="(in2) in min(item.comments?.length || 0, 4)" :key="in2.comment_text"
+                v-for="(in2) in min(item.comments?.length || 0, 4)"
+                :key="in2.comment_text"
                 :image="item.user?.avatar ? item.user.avatar : ''"
                 :icon="item.user?.avatar ? '' : 'pi pi-user'"
                 shape="circle"
-                class="!h-[24px] !w-[24px] !bg-[#F3F3F3] !text-[#B7B8BA]" alt="avatar"
+                class="!h-[24px] !w-[24px] !bg-[#F3F3F3] !text-[#B7B8BA]"
+                alt="avatar"
             />
             <Avatar
                 v-if="item.commenst?.length > 4"

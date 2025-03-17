@@ -326,5 +326,8 @@
   "leave_cargo_comment": "Yuk haqida izoh qoldiring!",
   "post": "Joylash",
   "uploadAvatar": "Profil rasmini yuklash",
-  "deleteAvatar": "Profil rasmini o'chirish"
+  "deleteAvatar": "Profil rasmini o'chirish",
+  "changePhoneNumber": "Telefon raqamini o'zgartirish",
+  "phoneNumberChanged": "Telefon raqamingiz o'zgardi",
+  "back": "Ortga"
 }

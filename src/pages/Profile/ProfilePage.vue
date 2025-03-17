@@ -1,10 +1,16 @@
 <script setup lang="ts">
-import {computed, inject, onMounted, reactive, ref} from 'vue'
+import {computed, inject, onMounted, reactive, ref, watch} from 'vue'
 import editIcon from '@/assets/icons/edit.svg';
 import type {MaskInputOptions} from 'maska';
 import {Field, Form} from 'vee-validate';
+import {useI18n} from 'vue-i18n';
+import {imageCDN} from '@/config'
+import EditPhoneModal from '@/pages/Profile/components/EditPhoneModal.vue';
+import {useToast} from 'primevue/usetoast';
 
+const {t} = useI18n()
 const $auth = inject('auth')
+const $api = inject('api')
 const _user = ref({})
 const vForm = ref()
 const prefix = '998'
@@ -28,15 +34,19 @@ const user = computed(() => {
   return $auth.user
 })
 
+watch(user, (newVal) => {
+  _user.value = {...newVal}
+})
+
 
 const userTypes = ref([
   {
-    name: 'Yuridik shaxs',
-    value: 'PHYSICAL'
+    name: t('legalEntity'),
+    value: ' CLIENT'
   },
   {
-    name: 'Jismoniy shaxs',
-    value: 'CLIENT'
+    name: t('individual'),
+    value: 'PHYSICAL'
   }
 ])
 const initialValues = ref({
@@ -49,16 +59,65 @@ const updateAgreeValue = (e) => {
   agreeValue.value = e
   vForm.value.setFieldValue('agree', e)
 }
+const _showEditModal = ref(false)
+const showEditModal = () => {
+  _showEditModal.value = true
+}
+const toast = useToast()
+const savePhone = (phone) => {
+  _showEditModal.value = false
+  _user.value.phone_number = phone
+  return;
+  $api.auth.updateUserProfile({
+    ...user.value,
+    phone_number: phone,
+  }).then(() => {
 
+    toast.add({
+      severity: 'success',
+      summary: t('phoneNumberChanged'),
+      life: 2000,
+      group: 'br'
+    })
+  }).catch(err => {
+    toast.add({
+      severity: 'error',
+      summary: err.message,
+      life: 2000,
+      group: 'br'
+    })
+  })
+}
 const submit = () => {
-  vForm.value.validate()
+  vForm.value.validate().then((res) => {
+    console.log(res)
+  })
+}
+const handleFileUpload = (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64 = e.target.result as string;
+      $api.auth.updateUserProfile({
+        ...user.value,
+        base64: base64.split(',')[1],
+      })
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+const deleteAvatar = () => {
+  $api.auth.updateUserProfile({
+    ...user.value,
+    base64: '',
+  })
 }
 
 onMounted(() => {
   _user.value = $auth.user || {}
-  console.log(_user.value, $auth.user, 'user')
 })
-
 </script>
 
 <template>
@@ -68,9 +127,9 @@ onMounted(() => {
     </h1>
     <div class="flex items-center gap-[40px]  !my-[32px]">
       <div class=" w-[120px] h-[120px] rounded-full">
-        <template v-if="user?.photo">
+        <template v-if="_user?.photo">
           <img
-              :src="user.photo"
+              :src="`${imageCDN}/${user.photo}`"
               alt="avatar"
               class="!rounded-full !mb-[8px]"
           />
@@ -85,32 +144,43 @@ onMounted(() => {
         </template>
 
       </div>
-      <div class="flex items-center gap-[16px]">
+      <div class="flex items-center w-max gap-[16px]">
         <label
             class="!bg-[#66C61C] !py-[18px] !px-[24px]
              flex items-center justify-center gap-2 text-white text-[16px]
-             rounded-[20px] !mt-auto w-full"
+             rounded-[20px] !mt-auto w-full cursor-pointer"
             for="upload_avatar"
         >
           <span>
             {{ $t('uploadAvatar') }}
           </span>
-          <input type="file" hidden id="upload_avatar"/>
+          <input
+              type="file"
+              accept="image/jpeg, image/jpg, image/png"
+              @change="handleFileUpload"
+              hidden
+              id="upload_avatar"
+          />
         </label>
         <label
             class="!bg-[#f3f3f3] !py-[18px] !px-[24px]
              flex items-center justify-center gap-2 text-[#292d32] text-[16px]
-             rounded-[20px] !mt-auto w-full"
-            for="upload_avatar"
+             rounded-[20px] !mt-auto w-full cursor-pointer whitespace-nowrap"
+            @click="deleteAvatar"
         >
           <span>
-            {{ $t('uploadAvatar') }}
+            {{ $t('deleteAvatar') }}
           </span>
-          <input type="file" hidden id="upload_avatar"/>
         </label>
       </div>
     </div>
-    <Form ref="vForm" as="div" v-slot="{errors}" class="grid grid-cols-3 gap-x-[24px] gap-y-[32px]">
+    <Form
+
+        ref="vForm"
+        as="div"
+        v-slot="{errors}"
+        class="grid grid-cols-3 gap-x-[24px] gap-y-[32px]"
+    >
       <div class=" w-full flex flex-col items-start gap-[6px] justify-between">
         <label class="!text-[#292D324D]">{{ $t('personal') }}</label>
         <Field
@@ -121,7 +191,7 @@ onMounted(() => {
         >
           <Select
               :loading="isLoading"
-              :model-value="user?.type"
+              :model-value="_user?.type"
               :options="userTypes"
               :disabled="!edit.type"
               :readonly="!edit.type"
@@ -147,7 +217,7 @@ onMounted(() => {
                   </label>
                 </div>
                 <RadioButton
-                    :model-value="user?.type"
+                    :model-value="_user?.type"
                     :inputId="`name.${slotProps.option.value}`"
                     :name="field.name"
                     :value="slotProps.option.value"
@@ -156,7 +226,7 @@ onMounted(() => {
               </div>
             </template>
           </Select>
-          <div @click="() => edit.type = !edit.type">
+          <div class="cursor-pointer" @click="() => edit.type = !edit.type">
             <img :src="editIcon" alt="">
           </div>
         </Field>
@@ -168,13 +238,15 @@ onMounted(() => {
           <InputText
               id="in_label"
               :model-value="_user.first_name"
-              :disabled="!edit.user_name"
-              :readonly="!edit.user_name"
               variant="outline"
               autocomplete="off"
               :placeholder="$t('pickAddress')"
               class=" !bg-transparent  !py-[16px] !px-[16px]
                      shadow-none !border-0"
+              @input="(e) => {
+                edit.user_name ? _user.first_name = e.target.value
+              : e.target.value = user.first_name
+              }"
           />
           <!--          <div @click="() => edit.user_name = !edit.user_name">-->
           <!--            <img :src="editIcon" alt="">-->
@@ -188,8 +260,6 @@ onMounted(() => {
           <InputText
               id="in_label"
               :model-value="_user.last_name"
-              :disabled="!edit.user_lastname"
-              :readonly="!edit.user_lastname"
               variant="outline"
               autocomplete="off"
               :placeholder="$t('pickAddress')"
@@ -213,13 +283,13 @@ onMounted(() => {
               placeholder="+998"
               :disabled="!edit.phone"
               :readonly="!edit.phone"
-              :value="user?.phone_number"
+              :value="_user?.phone_number"
               class="!bg-[#FAFAFA] border-0 border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
               :class="{
                   _invalid: errors.phone
                 }"
           />
-          <div @click="() => edit.user = !edit.user">
+          <div class="cursor-pointer" @click="showEditModal">
             <img :src="editIcon" alt="">
           </div>
         </div>
@@ -230,7 +300,7 @@ onMounted(() => {
         <div class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]">
           <InputText
               id="in_label"
-              :model-value="user?.tg_link"
+              :model-value="_user?.tg_link"
               :disabled="!edit.tg_link"
               :readonly="!edit.tg_link"
               variant="outline"
@@ -250,7 +320,7 @@ onMounted(() => {
         <div class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]">
           <InputText
               id="in_label"
-              :model-value="user?.mail"
+              :model-value="_user?.mail"
               :disabled="!edit.email"
               :readonly="!edit.email"
               variant="outline"
@@ -258,9 +328,9 @@ onMounted(() => {
               class=" !bg-transparent  !py-[16px] !px-[16px]
                      shadow-none !border-0"
           />
-          <!--          <div @click="() => edit.user = !edit.user">-->
-          <!--            <img :src="editIcon" alt="">-->
-          <!--          </div>-->
+          <div class="cursor-pointer" @click="() => edit.email = !edit.email">
+            <img :src="editIcon" alt="">
+          </div>
         </div>
 
       </div>
@@ -269,7 +339,7 @@ onMounted(() => {
         <div class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]">
           <InputText
               id="in_label"
-              :model-value="user?.referred_by"
+              :model-value="_user?.referred_by"
               :disabled="true"
               :readonly="true"
               variant="outline"
@@ -329,6 +399,13 @@ onMounted(() => {
           </svg>
         </button>
       </div>
+
+      <EditPhoneModal
+          v-if="_showEditModal"
+          :visible="_showEditModal"
+          @save:phone="savePhone"
+          @update:visible="_showEditModal = $event"
+      />
     </Form>
   </div>
 </template>

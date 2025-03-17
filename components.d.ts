@@ -38,6 +38,7 @@ declare module 'vue' {
     OverlayPanel: typeof import('primevue/overlaypanel')['default']
     PeregonForm: typeof import('./src/components/forms/PeregonForm.vue')['default']
     PersonTransferForm: typeof import('./src/components/forms/PersonTransferForm.vue')['default']
+    Popover: typeof import('primevue/popover')['default']
     ProfileDropDown: typeof import('./src/components/ProfileDropDown.vue')['default']
     RadioButton: typeof import('primevue/radiobutton')['default']
     RadioItem: typeof import('./src/components/form-elements/RadioItem.vue')['default']

@@ -23,6 +23,10 @@ const getPropertyValue = (parent, child) => {
     return ''
 }
 
+const requiredAuth = {
+    methods: ['PUT', 'POST']
+}
+
 class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
 
     _fetch: $Fetch;
@@ -41,7 +45,7 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
                 locale: app.config.globalProperties.$i18n.locale
             }
         }
-        if (context.options.method === 'POST' || context.options.params && !(typeof context.options.params?.noAuth === 'boolean' && context.options.params?.noAuth === true)) {
+        if (requiredAuth.methods.includes(context.options.method) || context.options.params && !(typeof context.options.params?.noAuth === 'boolean' && context.options.params?.noAuth === true)) {
             context.options.headers.Authorization = `Basic ${btoa('root:GJA4TI8zQciHrXq')}`
             if (app.config.globalProperties.$auth.interceptor) {
                 context.options = await app.config.globalProperties.$auth.interceptor({

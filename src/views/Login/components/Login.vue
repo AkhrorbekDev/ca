@@ -1,23 +1,21 @@
 <script setup lang="ts">
-import {computed, inject, reactive, ref} from 'vue';
-import {useRoute, useRouter} from 'vue-router';
-import {ErrorMessage, Field, Form, useField} from 'vee-validate';
+import {computed, inject, onMounted, reactive, ref} from 'vue';
+import {useRouter} from 'vue-router';
+import {ErrorMessage, Field, Form} from 'vee-validate';
 
 import type {MaskInputOptions} from 'maska'
 import * as yup from 'yup';
 import InputOtp from 'primevue/inputotp';
 
 // could be plain object too
-const phoneField = useField('phone')
-const prefix = '998'
-
-const options = reactive<MaskInputOptions>({
-  mask: '+998 (##) ###-##-##',
-  reversed: true,
-  postProcess: (event) => {
-    vForm.value.setFieldValue('phone', `${prefix}${event.detail.unmasked}`)
+const props = defineProps({
+  phone: {
+    type: String,
+    default: ''
   }
 })
+const emit = defineEmits(['on:send'])
+const prefix = '998'
 
 const router = useRouter()
 const $api = inject('api')
@@ -40,6 +38,14 @@ const validationSchema2 = yup.object({
 })
 const showBackground = ref(true)
 const isLoading = ref(false)
+const _phone = ref('')
+const options = reactive<MaskInputOptions>({
+  mask: '+998 (##) ###-##-##',
+  reversed: true,
+  postProcess: (event) => {
+    vForm.value.setFieldValue('phone', `${prefix}${event.detail.unmasked}`)
+  }
+})
 
 const changeAuthType = (e) => {
   e.preventDefault()
@@ -51,6 +57,21 @@ const changeAuthType = (e) => {
 
 const updateOptCode = (e) => {
   vCodeForm.value.setFieldValue('security_code', e)
+}
+
+function counterInterval() {
+  interval.value = setInterval(() => {
+    counter.value--
+    if (!counter.value) {
+      clearInterval(interval.value)
+      resendDisabled.value = true
+      counter.value = 60 * 5
+    }
+    if (counter.value === 0) {
+      resendDisabled.value = false
+      clearInterval(inverval.value)
+    }
+  }, 1000)
 }
 
 function maskNumber(number) {
@@ -84,6 +105,7 @@ const onSubmit = () => {
               maskedPhone.value = maskNumber(vForm.value.values.phone)
               vForm.value.setFieldValue('session_token', response.data.session_token)
               counterInterval()
+              emit('on:send', true)
             } else {
               vForm.value.setFieldError('globalErrorField', response.message)
             }
@@ -102,11 +124,11 @@ const resendSmsCode = () => {
   if (resendDisabled.value) return
   onSubmit()
 }
-const route = useRoute()
 const verifySMSCode = () => {
   vCodeForm.value.validate().then(res => {
     if (res.valid)
       isLoading.value = true
+
     $auth.login({
       phone_number: vForm.value.values.phone,
       session_token: vForm.value.values.session_token,
@@ -130,20 +152,12 @@ const verifySMSCode = () => {
 }
 
 
-function counterInterval() {
-  interval.value = setInterval(() => {
-    counter.value--
-    if (!counter.value) {
-      clearInterval(interval.value)
-      resendDisabled.value = true
-      counter.value = 60 * 5
-    }
-    if (counter.value === 0) {
-      resendDisabled.value = false
-      clearInterval(inverval.value)
-    }
-  }, 1000)
-}
+onMounted(() => {
+  if (props.phone) {
+    // vForm.value.setFieldValue('phone', props.phone)
+    _phone.value = props.phone
+  }
+})
 
 const formatTime = computed(() => {
   const minutes = Math.floor(counter.value / 60)
@@ -154,10 +168,6 @@ const formatTime = computed(() => {
 <template>
   <div>
     <div v-show="!showCodeField">
-      <div v-if="showBackground" class="fixed inset-0">
-        <img src="../../assets/images/bgCar.png" alt="Background" class="w-full h-full object-cover">
-      </div>
-
       <Form
           ref="vForm"
           v-slot="{errors}"
@@ -187,6 +197,7 @@ const formatTime = computed(() => {
             <input
                 id="phone"
                 v-maska
+                v-model="_phone"
                 :data-maska="options.mask"
                 @maska="options.postProcess"
                 placeholder="+998"

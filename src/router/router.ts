@@ -1,42 +1,42 @@
-import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
-import Service from "@/router/service";
+import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router';
+import Service from '@/router/service';
 
 const routes: RouteRecordRaw[] = [
     {
-        path: "/",
+        path: '/',
         name: 'home',
-        component: () => import("@/pages/Home/Home.vue"),
-        meta: {layout: "MainLayout"},
+        component: () => import('@/pages/Home/Home.vue'),
+        meta: {layout: 'MainLayout'},
     },
     {
-        path: "/login",
-        name: "login",
-        component: () => import("@/views/Login/Login.vue"),
-        meta: {layout: "LoginLayout"},
+        path: '/login',
+        name: 'login',
+        component: () => import('@/views/Login/LoginPage.vue'),
+        meta: {layout: 'LoginLayout'},
     },
     {
-        path: "/income-password",
-        name: "income-password",
-        component: () => import("@/views/Login/IncomePassword.vue"),
-        meta: {layout: "IncomePasswordLayout"},
+        path: '/income-password',
+        name: 'income-password',
+        component: () => import('@/views/Login/IncomePassword.vue'),
+        meta: {layout: 'IncomePasswordLayout'},
     },
     {
-        path: "/register",
-        name: "register",
-        component: () => import("@/views/Login/Register.vue"),
-        meta: {layout: "Register"},
+        path: '/register',
+        name: 'register',
+        component: () => import('@/views/Login/Register.vue'),
+        meta: {layout: 'Register'},
     },
     {
-        path: "/selection",
-        name: "selection",
-        component: () => import("@/views/Login/Selection.vue"),
-        meta: {layout: "Selection"},
+        path: '/selection',
+        name: 'selection',
+        component: () => import('@/views/Login/Selection.vue'),
+        meta: {layout: 'Selection'},
     },
     {
-        path: "/personal-data",
-        name: "personal-data",
-        component: () => import("@/views/Login/PersonalData.vue"),
-        meta: {layout: "PersonalData"},
+        path: '/personal-data',
+        name: 'personal-data',
+        component: () => import('@/views/Login/PersonalData.vue'),
+        meta: {layout: 'PersonalData'},
     },
     {
         path: '/:pathMatch(.*)*',
@@ -92,12 +92,12 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to: any, _, next) => {
-    if (!to.meta.layout) to.meta.layout = "MainLayout";
+    if (!to.meta.layout) to.meta.layout = 'MainLayout';
     next()
 });
 
 router.afterEach((to: any) => {
-    const DEFAULT_TITLE = "Carting transport xizmati";
+    const DEFAULT_TITLE = 'Carting transport xizmati';
     document.title = to.meta.title || DEFAULT_TITLE;
 });
 
