@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import {Field, Form} from 'vee-validate'
-import {shippingSchema} from "@/components/form-elements/schema";
-import LocationItem from "@/components/form-elements/LocationItem.vue";
+import {shippingSchema} from '@/components/form-elements/schema';
+import LocationItem from '@/components/form-elements/LocationItem.vue';
 import {inject, onMounted, onUnmounted, ref, watch} from 'vue'
-import getGeoObject from "@/composables/getGeoObject";
-import RadioItem from "@/components/form-elements/RadioItem.vue";
-import useMapStore from "@/stores/map.store";
+import getGeoObject from '@/composables/getGeoObject';
+import RadioItem from '@/components/form-elements/RadioItem.vue';
+import useMapStore from '@/stores/map.store';
 import {ADV_TYPES} from '@/constants'
-import {useToast} from "primevue/usetoast";
+import {useToast} from 'primevue/usetoast';
 
 import {useI18n} from 'vue-i18n'
 
@@ -63,6 +63,21 @@ const setLocation = (name) => {
   // hideDetailsOnLocationChange.value = true
 }
 
+const setSelectedLocation = (address, name) => {
+  await getGeoObject({address: address})
+      .then(res => {
+        const marker = mapStore.getMarker(name)
+        mainForm.value.setFieldValue(name, {
+          lat: marker.markerProps.geometry.coordinates[0],
+          lng: marker.markerProps.geometry.coordinates[1],
+          name: res.data.description
+        })
+        mapStore.removeMarker(name)
+      }).finally(() => {
+        hideDetailsOnLocationChange.value = false
+      })
+}
+
 const onChangeDate = (e: Date, name) => {
   mainForm.value.setFieldValue(name, dateRef.value.formatDate(e, 'dd.mm.yy'))
 }
@@ -82,7 +97,7 @@ const cargoTypes = [
   {
     label: t('buildingMaterials'),
     value: 2,
-    description: t("buildingMaterialsDescription")
+    description: t('buildingMaterialsDescription')
   },
   {
     label: t('foods'),
@@ -305,7 +320,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  document.removeEventListener("click", clickOutSideDetails)
+  document.removeEventListener('click', clickOutSideDetails)
 })
 </script>
 
@@ -327,24 +342,37 @@ onUnmounted(() => {
     <div
         ref="mainWrapper"
         class="flex flex-col h-full w-full gap-4 !p-[16px]">
-      <LocationItem :label="$t('from')"
-                    :class="{
+      <LocationItem
+          :label="$t('from')"
+          :class="{
         _invalid: (errors['from_location.lat'] || errors['from_location.lng'])
       }"
-                    :location="values.from_location" as="div" class="col-span-full" name="from_location"
-                    @click="setLocation('from_location')"/>
+          :location="values.from_location"
+          as="div"
+          class="col-span-full"
+          name="from_location"
+          @on:select="setSelectedLocation($event,'from_location')"
+          @click="setLocation('from_location')"/>
 
       <LocationItem
           :class="{
-        _invalid: (errors['to_location.lat'] || errors['to_location.lng'])
-      }"
-          :location="values.to_location" as="div" class="col-span-full" name="to_location"
+            _invalid: (errors['to_location.lat'] || errors['to_location.lng'])
+          }"
+          :location="values.to_location"
+          as="div"
+          class="col-span-full"
+          name="to_location"
+          @on:select="setSelectedLocation($event,'to_location')"
+
           @click="setLocation('to_location')"/>
 
-      <Field as="div" name="details.load_weight.amount"
-             :class="{
+      <Field
+          as="div"
+          name="details.load_weight.amount"
+          :class="{
         _invalid: (errors['details.load_weight.amount'])
-      }" class="load_weight_select formItem flex items-center justify-between">
+      }"
+          class="load_weight_select formItem flex items-center justify-between">
         <div class="flex flex-col  items-start justify-center">
 
           <label for="load_weight.amount" class="!text-[#292D324D]">{{ $t('loadWeight') }}</label>
@@ -352,7 +380,8 @@ onUnmounted(() => {
               :model-value="values.details.load_weight.amount"
               type="number"
               class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"
-              id="load_weight.amount" aria-describedby="username-help"
+              id="load_weight.amount"
+              aria-describedby="username-help"
               variant="outline"
           />
         </div>
@@ -391,9 +420,14 @@ onUnmounted(() => {
           </Select>
         </Field>
       </Field>
-      <Field v-slot="{field}" :class="{
+      <Field
+          v-slot="{field}"
+          :class="{
                 _invalid: errors.shipment_date
-              }" name="shipment_date" as="div" class=" !px-[4px]  col-span-full">
+              }"
+          name="shipment_date"
+          as="div"
+          class=" !px-[4px]  col-span-full">
         <FloatLabel variant="in">
           <DatePicker
 
@@ -403,7 +437,8 @@ onUnmounted(() => {
               inputId="in_label"
               showIcon
               @update:model-value="onChangeDate($event, field.name)"
-              iconDisplay="input" variant="filled"
+              iconDisplay="input"
+              variant="filled"
               class="custom-date w-full "/>
           <label for="in_label" class="!text-[#292D324D]">
             {{ $t('departureDate') }}</label>
@@ -427,12 +462,22 @@ onUnmounted(() => {
             <span class="text-[#292D32]">
               {{ $t('additionalInfoDescription') }}
             </span>
-            <svg :style="{
+            <svg
+                :style="{
               transform: showDetails ? 'rotate(90deg)' : 'rotate(180deg)'
-            }" width="12" height="8" viewBox="0 0 12 8" fill="none"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 6.5L6 1.5L11 6.5" stroke="#292D32" stroke-opacity="0.3" stroke-width="1.5"
-                    stroke-linecap="round" stroke-linejoin="round"/>
+            }"
+                width="12"
+                height="8"
+                viewBox="0 0 12 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+              <path
+                  d="M1 6.5L6 1.5L11 6.5"
+                  stroke="#292D32"
+                  stroke-opacity="0.3"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"/>
             </svg>
           </div>
 
@@ -445,18 +490,24 @@ onUnmounted(() => {
           as="div"
           :class="{
                 _invalid: errors['details.transportation_type_id']
-              }" class="col-span-full !px-[4px]">
+              }"
+          class="col-span-full !px-[4px]">
         <FloatLabel variant="in">
-          <Select :loading="transportLoading" :model-value="selectedTransports"
-                  @update:model-value="updateTransportType"
-                  :options="transports" optionLabel="name"
-                  :placeholder="$t('pickTransport')"
-                  class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
+          <Select
+              :loading="transportLoading"
+              :model-value="selectedTransports"
+              @update:model-value="updateTransportType"
+              :options="transports"
+              optionLabel="name"
+              :placeholder="$t('pickTransport')"
+              class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
             <template #value="slotProps">
               <div v-if="slotProps.value" class="flex items-center">
-                <img :alt="slotProps.value.name"
-                     :src="slotProps.value.icon"
-                     class="mr-2" style="width: 80px; height: 40px; object-fit: contain"/>
+                <img
+                    :alt="slotProps.value.name"
+                    :src="slotProps.value.icon"
+                    class="mr-2"
+                    style="width: 80px; height: 40px; object-fit: contain"/>
                 <div>{{ slotProps.value.name }}</div>
               </div>
               <span v-else>
@@ -465,9 +516,11 @@ onUnmounted(() => {
             </template>
             <template #option="slotProps">
               <div class="flex items-center grow">
-                <img :alt="slotProps.option.name"
-                     :src="slotProps.option.icon"
-                     :class="`mr-2`" style="width: 94px; height: 73px; object-fit: contain"/>
+                <img
+                    :alt="slotProps.option.name"
+                    :src="slotProps.option.icon"
+                    :class="`mr-2`"
+                    style="width: 94px; height: 73px; object-fit: contain"/>
                 <div class="flex items-center justify-between grow">
                   <div>
                     <span class="block">{{ slotProps.option.name }}</span>
@@ -476,7 +529,9 @@ onUnmounted(() => {
                     <rect width="24" height="24" rx="12" fill="#66C61C"/>
                     <path
                         d="M8.33203 11.9999H15.6654M15.6654 11.9999L12.6065 9.33325M15.6654 11.9999L12.6065 14.6666"
-                        stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                        stroke="white"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"/>
                   </svg>
 
 
@@ -497,12 +552,17 @@ onUnmounted(() => {
           class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-auto w-full"
       >
         {{ $t('createAdvertisement') }}
-        <svg v-if="isSubmited" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
-             fill="none"
-             viewBox="0 0 24 24">
+        <svg
+            v-if="isSubmited"
+            class="mr-3 -ml-1 size-5 animate-spin text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24">
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
       </button>
     </div>
@@ -541,10 +601,16 @@ onUnmounted(() => {
           </div>
           <RadioItem
               :model-value="values.details.load_service_id"
-              as="div" name="details.load_service_id" v-for="item in loadTypes"
-              :key="item.label" :item="item" :value="item.value"/>
+              as="div"
+              name="details.load_service_id"
+              v-for="item in loadTypes"
+              :key="item.label"
+              :item="item"
+              :value="item.value"/>
         </Field>
-        <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[24px]" :class="{
+        <div
+            class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[24px]"
+            :class="{
           _invalid: imagesNotUploaded
         }">
           <span class="text-[#292D324D] text-[12px]">
@@ -553,9 +619,11 @@ onUnmounted(() => {
 
           <div class="grid grid-cols-2 gap-4 !mt-[8px] rounded-2xl">
             <div v-for="(img, index) in images" :key="index" class="relative group !mr-0 w-[105px] h-[105px]">
-              <img class="w-full h-full object-cover rounded-2xl"
-                   :src="img" alt="img"
-                   width="105">
+              <img
+                  class="w-full h-full object-cover rounded-2xl"
+                  :src="img"
+                  alt="img"
+                  width="105">
 
               <div
                   class="group-hover:flex hidden absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 rounded-2xl items-center justify-center">
@@ -568,19 +636,32 @@ onUnmounted(() => {
             <label for="fileAnnouncement" class="relative cursor-pointer">
               <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <rect x="0.5" y="0.5" width="109" height="109" rx="15.5" stroke="#66C61C" stroke-dasharray="8 8"/>
-                <path d="M55.5046 62V55" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"
-                      stroke-linejoin="round"/>
-                <path d="M53.3164 57L55.5033 54.833L57.6902 57" stroke="#66C61C" stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"/>
+                <path
+                    d="M55.5046 62V55"
+                    stroke="#66C61C"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+                <path
+                    d="M53.3164 57L55.5033 54.833L57.6902 57"
+                    stroke="#66C61C"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
                 <path
                     d="M59.5406 62H62.124C64.0697 62 65.6562 60.428 65.6562 58.5C65.6562 56.572 64.0697 55 62.124 55H61.685V54C61.685 50.69 58.9704 48 55.63 48C52.6257 48 50.135 50.178 49.6628 53.023C47.2639 53.144 45.3516 55.093 45.3516 57.5C45.3516 59.985 47.385 62 49.8928 62H51.4672"
-                    stroke="#66C61C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    stroke="#66C61C"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
               </svg>
 
-              <input @change="handleFileUpload" class="absolute opacity-0 inset-0 cursor-pointer"
-                     id="fileAnnouncement" type="file"
-                     accept="image/*">
+              <input
+                  @change="handleFileUpload"
+                  class="absolute opacity-0 inset-0 cursor-pointer"
+                  id="fileAnnouncement"
+                  type="file"
+                  accept="image/*">
 
             </label>
           </div>
@@ -589,10 +670,14 @@ onUnmounted(() => {
           <label for="description" class="text-[#292D3280] text-[12px]">
             {{ $t('description') }}
           </label>
-          <Textarea :model-value="values.note" id="description" class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
-                    style="border: 1px solid #C2C2C233" rows="3"
-                    cols="30"
-                    :placeholder="$t('leaveOrderComment')"/>
+          <Textarea
+              :model-value="values.note"
+              id="description"
+              class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
+              style="border: 1px solid #C2C2C233"
+              rows="3"
+              cols="30"
+              :placeholder="$t('leaveOrderComment')"/>
         </Field>
         <Field name="pay_type" v-slot="{handleChange }" as="div" class="!mt-[12px] !mb-[24px]">
           <span class="bg-[#FAFAFA] rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
@@ -601,8 +686,9 @@ onUnmounted(() => {
 
           <div v-for="paymentType in paymentTypes" :key="paymentType.value">
             <div class="flex items-center justify-between !py-4 border-b border-[#F5F5F7]">
-              <label :for="`paymentType.${paymentType.value}`"
-                     class="flex items-center gap-4 cursor-pointer">
+              <label
+                  :for="`paymentType.${paymentType.value}`"
+                  class="flex items-center gap-4 cursor-pointer">
                 <span v-html="paymentType.icon"/>
                 {{ paymentType.name }}
               </label>
@@ -629,7 +715,8 @@ onUnmounted(() => {
                 _invalid: errors['price']
               }"
               class="!py-[12px] !px-[16px] !rounded-[16px] border border-[#C2C2C233] !placeholder-[#292D324D]"
-              id="price" aria-describedby="username-help"
+              id="price"
+              aria-describedby="username-help"
               :placeholder="$t('enterPrice')"/>
         </Field>
       </div>
