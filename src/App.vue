@@ -10,9 +10,10 @@ import ServiceLayout from "@/layout/ServiceLayout.vue"
 import {useRoute} from "vue-router";
 import {computed} from "vue";
 import ServiceLayoutWithSideBar from "@/layout/ServiceLayoutWithSideBar.vue";
+import ProfileLayout from "@/layout/ProfileLayout.vue";
 
 interface RouteMeta {
-  layout?: "MainLayout" | "LoginLayout" | "ErrorLayout" | "Selection" | "IncomePasswordLayout" | "Register" | "PersonalData" | "ServiceLayout" | "ServiceLayoutWithSideBar";
+  layout?: "MainLayout" | "ProfileLayout" | "LoginLayout" | "ErrorLayout" | "Selection" | "IncomePasswordLayout" | "Register" | "PersonalData" | "ServiceLayout" | "ServiceLayoutWithSideBar";
 }
 
 const route = useRoute();
@@ -27,7 +28,8 @@ const layouts = {
   Register,
   PersonalData,
   ServiceLayout: ServiceLayoutWithSideBar,
-  ServiceLayoutWithSideBar
+  ServiceLayoutWithSideBar,
+  ProfileLayout
 };
 
 </script>
