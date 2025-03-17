@@ -302,5 +302,12 @@
       "title": "Auto Repair",
       "subTitle": "Providing technical inspection and other necessary auto service"
     }
-  }
+  },
+  "download": "Download",
+  "announcement_time": "Announcement time",
+  "max_passenger_count": "Maximum number of passengers",
+  "max_vehicle_count": "Maximum number of vehicles",
+  "max_cargo_capacity_kg": "Maximum cargo capacity (kg)",
+  "leave_cargo_comment": "Leave a cargo comment",
+  "post": "Post"
 }

@@ -73,7 +73,7 @@ const confirm1 = (id: number) => {
 
       <div
           class="flex items-center justify-between bg-[#66C61C1A] text-[#66C61C] !py-[16px] !px-[16px] rounded-[24px] w-full !mb-[24px]">
-        <span class="w-full text-center">Faol</span>
+        <span class="w-full text-center">{{$t('active')}}</span>
         <button>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -89,12 +89,12 @@ const confirm1 = (id: number) => {
       <div>
         <div class="grid grid-cols-2 gap-4">
           <div v-if="announcement?.from_location?.name" class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
-            <p class="text-[12px] text-[#292D324D] !mb-[6px]">Qayerdan</p>
+            <p class="text-[12px] text-[#292D324D] !mb-[6px]">{{$t('from')}}</p>
             <h6 class="text-[#292D32] text-[16px]">{{ announcement?.from_location?.name }}</h6>
           </div>
 
           <div v-if="announcement?.to_location?.name" class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
-            <p class="text-[12px] text-[#292D324D] !mb-[6px]">Qayerga</p>
+            <p class="text-[12px] text-[#292D324D] !mb-[6px]">{{$t('to')}}</p>
             <h6 class="text-[#292D32] text-[16px]">{{ announcement?.to_location?.name }}</h6>
           </div>
 
@@ -139,7 +139,7 @@ const confirm1 = (id: number) => {
 
           <div v-if="announcement.details?.load_weight?.amount"
                class="bg-[#FAFAFA] rounded-[24px] !py-[8px] !px-[16px]">
-            <p class="text-[12px] text-[#292D324D] !mb-[6px]">Yuk vazni</p>
+            <p class="text-[12px] text-[#292D324D] !mb-[6px]">{{$t('loadWeight')}}</p>
             <div class="flex items-center justify-between">
               <span class="text-[#292D32] text-[16px]">{{ announcement.details?.load_weight?.amount }}</span>
               <span class="text-[#292D32] text-[16px]">{{ announcement.details?.load_weight?.name }}</span>
@@ -160,8 +160,8 @@ const confirm1 = (id: number) => {
         <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] grid grid-cols-2 gap-10 !mt-[24px]">
           <div class="flex flex-col gap-2">
             <div class="flex items-center">
-              <span class="text-[#AFAFAF] text-[16px] !mr-1">Yuk turi:</span>
-              <span class="text-[#000000] text-[16px] !mr-1">Boshqa materiallar</span>
+              <span class="text-[#AFAFAF] text-[16px] !mr-1">{{$t('cargoType')}}:</span>
+              <span class="text-[#000000] text-[16px] !mr-1">{{$t('otherMaterials')}}</span>
             </div>
 
             <div v-if="announcement.details?.pay_type" class="flex items-center">
@@ -176,21 +176,20 @@ const confirm1 = (id: number) => {
           </div>
 
           <div class="flex flex-col gap-2">
-            <div class="flex items-center">
-              <span class="text-[#AFAFAF] text-[16px] !mr-1">Yuklash:</span>
+            <div class="flex items-start">
+              <span class="text-[#AFAFAF] text-[16px] !mr-1">{{$t('download')}}:</span>
               <span class="text-[#000000] text-[16px] !mr-1">Haydovchi yuklarni tashishi kerak</span>
             </div>
 
             <div v-if="announcement?.price" class="flex items-center">
-              <span class="text-[#AFAFAF] text-[16px] !mr-1">Narxi:</span>
+              <span class="text-[#AFAFAF] text-[16px] !mr-1">{{$t('price')}}:</span>
               <span class="text-[#000000] text-[16px] !mr-1">{{ formatNumber(announcement?.price) }} UZS</span>
             </div>
-
           </div>
         </div>
 
         <div v-if="announcement?.images?.length" class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-          <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
+          <span class="text-[#292D324D] text-[12px]">{{$t('cargoImages')}}</span>
 
           <div class="flex items-center gap-6 !mt-[8px]">
             <img v-for="(image, index) in announcement?.images" :key="index"
@@ -209,11 +208,11 @@ const confirm1 = (id: number) => {
           />
         </div>
 
-        <p class="font-light text-[#292D324D] text-center !mb-[16px]">E’lon vaqti: 16.08.2024, 09:14</p>
+        <p class="font-light text-[#292D324D] text-center !mb-[16px]">{{$t('announcement_time')}}: 16.08.2024, 09:14</p>
 
         <button v-if="props.tabIndex !== 0" @click="confirm1(announcement?.id)"
                 class="bg-[#F044381A] text-[16px] text-[#F04438] text-center w-full rounded-[24px] !p-[16px]">
-          Faolsizlantirish
+          {{$t('deactivate')}}
         </button>
 
       </div>

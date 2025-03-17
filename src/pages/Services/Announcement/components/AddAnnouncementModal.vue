@@ -226,12 +226,6 @@ watch(
 
         <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[56px]">
           <ServiceItem/>
-          <!--          <iframe-->
-          <!--              src="https://yandex.uz/map-widget/v1/?ll=69.279737%2C41.311151&z=12"-->
-          <!--              width="100%"-->
-          <!--              style="height: 300px"-->
-          <!--              frameborder="0"-->
-          <!--          />-->
         </div>
 
       </div>

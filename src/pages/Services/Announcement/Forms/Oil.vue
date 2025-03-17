@@ -257,6 +257,7 @@ const oilTypes = [
         v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
+      <pre>{{addAnnouncement}}</pre>
       <div class="grid grid-cols-2 gap-4">
         <div>
           <LocationItem
@@ -290,7 +291,7 @@ const oilTypes = [
         </div>
 
         <div>
-          <FloatLabel variant="in">
+          <FloatLabel variant="in" class="relative">
             <InputText
                 v-model="addAnnouncement.details.capacity"
                 id="capacity"
@@ -301,6 +302,7 @@ const oilTypes = [
                 { '!border-0': !hasNestedError('details', 'capacity') }
               ]"
             />
+            <span class="absolute top-8 right-5">m³</span>
             <label for="capacity" class="!text-[#292D324D]">Maksimal yuk sig'imi</label>
           </FloatLabel>
           <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">

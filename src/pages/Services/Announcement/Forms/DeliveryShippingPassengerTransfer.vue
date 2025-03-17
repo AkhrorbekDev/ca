@@ -6,10 +6,13 @@ import getGeoObject from "@/composables/getGeoObject";
 import LocationItem from "@/components/form-elements/LocationItem.vue";
 
 import {maxLength, minValue, numeric, required} from '@vuelidate/validators';
-import {Form} from "vee-validate";
+import {Field, Form} from "vee-validate";
+import {useI18n} from "vue-i18n";
 
+const {t} = useI18n()
 const mapStore = useMapStore()
 const model = defineModel();
+const loading = ref(true);
 const props = defineProps({
   announceValue: {
     type: Number,
@@ -145,10 +148,24 @@ const deleteImage = (index) => {
   collectImages.value.splice(index, 1);
 };
 
+const loadWeightTypes = [
+  {
+    label: t('kg'),
+    value: 'kg'
+  },
+  {
+    label: t('m3'),
+    value: 'm3'
+  },
+  {
+    label: t('litr'),
+    value: 'litr'
+  }
+]
+
 const hideDetailsOnLocationChange = ref(false);
 
 const setLocation = (name) => {
-  console.log('Start MAP: ', name);
   mapStore.setMarker({
     id: name,
     marker: {
@@ -175,7 +192,6 @@ const setLocation = (name) => {
       }
     }
   }, name)
-  console.log('End MAP: ', name);
   hideDetailsOnLocationChange.value = true
 }
 
@@ -259,21 +275,73 @@ watch(() => props.announceValue, (newValue) => {
         <LocationItem :location="addAnnouncement.to_location" as="div" class="" name="to_location"
                       @click="setLocation('to_location')"/>
 
-        <FloatLabel variant="in">
-          <InputText
-              v-model="computedModelValue" id="in_label" variant="filled" type="number"
-              :class="[
-              'w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0',
+        <Field as="div" name="details.load_weight.amount"
+              class="load_weight_select formItem flex items-center justify-between relative"
+        >
+          <div class="flex flex-col  items-start justify-center">
 
-            ]"
-          />
-          <label for="in_label"
-                 class="!text-[#292D324D]">
-            {{
-              pageValue === 2 ? 'Maksimal yo‘lovchi soni' : pageValue === 6 ? 'Maksimal transport soni' : 'Maksimal yuk sig‘imi(kg)'
-            }}
-          </label>
-        </FloatLabel>
+            <label for="details.load_weight.amount" class="!text-[#292D324D]">{{ pageValue === 2 ? $t('max_passenger_count') : pageValue === 6 ? $t('max_vehicle_count') : $t('max_cargo_capacity_kg') }}</label>
+            <InputText
+                v-model="computedModelValue"
+                type="number"
+                class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"
+                id="details.load_weight.amount" aria-describedby="username-help"
+                variant="outline"
+            />
+          </div>
+
+          <Field
+              v-if="addAnnouncement.service_type_id !== 2 && addAnnouncement.service_type_id !== 6"
+              name="details.load_weight.name"
+              v-slot="{handleChange, field}"
+          >
+            <Select
+                placeholder="kg/m3/litr"
+                append-to="self"
+                overlay-class="load_type_name !mt-5"
+                v-model="addAnnouncement.details.load_weight.name"
+                optionValue="value"
+                :options="loadWeightTypes"
+                optionLabel="label"
+                @update:model-value="handleChange"
+                class="!bg-[#FAFAFA] shadow-[none] !border-0 flex items-center">
+              <template #option="slotProps" class="">
+                <div
+                    class="flex items-center min-w-[60px] w-full justify-between  !py-4 border-b border-[#F5F5F7]"
+                >
+                  <div class="w-full flex flex-col items-start justify-start">
+                    <label :for="`name.${slotProps.option.value}`" class="flex items-center gap-4 cursor-pointer">
+                      {{ slotProps.option.label }}
+                    </label>
+                  </div>
+                  <RadioButton
+                      v-model="addAnnouncement.details.load_weight.name"
+                      :inputId="`name.${slotProps.option.value}`"
+                      :name="field.name"
+                      :value="slotProps.option.value"
+                  />
+                </div>
+              </template>
+            </Select>
+          </Field>
+
+        </Field>
+
+<!--        <FloatLabel variant="in">-->
+<!--          <InputText-->
+<!--              v-model="computedModelValue" id="in_label" variant="filled" type="number"-->
+<!--              :class="[-->
+<!--              'w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0',-->
+
+<!--            ]"-->
+<!--          />-->
+<!--          <label for="in_label"-->
+<!--                 class="!text-[#292D324D]">-->
+<!--            {{-->
+<!--              pageValue === 2 ? $t('max_passenger_count') : pageValue === 6 ? $t('max_vehicle_count') : $t('max_cargo_capacity_kg')-->
+<!--            }}-->
+<!--          </label>-->
+<!--        </FloatLabel>-->
 
         <FloatLabel variant="in">
           <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
@@ -286,11 +354,11 @@ watch(() => props.announceValue, (newValue) => {
         <label for="description" class="text-[#292D3280] text-[16px]">{{ $t('description') }}</label>
         <Textarea v-model="addAnnouncement.note" id="description" class="w-full   custom-placeholder-input" rows="3"
                   cols="30"
-                  placeholder="Yuk haqida izoh qoldiring!"/>
+                  :placeholder="$t('leave_cargo_comment')"/>
       </div>
 
       <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-        <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
+        <span class="text-[#292D324D] text-[12px]">{{$t('cargoImages')}}</span>
         <!--          {{ imageList }}-->
 
         <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl">
@@ -335,7 +403,7 @@ watch(() => props.announceValue, (newValue) => {
             type="submit"
             class="text-white bg-[#66C61C] !py-4 !px-11 rounded-3xl disabled:opacity-50"
         >
-          Joylash
+          {{$t('post')}}
         </button>
       </div>
     </form>
@@ -361,5 +429,9 @@ watch(() => props.announceValue, (newValue) => {
   100% {
     transform: scale(1);
   }
+}
+
+.load_type_name {
+  margin-top: 90px !important;
 }
 </style>

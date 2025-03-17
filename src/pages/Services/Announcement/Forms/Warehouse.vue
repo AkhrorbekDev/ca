@@ -221,9 +221,10 @@ const createAnnouncement = async (announce) => {
           <label for="in_label" class="!text-[#292D324D]">{{ $t('price') }}</label>
         </FloatLabel>
 
-        <FloatLabel variant="in">
+        <FloatLabel variant="in" class="relative">
           <InputText v-model="addAnnouncement.details.area" id="in_label" variant="filled" type="number"
                      class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
+          <span class="absolute top-8 right-5">m²</span>
           <label for="in_label"
                  class="!text-[#292D324D]">Maydon</label>
         </FloatLabel>

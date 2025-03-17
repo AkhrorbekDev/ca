@@ -184,8 +184,6 @@ const createAnnouncement = async (announce) => {
         v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
-      <pre>{{ childForm }}</pre>
-      <pre>{{ addAnnouncement }}</pre>
       <div class="grid grid-cols-2 gap-4">
         <div>
           <LocationItem
