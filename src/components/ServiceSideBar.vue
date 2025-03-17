@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import {Menu, Announcements, services} from '@/components/fakeJson'
-import {inject, onMounted, onUnmounted, ref, watch} from "vue";
-import {useRoute, useRouter} from "vue-router";
-import {useCommonStore} from "@/stores/common.store"
+import {Menu, services} from '@/components/fakeJson'
+import {inject, onMounted, onUnmounted, ref, watch} from 'vue';
+import {useRoute, useRouter} from 'vue-router';
+import {useCommonStore} from '@/stores/common.store'
 import useMapStore from '@/stores/map.store'
-import useAdvertisementStore from "@/stores/advertisement";
-import PeregonForm from "@/components/forms/PeregonForm.vue";
-import ShippingForm from "@/components/forms/ShippingForm.vue";
-import OilShippingForm from "@/components/forms/OilShippingForm.vue";
-import PersonTransferForm from "@/components/forms/PersonTransferForm.vue";
-import TransportTransferForm from "@/components/forms/TransportTransferForm.vue";
-import SpecialTransportRentForm from "@/components/forms/SpecialTransportRentForm.vue";
+import useAdvertisementStore from '@/stores/advertisement';
+import PeregonForm from '@/components/forms/PeregonForm.vue';
+import ShippingForm from '@/components/forms/ShippingForm.vue';
+import OilShippingForm from '@/components/forms/OilShippingForm.vue';
+import PersonTransferForm from '@/components/forms/PersonTransferForm.vue';
+import TransportTransferForm from '@/components/forms/TransportTransferForm.vue';
+import SpecialTransportRentForm from '@/components/forms/SpecialTransportRentForm.vue';
 import car from '@/assets/icons/car.svg'
 import box from '@/assets/icons/box.svg'
 import home from '@/assets/icons/home.svg'
-import SidebarTransportsGrid from "@/components/SidebarTransportsGrid.vue";
+import SidebarTransportsGrid from '@/components/SidebarTransportsGrid.vue';
 import useBreadcrumbs from '@/stores/breadcrumbs'
-import AutoRepair from "@/components/forms/AutoRepair.vue";
-import ConfirmDialog from "primevue/confirmdialog";
-import {useConfirm} from "primevue/useconfirm";
+import AutoRepair from '@/components/forms/AutoRepair.vue';
+import ConfirmDialog from 'primevue/confirmdialog';
+import {useConfirm} from 'primevue/useconfirm';
 import {useI18n} from 'vue-i18n'
 
 const {t} = useI18n()
@@ -117,7 +117,7 @@ const changeRoute = (item) => {
 
 }
 const closeMenu = () => {
-  document.body.addEventListener("click", () => {
+  document.body.addEventListener('click', () => {
     menuItems.value.forEach((e) => {
       e.isOpen = false
     })
@@ -283,10 +283,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="bg-[#FFFFFF] h-[100vh] sticky top-0 left-0 bottom-0"
-       :class="{
+  <div
+      class="bg-[#FFFFFF] h-[100vh] sticky top-0 left-0 bottom-0"
+      :class="{
           'rounded-r-[32px] !shadow-header': !menuVisible
-       }">
+       }"
+  >
     <div class="navbar-items relative h-[100vh]  max-w-max ">
       <ConfirmDialog group="headless"/>
       <div class="navbar-items__menu  !py-[16px] !mx-[12px]">
@@ -294,16 +296,19 @@ onMounted(() => {
           <img class="!mb-[40px] !mt-[10px]" src="@/assets/icons/logo-new.svg" alt="logo" width="130"/>
         </router-link>
         <div class="navbar-items__menu-items">
-          <div v-for="(list, index2) in menuItems"
-               :key="index2" class="navbar-items__menu-item"
-               :class="{_active: activeRouteName === list.unique}"
-               @click.stop="openChildMenu(index2, list)"
+          <div
+              v-for="(list, index2) in menuItems"
+              :key="index2"
+              class="navbar-items__menu-item"
+              :class="{_active: activeRouteName === list.unique}"
+              @click.stop="openChildMenu(index2, list)"
           >
             <div class="navbar-items__menu-item-image">
               <img :src="list.icon" alt="">
             </div>
-            <p class="navbar-items__menu-item-text"
-               :class="{'!text-[#66C61C]' : activeRouteName === list.unique}"
+            <p
+                class="navbar-items__menu-item-text"
+                :class="{'!text-[#66C61C]' : activeRouteName === list.unique}"
             >
               {{ list.title }}
             </p>
@@ -320,61 +325,80 @@ onMounted(() => {
 
         <div class="navbar-items__menu service-items !py-[16px] !mx-[12px]">
           <div class="navbar-items__menu-items">
-            <div v-for="(list, index2) in selectedMenu?.children" :key="index2"
-                 class="navbar-items__menu-item !px-[12px] !py-[14px]"
-                 :class="{_activeServiceItem: selectedService && selectedService.id === list.id}"
-                 @click="openDetail(selectedMenu, list)"
+            <div
+                v-for="(list, index2) in selectedMenu?.children"
+                :key="index2"
+                class="navbar-items__menu-item !px-[12px] !py-[14px]"
+                :class="{_activeServiceItem: selectedService && selectedService.id === list.id}"
+                @click="openDetail(selectedMenu, list)"
             >
               <div class="navbar-items__menu-item-image">
                 <img :src="list.img" alt="">
               </div>
-              <div class="navbar-items__menu-item-text"
-                   :class="{'!text-[#66C61C]' : selectedService && selectedService.id === list.id}"
+              <div
+                  class="navbar-items__menu-item-text"
+                  :class="{'!text-[#66C61C]' : selectedService && selectedService.id === list.id}"
               >
                 {{ $t(list.title) }}
               </div>
             </div>
           </div>
         </div>
-        <ShippingForm v-if="selectedService && (selectedService.id === 1 || selectedService.id === 9)"
-                      :service-type-id="selectedService.id"
-                      :show="showForm"
-                      @auth:invalid="showConfirmModal"
+        <ShippingForm
+            v-if="selectedService && (selectedService.id === 1 || selectedService.id === 9)"
+            :service-type-id="selectedService.id"
+            :show="showForm"
+            @auth:invalid="showConfirmModal"
         />
         <!--        <DeliveryForm v-if="selectedService && selectedService.id === 123" :service-type-id="selectedService.id"-->
         <!--                      :show="showForm"/>-->
-        <PeregonForm v-if="selectedService && selectedService.id === 10" :service-type-id="selectedService.id"
-                     :show="showForm"
-                     @auth:invalid="showConfirmModal"
+        <PeregonForm
+            v-if="selectedService && selectedService.id === 10"
+            :service-type-id="selectedService.id"
+            :show="showForm"
+            @auth:invalid="showConfirmModal"
         />
-        <OilShippingForm v-if="selectedService && selectedService.id === 8" :service-type-id="selectedService.id"
-                         :show="showForm"
-                         @auth:invalid="showConfirmModal"
+        <OilShippingForm
+            v-if="selectedService && selectedService.id === 8"
+            :service-type-id="selectedService.id"
+            :show="showForm"
+            @auth:invalid="showConfirmModal"
         />
-        <PersonTransferForm v-if="selectedService && selectedService.id === 2" :service-type-id="selectedService.id"
-                            :show="showForm"
-                            @auth:invalid="showConfirmModal"
+        <PersonTransferForm
+            v-if="selectedService && selectedService.id === 2"
+            :service-type-id="selectedService.id"
+            :show="showForm"
+            @auth:invalid="showConfirmModal"
         />
-        <TransportTransferForm v-if="selectedService && selectedService.id === 6" :service-type-id="selectedService.id"
-                               :show="showForm"
-                               @auth:invalid="showConfirmModal"
+        <TransportTransferForm
+            v-if="selectedService && selectedService.id === 6"
+            :service-type-id="selectedService.id"
+            :show="showForm"
+            @auth:invalid="showConfirmModal"
         />
-        <SpecialTransportRentForm v-if="selectedService && selectedService.id === 3"
-                                  :service-type-id="selectedService.id"
-                                  :show="showForm"
-                                  @auth:invalid="showConfirmModal"
+        <SpecialTransportRentForm
+            v-if="selectedService && selectedService.id === 3"
+            :service-type-id="selectedService.id"
+            :show="showForm"
+            @auth:invalid="showConfirmModal"
         />
 
-        <SidebarTransportsGrid v-if="showTransportGrid" :service-id="selectedService?.id" :loading="isLoadingTransports"
-                               :transports="transports"
-                               @on:click="changeRoute"
-                               @auth:invalid="showConfirmModal"
+        <SidebarTransportsGrid
+            v-if="showTransportGrid"
+            :service-id="selectedService?.id"
+            :loading="isLoadingTransports"
+            :transports="transports"
+            @on:click="changeRoute"
+            @auth:invalid="showConfirmModal"
         />
-        <AutoRepair v-if="showAutoRepairGrid" :service="selectedService" :service-id="selectedService?.id"
-                    :loading="isLoadingTransports"
-                    :transports="transports"
-                    @on:click="changeRouteRepair"
-                    @auth:invalid="showConfirmModal"
+        <AutoRepair
+            v-if="showAutoRepairGrid"
+            :service="selectedService"
+            :service-id="selectedService?.id"
+            :loading="isLoadingTransports"
+            :transports="transports"
+            @on:click="changeRouteRepair"
+            @auth:invalid="showConfirmModal"
         />
       </div>
     </div>

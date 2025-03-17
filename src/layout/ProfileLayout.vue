@@ -4,6 +4,7 @@ import ServiceSideBar from "@/components/ServiceSideBar.vue";
 import ConfirmDialog from "primevue/confirmdialog";
 import ProfileDropDown from "@/components/ProfileDropDown.vue";
 import ProfileSideBar from "@/pages/Profile/components/ProfileSideBar.vue";
+import Breadcrumbs from "@/components/Breadcrumbs.vue";
 </script>
 
 <template>
@@ -16,8 +17,11 @@ import ProfileSideBar from "@/pages/Profile/components/ProfileSideBar.vue";
       <ProfileDropDown class=" "/>
     </div>
     <div class="w-full !px-[24px]">
-      <ProfileSideBar/>
-      <div>
+      <Breadcrumbs/>
+
+      <div class="flex gap-[24px] justify-center">
+        <ProfileSideBar/>
+
         <slot/>
       </div>
     </div>

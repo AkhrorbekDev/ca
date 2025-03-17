@@ -42,6 +42,17 @@ export default [
                 'singleline': 'ignore',
                 'multiline': 'below'
             }],
+            'vue/html-closing-bracket-newline': [
+                'error',
+                {
+                    'singleline': 'never',
+                    'multiline': 'always',
+                    'selfClosingTag': {
+                        'singleline': 'never',
+                        'multiline': 'always'
+                    }
+                }
+            ],
             'vue/max-attributes-per-line': [
                 'error',
                 {

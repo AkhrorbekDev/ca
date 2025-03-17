@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {inject, reactive, ref} from "vue";
-import {useRouter} from "vue-router";
+import {inject, reactive, ref} from 'vue';
+import {useRouter} from 'vue-router';
 import * as yup from 'yup'
-import type {MaskInputOptions} from "maska";
-import {Field, Form} from "vee-validate";
+import type {MaskInputOptions} from 'maska';
+import {Field, Form} from 'vee-validate';
 
 interface DataValue {
   company: null;
@@ -11,6 +11,7 @@ interface DataValue {
   phone: null;
   agree: string;
 }
+
 const isLoading = ref(false)
 
 const router = useRouter()
@@ -25,9 +26,20 @@ const dataValue = ref<DataValue>({
   agree: '',
 })
 const prefix = '998'
+const userTypes = ref([
+  {
+    name: 'Yuridik shaxs',
+    value: 'PHYSICAL'
+  },
+  {
+    name: 'Jismoniy shaxs',
+    value: 'CLIENT'
+  }
+])
+const selectedUserType = ref(userTypes.value[0])
 
 const options = reactive<MaskInputOptions>({
-  mask: "+998 (##) ###-##-##",
+  mask: '+998 (##) ###-##-##',
   reversed: true,
   postProcess: (event, name) => {
     if (selectedUserType.value.value === 'CLIENT') {
@@ -54,17 +66,6 @@ const clientSchema = yup.object({
   user_type: yup.string().required().nonNullable()
 })
 
-const userTypes = ref([
-  {
-    name: 'Yuridik shaxs',
-    value: 'PHYSICAL'
-  },
-  {
-    name: 'Jismoniy shaxs',
-    value: 'CLIENT'
-  }
-])
-const selectedUserType = ref(userTypes.value[0])
 const initialValues = ref({
   user_type: userTypes.value[0].value,
   org_name: null,
@@ -128,13 +129,15 @@ const submit = () => {
 </script>
 <template>
   <div
-      class="bg-[#FAFAFA]">
+      class="bg-[#FAFAFA]"
+  >
     <router-link to="/">
       <img src="../../assets/images/logo2.svg" class="!p-[24px] absolute right-0" alt="logo"/>
     </router-link>
     <div v-show="!showPersonalData">
       <div
-          class="flex items-center justify-center h-[100vh]">
+          class="flex items-center justify-center h-[100vh]"
+      >
         <div class="rounded-[24px] !w-[400px]">
           <h2 class="text-[#282B30] text-[36px] !mb-[10px] text-center font-600">Shaxsingizni tanlang!</h2>
           <p class="text-[#292D324D] text-[16px] text-center !m-auto !mb-[24px] w-[80%]">
@@ -144,13 +147,20 @@ const submit = () => {
 
           <div as="div" name="user_type" class="flex flex-col items-center !mt-[24px] gap-y-[8px]">
             <template v-for="type in userTypes" :key="type.value">
-              <label :for="type.value"
-                     class="bg-[#FFFFFF] !p-[16px] w-full flex items-center justify-between rounded-[20px] cursor-pointer">
+              <label
+                  :for="type.value"
+                  class="bg-[#FFFFFF] !p-[16px] w-full flex items-center justify-between rounded-[20px] cursor-pointer"
+              >
                 <span class="text-[16px] text-[#292D324D]">{{ type.name }}</span>
-                <RadioButton :model-value="selectedUserType.value" :inputId="type.value" name="user_type"
-                             :value="type.value" @update:model-value="() => {
+                <RadioButton
+                    :model-value="selectedUserType.value"
+                    :inputId="type.value"
+                    name="user_type"
+                    :value="type.value"
+                    @update:model-value="() => {
                                selectedUserType = type
-                             }"/>
+                             }"
+                />
               </label>
             </template>
           </div>
@@ -265,7 +275,10 @@ const submit = () => {
             </Form>
 
             <div
-                as="div" name="agree" class="flex items-center !mt-[36px]">
+                as="div"
+                name="agree"
+                class="flex items-center !mt-[36px]"
+            >
               <Checkbox
                   :class="{
                           _invalid: !agreeValue
@@ -291,18 +304,28 @@ const submit = () => {
           >
 
             Kirish
-            <svg v-if="isLoading" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
-                 fill="none"
-                 viewBox="0 0 24 24">
+            <svg
+                v-if="isLoading"
+                class="mr-3 -ml-1 size-5 animate-spin text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+            >
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
             </svg>
           </button>
 
           <div class="!mt-[24px]  text-gray-600">
-            <a href="#" @click.prevent="() => showPersonalData = false"
-               class="text-[#0BA5EC] !text-[15px] flex items-center justify-center">
+            <a
+                href="#"
+                @click.prevent="() => showPersonalData = false"
+                class="text-[#0BA5EC] !text-[15px] flex items-center justify-center"
+            >
               <img src="../../assets/images/toLeft.svg" alt="left"/>
               Ortga
             </a>
