@@ -208,7 +208,8 @@ watch(
 
         <RepairMaster
             v-if="dynamicId === 5"
-            :announceValue="announceValue"
+            :announceValue="dynamicId"
+            :childForm="announceValue"
             :activeTab="activeTab"
         />
 
@@ -219,9 +220,19 @@ watch(
           :activeTab="activeTab"
         />
 
-        <Oil v-if="dynamicId === 8"/>
+        <Oil
+            v-if="dynamicId === 8"
+            :announceValue="dynamicId"
+            :childForm="announceValue"
+            :activeTab="activeTab"
+        />
 
-        <RentAuto v-if="dynamicId === 4" />
+        <RentAuto
+            v-if="dynamicId === 4"
+            :announceValue="dynamicId"
+            :childForm="announceValue"
+            :activeTab="activeTab"
+        />
         
 
         <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[56px]">
