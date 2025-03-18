@@ -177,7 +177,7 @@ const formatTime = computed(() => {
       >
         <img
             @click="$router.push('/')"
-            src="../../assets/images/logo.svg"
+            src="@/assets/images/logo.svg"
             class="w-[217px] hidden md:block cursor-pointer"
             alt="logo"
         >

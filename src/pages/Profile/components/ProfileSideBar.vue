@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import {ref} from 'vue';
+import {inject, ref} from 'vue';
 import {useI18n} from 'vue-i18n'
 import chart from '@/assets/icons/Chart.svg'
 import language from '@/assets/icons/language.svg'
-import user from '@/assets/icons/User.svg'
+import userIcon from '@/assets/icons/User.svg'
 import turnOff from '@/assets/icons/Turn off.svg'
 import moon from '@/assets/icons/Moon.svg'
 import question from '@/assets/icons/Question.svg'
+import {useRouter} from 'vue-router';
 
 const {t} = useI18n()
-
+const $auth = inject('auth')
+const router = useRouter()
 const routes = ref([
   {
     title: t('profile'),
-    icon: user,
+    icon: userIcon,
     link: 'profile-main'
   },
   {
@@ -22,22 +24,28 @@ const routes = ref([
     link: 'profile-layout'
   },
   {
-    title: t('language'),
+    title: t('lenguage'),
     icon: language,
     link: 'profile-language'
   },
   {
-    title: t('referral'),
+    title: t('referralProgram'),
     icon: chart,
     link: 'profile-referral'
   },
   {
-    title: t('faq'),
+    title: t('frequentlyAskedQuestions'),
     icon: question,
     link: 'faq'
   }
 ])
-
+const logOut = () => {
+  $auth.logout().then(res => {
+    router.push({
+      name: 'home'
+    })
+  })
+}
 </script>
 
 <template>
@@ -61,8 +69,7 @@ const routes = ref([
               :class="{'!contrast-[unset]': $route.name === route.link}"
           />
           <span
-              class="text-[#292D32] text-[14px] contrast-0 capitalize"
-              :class="{'!contrast-[unset]': $route.name === route.link}"
+              class="text-[#292D32] text-[14px] capitalize"
           >
             {{ route.title }}
           </span>
@@ -75,7 +82,7 @@ const routes = ref([
         <a
             class="flex items-center justify-start gap-[8px]"
 
-            @click.prevent="logout"
+            @click.prevent="logOut"
         >
           <img
               :src="turnOff"

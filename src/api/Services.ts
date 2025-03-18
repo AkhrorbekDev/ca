@@ -1,23 +1,23 @@
-import ApiCoreFetch from "@/api/core/ApiCoreFetch";
+import ApiCoreFetch from '@/api/core/ApiCoreFetch';
 
 
 class Services extends ApiCoreFetch {
 
     getServices(): Promise<any> {
-        return this.get("/public/mobile/v1/list/services", {
+        return this.get('/public/mobile/v1/list/services', {
             noAuth: true,
         });
     }
 
     getService(id): Promise<any> {
-        return this.get(`/public/mobile/v1/list/services`, {
+        return this.get('/public/mobile/v1/list/services', {
             noAuth: true,
             id: id
         });
     }
 
     createService(data): Promise<any> {
-        return this.post("/public/mobile/v1/list/services", data);
+        return this.post('/public/mobile/v1/list/services', data);
     }
 
     updateService(id, data): Promise<any> {

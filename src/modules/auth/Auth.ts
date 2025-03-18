@@ -247,7 +247,7 @@ class Auth {
     initializeRequestInterceptor(refreshEndpoint?: string): void {
         this.interceptor = async (config) => {
             // Don't intercept refresh token requests
-            if (this._needToken(config) || config.url === refreshEndpoint) {
+            if (!this._needToken(config) || config.url === refreshEndpoint) {
                 return config
             }
 

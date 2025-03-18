@@ -329,5 +329,8 @@
   "deleteAvatar": "Profil rasmini o'chirish",
   "changePhoneNumber": "Telefon raqamini o'zgartirish",
   "phoneNumberChanged": "Telefon raqamingiz o'zgardi",
-  "back": "Ortga"
+  "back": "Ortga",
+  "createCode": "Kod yaratish",
+  "createSuccess": "Referral kod muvaffaqiyatli yaratildi",
+  "layout-mode": "Rejim"
 }

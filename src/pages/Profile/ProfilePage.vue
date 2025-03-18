@@ -240,7 +240,7 @@ onMounted(() => {
               :model-value="_user.first_name"
               variant="outline"
               autocomplete="off"
-              :placeholder="$t('pickAddress')"
+              :placeholder="$t('firstName')"
               class=" !bg-transparent  !py-[16px] !px-[16px]
                      shadow-none !border-0"
               @input="(e) => {
@@ -262,7 +262,7 @@ onMounted(() => {
               :model-value="_user.last_name"
               variant="outline"
               autocomplete="off"
-              :placeholder="$t('pickAddress')"
+              :placeholder="$t('lastName')"
               class=" !bg-transparent  !py-[16px] !px-[16px]
                      shadow-none !border-0"
           />
