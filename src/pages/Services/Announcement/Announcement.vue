@@ -168,8 +168,8 @@ onMounted(() => {
   <div>
     <Breadcrumbs :home="home" :model="breadcrumbs"/>
     <h1 class="!my-6 text-[#292D32] text-2xl font-semibold">{{$t('announcements')}}</h1>
-    <div class="flex items-center justify-between">
-      <div class="flex items-center space-x-4 bg-white rounded-lg !p-1.5">
+    <div class="flex items-center justify-between dark:!bg-inherit">
+      <div class="flex items-center space-x-4 bg-white dark:!bg-zinc-800 rounded-lg !p-1.5">
         <button
             v-for="(tab, index) in tabs"
             :key="index"
@@ -257,11 +257,12 @@ onMounted(() => {
       </div>
 
       <div v-else class="grid xl:grid-cols-5 grid-cols-4 gap-6">
-        <div class="bg-white rounded-[24px] !py-[7px] !px-[18px] cursor-pointer"
+        <div class="bg-white rounded-[24px] !py-[7px] !px-[18px] cursor-pointer dark:!bg-zinc-700"
              v-for="(item) in announcementAllData"
-             :key="item?.id" @click="openModal(item)">
+             :key="item?.id" @click="openModal(item)"
+        >
           <div
-              class="flex items-center"
+              class="flex items-center dark:!bg-zinc-700"
               :class="activeTab !== 0 ? 'justify-between' : 'justify-center'"
           >
             <div
@@ -278,14 +279,14 @@ onMounted(() => {
               </div>
             </div>
 
-            <img v-if="item?.transport_icon" class="h-[50px] object-contain " :src="item?.transport_icon" alt="image"
+            <img v-if="item?.transport_icon" class="h-[50px] object-contain" :src="item?.transport_icon" alt="image"
                  height="50px">
           </div>
 
           <h5 class="text-[#292D324D] text-lg !mb-[4px] line-clamp-1">{{ item.service_name ?? '' }}</h5>
 
           <div class="!mb-[4px]">
-            <div class="flex items-center">
+            <div class="flex items-center dark:!bg-zinc-700">
               <span v-if="item.from_location?.name"
                     class="text-[#1A1F23] font-medium !mr-[7px] line-clamp-1">{{ item.from_location?.name }}</span>
               <svg v-if="item.from_location?.name && item.to_location?.name" width="11" height="12" viewBox="0 0 11 12"

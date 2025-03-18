@@ -308,7 +308,7 @@ onMounted(() => {
             </div>
             <p
                 class="navbar-items__menu-item-text"
-                :class="{'!text-[#66C61C]' : activeRouteName === list.unique}"
+                :class="{'text-[#66C61C]' : activeRouteName === list.unique}"
             >
               {{ list.title }}
             </p>
