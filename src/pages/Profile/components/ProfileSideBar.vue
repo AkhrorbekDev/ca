@@ -41,10 +41,10 @@ const routes = ref([
 </script>
 
 <template>
-  <div class="!bg-[#FFFFFF] !rounded-[16px] !px-[16px] !py-[16px] min-w-[300px] max-w-[300px]">
+  <div class="bg-[#FFFFFF] dark:!bg-zinc-800 !rounded-[16px] !px-[16px] !py-[16px] min-w-[300px] max-w-[300px]">
     <ul class="flex flex-col gap-[8px]">
       <li
-          class="flex items-center justify-start !py-[12px] !px-[16px] !bg-[#fafafa] rounded-[16px] cursor-pointer"
+          class="flex items-center justify-start !py-[12px] !px-[16px] bg-[#fafafa] dark:!bg-zinc-700 rounded-[16px] cursor-pointer"
           v-for="route in routes"
           :key="route.title"
       >
@@ -62,7 +62,7 @@ const routes = ref([
           />
           <span
               class="text-[#292D32] text-[14px] contrast-0 capitalize"
-              :class="{'!contrast-[unset]': $route.name === route.link}"
+              :class="{'!contrast-[unset] dark:!text-[#66C61C]': $route.name === route.link}"
           >
             {{ route.title }}
           </span>

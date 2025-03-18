@@ -283,7 +283,7 @@ const oilTypes = [
                 { '!border-0': !hasNestedError('details', 'company_name') }
               ]"
             />
-            <label for="company_name" class="!text-[#292D324D]">Kompaniya nomi</label>
+            <label for="company_name" class="!text-[#292D324D]">{{$t('companyName')}}</label>
           </FloatLabel>
           <small v-if="hasNestedError('details', 'company_name')" class="text-red-500 ml-2">
             Kompaniya nomini kiriting
@@ -303,7 +303,7 @@ const oilTypes = [
               ]"
             />
             <span class="absolute top-8 right-5">m³</span>
-            <label for="capacity" class="!text-[#292D324D]">Maksimal yuk sig'imi</label>
+            <label for="capacity" class="!text-[#292D324D]">{{$t('max_cargo_capacity_kg')}}</label>
           </FloatLabel>
           <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">
             Yuk sig'imni kiriting
@@ -322,7 +322,7 @@ const oilTypes = [
                 { '!border-0': !hasError('price') }
               ]"
             />
-            <label for="price" class="!text-[#292D324D]">Yetkazib berish narxi</label>
+            <label for="price" class="!text-[#292D324D]">{{$t('fuelDeliveryPrice')}}</label>
           </FloatLabel>
           <small v-if="hasError('price')" class="text-red-500 ml-2">
             Narxni kiriting
@@ -331,7 +331,7 @@ const oilTypes = [
       </div>
 
       <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-        <span class="block !mb-[16px] text-[#000000] text-[16px] font-medium">Yoqilg'i turi va narxlari</span>
+        <span class="block !mb-[16px] text-[#000000] text-[16px] font-medium">{{$t('fuel_type_and_prices')}}</span>
 
         <small v-if="formSubmitted && !isOilListValid" class="text-red-500 mb-4 block">
           Yoqilg'i turi va narxi to'ldirilishi shart
@@ -353,7 +353,7 @@ const oilTypes = [
                     { '!border-0': !(formSubmitted && !item.type) }
                   ]"
                 />
-                <label for="in_label" class="!text-[#292D324D]">Yoqilg'i turi</label>
+                <label for="in_label" class="!text-[#292D324D]">{{$t('fuel_type')}}</label>
               </FloatLabel>
             </div>
 
@@ -397,7 +397,7 @@ const oilTypes = [
                xmlns="http://www.w3.org/2000/svg">
             <path d="M1 5H9M5 1L5 9" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-          Qo'shish
+          {{$t('add')}}
         </button>
       </div>
 
@@ -418,7 +418,7 @@ const oilTypes = [
       </div>
 
       <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-        <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
+        <span class="text-[#292D324D] text-[12px]">{{$t('cargoImages')}}</span>
 
         <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl">
           <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px]">
@@ -462,7 +462,7 @@ const oilTypes = [
             type="submit"
             class="text-white bg-[#66C61C] !py-4 !px-11 rounded-3xl hover:bg-[#58ad18] transition-colors"
         >
-          Joylash
+          {{$t('post')}}
         </button>
       </div>
     </form>

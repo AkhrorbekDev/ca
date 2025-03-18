@@ -42,7 +42,7 @@
   "agreeToTerms": "Foydalanish shartlariga roziman",
   "fillInTheInformation": "Malumotlarni to'ldiring",
   "enterSTIR": "STIR kiriting",
-  "enterCompanyName": "Kompaniya nomi kiriting",
+  "enterCompanyName": "Kompaniya nomini kiriting",
   "enterYourName": "Ismingizni kiriting",
   "enterYourSurname": "Familiyangizni kiriting",
   "enterPhoneNumber": "Telefon raqami",
@@ -322,9 +322,11 @@
   "announcement_time": "E’lon vaqti",
   "max_passenger_count": "Maksimal yo‘lovchi soni",
   "max_vehicle_count": "Maksimal transport soni",
-  "max_cargo_capacity_kg": "Maksimal yuk sig‘imi (kg)",
+  "max_cargo_capacity_kg": "Maksimal yuk sig‘imi",
   "leave_cargo_comment": "Yuk haqida izoh qoldiring!",
   "post": "Joylash",
   "uploadAvatar": "Profil rasmini yuklash",
-  "deleteAvatar": "Profil rasmini o'chirish"
+  "deleteAvatar": "Profil rasmini o'chirish",
+  "fuel_type": "Yoqilg'i turi",
+  "fuel_type_and_prices": "Yoqilg'i turi va narxlari"
 }
