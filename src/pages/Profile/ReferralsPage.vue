@@ -23,19 +23,7 @@ const getCookie = (name) => {
   return null;
 };
 
-// Load theme preference from cookie on mount
-onMounted(() => {
-  const savedTheme = getCookie('theme-preference');
-  if (savedTheme && ['mode', 'light', 'dark'].includes(savedTheme)) {
-    selectedTheme.value = savedTheme;
-    applyThemeClass(savedTheme);
-  }
-});
-
-const selectTheme = (theme) => {
-  selectedTheme.value = theme;
-};
-
+// Apply theme classes based on the selected theme
 const applyThemeClass = (theme) => {
   // Remove existing theme classes
   document.documentElement.classList.remove('theme-mode', 'theme-light', 'theme-dark');
@@ -54,6 +42,22 @@ const applyThemeClass = (theme) => {
   setCookie('theme-preference', theme, 365); // Store for 1 year
 };
 
+// Load theme preference from cookie on mount
+onMounted(() => {
+  const savedTheme = getCookie('theme-preference');
+  if (savedTheme && ['mode', 'light', 'dark'].includes(savedTheme)) {
+    selectedTheme.value = savedTheme;
+    applyThemeClass(savedTheme);
+  } else {
+    // If no cookie exists, initialize with the current theme
+    applyThemeClass(selectedTheme.value);
+  }
+});
+
+const selectTheme = (theme) => {
+  selectedTheme.value = theme;
+};
+
 // Watch for theme changes to update the UI immediately
 watch(selectedTheme, (newTheme) => {
   // Apply theme immediately when radio button is changed
@@ -63,7 +67,7 @@ watch(selectedTheme, (newTheme) => {
 
 <template>
   <div class="flex flex-col !p-10 bg-white dark:bg-zinc-800 rounded-3xl h-[70vh]">
-    <h2 class="text-3xl font-semibold mb-8">Rejim</h2>
+    <h2 class="text-3xl font-semibold mb-8">{{$t('mode')}}</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-3 !gap-8 w-full !mt-8 dark:bg-transparent">
       <!-- Tizim sozlamalari Theme Option -->
@@ -80,7 +84,7 @@ watch(selectedTheme, (newTheme) => {
           </div>
         </label>
 
-        <span class="font-medium text-lg">Tizim sozlamalari</span>
+        <span class="font-medium text-lg">{{$t('system_settings')}}</span>
       </div>
 
       <!-- Yorug Theme Option -->
@@ -97,7 +101,7 @@ watch(selectedTheme, (newTheme) => {
           </div>
         </label>
 
-        <span class="font-medium text-lg">Yorug'</span>
+        <span class="font-medium text-lg">{{$t('light')}}</span>
       </div>
 
       <!-- Tungi Theme Option -->
@@ -114,7 +118,7 @@ watch(selectedTheme, (newTheme) => {
           </div>
         </label>
 
-        <span class="font-medium text-lg">Tungi</span>
+        <span class="font-medium text-lg">{{$t('dark')}}</span>
       </div>
     </div>
   </div>

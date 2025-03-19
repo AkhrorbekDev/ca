@@ -276,15 +276,15 @@ watch(() => props.announceValue, (newValue) => {
                       @click="setLocation('to_location')"/>
 
         <Field as="div" name="details.load_weight.amount"
-              class="load_weight_select formItem flex items-center justify-between relative"
+              class="load_weight_select formItem flex items-center justify-between relative dark:bg-zinc-700"
         >
-          <div class="flex flex-col  items-start justify-center">
+          <div class="flex flex-col  items-start justify-center dark:bg-zinc-700">
 
-            <label for="details.load_weight.amount" class="!text-[#292D324D]">{{ pageValue === 2 ? $t('max_passenger_count') : pageValue === 6 ? $t('max_vehicle_count') : $t('max_cargo_capacity_kg') }}</label>
+            <label for="details.load_weight.amount" class="text-[#292D324D] dark:!text-white">{{ pageValue === 2 ? $t('max_passenger_count') : pageValue === 6 ? $t('max_vehicle_count') : $t('max_cargo_capacity_kg') }}</label>
             <InputText
                 v-model="computedModelValue"
                 type="number"
-                class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"
+                class=" !bg-transparent  !py-[8px] !px-[0] dark:!text-white shadow-none !border-0"
                 id="details.load_weight.amount" aria-describedby="username-help"
                 variant="outline"
             />
@@ -294,22 +294,23 @@ watch(() => props.announceValue, (newValue) => {
               v-if="addAnnouncement.service_type_id !== 2 && addAnnouncement.service_type_id !== 6"
               name="details.load_weight.name"
               v-slot="{handleChange, field}"
+              class="dark:bg-zinc-700"
           >
             <Select
-                placeholder="kg/m3/litr"
+                placeholder=""
                 append-to="self"
-                overlay-class="load_type_name !mt-5"
+                overlay-class="load_type_name !mt-5 dark:bg-zinc-800"
                 v-model="addAnnouncement.details.load_weight.name"
                 optionValue="value"
                 :options="loadWeightTypes"
                 optionLabel="label"
                 @update:model-value="handleChange"
-                class="!bg-[#FAFAFA] shadow-[none] !border-0 flex items-center">
+                class="bg-[#FAFAFA] dark:bg-zinc-700 shadow-[none] !border-0 flex items-center">
               <template #option="slotProps" class="">
                 <div
-                    class="flex items-center min-w-[60px] w-full justify-between  !py-4 border-b border-[#F5F5F7]"
+                    class="flex items-center min-w-[60px] w-full justify-between !py-4 border-b border-[#F5F5F7]"
                 >
-                  <div class="w-full flex flex-col items-start justify-start">
+                  <div class="w-full flex flex-col items-start justify-start ">
                     <label :for="`name.${slotProps.option.value}`" class="flex items-center gap-4 cursor-pointer">
                       {{ slotProps.option.label }}
                     </label>
@@ -319,6 +320,7 @@ watch(() => props.announceValue, (newValue) => {
                       :inputId="`name.${slotProps.option.value}`"
                       :name="field.name"
                       :value="slotProps.option.value"
+                      class=""
                   />
                 </div>
               </template>
@@ -345,27 +347,28 @@ watch(() => props.announceValue, (newValue) => {
 
         <FloatLabel variant="in">
           <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
-                     class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-          <label for="in_label" class="!text-[#292D324D]">{{ $t('price') }}</label>
+                     class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">{{ $t('price') }}</label>
         </FloatLabel>
       </div>
 
       <div class="flex flex-col gap-2 w-full !mt-[24px]">
         <label for="description" class="text-[#292D3280] text-[16px]">{{ $t('description') }}</label>
-        <Textarea v-model="addAnnouncement.note" id="description" class="w-full   custom-placeholder-input" rows="3"
+        <Textarea v-model="addAnnouncement.note" id="description" class="w-full dark:bg-zinc-700 dark:!text-white custom-placeholder-input" rows="3"
                   cols="30"
                   :placeholder="$t('leave_cargo_comment')"/>
       </div>
 
-      <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
+      <div class="bg-[#FAFAFA] dark:bg-zinc-700 rounded-[24px] !p-[16px] !mt-[24px]">
         <span class="text-[#292D324D] text-[12px]">{{$t('cargoImages')}}</span>
         <!--          {{ imageList }}-->
 
-        <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl">
-          <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px]">
+        <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl dark:bg-zinc-700">
+          <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px] dark:bg-zinc-700">
             <img class="w-full h-full object-cover rounded-2xl"
                  :src="img" alt="img"
-                 width="105">
+                 width="105"
+            >
 
             <div
                 class="group-hover:flex hidden absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 rounded-2xl items-center justify-center">
@@ -411,6 +414,10 @@ watch(() => props.announceValue, (newValue) => {
 </template>
 
 <style scoped>
+.dark .p-select .p-select-option {
+  background-color: #8a8787 !important;
+}
+
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }
@@ -433,5 +440,9 @@ watch(() => props.announceValue, (newValue) => {
 
 .load_type_name {
   margin-top: 90px !important;
+}
+
+.p-select-list, .p-select-option {
+  background-color: #fff; /* Black background for dark mode */
 }
 </style>

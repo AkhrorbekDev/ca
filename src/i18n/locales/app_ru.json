@@ -236,6 +236,8 @@
   "leave_cargo_comment": "Оставьте комментарий к грузу",
   "post": "Разместить",
   "fuel_type": "Тип топлива",
-  "fuel_type_and_prices": "Тип топлива и цены"
+  "fuel_type_and_prices": "Тип топлива и цены",
+  "mode": "Режим",
+  "system_settings": "Системные настройки"
 }
 

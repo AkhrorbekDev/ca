@@ -328,5 +328,7 @@
   "uploadAvatar": "Profil rasmini yuklash",
   "deleteAvatar": "Profil rasmini o'chirish",
   "fuel_type": "Yoqilg'i turi",
-  "fuel_type_and_prices": "Yoqilg'i turi va narxlari"
+  "fuel_type_and_prices": "Yoqilg'i turi va narxlari",
+  "mode": "Rejim",
+  "system_settings": "Tizim sozlamalari"
 }

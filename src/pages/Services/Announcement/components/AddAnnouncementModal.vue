@@ -180,10 +180,10 @@ watch(
   <Dialog dismissableMask v-model:visible="model" modal :style="{ width: '50rem' }"
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <template #header>
-      <div class="grow text-center text-[#292D32] text-[24px] font-medium">
+      <h1 class="grow text-center text-[#292D32] text-[24px] font-medium">
         {{ announceValue.name }}
         ma’lumotlari
-      </div>
+      </h1>
     </template>
     <div>
       <div>

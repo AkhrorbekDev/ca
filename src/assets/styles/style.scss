@@ -31,12 +31,21 @@ html {
 .dark h6,
 .dark span,
 .dark p,
-.dark a {
+.dark a,
+.dark button,
+.dark label,
+.dark input,
+.dark select,
+.dark textarea {
   color: #fff;
 }
 
 .dark div{
-  background: #1a1a1a;
+  background: #1a1a1a ;
+}
+
+.dark input{
+  background: #88888c !important;
 }
 
 //

@@ -311,5 +311,7 @@
   "leave_cargo_comment": "Leave a cargo comment",
   "post": "Post",
   "fuel_type": "Fuel type",
-  "fuel_type_and_prices": "Fuel type and prices"
+  "fuel_type_and_prices": "Fuel type and prices",
+  "mode": "Mode",
+  "system_settings": "System settings"
 }

@@ -55,9 +55,9 @@ watch(menuVisible, (e) => {
 </script>
 
 <template>
-  <div class="flex items-center relative z-50 cursor-pointer">
+  <div class="flex items-center relative z-50 cursor-pointer dark:!bg-zinc-700">
     <template v-if="$auth.loggedIn">
-      <div class="flex items-center" @click="toggleMenu">
+      <div class="flex items-center dark:!bg-zinc-700" @click="toggleMenu">
         <h4 class="text-[#292D3266] text-[18px] !mr-[18px]">{{ user.first_name }}</h4>
 
         <template v-if="user.photo">
