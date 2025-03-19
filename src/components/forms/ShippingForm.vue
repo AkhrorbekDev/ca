@@ -363,7 +363,6 @@ onUnmounted(() => {
           class="col-span-full"
           name="to_location"
           @on:select="setSelectedLocation($event,'to_location')"
-
           @click="setLocation('to_location')"/>
 
       <Field

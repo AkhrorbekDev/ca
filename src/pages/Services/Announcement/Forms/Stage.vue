@@ -139,6 +139,21 @@ const setLocation = (name) => {
   hideDetailsOnLocationChange.value = true
 }
 
+const setSelectedLocation = async (address, name) => {
+  await getGeoObject({address: address})
+      .then(res => {
+        const marker = mapStore.getMarker(name)
+        addAnnouncement.value[name] = {
+          lat: marker.markerProps.geometry.coordinates[0],
+          lng: marker.markerProps.geometry.coordinates[1],
+          name: res.data.description
+        }
+        mapStore.removeMarker(name)
+      }).finally(() => {
+        hideDetailsOnLocationChange.value = false
+      })
+}
+
 // Delete image
 const deleteImage = (index) => {
   imageList.value.splice(index, 1);
@@ -208,12 +223,15 @@ const createAnnouncement = async (announce) => {
 <template>
   <Transition name="bounce">
     <form
-        v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
       <div class="grid grid-cols-2 gap-4">
-        <LocationItem :location="addAnnouncement.from_location" as="div" class="" name="from_location"
-                      @click="setLocation('from_location')"/>
+        <LocationItem
+            :location="addAnnouncement.from_location"
+            as="div" class=""
+            name="from_location"
+            @on:select="setSelectedLocation($event,'from_location')"
+            @click="setLocation('from_location')"/>
 
         <LocationItem :location="addAnnouncement.to_location" as="div" class="" name="to_location"
                       @click="setLocation('to_location')"/>
