@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {formatNumber, max, min} from "@/utils/helper";
+import {formatNumber, max, min} from '@/utils/helper';
 
 defineProps({
   advertisement: {
@@ -12,7 +12,8 @@ defineProps({
 <template>
   <div
       class="bg-[#FFFFFF] rounded-[24px] overflow-hidden cursor-pointer"
-      style="box-shadow: 0px 2px 8.4px 0px #292D3214;">
+      style="box-shadow: 0px 2px 8.4px 0px #292D3214;"
+  >
     <img src="@/assets/images/sklad.png" alt="img" class="w-full h-[192px] object-contain">
     <div class="!px-[16px] !py-[12px]">
       <div class="flex items-center justify-between !mb-[8px]">
@@ -22,7 +23,8 @@ defineProps({
       <p class="text-[#292D324D] text-[12px] !mb-1 !mt-auto">Maydon: {{ advertisement.details.area }} m2</p>
 
       <div
-          class="flex items-center gap-2 text-[#292D324D] text-[12px] !mb-[12px]  whitespace-nowrap overflow-hidden text-ellipsis">
+          class="flex items-center gap-2 text-[#292D324D] text-[12px] !mb-[12px]  whitespace-nowrap overflow-hidden text-ellipsis"
+      >
         <img src="@/assets/images/icons/location.svg" alt="mark"/>
 
         {{ advertisement.to_location.name }}
@@ -33,7 +35,8 @@ defineProps({
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
                 d="M1 6.83162V6.50778C1 6.48545 0.99998 6.46682 1.0262 6.44449C1.06998 6.24132 1.1772 6.05707 1.33256 5.91804C1.48792 5.77901 1.68351 5.69231 1.89139 5.67026C2.98003 5.50896 4.06991 5.35262 5.16104 5.20125C5.26132 5.19277 5.35744 5.15751 5.4392 5.09919C5.52096 5.04087 5.5853 4.96166 5.62546 4.86995C6.10111 3.89471 6.588 2.92315 7.07115 1.95163C7.1223 1.84525 7.18783 1.74635 7.26591 1.65759C7.376 1.53741 7.51415 1.44602 7.66819 1.39146C7.82224 1.33691 7.98745 1.32084 8.14921 1.34475C8.31096 1.36866 8.4643 1.4318 8.5957 1.52855C8.7271 1.6253 8.83249 1.75273 8.90261 1.89955C9.40074 2.88969 9.89512 3.88727 10.4007 4.87741C10.4406 4.96616 10.5036 5.04266 10.5833 5.09896C10.663 5.15527 10.7565 5.18931 10.854 5.19752C11.9513 5.35013 13.0449 5.50648 14.1423 5.66654C14.3477 5.69098 14.5402 5.77883 14.6927 5.91772C14.8452 6.05661 14.9501 6.23954 14.9925 6.44076C15.0329 6.61585 15.0251 6.79853 14.9697 6.96953C14.9143 7.14053 14.8135 7.2935 14.6779 7.41228C13.8839 8.17535 13.0974 8.94216 12.3071 9.70524C12.2399 9.76321 12.1892 9.83777 12.1603 9.92143C12.1314 10.0051 12.1252 10.0949 12.1423 10.1817C12.3196 11.1743 12.4906 12.1669 12.6554 13.1596C12.7086 13.3838 12.725 13.615 12.7041 13.8445C12.6781 14.0042 12.6128 14.1551 12.5139 14.2837C12.4151 14.4124 12.2858 14.5148 12.1376 14.5818C11.9893 14.6489 11.8268 14.6785 11.6642 14.668C11.5017 14.6576 11.3443 14.6074 11.206 14.5219C10.2472 14.0256 9.29338 13.5293 8.34456 13.033C8.24187 12.9708 8.12395 12.938 8.00373 12.938C7.8835 12.938 7.76563 12.9708 7.66294 13.033C6.71162 13.5429 5.74906 14.038 4.79026 14.5219C4.62121 14.619 4.42685 14.6639 4.23203 14.6506C4.0372 14.6374 3.85076 14.5666 3.69661 14.4475C3.54005 14.3356 3.42073 14.1798 3.35399 14.0001C3.28725 13.8203 3.27613 13.6248 3.32208 13.4387C3.50934 12.3704 3.69661 11.2984 3.88013 10.2301C3.90297 10.126 3.89692 10.0176 3.86262 9.91666C3.82831 9.8157 3.76708 9.72589 3.68541 9.65685C2.95882 8.96077 2.23969 8.25353 1.50936 7.55746C1.27246 7.3696 1.09552 7.11747 1 6.83162Z"
-                fill="#FCA807"/>
+                fill="#FCA807"
+            />
           </svg>
           {{ max(advertisement.rating, 0) }}
         </div>
@@ -43,11 +46,17 @@ defineProps({
               :image="advertisement.user?.avatar ? advertisement.user.avatar : ''"
               :icon="advertisement.user?.avatar ? '' : 'pi pi-user'"
               shape="circle"
-              class="!bg-[#F3F3F3] !text-[#B7B8BA] !h-[24px] !w-[24px]" alt="avatar"
-              v-for="(in2) in min(advertisement.comments?.length || 0, 4)" :key="in2"
+              class="!bg-[#F3F3F3] !text-[#B7B8BA] !h-[24px] !w-[24px]"
+              alt="avatar"
+              v-for="(in2) in min(advertisement.comments?.length || 0, 4)"
+              :key="in2"
           />
-          <Avatar v-if="advertisement.commenst?.length > 4" :label="`+${advertisement.comments.length}`" shape="circle"
-                  class="!h-[24px] !w-[24px] !text-[8px] !text-[#1A1F23]"/>
+          <Avatar
+              v-if="advertisement.commenst?.length > 4"
+              :label="`+${advertisement.comments.length}`"
+              shape="circle"
+              class="!h-[24px] !w-[24px] !text-[8px] !text-[#1A1F23]"
+          />
         </AvatarGroup>
       </div>
     </div>

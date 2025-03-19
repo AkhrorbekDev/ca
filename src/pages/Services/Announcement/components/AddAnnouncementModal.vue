@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+ <script lang="ts" setup>
 import {Announcement} from "../types";
 import {useConfirm} from "primevue/useconfirm";
 import {inject, onMounted, ref, watch} from "vue";
@@ -11,6 +11,7 @@ import ServiceItem from "@/pages/Services/Components/ServiceItem.vue";
 import SpecialEquipmentServices from "@/pages/Services/Announcement/Forms/SpecialEquipmentServices.vue";
 import Rental from "@/pages/Services/TransportRental/Rental.vue";
 import RentAuto from "@/pages/Services/Announcement/Forms/RentAuto.vue";
+import Stage from "@/pages/Services/Announcement/Forms/Stage.vue";
 
 const model = defineModel();
 const props = defineProps({
@@ -179,10 +180,10 @@ watch(
   <Dialog dismissableMask v-model:visible="model" modal :style="{ width: '50rem' }"
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <template #header>
-      <div class="grow text-center text-[#292D32] text-[24px] font-medium">
+      <h1 class="grow text-center text-[#292D32] text-[24px] font-medium">
         {{ announceValue.name }}
         ma’lumotlari
-      </div>
+      </h1>
     </template>
     <div>
       <div>
@@ -199,9 +200,16 @@ watch(
             :activeTab="activeTab"
         />
 
+        <Stage
+            v-if="dynamicId === 10"
+            :announceValue="announceValue"
+            :activeTab="activeTab"
+        />
+
         <RepairMaster
             v-if="dynamicId === 5"
-            :announceValue="announceValue"
+            :announceValue="dynamicId"
+            :childForm="announceValue"
             :activeTab="activeTab"
         />
 
@@ -212,19 +220,23 @@ watch(
           :activeTab="activeTab"
         />
 
-        <Oil v-if="dynamicId === 8"/>
+        <Oil
+            v-if="dynamicId === 8"
+            :announceValue="dynamicId"
+            :childForm="announceValue"
+            :activeTab="activeTab"
+        />
 
-        <RentAuto v-if="dynamicId === 4" />
+        <RentAuto
+            v-if="dynamicId === 4"
+            :announceValue="dynamicId"
+            :childForm="announceValue"
+            :activeTab="activeTab"
+        />
         
 
         <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[56px]">
           <ServiceItem/>
-          <!--          <iframe-->
-          <!--              src="https://yandex.uz/map-widget/v1/?ll=69.279737%2C41.311151&z=12"-->
-          <!--              width="100%"-->
-          <!--              style="height: 300px"-->
-          <!--              frameborder="0"-->
-          <!--          />-->
         </div>
 
       </div>

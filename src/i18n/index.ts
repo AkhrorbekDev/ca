@@ -6,7 +6,7 @@ import app_kk from './locales/app_kk.json'
 import {createI18n} from "vue-i18n";
 
 const i18n = createI18n({
-    locale: 'en',
+    locale: 'uz',
     messages: {
         en: app_en,
         ru: app_ru,

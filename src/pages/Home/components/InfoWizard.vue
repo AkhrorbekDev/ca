@@ -35,13 +35,13 @@ const wizardData: WizardData[] = [
 
 
 <template>
-  <div class="bg-white">
+  <div class="bg-white ">
     <h3 class="text-[#292D32] text-[64px] font-semibold text-center !mb-[40px]">Foydalanish tartibi</h3>
 
     <div class="max-w-screen-xl  container lg:mx-auto">
       <div class="!pt-[72px] !pb-[100px] flex items-center">
         <div
-            class="relative wizard-wrapper w-[229px] h-[230px] !pt-[48px] !pb-[24px] !px-[32px] rounded-[24px]"
+            class="relative wizard-wrapper w-[229px] h-[230px] !pt-[48px] !pb-[24px] !px-[32px] rounded-[24px] dark:!bg-zinc-700"
             v-for="(item, index) in wizardData"
             :key="index">
           <h4 class="text-[#292D32] text-[24px] font-semibold text-center !mb-[16px]">{{ item.title }}</h4>

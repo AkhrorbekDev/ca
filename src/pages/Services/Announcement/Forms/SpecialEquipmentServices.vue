@@ -184,8 +184,6 @@ const createAnnouncement = async (announce) => {
         v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
-      <pre>{{ childForm }}</pre>
-      <pre>{{ addAnnouncement }}</pre>
       <div class="grid grid-cols-2 gap-4">
         <div>
           <LocationItem
@@ -201,18 +199,18 @@ const createAnnouncement = async (announce) => {
         </div>
 
         <div>
-          <FloatLabel variant="in">
+          <FloatLabel class="" variant="in">
             <InputText
                 v-model="addAnnouncement.price"
                 id="price"
                 variant="filled"
                 type="number"
-                :class="['w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                :class="['w-full bg-[#FAFAFA] dark:!bg-zinc-700 !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
                 { '!border !border-red-500': hasError('price') },
                 { '!border-0': !hasError('price') }
               ]"
             />
-            <label for="price" class="!text-[#292D324D]">{{ $t('price') }}</label>
+            <label for="price" class="text-[#292D324D] dark:!text-white">{{ $t('price') }}</label>
           </FloatLabel>
           <small v-if="hasError('price')" class="text-red-500 ml-2">
             Narxni kiriting
@@ -225,7 +223,7 @@ const createAnnouncement = async (announce) => {
         <Textarea
             v-model="addAnnouncement.note"
             id="description"
-            class="w-full custom-placeholder-input"
+            class="w-full custom-placeholder-input dark:bg-zinc-700"
             rows="3"
             cols="30"
             placeholder="Yuk haqida izoh qoldiring!"
@@ -236,11 +234,11 @@ const createAnnouncement = async (announce) => {
         </small>
       </div>
 
-      <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
+      <div class="bg-[#FAFAFA] dark:bg-zinc-700 rounded-[24px] !p-[16px] !mt-[24px]">
         <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
 
-        <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl">
-          <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px]">
+        <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl dark:bg-zinc-700">
+          <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px] dark:bg-zinc-700">
             <img class="w-full h-full object-cover rounded-2xl"
                  :src="img" alt="img"
                  width="105">
@@ -281,7 +279,7 @@ const createAnnouncement = async (announce) => {
             type="submit"
             class="text-white bg-[#66C61C] !py-4 !px-11 rounded-3xl hover:bg-[#58ad18] transition-colors"
         >
-          Joylash
+          {{$t('post')}}
         </button>
       </div>
     </form>

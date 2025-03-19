@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {computed, inject, onMounted, ref} from "vue";
-import {useRoute} from "vue-router";
-import {services} from "@/components/fakeJson"
-import {useCommonStore} from "@/stores/common.store";
+import {computed, inject, onMounted, ref} from 'vue';
+import {useRoute} from 'vue-router';
+import {services} from '@/components/fakeJson'
+import {useCommonStore} from '@/stores/common.store';
 // import Rating from 'primevue/rating';
 // Import Swiper Vue.js components
 import {Swiper, SwiperSlide} from 'swiper/vue';
@@ -16,8 +16,9 @@ import 'swiper/css/thumbs';
 
 // import required modules
 import {FreeMode, Navigation, Thumbs} from 'swiper/modules';
-import {useDateFormat} from "@vueuse/core";
-import Breadcrumbs from "@/components/Breadcrumbs.vue";
+import {useDateFormat} from '@vueuse/core';
+import Breadcrumbs from '@/components/Breadcrumbs.vue';
+import {imageCDN} from '@/config'
 
 const formatDate = (date: string) => {
   return useDateFormat(date, 'DD MMMM YYYY', {locales: 'en-US'}).value;
@@ -26,7 +27,7 @@ const formatDate = (date: string) => {
 const thumbsSwiper = ref(null);
 
 const setThumbsSwiper = (swiper) => {
-  console.log("SSa", swiper)
+  console.log('SSa', swiper)
   thumbsSwiper.value = swiper;
 };
 
@@ -61,7 +62,7 @@ const sendComment = async () => {
   try {
     await $api.advertisement.createAdvertisementComment(allComments.value);
   } catch (error) {
-    console.error("Error sending comment:", error);
+    console.error('Error sending comment:', error);
   }
 }
 
@@ -72,20 +73,20 @@ onMounted(async () => {
     });
     advertisementData.value = response?.data;
   } catch (error) {
-    console.error("Error fetching data:", error);
+    console.error('Error fetching data:', error);
   }
 })
 
 const ratingComment = computed(() => {
-  if (Array.isArray(advertisementData?.comments)) {
-    return advertisementData?.comments.reduce((acc, item) => acc + item.rating / advertisementData?.comments?.length, 0)
+  if (Array.isArray(advertisementData.value?.comments)) {
+    return advertisementData.value?.comments.reduce((acc, item) => acc + item.rating / advertisementData.value?.comments?.length, 0)
   }
   return 0
 })
 
 const averageRating = computed(() => {
 
-  console.log(`ratingComment`, advertisementData.value?.comments);
+  console.log('ratingComment', advertisementData.value?.comments);
 
   if (Array.isArray(advertisementData.value?.comments)) {
     // Sum all ratings
@@ -101,7 +102,6 @@ const averageRating = computed(() => {
   return 0
 
 });
-
 </script>
 
 <template>
@@ -125,8 +125,11 @@ const averageRating = computed(() => {
               class="mySwiper2"
           >
             <swiper-slide v-for="(image, index) in advertisementData?.images" :key="index">
-              <img class="rounded-xl h-full object-cover" :src="`https://api.carting.uz/uploads/files/${image}`"
-                   alt="img">
+              <img
+                  class="rounded-xl h-full object-cover"
+                  :src="`${imageCDN}${image}`"
+                  alt="img"
+              >
             </swiper-slide>
 
           </swiper>
@@ -145,8 +148,11 @@ const averageRating = computed(() => {
           >
 
             <swiper-slide v-for="(image, index) in advertisementData?.images" :key="index">
-              <img class="rounded-xl h-full object-cover" :src="`https://api.carting.uz/uploads/files/${image}`"
-                   alt="img">
+              <img
+                  class="rounded-xl h-full object-cover"
+                  :src="`${imageCDN}${image}`"
+                  alt="img"
+              >
             </swiper-slide>
 
           </swiper>
@@ -197,12 +203,17 @@ const averageRating = computed(() => {
         </div>
 
         <div class="flex flex-col w-full">
-          <a :href="`tel:+${advertisementData.created_by_phone}`"
-             class="!p-[16px] bg-[#66C61C] rounded-full w-full text-white !mb-[16px] text-center">
+          <a
+              :href="`tel:+${advertisementData.created_by_phone}`"
+              class="!p-[16px] bg-[#66C61C] rounded-full w-full text-white !mb-[16px] text-center"
+          >
             Qo'ng'iroq qilish
           </a>
-          <a :href="advertisementData?.created_by_tg_link" target="_blank"
-             class="!p-[16px] bg-[#27A7E7] rounded-full w-full text-white !mb-[16px] flex items-center justify-center cursor-pointer">
+          <a
+              :href="advertisementData?.created_by_tg_link"
+              target="_blank"
+              class="!p-[16px] bg-[#27A7E7] rounded-full w-full text-white !mb-[16px] flex items-center justify-center cursor-pointer"
+          >
             <img src="@/assets/images/icons/telegram.svg" class="!mr-[13px]" alt="tg"/>
             Telegram orqali bog'lanish
           </a>
@@ -265,7 +276,7 @@ const averageRating = computed(() => {
               <div class="flex-1 !ml-[12px]">
                 <div class="flex justify-between">
                   <h4 class="text-[#292D32] text-[16px] font-500 !mb-0">Anvar Egamberdiyev</h4>
-                  <Rating :modelValue="item?.rating" :stars="5" :cancel="false" />
+                  <Rating :modelValue="item?.rating" :stars="5" :cancel="false"/>
                 </div>
                 <p class="text-[#292D324D] text-[12px]">{{ formatDate(item.created_at) }}</p>
                 <p class="text-[#292D324D] text-[16px] !mt-[16px]">
