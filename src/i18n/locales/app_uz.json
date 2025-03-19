@@ -343,5 +343,8 @@
   "enterClientInfos": "Jismoniy shaxs ma’lumotlari",
   "enterPhysicalInfos": "Yuridik shaxs ma’lumotlari",
   "enterInfos": "Ma’lumotlaringizni kiriting",
-  "authRequired": "Bu amal bajarish uchun ro'yhatdan  o'tishingiz kerak"
+  "authRequired": "Bu amal bajarish uchun ro'yhatdan  o'tishingiz kerak",
+  "delete": "O'chirish",
+  "deleteSuccess": "Muvaffaqiyatli o'chirildi",
+  "deleteReferralCodeTitle": "Haqiqatdan ham kodni o‘chirmoqchimisiz?"
 }

@@ -4,7 +4,6 @@ import {inject, onMounted, onUnmounted, ref, watch} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import {useCommonStore} from '@/stores/common.store'
 import useMapStore from '@/stores/map.store'
-import useAdvertisementStore from '@/stores/advertisement';
 import PeregonForm from '@/components/forms/PeregonForm.vue';
 import ShippingForm from '@/components/forms/ShippingForm.vue';
 import OilShippingForm from '@/components/forms/OilShippingForm.vue';
@@ -15,7 +14,6 @@ import car from '@/assets/icons/car.svg'
 import box from '@/assets/icons/box.svg'
 import home from '@/assets/icons/home.svg'
 import SidebarTransportsGrid from '@/components/SidebarTransportsGrid.vue';
-import useBreadcrumbs from '@/stores/breadcrumbs'
 import AutoRepair from '@/components/forms/AutoRepair.vue';
 import ConfirmDialog from 'primevue/confirmdialog';
 import {useConfirm} from 'primevue/useconfirm';
@@ -25,8 +23,6 @@ const {t} = useI18n()
 
 const store = useCommonStore()
 const mapStore = useMapStore()
-const advStore = useAdvertisementStore()
-const breadcrumbStore = useBreadcrumbs()
 
 interface MenuItems {
   title: string;
@@ -75,11 +71,6 @@ const showTransportGrid = ref(false)
 const showAutoRepairGrid = ref(false)
 const transports = ref([])
 const activeRouteName = ref('')
-
-
-onMounted(() => closeMenu())
-
-onUnmounted(() => closeMenu())
 
 const changeRouteRepair = (item) => {
   showAutoRepairGrid.value = false
@@ -275,8 +266,12 @@ onMounted(() => {
   //   menuVisible.value = true
   //   showForm.value = true
   // }
+  closeMenu()
   console.log(activeRouteName.value, route.params, 'asd')
 })
+
+
+onUnmounted(() => closeMenu())
 
 
 </script>

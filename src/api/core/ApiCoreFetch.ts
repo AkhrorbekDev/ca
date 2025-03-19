@@ -24,7 +24,7 @@ const getPropertyValue = (parent, child) => {
 }
 
 const requiredAuth = {
-    methods: ['PUT', 'POST']
+    methods: ['PUT', 'POST', 'DELETE']
 }
 
 class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
@@ -147,6 +147,13 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
     async put(url: string, data: any): Promise<any> {
         return this._fetch(url, {
             method: 'PUT',
+            body: data
+        });
+    }
+
+    async delete(url: string, data: any): Promise<any> {
+        return this._fetch(url, {
+            method: 'DELETE',
             body: data
         });
     }

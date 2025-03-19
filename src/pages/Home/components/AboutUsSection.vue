@@ -35,7 +35,7 @@ const changeRoute = () => {
           class="bg-white rounded-[24px] !p-[40px] grid grid-cols-3 gap-6 shadow-custom absolute top-[-80px] w-full left-0 dark:!bg-zinc-700"
       >
         <div class="flex flex-col gap-2 w-full dark:!bg-zinc-700">
-          <label for="username" class="text-[#292D32] font-medium text-[16px]">Xizmat turi</label>
+          <label for="username" class="text-[#292D32] font-medium text-[16px]">{{ $t('serviceType') }}</label>
           <Select
               v-model="selectedService"
               :options="services"

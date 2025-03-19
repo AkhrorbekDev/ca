@@ -4,6 +4,8 @@ import {Field, Form} from 'vee-validate';
 import {object, string} from 'yup'
 import {useToast} from 'primevue/usetoast';
 import {useI18n} from 'vue-i18n';
+import {imageCDN} from '@/config';
+import {useConfirm} from "primevue/useconfirm";
 
 const {t} = useI18n();
 const schema = object({
@@ -18,8 +20,11 @@ const referrals = ref([]);
 const maxDescLength = 250;
 const description = ref('');
 const visible = ref(false);
+const deleteLoading = ref(false);
+const editIsEnabled = ref(false);
 const createForm = ref()
 const toast = useToast();
+const confirm = useConfirm();
 
 const cancelCreate = () => {
   createForm.value.resetForm();
@@ -54,8 +59,54 @@ const submit = () => {
         }
       })
 }
-
-
+const deleteCode = (code) => {
+  deleteLoading.value = true;
+  confirm.require({
+    group: 'auth',
+    message: t('deleteReferralCodeTitle'),
+    icon: 'pi pi-exclamation-triangle',
+    showIcon: false,
+    rejectProps: {
+      label: t('cancel'),
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: t('delete')
+    },
+    accept: () => {
+      $api.user.deleteReferralCode(code).then(() => {
+        const index = referralCodes.value.findIndex(item => item.code === code);
+        referralCodes.value.splice(index, 1);
+        toast.add({
+          severity: 'success',
+          life: 2000,
+          detail: t('deleteSuccess'),
+          group: 'br'
+        })
+      }).catch(err => {
+        toast.add({
+          severity: 'error',
+          life: 2000,
+          detail: err.message,
+          group: 'br'
+        })
+      }).finally(() => {
+        deleteLoading.value = false;
+      })
+    }
+  });
+}
+const userTypes = ref([
+  {
+    name: t('legalEntity'),
+    value: ' CLIENT'
+  },
+  {
+    name: t('individual'),
+    value: 'PHYSICAL'
+  }
+])
 const user = computed(() => $auth.user);
 watch(user, (newVal) => {
 
@@ -95,10 +146,11 @@ onMounted(() => {
       </div>
       <div class="flex items-center gap-[24px]">
         <button
-            class="!bg-[#66C61C] !py-[18px] !px-[24px] w-max min-w-[100px] flex items-center justify-center
-            gap-2 text-white text-[16px] rounded-[20px] !mt-[16px]"
+            class="!bg-transparent w-max flex items-center justify-center
+            gap-2 text-[#F04438] text-[16px] rounded-[20px] !mt-[16px]"
+            @click="editIsEnabled = !editIsEnabled"
         >
-          <img src="" alt="">
+          <img src="@/assets/icons/edit-red.svg" alt="">
           {{ $t('edit') }}
         </button>
         <button
@@ -106,58 +158,119 @@ onMounted(() => {
             gap-2 text-white text-[16px] rounded-[20px] !mt-[16px]"
             @click="visible = true"
         >
-          <img src="" alt="">
+          <img src="@/assets/icons/add.svg" alt="">
           {{ $t('add') }}
         </button>
       </div>
     </div>
-    <div class="grid grid-cols-2 gap-[32px] !mt-[40px]">
-      <template v-for="(item, index) in referralCodes" :key="item.id">
-        <div
-            class="!bg-[#fafafa] !rounded-[24px] !px-[16px] !py-[24px] flex flex-col"
-        >
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-[8px]">
-              <div class="rounded-[8px] flex items-center justify-center bg-[#f3f3f3] !py-[8px] !px-[16px]">
+    <template v-if="activeTab === 'invite'">
+      <div class="grid grid-cols-2 gap-[32px] !mt-[40px]">
+        <template v-for="(item, index) in referralCodes" :key="item.id">
+          <div
+              class="!bg-[#fafafa] !rounded-[24px] !px-[16px] !py-[24px] flex flex-col"
+          >
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-[8px]">
+                <div class="rounded-[8px] flex items-center justify-center bg-[#f3f3f3] !py-[8px] !px-[16px]">
                 <span>
                   {{ index + 1 }}
                 </span>
-              </div>
-              <div
-                  class="min-w-[255px] flex items-center justify-between gap-[8px] rounded-[8px] bg-[#f3f3f3] !py-[8px] !px-[16px]"
-              >
+                </div>
+                <div
+                    class="min-w-[255px] flex items-center justify-between gap-[8px] rounded-[8px] bg-[#f3f3f3] !py-[8px] !px-[16px]"
+                >
                 <span class="text-[#292D32] text-[12px]">
                   {{ item.code }}
                 </span>
-                <button class="bg-transparent border-0">
-                  <img src="@/assets/icons/copy.svg" class="w-[24px] h-[24px]" alt="">
-                </button>
-              </div>
+                  <button class="bg-transparent border-0">
+                    <img src="@/assets/icons/copy.svg" class="w-[24px] h-[24px]" alt="">
+                  </button>
+                </div>
 
+              </div>
+              <button class="flex items-center justify-center bg-transparent border-0">
+                <img src="@/assets/icons/share.svg" class="w-[24px] h-[24px]" alt="">
+              </button>
             </div>
-            <button class="flex items-center justify-center bg-transparent border-0">
-              <img src="@/assets/icons/share.svg" class="w-[24px] h-[24px]" alt="">
-            </button>
-          </div>
-          <div class="flex flex-col gap-[16px] !mt-[24px]">
-            <div class="flex items-center justify-between !mb-[6px]">
+            <div class="flex flex-col gap-[16px] !mt-[24px]">
+              <div class="flex items-center justify-between !mb-[6px]">
             <span>
               {{ $t('description') }}
             </span>
-              <span>
+                <span>
               {{ item.note.length }}/{{ maxDescLength }}
             </span>
+              </div>
+              <Textarea :model-value="item.note" readonly rows="5" cols="30"/>
             </div>
-            <Textarea :model-value="item.note" readonly rows="5" cols="30"/>
+            <div
+                v-if="editIsEnabled"
+                class="flex items-center justify-center !my-[24px]"
+            >
+              <button
+                  class="!bg-[#F044381A] !py-[18px] !px-[24px] w-max min-w-[100px] flex items-center justify-center
+            gap-[8px] text-[#F04438] text-[16px] rounded-[20px] !mt-[16px]"
+                  @click="deleteCode(item.code)"
+              >
+                <img src="@/assets/icons/delete.svg" alt="">
+                {{ $t('delete') }}
+              </button>
+            </div>
+          </div>
+
+        </template>
+      </div>
+      <div class="mt-[32px]">
+        <div class="!px-[16px] !py-[24px]">
+          <div class="flex items-center gap-[24px]">
+          <span class="text-[#292D32] text-[16px]">
+            {{ $t('invitedUsers') }}
+          </span>
+            <span class="text-[#292D32] text-[16px]">
+            {{ referrals.length }}
+          </span>
+          </div>
+
+          <div class="flex flex-col gap-[16px] !mt-[16px]">
+            <template v-for="(referral, index) in referrals" :key="index">
+              <div class="flex items-start justify-start gap-[12px]">
+                <div class="w-[40px] h-[40px]">
+                  <template v-if="referral?.photo">
+                    <img
+                        :src="`${imageCDN}/${referral.photo}`"
+                        alt="avatar"
+                        class="!rounded-full !mb-[8px]"
+                    />
+                  </template>
+                  <template v-else>
+                    <Avatar
+                        icon="pi pi-user"
+                        size="normal"
+                        class="bg-[#F3F3F3] !w-full !h-full text-[#B7B8BA] !mb-[8px]"
+                        shape="circle"
+                    />
+                  </template>
+                </div>
+                <div class="flex flex-col gap-[2px]">
+                  <p class="text-[#292D32] text-[14px] font-[500]">
+                    {{ referral.name }}
+                  </p>
+                  <p class="text-[#292D324D] text-[12px]">
+                    {{ userTypes.find(item => item.value === referral.type)?.name }}
+                  </p>
+                  <p class="text-[#292D324D] text-[12px]">
+                    {{ referral.phone_number }}
+                  </p>
+                </div>
+              </div>
+
+            </template>
           </div>
 
         </div>
-
-      </template>
-    </div>
-    <div class="mt-[32px]">
-
-    </div>
+      </div>
+    </template>
+    <template v-if="activeTab === 'statistics'"></template>
     <Dialog
         v-model:visible="visible"
         :showHeader="false"
@@ -200,7 +313,7 @@ onMounted(() => {
             gap-2 text-[#292d32] text-[16px] rounded-[20px]"
             @click="cancelCreate"
         >
-          {{ $t('edit') }}
+          {{ $t('cancel') }}
         </button>
         <button
             class="!bg-[#66C61C] !py-[18px] !px-[24px] w-max min-w-[100px] flex items-center justify-center
@@ -212,6 +325,7 @@ onMounted(() => {
       </div>
 
     </Dialog>
+
   </div>
 
 </template>

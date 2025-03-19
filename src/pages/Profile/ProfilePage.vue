@@ -192,7 +192,6 @@ onMounted(() => {
         as="div"
         v-slot="{errors}"
         :validation-schema="schema"
-        :initial-values="_user"
         class="grid grid-cols-3 gap-x-[24px] gap-y-[32px]"
     >
       <div class=" w-full flex flex-col items-start gap-[6px] justify-between">
@@ -259,16 +258,12 @@ onMounted(() => {
         >
           <InputText
               id="in_label"
-              :model-value="_user.first_name"
+              v-model="_user.first_name"
               variant="outline"
               autocomplete="off"
               :placeholder="$t('firstName')"
               class=" !bg-transparent  !py-[16px] !px-[16px]
                      shadow-none !border-0"
-              @input="(e) => {
-                edit.user_name ? _user.first_name = e.target.value
-              : e.target.value = user.first_name
-              }"
           />
           <!--          <div @click="() => edit.user_name = !edit.user_name">-->
           <!--            <img :src="editIcon" alt="">-->
@@ -361,7 +356,6 @@ onMounted(() => {
               id="in_label"
               :model-value="_user?.mail"
               :disabled="!edit.email"
-              :readonly="!edit.email"
               variant="outline"
               autocomplete="off"
               class=" !bg-transparent  !py-[16px] !px-[16px]
