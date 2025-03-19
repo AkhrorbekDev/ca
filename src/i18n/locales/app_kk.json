@@ -234,5 +234,9 @@
   "max_vehicle_count": "Максимал транспорт сони",
   "max_cargo_capacity_kg": "Максимал юк сиғими (кг)",
   "leave_cargo_comment": "Юк ҳақида изоҳ қолдиринг",
-  "post": "Жойлаш"
+  "post": "Жойлаш",
+  "fuel_type": "Ёқилғи тури",
+  "fuel_type_and_prices": "Ёқилғи тури ва нархлари",
+  "mode": "Режим",
+  "system_settings": "Тизим созламалари"
 }

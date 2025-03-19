@@ -20,8 +20,8 @@ const _breadcrumbs = computed(() => {
 </script>
 
 <template>
-  <div class="card flex justify-start">
-    <Breadcrumb :home="home" :model="_breadcrumbs" class="!px-0 !py-[24px]">
+  <div class="card flex justify-start ">
+    <Breadcrumb :home="home" :model="_breadcrumbs" class="!px-0 !py-[24px] !bg-inherit">
       <template #item="{ item, props }">
         <router-link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
           <a :href="href" v-bind="props.action" @click="navigate">

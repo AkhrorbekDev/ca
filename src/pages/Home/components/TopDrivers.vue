@@ -85,7 +85,7 @@ const driverData: DriversData[] = [
         class="mySwiper"
     >
       <swiper-slide v-for="(item, index) in driverData" :key="index">
-        <div class="relative bg-[#DCE1E6] rounded-2xl h-[364px]">
+        <div class="relative bg-[#DCE1E6] dark:!bg-zinc-700 rounded-2xl h-[364px]">
           <img class="" :src="item.image" :alt="item.full_name"/>
           <div class="name-absolute bg-[#292D32] rounded-full !py-[7px] !px-[20px] text-white">{{
               item.full_name

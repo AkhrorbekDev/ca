@@ -257,7 +257,6 @@ const oilTypes = [
         v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
-      <pre>{{addAnnouncement}}</pre>
       <div class="grid grid-cols-2 gap-4">
         <div>
           <LocationItem
@@ -278,12 +277,12 @@ const oilTypes = [
                 v-model="addAnnouncement.details.company_name"
                 id="company_name"
                 variant="filled"
-                :class="['w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                :class="['w-full bg-[#FAFAFA] dark:!bg-zinc-700 !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
                 { '!border !border-red-500': hasNestedError('details', 'company_name') },
                 { '!border-0': !hasNestedError('details', 'company_name') }
               ]"
             />
-            <label for="company_name" class="!text-[#292D324D]">Kompaniya nomi</label>
+            <label for="company_name" class="text-[#292D324D] dark:!text-white">{{$t('companyName')}}</label>
           </FloatLabel>
           <small v-if="hasNestedError('details', 'company_name')" class="text-red-500 ml-2">
             Kompaniya nomini kiriting
@@ -297,13 +296,13 @@ const oilTypes = [
                 id="capacity"
                 variant="filled"
                 type="number"
-                :class="['w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                :class="['w-full bg-[#FAFAFA] dark:!bg-zinc-700 !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
                 { '!border !border-red-500': hasNestedError('details', 'capacity') },
                 { '!border-0': !hasNestedError('details', 'capacity') }
               ]"
             />
             <span class="absolute top-8 right-5">m³</span>
-            <label for="capacity" class="!text-[#292D324D]">Maksimal yuk sig'imi</label>
+            <label for="capacity" class="text-[#292D324D] dark:!text-white">{{$t('max_cargo_capacity_kg')}}</label>
           </FloatLabel>
           <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">
             Yuk sig'imni kiriting
@@ -317,12 +316,12 @@ const oilTypes = [
                 id="price"
                 variant="filled"
                 type="number"
-                :class="['w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                :class="['w-full bg-[#FAFAFA] dark:!bg-zinc-700 !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
                 { '!border !border-red-500': hasError('price') },
                 { '!border-0': !hasError('price') }
               ]"
             />
-            <label for="price" class="!text-[#292D324D]">Yetkazib berish narxi</label>
+            <label for="price" class="text-[#292D324D] dark:!text-white">{{$t('fuelDeliveryPrice')}}</label>
           </FloatLabel>
           <small v-if="hasError('price')" class="text-red-500 ml-2">
             Narxni kiriting
@@ -330,16 +329,16 @@ const oilTypes = [
         </div>
       </div>
 
-      <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-        <span class="block !mb-[16px] text-[#000000] text-[16px] font-medium">Yoqilg'i turi va narxlari</span>
+      <div class="bg-[#FAFAFA] dark:!bg-zinc-700 rounded-[24px] !p-[16px] !mt-[24px]">
+        <span class="block !mb-[16px] text-[#000000] dark:!text-white text-[16px] font-medium">{{$t('fuel_type_and_prices')}}</span>
 
         <small v-if="formSubmitted && !isOilListValid" class="text-red-500 mb-4 block">
           Yoqilg'i turi va narxi to'ldirilishi shart
         </small>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-2 gap-4 dark:!bg-zinc-700">
           <template v-for="(item, index) in oilList" :key="index">
-            <div>
+            <div class="dark:!bg-zinc-700">
               <FloatLabel variant="in">
                 <Select
                     v-model="item.type"
@@ -348,16 +347,16 @@ const oilTypes = [
                     optionValue="name"
                     placeholder="Tanlang"
                     :class="[
-                    'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
+                    'w-full !rounded-[24px] custom-placeholder-select dark:!bg-zinc-800 h-[76px] flex items-center',
                     { '!border !border-red-500': formSubmitted && !item.type },
                     { '!border-0': !(formSubmitted && !item.type) }
                   ]"
                 />
-                <label for="in_label" class="!text-[#292D324D]">Yoqilg'i turi</label>
+                <label for="in_label" class="text-[#292D324D] dark:!text-white">{{$t('fuel_type')}}</label>
               </FloatLabel>
             </div>
 
-            <div class="relative">
+            <div class="relative dark:!bg-zinc-700">
               <FloatLabel variant="in">
                 <InputText
                     v-model="item.price"
@@ -365,12 +364,12 @@ const oilTypes = [
                     variant="filled"
                     type="number"
                     :class="[
-                    'w-full !bg-[#FFFFFF] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
+                    'w-full bg-[#FFFFFF] dark:!bg-zinc-800 !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
                     { '!border !border-red-500': formSubmitted && (item.price === '' || item.price === null) },
                     { '!border-0': !(formSubmitted && (item.price === '' || item.price === null)) }
                   ]"
                 />
-                <label for="oil_price" class="!text-[#292D324D]">{{ $t('price') }}</label>
+                <label for="oil_price" class="text-[#292D324D] dark:!text-white">{{ $t('price') }}</label>
               </FloatLabel>
 
               <!-- Remove button for oil items (except the first one if it's the only one) -->
@@ -397,7 +396,7 @@ const oilTypes = [
                xmlns="http://www.w3.org/2000/svg">
             <path d="M1 5H9M5 1L5 9" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-          Qo'shish
+          {{$t('add')}}
         </button>
       </div>
 
@@ -406,7 +405,7 @@ const oilTypes = [
         <Textarea
             v-model="addAnnouncement.note"
             id="description"
-            class="w-full custom-placeholder-input"
+            class="w-full custom-placeholder-input dark:!bg-zinc-700 dark:!text-white"
             rows="3"
             cols="30"
             placeholder="Yuk haqida izoh qoldiring!"
@@ -417,11 +416,11 @@ const oilTypes = [
         </small>
       </div>
 
-      <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
-        <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
+      <div class="bg-[#FAFAFA] dark:!bg-zinc-700 rounded-[24px] !p-[16px] !mt-[24px]">
+        <span class="text-[#292D324D] text-[12px]">{{$t('cargoImages')}}</span>
 
-        <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl">
-          <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px]">
+        <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl dark:!bg-zinc-700">
+          <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px] dark:!bg-zinc-700">
             <img class="w-full h-full object-cover rounded-2xl"
                  :src="img" alt="img"
                  width="105">
@@ -462,7 +461,7 @@ const oilTypes = [
             type="submit"
             class="text-white bg-[#66C61C] !py-4 !px-11 rounded-3xl hover:bg-[#58ad18] transition-colors"
         >
-          Joylash
+          {{$t('post')}}
         </button>
       </div>
     </form>
@@ -470,6 +469,10 @@ const oilTypes = [
 </template>
 
 <style scoped>
+.custom-select-hover:hover {
+  background-color: #66C61C !important; /* Change this to your desired hover color */
+}
+
 .bounce-enter-active {
   animation: bounce-in 0.5s;
 }

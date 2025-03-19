@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, inject } from 'vue';
+import {ref, onMounted, inject, watch} from 'vue';
 import { useVuelidate } from '@vuelidate/core';
 import useMapStore from "@/stores/map.store";
 import {maxLength, minValue, numeric, required} from '@vuelidate/validators';
@@ -11,12 +11,15 @@ const mapStore = useMapStore()
 const model = defineModel();
 const props = defineProps({
   announceValue: {
-    type: Object,
-    default: () => ({}),
+    type: Number,
+    default: '',
   },
   activeTab: {
     type: Number,
-  }
+  },
+  childForm: {
+    type: Object,
+  },
 });
 
 const $api = inject('api');
@@ -40,7 +43,7 @@ const addAnnouncement = ref<Announcement>({
   },
   price: null,
   details: {
-    repair_type_id: null,
+    repair_type_id: props.childForm.id,
     category: [],
     services: [],
     company_name: null,
@@ -213,6 +216,10 @@ const createAnnouncement = async (announce) => {
     // Optional: Show error toast or notification
   }
 };
+
+watch(() => props.childForm.id, (newId) => {
+  addAnnouncement.value.details.repair_type_id = newId;
+});
 </script>
 
 <template>
@@ -221,28 +228,28 @@ const createAnnouncement = async (announce) => {
         v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
+
       <div class="grid grid-cols-2 gap-4 !mb-[24px]">
         <LocationItem :location="addAnnouncement.from_location" as="div" class="" name="from_location"
                       @click="setLocation('from_location')"/>
 
         <FloatLabel variant="in">
           <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
-                     class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-          <label for="in_label" class="!text-[#292D324D]">{{ $t('price') }}</label>
+                     class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">{{ $t('price') }}</label>
         </FloatLabel>
 
         <FloatLabel variant="in">
           <InputText v-model="addAnnouncement.details.company_name" id="in_label" variant="filled"
-                     class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"
-                     placeholder="Kompaniya nomini kiriting!"/>
-          <label for="in_label" class="!text-[#292D324D]">Kompaniya nomi</label>
+                     class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"
+                     :placeholder="$t('enterCompanyName')"/>
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">{{$t('companyName')}}</label>
         </FloatLabel>
       </div>
-      <div v-if="announceValue === 'repair'"
-           class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px] !mb-[24px]">
-        <span class="text-[#292D324D] text-[12px] !mb-[8px]">Toifalar</span>
+      <div class="bg-[#FAFAFA] dark:!bg-zinc-700 !py-[12px] !px-[16px] rounded-[24px] !mb-[24px]">
+        <span class="text-[#292D324D] text-[12px] !mb-[8px]">{{$t('categories')}}</span>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 dark:!bg-zinc-700">
           <button
               type="button"
               v-for="(item) in categoriesAllList"
@@ -254,10 +261,10 @@ const createAnnouncement = async (announce) => {
         </div>
       </div>
 
-      <div class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px]">
-        <span class="text-[#292D324D] text-[12px] !mb-[8px]">Xizmatlar</span>
+      <div class="bg-[#FAFAFA] !py-[12px] !px-[16px] rounded-[24px] dark:!bg-zinc-700">
+        <span class="text-[#292D324D] text-[12px] !mb-[8px]">{{$t('services')}}</span>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 dark:!bg-zinc-700">
           <button
               type="button"
               v-for="(item) in servicesAllList"
@@ -271,17 +278,17 @@ const createAnnouncement = async (announce) => {
 
       <div class="flex flex-col gap-2 w-full !mt-[24px]">
         <label for="description" class="text-[#292D3280] text-[16px]">{{ $t('description') }}</label>
-        <Textarea v-model="addAnnouncement.note" id="description" class="w-full   custom-placeholder-input" rows="3"
+        <Textarea v-model="addAnnouncement.note" id="description" class="w-full dark:!bg-zinc-700 custom-placeholder-input" rows="3"
                   cols="30"
-                  placeholder="Yuk haqida izoh qoldiring!"/>
+                  :placeholder="$t('leave_cargo_comment')"/>
       </div>
 
-      <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
+      <div class="bg-[#FAFAFA] dark:!bg-zinc-700 rounded-[24px] !p-[16px] !mt-[24px]">
         <span class="text-[#292D324D] text-[12px]">Ustaxona rasmlari</span>
         <!--          {{ imageList }}-->
 
-        <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl">
-          <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px]">
+        <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl dark:!bg-zinc-700">
+          <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px] dark:!bg-zinc-700">
             <img class="w-full h-full object-cover rounded-2xl"
                  :src="img" alt="img"
                  width="105">
@@ -329,7 +336,7 @@ const createAnnouncement = async (announce) => {
             :disabled="v$.$invalid"
             class="text-white bg-[#66C61C] !py-4 !px-11 rounded-3xl disabled:opacity-50"
         >
-          Joylash
+          {{$t('post')}}
         </button>
       </div>
     </form>

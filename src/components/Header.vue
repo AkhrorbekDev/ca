@@ -29,18 +29,18 @@ const toggle = (event) => {
 </script>
 
 <template>
-  <div class="bg-white">
+  <div class="bg-white dark:!bg-zinc-700">
     <div class="max-w-screen-xl  container lg:mx-auto">
-      <div class="!py-[12px] flex items-center justify-between">
-        <div class="flex items-center gap-3">
+      <div class="!py-[12px] flex items-center justify-between dark:!bg-zinc-700">
+        <div class="flex items-center gap-3 dark:!bg-zinc-700">
           <img src="/icons/telegram.svg" alt="telegram">
           <img src="/icons/instagram.svg" alt="instagram">
           <img src="/icons/facebook.svg" alt="facebook">
           <img src="/icons/youtube.svg" alt="youtube">
         </div>
 
-        <div class="flex items-center gap-6">
-          <div>
+        <div class="flex items-center gap-6 dark:!bg-zinc-700">
+          <div class="flex items-center gap-3 dark:!bg-zinc-700">
             <img src="/icons/lang.svg" alt="lang" class="cursor-pointer" @click="toggle">
 
             <Menu class="!mt-4" ref="menu" id="overlay_menu" :model="items" :popup="true"/>

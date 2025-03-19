@@ -37,7 +37,7 @@ const advantagesDataData: AdvantagesData[] = [
         <img src="@/assets/images/advantages-img.png" alt="advantages-img" width="600"
              class="w-[600px] h-[808px] !mr-[39px] !rounded-2xl">
 
-        <div>
+        <div class="dark:!bg-zinc-700 !p-4 rounded-lg">
           <p class="font-medium text-[#292D3266] !mb-[24px]">Nima uchun bizni tanlashadi</p>
 
           <h3 class="text-[#292D32] text-[40px] font-semibold !mb-[24px]">“Carting”ni Tanlash uchun
@@ -46,12 +46,12 @@ const advantagesDataData: AdvantagesData[] = [
           <p class="text-[#292D3266] text-[18px] !mb-[24px]">Biz mijozlarga ishonchli va qulay transport xizmatlaridan
             bahramand bo‘lish imkonini yaratamiz!</p>
 
-          <div>
-            <div class="flex items-start !mb-[24px]" v-for="(item, index) in advantagesDataData" :key="index">
+          <div class="dark:!bg-zinc-700">
+            <div class="flex items-start !mb-[24px] dark:!bg-zinc-700" v-for="(item, index) in advantagesDataData" :key="index">
               <img src="@/assets/images/icons/advantages-icon.svg" alt="advantages-icon.svg" width="48"
                    class="!mr-[16px]">
 
-              <div>
+              <div class="dark:!bg-zinc-700">
                 <h4 class="text-[#000000] text-[20px] font-medium !mb-2">{{ item.title }}</h4>
                 <h4 class="text-[#292D3266]">{{ item.description }}</h4>
               </div>

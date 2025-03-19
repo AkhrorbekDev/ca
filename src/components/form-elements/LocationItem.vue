@@ -71,11 +71,11 @@ const showOverlay = (e) => {
 </script>
 
 <template>
-  <div :name="name">
-    <div class="formItem" ref="formItem">
-      <div class=" w-full flex items-center justify-between">
-        <div class="flex flex-col  items-start justify-center">
-          <label class="!text-[#292D324D]">{{ label || $t('to') }}</label>
+  <div :name="name" class="">
+    <div class="formItem dark:!bg-zinc-700" ref="formItem">
+      <div class=" w-full flex items-center justify-between dark:!bg-zinc-700">
+        <div class="flex flex-col  items-start justify-center dark:!bg-zinc-700">
+          <label class="text-[#292D324D] dark:!text-[#fff]">{{ label || $t('to') }}</label>
           <InputText
               id="in_label"
               :model-value="location.name"

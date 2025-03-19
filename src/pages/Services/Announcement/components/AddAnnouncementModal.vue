@@ -180,10 +180,10 @@ watch(
   <Dialog dismissableMask v-model:visible="model" modal :style="{ width: '50rem' }"
           :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <template #header>
-      <div class="grow text-center text-[#292D32] text-[24px] font-medium">
+      <h1 class="grow text-center text-[#292D32] text-[24px] font-medium">
         {{ announceValue.name }}
         ma’lumotlari
-      </div>
+      </h1>
     </template>
     <div>
       <div>
@@ -208,7 +208,8 @@ watch(
 
         <RepairMaster
             v-if="dynamicId === 5"
-            :announceValue="announceValue"
+            :announceValue="dynamicId"
+            :childForm="announceValue"
             :activeTab="activeTab"
         />
 
@@ -219,9 +220,19 @@ watch(
           :activeTab="activeTab"
         />
 
-        <Oil v-if="dynamicId === 8"/>
+        <Oil
+            v-if="dynamicId === 8"
+            :announceValue="dynamicId"
+            :childForm="announceValue"
+            :activeTab="activeTab"
+        />
 
-        <RentAuto v-if="dynamicId === 4" />
+        <RentAuto
+            v-if="dynamicId === 4"
+            :announceValue="dynamicId"
+            :childForm="announceValue"
+            :activeTab="activeTab"
+        />
         
 
         <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[56px]">

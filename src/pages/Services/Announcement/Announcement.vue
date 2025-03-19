@@ -168,14 +168,14 @@ onMounted(() => {
   <div>
     <Breadcrumbs :home="home" :model="breadcrumbs"/>
     <h1 class="!my-6 text-[#292D32] text-2xl font-semibold">{{$t('announcements')}}</h1>
-    <div class="flex items-center justify-between">
-      <div class="flex items-center space-x-4 bg-white rounded-lg !p-1.5">
+    <div class="flex items-center justify-between dark:!bg-inherit">
+      <div class="flex items-center space-x-4 bg-white dark:!bg-zinc-800 rounded-lg !p-1.5">
         <button
             v-for="(tab, index) in tabs"
             :key="index"
             :class="[
               '!px-4 !py-3 rounded-lg font-medium',
-              activeTab == index ? 'bg-gray-800 text-white' : 'text-gray-400'
+              activeTab == index ? 'bg-gray-800 dark:bg-zinc-600 text-white' : 'text-gray-400'
             ]"
             @click="changeTab(index)"
         >
@@ -184,9 +184,9 @@ onMounted(() => {
       </div>
 
       <div class="flex items-center gap-4">
-        <div class="flex flex-col gap-2 w-full">
+        <div class="flex flex-col gap-2 w-full ">
           <Select v-model="selectedCity" :options="[]" optionLabel="name" :placeholder="$t('services')"
-                  class="w-full !border-0 !rounded-[16px] custom-placeholder-select h-[56px] flex items-center"/>
+                  class="w-full !border-0 !rounded-[16px] custom-placeholder-select dark:!bg-zinc-700 dark:!text-white h-[56px] custom-text-color flex items-center"/>
         </div>
         <div class="relative">
           <button
@@ -204,24 +204,24 @@ onMounted(() => {
 
           <div v-if="menuVisible">
             <!--dropdown 1-->
-            <div class="mega-drop-menu !left-[-45%]" >
-              <div class="grid grid-cols-2 gap-3">
-                <div class="cards card-wrap cursor-pointer"
+            <div class="mega-drop-menu dark:bg-zinc-600 !left-[-45%]" >
+              <div class="grid grid-cols-2 gap-3 dark:bg-zinc-600">
+                <div class="cards card-wrap cursor-pointer dark:!bg-zinc-800"
                      v-for="(item, index) in getServicesData"
                      :key="index"
                      @click.stop="openDetail(item, item?.id)"
                 >
                   <img src="@/assets/images/icons/car.svg" class="!m-auto w-10 object-contain swg !my-0" alt="icon"/>
-                  <p class="text-gray-900">{{ item.name }}</p>
+                  <p class="text-gray-900 dark:!text-[#f1f5f9]">{{ item.name }}</p>
                 </div>
               </div>
             </div>
 
             <!--dropdown 2-->
-            <div v-if="childMenu.length" class="mega-drop-menu !left-[-191%]" @click.stop>
+            <div v-if="childMenu.length" class="mega-drop-menu dark:bg-zinc-600 !left-[-191%]" @click.stop>
               <button @click="childMenu = []" class="text-[#000] w-full flex justify-end">x</button>
-              <div class="grid grid-cols-2 gap-3">
-                <div class="cards cursor-pointer"
+              <div class="grid grid-cols-2 gap-3 dark:bg-zinc-600">
+                <div class="cards cursor-pointer dark:!bg-zinc-800"
                      v-for="(item2, index) in childMenu"
                      :key="index"
                      @click="handleClickCard(item2, item2?.id)"
@@ -257,11 +257,12 @@ onMounted(() => {
       </div>
 
       <div v-else class="grid xl:grid-cols-5 grid-cols-4 gap-6">
-        <div class="bg-white rounded-[24px] !py-[7px] !px-[18px] cursor-pointer"
+        <div class="bg-white rounded-[24px] !py-[7px] !px-[18px] cursor-pointer dark:!bg-zinc-700"
              v-for="(item) in announcementAllData"
-             :key="item?.id" @click="openModal(item)">
+             :key="item?.id" @click="openModal(item)"
+        >
           <div
-              class="flex items-center"
+              class="flex items-center dark:!bg-zinc-700"
               :class="activeTab !== 0 ? 'justify-between' : 'justify-center'"
           >
             <div
@@ -278,14 +279,14 @@ onMounted(() => {
               </div>
             </div>
 
-            <img v-if="item?.transport_icon" class="h-[50px] object-contain " :src="item?.transport_icon" alt="image"
+            <img v-if="item?.transport_icon" class="h-[50px] object-contain" :src="item?.transport_icon" alt="image"
                  height="50px">
           </div>
 
           <h5 class="text-[#292D324D] text-lg !mb-[4px] line-clamp-1">{{ item.service_name ?? '' }}</h5>
 
           <div class="!mb-[4px]">
-            <div class="flex items-center">
+            <div class="flex items-center dark:!bg-zinc-700">
               <span v-if="item.from_location?.name"
                     class="text-[#1A1F23] font-medium !mr-[7px] line-clamp-1">{{ item.from_location?.name }}</span>
               <svg v-if="item.from_location?.name && item.to_location?.name" width="11" height="12" viewBox="0 0 11 12"
@@ -319,6 +320,10 @@ onMounted(() => {
 
 .p-autocomplete-input::placeholder {
   color: #292D3233 !important;
+}
+
+.dark .p-select .p-placeholder {
+  color: #fff !important; /* Dark theme color */
 }
 
 .p-autocomplete-input {

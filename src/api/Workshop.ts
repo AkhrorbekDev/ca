@@ -22,6 +22,12 @@ class Workshop extends ApiCoreFetch {
     deleteWorkshop(id): Promise<any> {
         return this.delete(`/mobile/v1/list/services/${id}`);
     }
+
+    getCars(): Promise<any> {
+        return this.get("/public/mobile/v1/list/cars", {
+            model_id: 0
+        });
+    }
 }
 
 export default Workshop
