@@ -1,12 +1,12 @@
 <template>
-  <div class="!h-[900px] relative">
+  <div class="!h-[900px] relative !bg-transparent">
     <video autoplay muted loop playsinline class="background-video">
       <source src="@/assets/video/road_transport_truck_industry_forest_nature_highwa_2023_11_27_05.mp4"
               type="video/mp4">
       Your browser does not support the video tag.
     </video>
 
-    <div class="max-w-screen-xl  container lg:mx-auto ">
+    <div class="max-w-screen-xl  container lg:mx-auto dark:!bg-transparent">
       <div class="bg-[#FFFFFF] overflow-hidden rounded-[100px] flex items-center !mt-[32px] !pl-[32px] dark:!bg-zinc-700">
         <router-link to="/">
           <img class="!mr-[45px] " src="@/assets/logo.svg" alt="logo" width="130"/>
@@ -45,7 +45,7 @@
         </div>
       </div>
 
-      <div class="!mt-[138px]">
+      <div class="!mt-[138px] dark:!bg-transparent">
         <h1 class="text-white text-[90px] font-black text-center leading-tight">BARCHA <span class="text-[#66C61C]">TRANSPORT</span>
           <br>
           XIZMATLARI BIR JOYDA</h1>
