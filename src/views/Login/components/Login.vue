@@ -12,6 +12,10 @@ const props = defineProps({
   phone: {
     type: String,
     default: ''
+  },
+  showTypes: {
+    type: Boolean,
+    default: true
   }
 })
 const emit = defineEmits(['on:send'])
@@ -21,17 +25,20 @@ const router = useRouter()
 const $api = inject('api')
 const $auth = inject('auth')
 const value = ref<string>('+998')
+const mail = ref<string>('')
 const maskedPhone = ref<string>('')
 const vForm = ref(null)
 const optCode = ref(null)
 const vCodeForm = ref(null)
 const authType = ref(1)
+const idntType = ref(1)
 const showCodeField = ref(false)
 const counter = ref(60 * 5)
 const interval = ref(null)
 const resendDisabled = ref(true)
 const validationSchema = yup.object({
   phone: yup.string().required().min(12),
+  mail: yup.string().email().required(),
 })
 const validationSchema2 = yup.object({
   security_code: yup.string().required().min(4),
@@ -52,6 +59,17 @@ const changeAuthType = (e) => {
   authType.value = authType.value === 1 ? 2 : 1
   vForm.value.setFieldValue('phone', undefined)
   vForm.value.setFieldError('phone', undefined)
+  vForm.value.setFieldValue('email', undefined)
+  vForm.value.setFieldError('email', undefined)
+  vForm.value.setFieldError('globalErrorField', undefined)
+}
+
+const changeIdentifirType = (e) => {
+  idntType.value = e
+  vForm.value.setFieldError('phone', undefined)
+  vForm.value.setFieldValue('email', undefined)
+  vForm.value.setFieldError('email', undefined)
+  vForm.value.setFieldValue('phone', undefined)
   vForm.value.setFieldError('globalErrorField', undefined)
 }
 
@@ -89,7 +107,7 @@ function maskNumber(number) {
   return firstPart + middlePart + lastPart;
 }
 
-const onSubmit = () => {
+const loginWithPhone = () => {
   vForm.value.validateField('phone').then(res => {
     if (res) {
       isLoading.value = true
@@ -118,6 +136,47 @@ const onSubmit = () => {
           })
     }
   })
+
+}
+
+const loginWithEmail = () => {
+  vForm.value.validateField('mail').then(res => {
+    console.log(res)
+    if (res) {
+      isLoading.value = true
+      $api.auth.sendSmsCode({
+        mail: vForm.value.values.mail,
+        sms_type: 'mail',
+        type: authType.value
+      })
+          .then((response) => {
+            if (!response.error) {
+              showBackground.value = false
+              showCodeField.value = true
+              vForm.value.setFieldValue('session_token', response.data.session_token)
+              counterInterval()
+              emit('on:send', true)
+            } else {
+              vForm.value.setFieldError('globalErrorField', response.message)
+            }
+          })
+          .catch(err => {
+            vForm.value.setFieldError('globalErrorField', err.message)
+          })
+          .finally(() => {
+            isLoading.value = false
+          })
+    }
+  })
+
+}
+
+const onSubmit = () => {
+  if (idntType.value === 1) {
+    loginWithPhone()
+  } else {
+    loginWithEmail()
+  }
 }
 
 const resendSmsCode = () => {
@@ -128,19 +187,28 @@ const verifySMSCode = () => {
   vCodeForm.value.validate().then(res => {
     if (res.valid)
       isLoading.value = true
-
-    $auth.login({
-      phone_number: vForm.value.values.phone,
+    const data = {
       session_token: vForm.value.values.session_token,
-      sms_type: 'phone',
       security_code: vCodeForm.value.values.security_code
-    }).then(res => {
+    }
+
+    if (idntType.value === 1) {
+      data.phone_number = vForm.value.values.phone
+      data.sms_type = 'phone'
+    } else {
+      data.mail = vForm.value.values.mail
+      data.sms_type = 'mail'
+    }
+
+    $auth.login(data).then(res => {
       if (authType.value === 1) {
         router.push({
           name: 'services'
         })
       } else {
-
+        router.push({
+          name: 'personal-data'
+        })
       }
     }).catch(err => {
       vForm.value.setFieldError('globalErrorField', err.response?._data?.message || 'Something wrong')
@@ -172,7 +240,6 @@ const formatTime = computed(() => {
           ref="vForm"
           v-slot="{errors}"
           :validationSchema="validationSchema"
-          @submit="onSubmit"
           class="absolute flex justify-around md:w-[60%] w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       >
         <img
@@ -192,21 +259,61 @@ const formatTime = computed(() => {
             <input type="hidden">
           </Field>
 
-          <div class="flex flex-col !mt-[24px]">
-            <label for="phone" class="text-[#292D324D] text-[14px]">{{ $t('phone') }}</label>
-            <input
-                id="phone"
-                v-maska
-                v-model="_phone"
-                :data-maska="options.mask"
-                @maska="options.postProcess"
-                placeholder="+998"
-                class="!bg-[#FAFAFA] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
+          <div class="flex items-center !p-[4px] rounded-[20px] !bg-[#f3f3f3]">
+            <button
+                type="button"
+                @click="changeIdentifirType(1)"
+                class="rounded-[16px] !bg-transparent !px-[16px] !py-[8px]  w-full"
                 :class="{
+              '!bg-[#ffffff] btn-shadow': idntType === 1
+            }"
+            >
+              {{ $t('phone') }}
+            </button>
+            <button
+                type="button"
+                @click="changeIdentifirType(2)"
+                class="rounded-[16px] !bg-transparent !px-[16px] !py-[8px]  w-full"
+                :class="{
+            '!bg-[#ffffff] btn-shadow': idntType === 2
+            }"
+            >
+              {{ $t('email') }}
+            </button>
+          </div>
+          <template v-if="idntType === 1">
+            <div class="flex flex-col gap-[6px] !mt-[24px]">
+              <label for="phone" class="text-[#292D324D] text-[14px]">{{ $t('phone') }}</label>
+              <input
+                  id="phone"
+                  v-maska
+                  v-model="_phone"
+                  :data-maska="options.mask"
+                  @maska="options.postProcess"
+                  placeholder="+998"
+                  class="!bg-[#FAFAFA]            !p-[16px] outline-none rounded-[20px]"
+                  :class="{
                   _invalid: errors.phone
                 }"
-            />
-          </div>
+              />
+            </div>
+
+          </template>
+          <template v-else>
+            <Field as="div" name="mail" class="flex flex-col gap-[6px] !mt-[24px]">
+              <label for="phone" class="text-[#292D324D] text-[14px]">{{ $t('email') }}</label>
+              <input
+                  id="phone"
+                  v-maska
+                  v-model="mail"
+                  class="!bg-[#FAFAFA]            !p-[16px] outline-none rounded-[20px]"
+                  :class="{
+                  _invalid: errors.mail
+                }"
+              />
+            </Field>
+
+          </template>
           <div class="flex justify-center items-center w-full !mt-[36px] min-h-[24px]">
             <ErrorMessage
                 v-if="errors.globalErrorField"
@@ -219,11 +326,12 @@ const formatTime = computed(() => {
           </div>
 
           <button
-              type="submit"
+              @click="onSubmit"
+              type="button"
               class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-[16px] w-full"
           >
 
-            {{ $t('phone') }}
+            {{ $t('send') }}
             <svg
                 v-if="isLoading"
                 class="mr-3 -ml-1 size-5 animate-spin text-white"
@@ -344,5 +452,9 @@ const formatTime = computed(() => {
     border-color: #EA5455;
 
   }
+}
+
+.btn-shadow {
+  box-shadow: 0px 1.5px 4px -1px #0A090B12;
 }
 </style>

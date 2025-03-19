@@ -6,8 +6,10 @@ import type {MaskInputOptions} from 'maska';
 import {Field, Form} from 'vee-validate';
 
 import {useI18n} from 'vue-i18n';
+import {useToast} from 'primevue/usetoast';
 
 const {t} = useI18n()
+const toast = useToast()
 
 interface DataValue {
   company: null;
@@ -33,7 +35,7 @@ const prefix = '998'
 const userTypes = ref([
   {
     name: t('legalEntity'),
-    value: ' CLIENT'
+    value: 'CLIENT'
   },
   {
     name: t('individual'),
@@ -60,14 +62,21 @@ const physicalSchema = yup.object({
   agree: yup.bool().notOneOf([false]).required(),
   org_name: yup.string().required().nonNullable(),
   stir: yup.number().required().nonNullable(),
-  user_type: yup.string().required().nonNullable()
+  user_type: yup.string().required().nonNullable(),
+  phone_number: yup.string().required().min(12),
+  tg_link: yup.string().required().url(),
+  mail: yup.string().required().email()
 })
 
 const clientSchema = yup.object({
-
+  first_name: yup.string().required().nonNullable(),
+  last_name: yup.string().required().nonNullable(),
+  tg_link: yup.string().required().url(),
+  email: yup.string().required().email(),
   phone_number: yup.string().required().min(12),
   agree: yup.bool().oneOf([true]).required(),
-  user_type: yup.string().required().nonNullable()
+  user_type: yup.string().required().nonNullable(),
+  mail: yup.string().required().email()
 })
 
 const initialValues = ref({
@@ -77,7 +86,11 @@ const initialValues = ref({
   last_name: null,
   mail: null,
   call_phone: null,
-  agree: false
+  agree: false,
+  tg_link: null,
+  phone_number: null,
+  stir: null
+
 })
 
 const agreeValue = ref(false)
@@ -100,10 +113,18 @@ const submit = () => {
         .then(res => {
           if (res.valid) {
             isLoading.value = true
-            $api.auth.updateUserProfile(mainForm.value.getValues())
+            $api.auth.updateUserProfile(clForm.value.getValues())
                 .then(res => {
                   router.push({
                     name: 'services'
+                  })
+                })
+                .catch(err => {
+                  toast.add({
+                    group: 'br',
+                    life: 2000,
+                    severity: 'error',
+                    summary: err.message
                   })
                 })
                 .finally(() => {
@@ -120,6 +141,14 @@ const submit = () => {
                 .then(res => {
                   router.push({
                     name: 'services'
+                  })
+                })
+                .catch(err => {
+                  toast.add({
+                    group: 'br',
+                    life: 2000,
+                    severity: 'error',
+                    summary: err.message
                   })
                 })
                 .finally(() => {
@@ -143,10 +172,11 @@ const submit = () => {
           class="flex items-center justify-center h-[100vh]"
       >
         <div class="rounded-[24px] !w-[400px]">
-          <h2 class="text-[#282B30] text-[36px] !mb-[10px] text-center font-600">Shaxsingizni tanlang!</h2>
+          <h2 class="text-[#282B30] text-[36px] !mb-[10px] text-center font-600">{{ $t('personal') }}</h2>
           <p class="text-[#292D324D] text-[16px] text-center !m-auto !mb-[24px] w-[80%]">
-            Siz platformamizdan kim sifatida
-            foydalanmoqchisiz?
+            {{
+              $t('whoAreYouOnPlatform')
+            }}
           </p>
 
           <div as="div" name="user_type" class="flex flex-col items-center !mt-[24px] gap-y-[8px]">
@@ -174,7 +204,7 @@ const submit = () => {
               type="button"
               class="!py-[16px] !bg-[#66C61C] text-white text-[16px] rounded-[20px] !mt-[24px] w-full"
           >
-            Keyingisi
+            {{ $t('next') }}
           </button>
 
           <!--          <div class="!mt-[24px]  text-gray-600">
@@ -189,47 +219,75 @@ const submit = () => {
     </div>
     <div v-show="showPersonalData">
       <div class="flex items-center justify-center h-[100vh]">
-        <div class="rounded-[24px] !w-[400px]">
-          <h2 class="text-[#282B30] text-[36px] !mb-[10px] text-center font-600">Shaxs ma’lumotlari</h2>
+        <div class="rounded-[24px] !w-[500px]">
+          <h2 class="text-[#282B30] text-[36px] !mb-[10px] text-center font-600">
+            {{ selectedUserType.value === 'CLIENT' ? $t('enterPhysicalInfos') : $t('enterClientInfos') }}
+          </h2>
           <p class="text-[#292D324D] text-[16px] text-center !m-auto !mb-[24px] w-[80%]">
-            Ma’lumotlaringizni kiriting!
+            {{ $t('enterInfos') }}
           </p>
 
           <div class="flex flex-col gap-y-4 !mt-[24px]">
             <Form
-                v-slot="{values}"
-                v-if="selectedUserType.value !== 'CLIENT'"
-                ref="mainForm"
+                v-slot="{values, errors}"
+                v-if="selectedUserType.value === 'CLIENT'"
+                ref="clForm"
+
+                class="flex flex-col gap-y-4"
                 :validation-schema="physicalSchema"
                 :initial-values="initialValues"
             >
               <Field as="div" class="flex flex-col" name="org_name">
-                <label for="org_name" class="text-[#292D324D] text-[14px] !mb-[8px]">Kompaniya nomi</label>
+                <label for="org_name" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('companyName') }}
+                </label>
                 <input
                     id="org_name"
-                    :model-value="values.org_name"
-                    placeholder="Kiriting"
+                    :value="values.org_name"
+                    :placeholder="$t('enterCompanyName')"
                     :class="{
-                    _invalid: mainForm?.errors?.org_name
+                    _invalid: errors?.org_name
                   }"
                     class="!bg-[#fff] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
                 />
               </Field>
 
               <Field as="div" class="flex flex-col" name="stir">
-                <label for="stir" class="text-[#292D324D] text-[14px] !mb-[8px]">STIR</label>
+                <label for="stir" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('stir') }}
+                </label>
                 <input
                     id="stir"
-                    :model-value="values.stir"
-                    placeholder="Kiriting"
+                    :value="values.stir"
+                    :placeholder="$t('enterSTIR')"
                     :class="{
-                    _invalid: mainForm?.errors?.stir
+                    _invalid: errors?.stir
                   }"
                     class="!bg-[#fff] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
                 />
               </Field>
               <div class="flex flex-col">
-                <label for="call_phone" class="text-[#292D324D] text-[14px] !mb-[8px]">Telefon</label>
+                <label for="phone_number" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('phone') }}
+                </label>
+                <input
+                    id="phone_number"
+
+                    v-maska
+                    :data-maska="options.mask"
+                    @maska="(e) => options.postProcess(e, 'phone_number')"
+                    placeholder="+998"
+                    class="!bg-[#FAFAFA] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
+                    :class="{
+                    _invalid: errors?.phone_number
+
+                  }"
+                />
+              </div>
+              <div class="flex flex-col">
+                <label for="call_phone" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('callCenterNumber') }}
+                </label>
                 <input
                     id="call_phone"
 
@@ -239,40 +297,140 @@ const submit = () => {
                     placeholder="+998"
                     class="!bg-[#FAFAFA] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
                     :class="{
-                    _invalid: mainForm?.errors?.call_phone
+                    _invalid: errors?.call_phone
 
                   }"
                 />
               </div>
+
+              <Field as="div" class="flex flex-col" name="tg_link">
+                <label for="tg_link" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('telegram') }}
+                </label>
+                <input
+                    id="tg_link"
+                    :model-value="values.tg_link"
+                    :placeholder="$t('telegram')"
+                    :class="{
+                    _invalid: errors?.tg_link
+                  }"
+                    class="!bg-[#fff] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
+                />
+              </Field>
+              <Field as="div" class="flex flex-col" name="mail">
+                <label for="mail" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('email') }}
+                </label>
+                <input
+                    id="mail"
+                    :model-value="values.mail"
+                    :placeholder="$t('email')"
+                    :class="{
+                    _invalid: errors?.mail
+                  }"
+                    class="!bg-[#fff] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
+                />
+              </Field>
+              <Field as="div" class="flex flex-col" name="referred_by">
+                <label for="referred_by" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('referalCode') }}
+                </label>
+                <input
+                    id="referred_by"
+                    :value="values.referred_by"
+                    class="!bg-[#fff] border-0 !p-[16px] outline-none rounded-[20px]"
+                />
+              </Field>
             </Form>
             <Form
-                ref="clForm"
-                v-slot="{values}"
+                ref="mainForm"
+                v-slot="{values, errors}"
                 v-else
+                class="flex flex-col gap-y-4"
                 :validation-schema="clientSchema"
                 :initial-values="initialValues"
             >
               <Field as="div" class="flex flex-col" name="first_name">
-                <label for="first_name" class="text-[#292D324D] text-[14px] !mb-[8px]">Ismingiz</label>
+                <label for="first_name" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('yourName') }}
+                </label>
                 <input
                     id="first_name"
-                    :model-value="values.first_name"
-                    placeholder="Kiriting"
+                    :value="values.first_name"
+                    :placeholder="$t('enterYourName')"
                     :class="{
-                      _invalid: clForm?.errors?.first_name
+                      _invalid: errors?.first_name
                     }"
                     class="!bg-[#fff] border-0 !p-[16px] outline-none rounded-[20px]"
                 />
               </Field>
               <Field as="div" class="flex flex-col" name="last_name">
-                <label for="last_name" class="text-[#292D324D] text-[14px] !mb-[8px]">Familyangiz</label>
+                <label for="last_name" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('yourSurname') }}
+                </label>
                 <input
                     id="last_name"
-                    :model-value="values.last_name"
-                    placeholder="Kiriting"
+                    :value="values.last_name"
+                    :placeholder="$t('enterYourSurname')"
                     :class="{
-                      _invalid: clForm?.errors?.last_name
+                      _invalid: errors?.last_name
                     }"
+                    class="!bg-[#fff] border-0 !p-[16px] outline-none rounded-[20px]"
+                />
+              </Field>
+              <div class="flex flex-col">
+                <label for="phone_number" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('phone') }}
+                </label>
+                <input
+                    id="phone_number"
+                    v-maska
+                    :data-maska="options.mask"
+                    @maska="(e) => options.postProcess(e, 'phone_number')"
+                    placeholder="+998"
+                    class="!bg-[#FAFAFA] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
+                    :class="{
+                    _invalid: errors?.phone_number
+
+                  }"
+                />
+              </div>
+
+              <Field as="div" class="flex flex-col" name="tg_link">
+                <label for="tg_link" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('telegram') }}
+                </label>
+                <input
+                    id="tg_link"
+                    :model-value="values.tg_link"
+                    :placeholder="$t('telegram')"
+                    :class="{
+                    _invalid: errors?.tg_link
+                  }"
+                    class="!bg-[#fff] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
+                />
+              </Field>
+              <Field as="div" class="flex flex-col" name="mail">
+                <label for="mail" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('email') }}
+                </label>
+                <input
+                    id="mail"
+                    :model-value="values.mail"
+                    :placeholder="$t('email')"
+                    :class="{
+                    _invalid: errors?.mail
+                  }"
+                    class="!bg-[#fff] border-[1px] border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
+                />
+              </Field>
+              <Field as="div" class="flex flex-col" name="referred_by">
+                <label for="referred_by" class="text-[#292D324D] text-[14px] !mb-[8px]">
+                  {{ $t('referalCode') }}
+                </label>
+                <input
+                    id="referred_by"
+                    :value="values.referred_by"
                     class="!bg-[#fff] border-0 !p-[16px] outline-none rounded-[20px]"
                 />
               </Field>
@@ -295,8 +453,12 @@ const submit = () => {
                   @update:model-value="updateAgreeValue"
               />
               <label for="agree" class="!ml-[8px] text-[14px]">
-                <span class="text-[#218BFF]">Foydalanish shartlari</span>
-                <span class="text-[#292D324D]">ga roziman</span>
+                <span class="text-[#218BFF]">
+                  {{ $t('agreeTo') }}
+                </span>
+                <span class="text-[#292D324D]">
+                  {{ $t('agreeTerms') }}
+                </span>
               </label>
             </div>
           </div>
@@ -307,7 +469,7 @@ const submit = () => {
               class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-[16px] w-full"
           >
 
-            Kirish
+            {{ $t('send') }}
             <svg
                 v-if="isLoading"
                 class="mr-3 -ml-1 size-5 animate-spin text-white"
@@ -330,8 +492,8 @@ const submit = () => {
                 @click.prevent="() => showPersonalData = false"
                 class="text-[#0BA5EC] !text-[15px] flex items-center justify-center"
             >
-              <img src="../../assets/images/toLeft.svg" alt="left"/>
-              Ortga
+              <img src="@/assets/images/toLeft.svg" alt="left"/>
+              {{ $t('back') }}
             </a>
           </div>
         </div>

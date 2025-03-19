@@ -7,6 +7,7 @@ import {useI18n} from 'vue-i18n';
 import {imageCDN} from '@/config'
 import EditPhoneModal from '@/pages/Profile/components/EditPhoneModal.vue';
 import {useToast} from 'primevue/usetoast';
+import * as yup from 'yup';
 
 const {t} = useI18n()
 const $auth = inject('auth')
@@ -14,6 +15,16 @@ const $api = inject('api')
 const _user = ref({})
 const vForm = ref()
 const prefix = '998'
+
+const schema = yup.object({
+  first_name: yup.string().required(),
+  last_name: yup.string().required(),
+  phone: yup.string().required(),
+  tg_link: yup.string().url().required(),
+  type: yup.string().required(),
+  email: yup.string().email().required(),
+  agree: yup.boolean().required().oneOf([true], t('agreeToTerms')),
+})
 
 const options = reactive<MaskInputOptions>({
   mask: '+998 (##) ###-##-##',
@@ -116,7 +127,7 @@ const deleteAvatar = () => {
 }
 
 onMounted(() => {
-  _user.value = $auth.user || {}
+  _user.value = $auth.user ? {...$auth.user} : {}
 })
 </script>
 
@@ -179,6 +190,8 @@ onMounted(() => {
         ref="vForm"
         as="div"
         v-slot="{errors}"
+        :validation-schema="schema"
+        :initial-values="_user"
         class="grid grid-cols-3 gap-x-[24px] gap-y-[32px]"
     >
       <div class=" w-full flex flex-col items-start gap-[6px] justify-between">
@@ -187,11 +200,14 @@ onMounted(() => {
             as="div"
             name="type"
             v-slot="{field}"
-            class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]"
+            :class="{
+                _invalid: errors.type
+            }"
+            class="flex items-center border-[1px] border-[#FAFAFA] bg-[#fafafa] justify-between w-full !pr-[16px]"
         >
           <Select
               :loading="isLoading"
-              :model-value="_user?.type"
+              v-model="_user.type"
               :options="userTypes"
               :disabled="!edit.type"
               :readonly="!edit.type"
@@ -234,7 +250,12 @@ onMounted(() => {
       </div>
       <div class=" w-full flex flex-col items-start gap-[6px] justify-between">
         <label class="!text-[#292D324D]">{{ $t('firstName') }}</label>
-        <div class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]">
+        <Field
+            name="first_name"
+            as="div"
+            :class="{_invalid: errors.first_name}"
+            class="flex items-center border-[1px] border-[#FAFAFA] bg-[#fafafa] justify-between w-full !pr-[16px]"
+        >
           <InputText
               id="in_label"
               :model-value="_user.first_name"
@@ -251,43 +272,50 @@ onMounted(() => {
           <!--          <div @click="() => edit.user_name = !edit.user_name">-->
           <!--            <img :src="editIcon" alt="">-->
           <!--          </div>-->
-        </div>
+        </Field>
 
       </div>
       <div class=" w-full flex flex-col items-start gap-[6px] justify-between">
         <label class="!text-[#292D324D]">{{ $t('lastName') }}</label>
-        <div class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]">
+        <Field
+            as="div"
+            name="last_name"
+            :class="{ _invalid: errors.last_name}"
+            class="flex items-center border-[1px] border-[#FAFAFA] bg-[#fafafa] justify-between w-full !pr-[16px]"
+        >
           <InputText
               id="in_label"
               :model-value="_user.last_name"
               variant="outline"
               autocomplete="off"
               :placeholder="$t('lastName')"
+              :class="{
+                  _invalid: errors.lastName
+                }"
               class=" !bg-transparent  !py-[16px] !px-[16px]
                      shadow-none !border-0"
           />
           <!--          <div @click="() => edit.user = !edit.user">-->
           <!--            <img :src="editIcon" alt="">-->
           <!--          </div>-->
-        </div>
+        </Field>
 
       </div>
       <div class=" w-full flex flex-col items-start gap-[6px]  justify-between">
         <label class="!text-[#292D324D]">{{ $t('phoneNumber') }}</label>
-        <div class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]">
+        <div
+            :class="{ _invalid: errors.phone}"
+            class="flex items-center border-[1px] border-[#FAFAFA] bg-[#fafafa] justify-between w-full !pr-[16px]"
+        >
           <input
               id="phone"
               v-maska
               :data-maska="options.mask"
-              @maska="options.postProcess"
               placeholder="+998"
               :disabled="!edit.phone"
               :readonly="!edit.phone"
               :value="_user?.phone_number"
-              class="!bg-[#FAFAFA] border-0 border-[#FAFAFA] !p-[16px] outline-none rounded-[20px]"
-              :class="{
-                  _invalid: errors.phone
-                }"
+              class="!bg-[#FAFAFA] !border-0 !p-[16px] outline-none rounded-[20px]"
           />
           <div class="cursor-pointer" @click="showEditModal">
             <img :src="editIcon" alt="">
@@ -297,7 +325,12 @@ onMounted(() => {
       </div>
       <div class=" w-full flex flex-col items-start gap-[6px] justify-between">
         <label class="!text-[#292D324D]">{{ $t('telegram') }}</label>
-        <div class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]">
+        <Field
+            as="div"
+            name="tg_link"
+            :class="{_invalid: errors.tg_link}"
+            class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]"
+        >
           <InputText
               id="in_label"
               :model-value="_user?.tg_link"
@@ -312,12 +345,17 @@ onMounted(() => {
           <!--          <div @click="() => edit.user = !edit.user">-->
           <!--            <img :src="editIcon" alt="">-->
           <!--          </div>-->
-        </div>
+        </Field>
 
       </div>
       <div class=" w-full flex flex-col items-start gap-[6px] justify-between">
         <label class="!text-[#292D324D]">{{ $t('email') }}</label>
-        <div class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]">
+        <Field
+            as="div"
+            name="email"
+            :class="{_invalid: errors.email}"
+            class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]"
+        >
           <InputText
               id="in_label"
               :model-value="_user?.mail"
@@ -331,12 +369,14 @@ onMounted(() => {
           <div class="cursor-pointer" @click="() => edit.email = !edit.email">
             <img :src="editIcon" alt="">
           </div>
-        </div>
+        </Field>
 
       </div>
       <div class=" w-full flex flex-col items-start gap-[6px] justify-between">
         <label class="!text-[#292D324D]">{{ $t('referalCode') }}</label>
-        <div class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]">
+        <div
+            class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]"
+        >
           <InputText
               id="in_label"
               :model-value="_user?.referred_by"
@@ -415,6 +455,15 @@ onMounted(() => {
 
   .p-select-dropdown {
     display: none !important;
+  }
+}
+
+._invalid {
+  border-color: #EA5455;
+
+  .p-inputtext {
+    border-color: #EA5455;
+
   }
 }
 </style>

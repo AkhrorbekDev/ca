@@ -46,7 +46,6 @@ class ApiCoreFetch implements ApiCoreFetchInterface, FetchHooks {
             }
         }
         let addAuthHeaders = true
-
         if (!requiredAuth.methods.includes(context.options.method) && context.options.params && (typeof context.options.params?.noAuth === 'boolean' && context.options.params?.noAuth === true)) {
             addAuthHeaders = false
         }

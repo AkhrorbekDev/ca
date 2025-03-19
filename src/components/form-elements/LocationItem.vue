@@ -109,7 +109,8 @@ const showOverlay = (e) => {
             v-for="(item, index) in geoSuggest"
             :key="index"
             class="geo-suggest flex flex-col items-start justify-center !py-[12px] !px-[16px] !bg-[#fafafa] gap-[8px] rounded-[16px] cursor-pointer"
-            @click="selectLocation(item)">
+            @click="selectLocation(item)"
+        >
           <p class="geo-suggest__title text-[18px]">
             {{ item.title.text }}
           </p>

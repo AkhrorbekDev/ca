@@ -208,11 +208,10 @@ const confirm = useConfirm();
 const showConfirmModal = () => {
   confirm.require({
     group: 'auth',
-    message: 'Bu amal avtorizatsiya talab etadi',
-    header: 'Avtorizatsiya',
+    message: t('authRequired'),
     icon: 'pi pi-exclamation-triangle',
     rejectProps: {
-      label: 'Bekor qilish',
+      label: t('cancel'),
       severity: 'secondary',
       outlined: true
     },

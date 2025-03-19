@@ -59,6 +59,21 @@ const setLocation = (name) => {
   }, name)
   // hideDetailsOnLocationChange.value = true
 }
+
+const setSelectedLocation = async (address, name) => {
+  await getGeoObject({address: address})
+      .then(res => {
+        const marker = mapStore.getMarker(name)
+        mainForm.value.setFieldValue(name, {
+          lat: marker.markerProps.geometry.coordinates[0],
+          lng: marker.markerProps.geometry.coordinates[1],
+          name: address
+        })
+        mapStore.removeMarker(name)
+      }).finally(() => {
+        hideDetailsOnLocationChange.value = false
+      })
+}
 const onChangeDate = (e: Date, name) => {
   mainForm.value.setFieldValue(name, dateRef.value.formatDate(e, 'dd.mm.yy'))
 }
@@ -219,6 +234,7 @@ onUnmounted(() => {
           :class="{
         _invalid: (errors['to_location.lat'] || errors['to_location.lng'])
       }"
+          @on:select="setSelectedLocation($event,'to_location')"
           :location="values.to_location"
           as="div"
           class="col-span-full"

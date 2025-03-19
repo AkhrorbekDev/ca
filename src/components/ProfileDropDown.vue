@@ -64,7 +64,7 @@ const toggleMenu = () => {
   menuVisible.value = !menuVisible.value;
 };
 const clickOutSideDetails = e => {
-  if (!detailsWrapper.value.contains(e.target)) {
+  if (!detailsWrapper.value?.contains(e.target)) {
     menuVisible.value = false
   }
 }
@@ -81,6 +81,7 @@ const registerClickOutside = (e) => {
 
 
 watch(menuVisible, (e) => {
+  console.log(menuVisible.value, 'menuVisible')
   if (e) {
     registerClickOutside(e)
   } else {
@@ -138,8 +139,8 @@ watch(menuVisible, (e) => {
           <template v-for="route in routes" :key="route.link">
             <router-link
                 :to="{
-          name: route.link
-        }"
+                  name: route.link
+                }"
                 class="flex items-center justify-between rounded-[16px] bg-[#FAFAFA] !py-[12px] !px-[16px] !mb-[8px] cursor-pointer"
             >
               <div class="flex items-center gap-2">

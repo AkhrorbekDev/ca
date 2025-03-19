@@ -250,6 +250,7 @@ class Auth {
             if (!this._needToken(config) || config.url === refreshEndpoint) {
                 return config
             }
+            console.log(config, this._needToken(config), 'config')
 
             // Perform scheme checks.
             const {

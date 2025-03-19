@@ -60,7 +60,6 @@ const setLocation = (name) => {
       }
     }
   }, name)
-  // hideDetailsOnLocationChange.value = true
 }
 
 const setSelectedLocation = async (address, name) => {
@@ -70,7 +69,7 @@ const setSelectedLocation = async (address, name) => {
         mainForm.value.setFieldValue(name, {
           lat: marker.markerProps.geometry.coordinates[0],
           lng: marker.markerProps.geometry.coordinates[1],
-          name: res.data.description
+          name: address
         })
         mapStore.removeMarker(name)
       }).finally(() => {
@@ -341,7 +340,8 @@ onUnmounted(() => {
 
     <div
         ref="mainWrapper"
-        class="flex flex-col h-full w-full gap-4 !p-[16px]">
+        class="flex flex-col h-full w-full gap-4 !p-[16px]"
+    >
       <LocationItem
           :label="$t('from')"
           :class="{
@@ -352,7 +352,8 @@ onUnmounted(() => {
           class="col-span-full"
           name="from_location"
           @on:select="setSelectedLocation($event,'from_location')"
-          @click="setLocation('from_location')"/>
+          @click="setLocation('from_location')"
+      />
 
       <LocationItem
           :class="{
@@ -364,7 +365,8 @@ onUnmounted(() => {
           name="to_location"
           @on:select="setSelectedLocation($event,'to_location')"
 
-          @click="setLocation('to_location')"/>
+          @click="setLocation('to_location')"
+      />
 
       <Field
           as="div"
@@ -372,7 +374,8 @@ onUnmounted(() => {
           :class="{
         _invalid: (errors['details.load_weight.amount'])
       }"
-          class="load_weight_select formItem flex items-center justify-between">
+          class="load_weight_select formItem flex items-center justify-between"
+      >
         <div class="flex flex-col  items-start justify-center">
 
           <label for="load_weight.amount" class="!text-[#292D324D]">{{ $t('loadWeight') }}</label>
@@ -397,7 +400,8 @@ onUnmounted(() => {
               :options="loadWeightTypes"
               optionLabel="label"
               @update:model-value="handleChange"
-              class="!bg-[#FAFAFA] shadow-[none] !border-0 flex items-center">
+              class="!bg-[#FAFAFA] shadow-[none] !border-0 flex items-center"
+          >
             <template #option="slotProps">
               <div
 
@@ -427,7 +431,8 @@ onUnmounted(() => {
               }"
           name="shipment_date"
           as="div"
-          class=" !px-[4px]  col-span-full">
+          class=" !px-[4px]  col-span-full"
+      >
         <FloatLabel variant="in">
           <DatePicker
 
@@ -439,7 +444,8 @@ onUnmounted(() => {
               @update:model-value="onChangeDate($event, field.name)"
               iconDisplay="input"
               variant="filled"
-              class="custom-date w-full "/>
+              class="custom-date w-full "
+          />
           <label for="in_label" class="!text-[#292D324D]">
             {{ $t('departureDate') }}</label>
         </FloatLabel>
@@ -470,14 +476,16 @@ onUnmounted(() => {
                 height="8"
                 viewBox="0 0 12 8"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg">
+                xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                   d="M1 6.5L6 1.5L11 6.5"
                   stroke="#292D32"
                   stroke-opacity="0.3"
                   stroke-width="1.5"
                   stroke-linecap="round"
-                  stroke-linejoin="round"/>
+                  stroke-linejoin="round"
+              />
             </svg>
           </div>
 
@@ -491,7 +499,8 @@ onUnmounted(() => {
           :class="{
                 _invalid: errors['details.transportation_type_id']
               }"
-          class="col-span-full !px-[4px]">
+          class="col-span-full !px-[4px]"
+      >
         <FloatLabel variant="in">
           <Select
               :loading="transportLoading"
@@ -500,14 +509,16 @@ onUnmounted(() => {
               :options="transports"
               optionLabel="name"
               :placeholder="$t('pickTransport')"
-              class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
+              class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center"
+          >
             <template #value="slotProps">
               <div v-if="slotProps.value" class="flex items-center">
                 <img
                     :alt="slotProps.value.name"
                     :src="slotProps.value.icon"
                     class="mr-2"
-                    style="width: 80px; height: 40px; object-fit: contain"/>
+                    style="width: 80px; height: 40px; object-fit: contain"
+                />
                 <div>{{ slotProps.value.name }}</div>
               </div>
               <span v-else>
@@ -520,7 +531,8 @@ onUnmounted(() => {
                     :alt="slotProps.option.name"
                     :src="slotProps.option.icon"
                     :class="`mr-2`"
-                    style="width: 94px; height: 73px; object-fit: contain"/>
+                    style="width: 94px; height: 73px; object-fit: contain"
+                />
                 <div class="flex items-center justify-between grow">
                   <div>
                     <span class="block">{{ slotProps.option.name }}</span>
@@ -531,7 +543,8 @@ onUnmounted(() => {
                         d="M8.33203 11.9999H15.6654M15.6654 11.9999L12.6065 9.33325M15.6654 11.9999L12.6065 14.6666"
                         stroke="white"
                         stroke-linecap="round"
-                        stroke-linejoin="round"/>
+                        stroke-linejoin="round"
+                    />
                   </svg>
 
 
@@ -557,12 +570,14 @@ onUnmounted(() => {
             class="mr-3 -ml-1 size-5 animate-spin text-white"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
-            viewBox="0 0 24 24">
+            viewBox="0 0 24 24"
+        >
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
           <path
               class="opacity-75"
               fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
         </svg>
       </button>
     </div>
@@ -606,13 +621,15 @@ onUnmounted(() => {
               v-for="item in loadTypes"
               :key="item.label"
               :item="item"
-              :value="item.value"/>
+              :value="item.value"
+          />
         </Field>
         <div
             class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[24px]"
             :class="{
           _invalid: imagesNotUploaded
-        }">
+        }"
+        >
           <span class="text-[#292D324D] text-[12px]">
             {{ $t('cargoImage') }}
           </span>
@@ -623,10 +640,12 @@ onUnmounted(() => {
                   class="w-full h-full object-cover rounded-2xl"
                   :src="img"
                   alt="img"
-                  width="105">
+                  width="105"
+              >
 
               <div
-                  class="group-hover:flex hidden absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 rounded-2xl items-center justify-center">
+                  class="group-hover:flex hidden absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 rounded-2xl items-center justify-center"
+              >
                 <button @click="deleteImage(index)">
                   <i class="pi pi-trash cursor-pointer" style="font-size: 1.5rem; color: red"></i>
                 </button>
@@ -641,19 +660,22 @@ onUnmounted(() => {
                     stroke="#66C61C"
                     stroke-width="1.5"
                     stroke-linecap="round"
-                    stroke-linejoin="round"/>
+                    stroke-linejoin="round"
+                />
                 <path
                     d="M53.3164 57L55.5033 54.833L57.6902 57"
                     stroke="#66C61C"
                     stroke-width="1.5"
                     stroke-linecap="round"
-                    stroke-linejoin="round"/>
+                    stroke-linejoin="round"
+                />
                 <path
                     d="M59.5406 62H62.124C64.0697 62 65.6562 60.428 65.6562 58.5C65.6562 56.572 64.0697 55 62.124 55H61.685V54C61.685 50.69 58.9704 48 55.63 48C52.6257 48 50.135 50.178 49.6628 53.023C47.2639 53.144 45.3516 55.093 45.3516 57.5C45.3516 59.985 47.385 62 49.8928 62H51.4672"
                     stroke="#66C61C"
                     stroke-width="1.5"
                     stroke-linecap="round"
-                    stroke-linejoin="round"/>
+                    stroke-linejoin="round"
+                />
               </svg>
 
               <input
@@ -661,7 +683,8 @@ onUnmounted(() => {
                   class="absolute opacity-0 inset-0 cursor-pointer"
                   id="fileAnnouncement"
                   type="file"
-                  accept="image/*">
+                  accept="image/*"
+              >
 
             </label>
           </div>
@@ -677,7 +700,8 @@ onUnmounted(() => {
               style="border: 1px solid #C2C2C233"
               rows="3"
               cols="30"
-              :placeholder="$t('leaveOrderComment')"/>
+              :placeholder="$t('leaveOrderComment')"
+          />
         </Field>
         <Field name="pay_type" v-slot="{handleChange }" as="div" class="!mt-[12px] !mb-[24px]">
           <span class="bg-[#FAFAFA] rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
@@ -688,7 +712,8 @@ onUnmounted(() => {
             <div class="flex items-center justify-between !py-4 border-b border-[#F5F5F7]">
               <label
                   :for="`paymentType.${paymentType.value}`"
-                  class="flex items-center gap-4 cursor-pointer">
+                  class="flex items-center gap-4 cursor-pointer"
+              >
                 <span v-html="paymentType.icon"/>
                 {{ paymentType.name }}
               </label>
@@ -717,13 +742,15 @@ onUnmounted(() => {
               class="!py-[12px] !px-[16px] !rounded-[16px] border border-[#C2C2C233] !placeholder-[#292D324D]"
               id="price"
               aria-describedby="username-help"
-              :placeholder="$t('enterPrice')"/>
+              :placeholder="$t('enterPrice')"
+          />
         </Field>
       </div>
       <div class="footer">
         <button
             @click="onSaveDetails"
-            class="!p-[16px] bg-[#66C61C] rounded-[24px] text-white text-center w-full !mt-[72px] text-[16px]">
+            class="!p-[16px] bg-[#66C61C] rounded-[24px] text-white text-center w-full !mt-[72px] text-[16px]"
+        >
           {{ $t('confirm') }}
         </button>
       </div>

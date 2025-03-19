@@ -34,6 +34,9 @@ app.use(auth, {
             method: 'post'
         },
     },
+    token: {
+        global: true
+    },
     user: {
         property: 'user',
     }

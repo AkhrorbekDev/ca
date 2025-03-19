@@ -148,7 +148,7 @@ onMounted(() => {
               {{ item.note.length }}/{{ maxDescLength }}
             </span>
             </div>
-            <Textarea :model-value="item.note" readonly disabled rows="5" cols="30"/>
+            <Textarea :model-value="item.note" readonly rows="5" cols="30"/>
           </div>
 
         </div>

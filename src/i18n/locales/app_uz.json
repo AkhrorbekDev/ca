@@ -40,6 +40,8 @@
   "legalEntityInfo": "Yuridik shaxs ma'lumotlari",
   "individualInfo": "Jismoniy shaxs ma'lumotlari",
   "agreeToTerms": "Foydalanish shartlariga roziman",
+  "agreeTo": "Foydalanish shartlari",
+  "agreeTerms": "ga roziman",
   "fillInTheInformation": "Malumotlarni to'ldiring",
   "enterSTIR": "STIR kiriting",
   "enterCompanyName": "Kompaniya nomi kiriting",
@@ -332,5 +334,10 @@
   "back": "Ortga",
   "createCode": "Kod yaratish",
   "createSuccess": "Referral kod muvaffaqiyatli yaratildi",
-  "layout-mode": "Rejim"
+  "layout-mode": "Rejim",
+  "next": "Keyingisi",
+  "enterClientInfos": "Jismoniy shaxs ma’lumotlari",
+  "enterPhysicalInfos": "Yuridik shaxs ma’lumotlari",
+  "enterInfos": "Ma’lumotlaringizni kiriting",
+  "authRequired": "Bu amal bajarish uchun ro'yhatdan  o'tishingiz kerak"
 }
