@@ -70,7 +70,7 @@ const routes = ref([
 
       </li>
       <li
-          class="flex items-center justify-start !py-[12px] !px-[16px] !bg-[#fafafa]  rounded-[16px] cursor-pointer"
+          class="flex items-center justify-start !py-[12px] !px-[16px] bg-[#fafafa] dark:!bg-zinc-700 rounded-[16px] cursor-pointer"
       >
         <a
             class="flex items-center justify-start gap-[8px]"

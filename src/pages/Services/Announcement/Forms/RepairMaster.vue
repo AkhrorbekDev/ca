@@ -117,6 +117,21 @@ const setLocation = (name) => {
   hideDetailsOnLocationChange.value = true
 }
 
+const setSelectedLocation = async (address, name) => {
+  await getGeoObject({address: address})
+      .then(res => {
+        const marker = mapStore.getMarker(name)
+        addAnnouncement.value[name] = {
+          lat: marker.markerProps.geometry.coordinates[0],
+          lng: marker.markerProps.geometry.coordinates[1],
+          name: res.data.description
+        }
+        mapStore.removeMarker(name)
+      }).finally(() => {
+        hideDetailsOnLocationChange.value = false
+      })
+}
+
 // File upload handler
 const handleFileUpload = (event) => {
   const file = event.target.files[0];
@@ -225,13 +240,16 @@ watch(() => props.childForm.id, (newId) => {
 <template>
   <Transition name="bounce">
     <form
-        v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
 
       <div class="grid grid-cols-2 gap-4 !mb-[24px]">
-        <LocationItem :location="addAnnouncement.from_location" as="div" class="" name="from_location"
-                      @click="setLocation('from_location')"/>
+        <LocationItem
+            :location="addAnnouncement.from_location"
+            as="div" class=""
+            name="from_location"
+            @on:select="setSelectedLocation($event,'from_location')"
+            @click="setLocation('from_location')"/>
 
         <FloatLabel variant="in">
           <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"

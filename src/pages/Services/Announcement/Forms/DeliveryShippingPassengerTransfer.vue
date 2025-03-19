@@ -195,6 +195,21 @@ const setLocation = (name) => {
   hideDetailsOnLocationChange.value = true
 }
 
+const setSelectedLocation = async (address, name) => {
+  await getGeoObject({address: address})
+      .then(res => {
+        const marker = mapStore.getMarker(name)
+        addAnnouncement.value[name] = {
+          lat: marker.markerProps.geometry.coordinates[0],
+          lng: marker.markerProps.geometry.coordinates[1],
+          name: res.data.description
+        }
+        mapStore.removeMarker(name)
+      }).finally(() => {
+        hideDetailsOnLocationChange.value = false
+      })
+}
+
 // Create announcement submission handler
 const createAnnouncement = async (announce) => {
   const isFormValid = await v$.value.$validate();
@@ -263,17 +278,24 @@ watch(() => props.announceValue, (newValue) => {
 <template>
   <Transition name="bounce">
     <form
-        v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
       <div class="grid grid-cols-2 gap-4">
         <LocationItem
-            :location="addAnnouncement.from_location" as="div" class="" name="from_location"
+            :location="addAnnouncement.from_location"
+            as="div" class=""
+            name="from_location"
+            @on:select="setSelectedLocation($event,'from_location')"
             @click="setLocation('from_location')"
         />
 
-        <LocationItem :location="addAnnouncement.to_location" as="div" class="" name="to_location"
-                      @click="setLocation('to_location')"/>
+        <LocationItem
+            :location="addAnnouncement.to_location"
+            as="div" class=""
+            name="to_location"
+            @on:select="setSelectedLocation($event,'to_location')"
+            @click="setLocation('to_location')"
+        />
 
         <Field as="div" name="details.load_weight.amount"
               class="load_weight_select formItem flex items-center justify-between relative dark:bg-zinc-700"
