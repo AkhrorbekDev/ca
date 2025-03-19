@@ -63,7 +63,7 @@ const routes: RouteRecordRaw[] = [
             {
                 path: 'theme',
                 name: 'profile-layout',
-                component: () => import('@/pages/Profile/ReferralsPage.vue'),
+                component: () => import('@/pages/Profile/ThemePage.vue'),
             },
             {
                 path: 'language',
