@@ -103,7 +103,7 @@ const changeIndex = (index) => {
 </template>
 
 <style lang="scss">
-.p-accordion .p-accordionheader {
+.dark .p-accordion .p-accordionheader {
   background-color: #1a1a1a !important;
 }
 

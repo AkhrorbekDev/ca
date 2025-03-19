@@ -3,24 +3,14 @@ import { ref, onMounted, watch } from 'vue';
 
 const selectedTheme = ref('mode');
 
-// Cookie management functions
-const setCookie = (name, value, days) => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
-  document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+// Save theme preference to localStorage
+const saveThemeToLocalStorage = (theme) => {
+  localStorage.setItem('theme-preference', theme);
 };
 
-const getCookie = (name) => {
-  const cookieName = `${name}=`;
-  const cookies = document.cookie.split(';');
-
-  for (let i = 0; i < cookies.length; i++) {
-    let cookie = cookies[i].trim();
-    if (cookie.indexOf(cookieName) === 0) {
-      return cookie.substring(cookieName.length, cookie.length);
-    }
-  }
-  return null;
+// Get theme preference from localStorage
+const getThemeFromLocalStorage = () => {
+  return localStorage.getItem('theme-preference');
 };
 
 // Apply theme classes based on the selected theme
@@ -38,18 +28,18 @@ const applyThemeClass = (theme) => {
     document.documentElement.classList.remove('dark');
   }
 
-  // Save to cookie
-  setCookie('theme-preference', theme, 365); // Store for 1 year
+  // Save to localStorage
+  saveThemeToLocalStorage(theme);
 };
 
-// Load theme preference from cookie on mount
+// Load theme preference from localStorage on mount
 onMounted(() => {
-  const savedTheme = getCookie('theme-preference');
+  const savedTheme = getThemeFromLocalStorage();
   if (savedTheme && ['mode', 'light', 'dark'].includes(savedTheme)) {
     selectedTheme.value = savedTheme;
     applyThemeClass(savedTheme);
   } else {
-    // If no cookie exists, initialize with the current theme
+    // If no theme exists in localStorage, initialize with the default theme
     applyThemeClass(selectedTheme.value);
   }
 });
