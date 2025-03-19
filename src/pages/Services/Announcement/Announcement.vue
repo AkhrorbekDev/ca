@@ -175,7 +175,7 @@ onMounted(() => {
             :key="index"
             :class="[
               '!px-4 !py-3 rounded-lg font-medium',
-              activeTab == index ? 'bg-gray-800 text-white' : 'text-gray-400'
+              activeTab == index ? 'bg-gray-800 dark:bg-zinc-600 text-white' : 'text-gray-400'
             ]"
             @click="changeTab(index)"
         >
@@ -184,9 +184,9 @@ onMounted(() => {
       </div>
 
       <div class="flex items-center gap-4">
-        <div class="flex flex-col gap-2 w-full">
+        <div class="flex flex-col gap-2 w-full ">
           <Select v-model="selectedCity" :options="[]" optionLabel="name" :placeholder="$t('services')"
-                  class="w-full !border-0 !rounded-[16px] custom-placeholder-select h-[56px] flex items-center"/>
+                  class="w-full !border-0 !rounded-[16px] custom-placeholder-select dark:!bg-zinc-700 dark:!text-white h-[56px] custom-text-color flex items-center"/>
         </div>
         <div class="relative">
           <button
@@ -204,24 +204,24 @@ onMounted(() => {
 
           <div v-if="menuVisible">
             <!--dropdown 1-->
-            <div class="mega-drop-menu !left-[-45%]" >
-              <div class="grid grid-cols-2 gap-3">
-                <div class="cards card-wrap cursor-pointer"
+            <div class="mega-drop-menu dark:bg-zinc-600 !left-[-45%]" >
+              <div class="grid grid-cols-2 gap-3 dark:bg-zinc-600">
+                <div class="cards card-wrap cursor-pointer dark:!bg-zinc-800"
                      v-for="(item, index) in getServicesData"
                      :key="index"
                      @click.stop="openDetail(item, item?.id)"
                 >
                   <img src="@/assets/images/icons/car.svg" class="!m-auto w-10 object-contain swg !my-0" alt="icon"/>
-                  <p class="text-gray-900">{{ item.name }}</p>
+                  <p class="text-gray-900 dark:!text-[#f1f5f9]">{{ item.name }}</p>
                 </div>
               </div>
             </div>
 
             <!--dropdown 2-->
-            <div v-if="childMenu.length" class="mega-drop-menu !left-[-191%]" @click.stop>
+            <div v-if="childMenu.length" class="mega-drop-menu dark:bg-zinc-600 !left-[-191%]" @click.stop>
               <button @click="childMenu = []" class="text-[#000] w-full flex justify-end">x</button>
-              <div class="grid grid-cols-2 gap-3">
-                <div class="cards cursor-pointer"
+              <div class="grid grid-cols-2 gap-3 dark:bg-zinc-600">
+                <div class="cards cursor-pointer dark:!bg-zinc-800"
                      v-for="(item2, index) in childMenu"
                      :key="index"
                      @click="handleClickCard(item2, item2?.id)"
@@ -320,6 +320,10 @@ onMounted(() => {
 
 .p-autocomplete-input::placeholder {
   color: #292D3233 !important;
+}
+
+.dark .p-select .p-placeholder {
+  color: #fff !important; /* Dark theme color */
 }
 
 .p-autocomplete-input {

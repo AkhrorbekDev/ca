@@ -30,10 +30,10 @@ const changeRoute = () => {
 
 <template>
   <div class="about-us ">
-    <div class="max-w-screen-xl  container lg:mx-auto !pt-[334px] !pb-[100px] relative">
+    <div class="max-w-screen-xl  container lg:mx-auto !pt-[334px] !pb-[100px] relative ">
       <div
-          class="bg-white rounded-[24px] !p-[40px] grid grid-cols-3 gap-6 shadow-custom absolute top-[-80px] w-full left-0">
-        <div class="flex flex-col gap-2 w-full">
+          class="bg-white rounded-[24px] !p-[40px] grid grid-cols-3 gap-6 shadow-custom absolute top-[-80px] w-full left-0 dark:!bg-zinc-700">
+        <div class="flex flex-col gap-2 w-full dark:!bg-zinc-700">
           <label for="username" class="text-[#292D32] font-medium text-[16px]">Xizmat turi</label>
           <Select v-model="selectedService" :options="services" optionLabel="title" placeholder="Xizmat turini tanlang"
                   class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-select"
@@ -58,7 +58,7 @@ const changeRoute = () => {
         <!--                     placeholder="Kiriting"/>-->
         <!--        </div>-->
 
-        <div class="flex flex-col gap-2 w-full">
+        <div class="flex flex-col gap-2 w-full dark:!bg-zinc-700">
           <label for="username" class="text-[#292D32] font-medium text-[16px]">{{ $t('transportType') }}</label>
           <Select v-model="selectedTransport" :options="transports" optionLabel="name"
                   :placeholder="$t('pickTransport')"
