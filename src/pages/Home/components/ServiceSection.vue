@@ -23,29 +23,29 @@ const modules = [Autoplay];
 // Define slider data array
 const sliderData: SliderData[] = [
   {
-    title: "Yetkazib berish",
-    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
-    image: "./delivery.png"
+    title: 'Yetkazib berish',
+    description: 'Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati',
+    image: './delivery.png'
   },
   {
-    title: "Maxsus texnika",
-    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
-    image: "./special.png"
+    title: 'Maxsus texnika',
+    description: 'Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati',
+    image: './special.png'
   },
   {
-    title: "Yuk tashish",
-    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
-    image: "./shipping.png"
+    title: 'Yuk tashish',
+    description: 'Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati',
+    image: './shipping.png'
   },
   {
-    title: "Yo'lovchi tashish",
-    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
-    image: "./passenger.png"
+    title: 'Yo\'lovchi tashish',
+    description: 'Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati',
+    image: './passenger.png'
   },
   {
-    title: "Maxsus texnika",
-    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
-    image: "./special.png"
+    title: 'Maxsus texnika',
+    description: 'Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati',
+    image: './special.png'
   }
 ];
 </script>
