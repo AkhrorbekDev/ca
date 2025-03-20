@@ -19,8 +19,8 @@ const prefix = '998'
 const schema = yup.object({
   first_name: yup.string().required(),
   last_name: yup.string().required(),
-  phone: yup.string().required(),
-  tg_link: yup.string().url().required(),
+  phone_number: yup.string().required(),
+  tg_link: yup.string().required(),
   type: yup.string().required(),
   email: yup.string().email().required(),
   agree: yup.boolean().required().oneOf([true], t('agreeToTerms')),
@@ -47,6 +47,9 @@ const user = computed(() => {
 
 watch(user, (newVal) => {
   _user.value = {...newVal}
+  vForm.value?.setValues(_user.value)
+}, {
+  immediate: true
 })
 
 
@@ -79,7 +82,7 @@ const savePhone = (phone) => {
   _showEditModal.value = false
   _user.value.phone_number = phone
   return;
-  $api.auth.updateUserProfile({
+  $api.user.updateUserProfile({
     ...user.value,
     phone_number: phone,
   }).then(() => {
@@ -101,7 +104,28 @@ const savePhone = (phone) => {
 }
 const submit = () => {
   vForm.value.validate().then((res) => {
-    console.log(res)
+    if (res.valid) {
+      const values = vForm.value.values
+      delete values.agree
+      delete values.phone_number
+
+      $api.user.updateUserProfile(values)
+          .then(res => {
+            toast.add({
+              severity: 'success',
+              summary: t('profileUpdated'),
+              life: 2000,
+              group: 'br'
+            })
+          }).catch(err => {
+        toast.add({
+          severity: 'error',
+          summary: err.message,
+          life: 2000,
+          group: 'br'
+        })
+      })
+    }
   })
 }
 const handleFileUpload = (event) => {
@@ -110,7 +134,7 @@ const handleFileUpload = (event) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const base64 = e.target.result as string;
-      $api.auth.updateUserProfile({
+      $api.user.updateUserProfile({
         ...user.value,
         base64: base64.split(',')[1],
       })
@@ -120,7 +144,7 @@ const handleFileUpload = (event) => {
 };
 
 const deleteAvatar = () => {
-  $api.auth.updateUserProfile({
+  $api.user.updateUserProfile({
     ...user.value,
     base64: '',
   })
@@ -187,7 +211,6 @@ onMounted(() => {
       </div>
     </div>
     <Form
-
         ref="vForm"
         as="div"
         v-slot="{errors}"
@@ -300,7 +323,7 @@ onMounted(() => {
       <div class=" w-full flex flex-col items-start gap-[6px]  justify-between">
         <label class="!text-[#292D324D]">{{ $t('phoneNumber') }}</label>
         <div
-            :class="{ _invalid: errors.phone}"
+            :class="{ _invalid: errors.phone_number}"
             class="flex items-center border-[1px] border-[#FAFAFA] bg-[#fafafa] justify-between w-full !pr-[16px]"
         >
           <input
@@ -309,7 +332,6 @@ onMounted(() => {
               :data-maska="options.mask"
               placeholder="+998"
               :disabled="!edit.phone"
-              :readonly="!edit.phone"
               :value="_user?.phone_number"
               class="!bg-[#FAFAFA] !border-0 !p-[16px] outline-none rounded-[20px]"
           />

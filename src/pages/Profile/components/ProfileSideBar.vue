@@ -51,15 +51,15 @@ const logOut = () => {
 <template>
   <div class="bg-[#FFFFFF] dark:!bg-zinc-800 !rounded-[16px] !px-[16px] !py-[16px] min-w-[300px] max-w-[300px]">
     <ul class="flex flex-col gap-[8px]">
-      <li
+      <router-link
+          :to="{
+          name: route.link
+        }"
           class="flex items-center justify-start !py-[12px] !px-[16px] bg-[#fafafa] dark:!bg-zinc-700 rounded-[16px] cursor-pointer"
           v-for="route in routes"
           :key="route.title"
       >
-        <router-link
-            :to="{
-          name: route.link
-        }"
+        <div
             class="flex items-center justify-start gap-[8px]"
         >
           <img
@@ -74,16 +74,15 @@ const logOut = () => {
           >
             {{ route.title }}
           </span>
-        </router-link>
+        </div>
 
-      </li>
+      </router-link>
       <li
+          @click.prevent="logOut"
           class="flex items-center justify-start !py-[12px] !px-[16px] !bg-[#fafafa]  rounded-[16px] cursor-pointer"
       >
-        <a
+        <div
             class="flex items-center justify-start gap-[8px]"
-
-            @click.prevent="logOut"
         >
           <img
               :src="turnOff"
@@ -95,7 +94,7 @@ const logOut = () => {
           >
             {{ $t('logOut') }}
           </span>
-        </a>
+        </div>
       </li>
     </ul>
   </div>

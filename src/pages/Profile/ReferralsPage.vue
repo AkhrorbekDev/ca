@@ -5,7 +5,7 @@ import {object, string} from 'yup'
 import {useToast} from 'primevue/usetoast';
 import {useI18n} from 'vue-i18n';
 import {imageCDN} from '@/config';
-import {useConfirm} from "primevue/useconfirm";
+import {useConfirm} from 'primevue/useconfirm';
 
 const {t} = useI18n();
 const schema = object({
@@ -123,7 +123,7 @@ onMounted(() => {
 <template>
   <div class="!bg-[#FFFFFF] !rounded-[24px] !px-[40px] !py-[40px] min-w-[940px]">
     <h1 class="text-[32px] text-[#292D32] font-bold">
-      {{ $t('referral') }}
+      {{ $t('referralProgram') }}
     </h1>
     <div class="flex items-center justify-between">
       <div class="btn-shadow flex items-center !p-[4px] rounded-[16px] bg-[#FFFFFF]">
@@ -270,7 +270,50 @@ onMounted(() => {
         </div>
       </div>
     </template>
-    <template v-if="activeTab === 'statistics'"></template>
+    <template v-if="activeTab === 'statistics'">
+      <div
+          class="grid grid-cols-3 gap-[16px] !py-[16px]
+      !px-[24px] rounded-[24px] !bg-[#fafafa] !mt-[40px]"
+      >
+        <div class="flex flex-col items-center gap-[24px]">
+          <p class="text-[14px] text-[#292D3230]">
+            {{ $t('totalProfit') }}
+          </p>
+          <p class="text-[24px] font-bold text-[#292D32]">
+            0
+          </p>
+        </div>
+        <div class="flex flex-col items-center gap-[24px]">
+          <p class="text-[14px] text-[#292D3230]">
+            {{ $t('totalProfit') }}
+          </p>
+          <p class="text-[24px] font-bold text-[#292D32]">
+            0
+          </p>
+        </div>
+        <div class="flex flex-col items-center gap-[24px]">
+          <p class="text-[14px] text-[#292D3230]">
+            {{ $t('totalProfit') }}
+          </p>
+          <p class="text-[24px] font-bold text-[#292D32]">
+            0
+          </p>
+        </div>
+      </div>
+      <div
+          class="grid grid-cols-3  gap-[16px] !py-[16px]
+      !px-[24px] rounded-[24px] !bg-[#fafafa] !mt-[40px]"
+      >
+        <div class="flex flex-col items-center gap-[24px]">
+          <p class="text-[14px] text-[#292D3230]">
+            {{ $t('totalProfit') }}
+          </p>
+          <p class="text-[24px] font-bold text-[#292D32]">
+            0
+          </p>
+        </div>
+      </div>
+    </template>
     <Dialog
         v-model:visible="visible"
         :showHeader="false"

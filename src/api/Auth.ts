@@ -14,7 +14,5 @@ export default class Auth extends ApiCoreFetch {
         return this.post('/mobile/v1/phone/verify', data);
     }
 
-    updateUserProfile(data): Promise<any> {
-        return this.put('/mobile/v1/user', data);
-    }
+
 }
