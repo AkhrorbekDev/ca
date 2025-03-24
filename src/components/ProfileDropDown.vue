@@ -44,10 +44,10 @@ const routes = ref([
     link: 'faq'
   }
 ])
-
+const profileRoutes = ['profile-main', 'profile-referral']
 const logOut = () => {
   $auth.logout().then(res => {
-    if (route.name === 'profile') {
+    if (profileRoutes.includes(route.name)) {
       router.push({
         name: 'home'
       })
@@ -81,7 +81,6 @@ const registerClickOutside = (e) => {
 
 
 watch(menuVisible, (e) => {
-  console.log(menuVisible.value, 'menuVisible')
   if (e) {
     registerClickOutside(e)
   } else {

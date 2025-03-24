@@ -67,11 +67,17 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/theme',
         name: 'profile-layout',
+        meta: {
+            layout: 'ProfileLayout',
+        },
         component: () => import('@/pages/Profile/ThemePage.vue'),
     },
     {
         path: '/language',
         name: 'profile-language',
+        meta: {
+            layout: 'ProfileLayout',
+        },
         component: () => import('@/pages/Profile/ReferralsPage.vue'),
     },
     {

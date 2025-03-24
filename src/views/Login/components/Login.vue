@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {computed, inject, onMounted, reactive, ref} from 'vue';
-import {useRouter} from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import {ErrorMessage, Field, Form} from 'vee-validate';
 
 import type {MaskInputOptions} from 'maska'
@@ -22,6 +22,7 @@ const emit = defineEmits(['on:send'])
 const prefix = '998'
 
 const router = useRouter()
+const route = useRoute()
 const $api = inject('api')
 const $auth = inject('auth')
 const value = ref<string>('+998')
@@ -141,7 +142,6 @@ const loginWithPhone = () => {
 
 const loginWithEmail = () => {
   vForm.value.validateField('mail').then(res => {
-    console.log(res)
     if (res) {
       isLoading.value = true
       $api.auth.sendSmsCode({
@@ -200,11 +200,20 @@ const verifySMSCode = () => {
       data.sms_type = 'mail'
     }
 
-    $auth.login(data).then(res => {
+    $auth.login(data).then(async res => {
+      await $auth.fetchUser()
       if (authType.value === 1) {
-        router.push({
-          name: 'services'
-        })
+        if (window.history.state?.back) {
+          router.back()
+        } else {
+          // Fallback, e.g., go to home page
+          router.push({
+            name: 'services'
+          })
+        }
+        // router.push({
+        //   name: 'services'
+        // })
       } else {
         router.push({
           name: 'personal-data'

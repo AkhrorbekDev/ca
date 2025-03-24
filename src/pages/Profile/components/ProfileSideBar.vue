@@ -7,11 +7,12 @@ import userIcon from '@/assets/icons/User.svg'
 import turnOff from '@/assets/icons/Turn off.svg'
 import moon from '@/assets/icons/Moon.svg'
 import question from '@/assets/icons/Question.svg'
-import {useRouter} from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 
 const {t} = useI18n()
 const $auth = inject('auth')
 const router = useRouter()
+const route = useRoute()
 const routes = ref([
   {
     title: t('profile'),
@@ -39,11 +40,15 @@ const routes = ref([
     link: 'faq'
   }
 ])
+const profileRoutes = ['profile-main', 'profile-referral']
+
 const logOut = () => {
   $auth.logout().then(res => {
-    router.push({
-      name: 'home'
-    })
+    if (profileRoutes.includes(route.name)) {
+      router.push({
+        name: 'home'
+      })
+    }
   })
 }
 </script>

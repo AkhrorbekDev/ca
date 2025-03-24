@@ -7,7 +7,7 @@ const showBackground = ref(true);
 </script>
 
 <template>
-  <div>
+  <div class="bg-[#FFFFFF]">
     <div v-show="!showCodeField">
       <div v-if="showBackground" class="fixed inset-0">
         <img src="@/assets/images/bgCar.png" alt="Background" class="w-full h-full object-cover">

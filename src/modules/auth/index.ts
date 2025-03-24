@@ -5,8 +5,8 @@ import {defu} from 'defu'
 
 export default {
     install: async (app, options: ModuleOptions) => {
-        const $auth = new Auth(app, defu(moduleDefaults, options))
-        $auth.init()
+        const $auth = new Auth(app, defu(options, moduleDefaults))
+        await $auth.init()
         app.config.globalProperties.$auth = $auth
         app.provide('auth', $auth)
 

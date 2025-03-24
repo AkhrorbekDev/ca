@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, inject, onMounted, reactive, ref, watch} from 'vue'
+import {computed, inject, reactive, ref, watch} from 'vue'
 import editIcon from '@/assets/icons/edit.svg';
 import type {MaskInputOptions} from 'maska';
 import {Field, Form} from 'vee-validate';
@@ -30,7 +30,7 @@ const options = reactive<MaskInputOptions>({
   mask: '+998 (##) ###-##-##',
   reversed: true,
   postProcess: (event) => {
-    vForm.value.setFieldValue('phone', `${prefix}${event.detail.unmasked}`)
+    vForm.value.setFieldValue('phone_number', `${prefix}${event.detail.unmasked}`)
   }
 })
 const edit = ref({
@@ -42,12 +42,17 @@ const edit = ref({
   email: false,
 })
 const user = computed(() => {
-  return $auth.user
+  return $auth.user || null
 })
 
 watch(user, (newVal) => {
-  _user.value = {...newVal}
-  vForm.value?.setValues(_user.value)
+  console.log(newVal)
+  if (newVal) {
+
+    _user.value = {...newVal}
+    vForm.value?.setFieldValue('first_name', newVal.first_name)
+    // vForm.value?.setValues({...newVal})
+  }
 }, {
   immediate: true
 })
@@ -150,9 +155,6 @@ const deleteAvatar = () => {
   })
 }
 
-onMounted(() => {
-  _user.value = $auth.user ? {...$auth.user} : {}
-})
 </script>
 
 <template>
@@ -223,6 +225,7 @@ onMounted(() => {
             as="div"
             name="type"
             v-slot="{field}"
+            :model-value="_user.type"
             :class="{
                 _invalid: errors.type
             }"
@@ -276,6 +279,7 @@ onMounted(() => {
         <Field
             name="first_name"
             as="div"
+            v-model="_user.first_name"
             :class="{_invalid: errors.first_name}"
             class="flex items-center border-[1px] border-[#FAFAFA] bg-[#fafafa] justify-between w-full !pr-[16px]"
         >
@@ -299,6 +303,7 @@ onMounted(() => {
         <Field
             as="div"
             name="last_name"
+            :model-value="_user.last_name"
             :class="{ _invalid: errors.last_name}"
             class="flex items-center border-[1px] border-[#FAFAFA] bg-[#fafafa] justify-between w-full !pr-[16px]"
         >
@@ -322,7 +327,10 @@ onMounted(() => {
       </div>
       <div class=" w-full flex flex-col items-start gap-[6px]  justify-between">
         <label class="!text-[#292D324D]">{{ $t('phoneNumber') }}</label>
-        <div
+        <Field
+            as="div"
+            name="phone_number"
+            :model-value="_user?.phone_number"
             :class="{ _invalid: errors.phone_number}"
             class="flex items-center border-[1px] border-[#FAFAFA] bg-[#fafafa] justify-between w-full !pr-[16px]"
         >
@@ -338,7 +346,7 @@ onMounted(() => {
           <div class="cursor-pointer" @click="showEditModal">
             <img :src="editIcon" alt="">
           </div>
-        </div>
+        </Field>
 
       </div>
       <div class=" w-full flex flex-col items-start gap-[6px] justify-between">
@@ -346,6 +354,7 @@ onMounted(() => {
         <Field
             as="div"
             name="tg_link"
+            :model-value="_user?.tg_link"
             :class="{_invalid: errors.tg_link}"
             class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]"
         >
@@ -371,6 +380,7 @@ onMounted(() => {
         <Field
             as="div"
             name="email"
+            :model-value="_user?.mail"
             :class="{_invalid: errors.email}"
             class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]"
         >
