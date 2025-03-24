@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, inject, onMounted, ref} from 'vue';
+import {computed, inject, onMounted, ref, watch} from 'vue';
 import {useVuelidate} from '@vuelidate/core';
 import {maxLength, minValue, numeric, required} from '@vuelidate/validators';
 import LocationItem from "@/components/form-elements/LocationItem.vue";
@@ -10,12 +10,15 @@ const mapStore = useMapStore()
 const model = defineModel();
 const props = defineProps({
   announceValue: {
-    type: Object,
-    default: () => ({}),
+    type: Number,
+    default: '',
   },
   activeTab: {
     type: Number,
-  }
+  },
+  childForm: {
+    type: Object,
+  },
 });
 
 const $api = inject('api');
@@ -113,6 +116,21 @@ const setLocation = (name) => {
     }
   }, name)
   hideDetailsOnLocationChange.value = true
+}
+
+const setSelectedLocation = async (address, name) => {
+  await getGeoObject({address: address})
+      .then(res => {
+        const marker = mapStore.getMarker(name)
+        addAnnouncement.value[name] = {
+          lat: marker.markerProps.geometry.coordinates[0],
+          lng: marker.markerProps.geometry.coordinates[1],
+          name: res.data.description
+        }
+        mapStore.removeMarker(name)
+      }).finally(() => {
+        hideDetailsOnLocationChange.value = false
+      })
 }
 
 const v$ = useVuelidate(rules, addAnnouncement);
@@ -255,15 +273,30 @@ const carInsurance = ref([
   {id: 1, name: 'Bor'},
   {id: 2, name: 'Yo‘q'},
 ]);
+
+const carLuggage = ref([
+  {id: 1, name: 'Bor'},
+  {id: 2, name: 'Yo‘q'},
+]);
+
+const colorCar = computed(() => {
+  return carAllList.value.map((item) => {
+    return JSON.parse(item.colors.value);
+  });
+})
+
+watch(() => props.childForm,
+    (val) => addAnnouncement.value.service_type_id = val.id,
+    {immediate: true}
+)
 </script>
 
 <template>
   <Transition name="bounce">
     <form
-        v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
-      <pre>{{addAnnouncement}}</pre>
+<!--      <pre>{{addAnnouncement}}</pre>-->
       <div class="grid grid-cols-2 gap-4">
         <div>
           <LocationItem
@@ -271,6 +304,7 @@ const carInsurance = ref([
               as="div"
               :class="['', { 'border border-red-500 rounded-[24px]': formSubmitted && !addAnnouncement.from_location.name }]"
               name="from_location"
+              @on:select="setSelectedLocation($event,'from_location')"
               @click="setLocation('from_location')"
           />
           <small v-if="formSubmitted && !addAnnouncement.from_location.name" class="text-red-500 ml-2">
@@ -306,8 +340,8 @@ const carInsurance = ref([
             <FloatLabel variant="in">
               <Select
                   :options="carAllList"
-                  optionLabel="name"
-                  optionValue="name"
+                  optionLabel="car_name"
+                  optionValue="car_name"
                   placeholder="Tanlang"
                   :class="[
                     'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
@@ -365,9 +399,9 @@ const carInsurance = ref([
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="oilTypes"
-                  optionLabel="name"
-                  optionValue="name"
+                  :options="carAllList"
+                  optionLabel="engine_capacity"
+                  optionValue="engine_capacity"
                   placeholder="Tanlang"
                   :class="[
                     'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
@@ -381,13 +415,13 @@ const carInsurance = ref([
               Dvigatel hajmi kiriting
             </small>
           </div>
-
+<!--          <pre>{{colorCar[0]}}</pre>-->
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="oilTypes"
+                  :options="colorCar[0]"
                   optionLabel="name"
-                  optionValue="name"
+                  optionValue="color_id"
                   placeholder="Tanlang"
                   :class="[
                     'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
@@ -405,7 +439,7 @@ const carInsurance = ref([
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="oilTypes"
+                  :options="carLuggage"
                   optionLabel="name"
                   optionValue="name"
                   placeholder="Tanlang"
@@ -425,9 +459,9 @@ const carInsurance = ref([
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="oilTypes"
-                  optionLabel="name"
-                  optionValue="name"
+                  :options="carAllList"
+                  optionLabel="seat_count"
+                  optionValue="seat_count"
                   placeholder="Tanlang"
                   :class="[
                     'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',

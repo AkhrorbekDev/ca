@@ -263,7 +263,7 @@ onUnmounted(() => {
           />
           <!--            <InputText id="in_label" variant="filled" placeholder="Manzilni tanlang"-->
           <!--                       class="w-full bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>-->
-          <label for="in_label" class="!text-[#292D324D]">
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">
             {{ $t('fromWhatDay') }}
           </label>
         </FloatLabel>
@@ -291,25 +291,24 @@ onUnmounted(() => {
           />
           <!--            <InputText id="in_label" variant="filled" placeholder="Manzilni tanlang"-->
           <!--                       class="w-full bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>-->
-          <label for="in_label" class="!text-[#292D324D]">
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">
             {{ $t('toWhatDay') }}
           </label>
         </FloatLabel>
       </Field>
 
       <div class="col-span-full">
-
         <div
             @click="toggleShowDetails"
             :class="{
                 _invalid: errors.price
               }"
-            class="w-full !bg-[#FAFAFA] border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
+            class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
         >
             <span class="text-[#292D324D] text-[12px] !mb-2">
               {{ $t('additionalInfo') }}
             </span>
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between !bg-transparent">
             <span class="text-[#292D32]">
               {{ $t('description') }}, {{ $t('paymentType') }}, {{ $t('price') }}
             </span>
@@ -346,24 +345,17 @@ onUnmounted(() => {
           class="col-span-full !px-[4px]"
       >
         <FloatLabel variant="in">
-          <Select
-              :loading="isLoading"
-              :model-value="selectedTransports"
-              @update:model-value="updateTransportType"
-              :options="transports"
-              optionLabel="name"
-              :placeholder="$t('pickTransport')"
-              class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center"
-          >
+          <Select :loading="isLoading" :model-value="selectedTransports"
+                  @update:model-value="updateTransportType" :options="transports"
+                  optionLabel="name"
+                  :placeholder="$t('pickTransport')"
+                  class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
             <template #value="slotProps">
-              <div v-if="slotProps.value" class="flex items-center">
-                <img
-                    :alt="slotProps.value.name"
-                    :src="slotProps.value.icon"
-                    class="mr-2"
-                    style="width: 80px; height: 40px; object-fit: contain"
-                />
-                <div>{{ slotProps.value.name }}</div>
+              <div v-if="slotProps.value" class="flex items-center !bg-transparent">
+                <img :alt="slotProps.value.name"
+                     :src="slotProps.value.icon"
+                     class="mr-2" style="width: 80px; height: 40px; object-fit: contain"/>
+                <p>{{ slotProps.value.name }}</p>
               </div>
               <span v-else>
                     {{ slotProps.placeholder }}
@@ -396,7 +388,7 @@ onUnmounted(() => {
               </div>
             </template>
           </Select>
-          <label for="in_label" class="!text-[#292D324D]">{{ $t('transportType') }}</label>
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">{{ $t('transportType') }}</label>
         </FloatLabel>
       </Field>
 
@@ -407,7 +399,6 @@ onUnmounted(() => {
           @click="submit"
           class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-auto w-full"
       >
-
         {{ $t('createAdvertisement') }}
 
         <svg
@@ -437,18 +428,14 @@ onUnmounted(() => {
       <div>
         <Field as="div" name="note" class="flex flex-col gap-2 w-full !mb-[24px]">
           <label for="description" class="text-[#292D3280] text-[12px]">{{ $t('description') }}</label>
-          <Textarea
-              :model-value="values.note"
-              id="description"
-              class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
-              style="border: 1px solid #C2C2C233"
-              rows="3"
-              cols="30"
-              :placeholder="$t('leaveOrderComment')"
-          />
+          <Textarea :model-value="values.note" id="description"
+                    class="w-full dark:!bg-zinc-700 !rounded-[16px] dark:!placeholder-white placeholder-[#292D324D]"
+                    style="border: 1px solid #C2C2C233" rows="3"
+                    cols="30"
+                    :placeholder="$t('leaveOrderComment')"/>
         </Field>
         <Field name="pay_type" v-slot="{handleChange }" as="div" class="!mb-[24px]">
-          <span class="bg-[#FAFAFA] rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
+          <span class="bg-[#FAFAFA] dark:!bg-zinc-700 rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
                 {{ $t('paymentType') }}
               </span>
 

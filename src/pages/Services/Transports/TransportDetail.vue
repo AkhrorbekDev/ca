@@ -229,7 +229,7 @@ const averageRating = computed(() => {
     </div>
 
 
-    <div class="!my-[68px] flex">
+    <div class="!my-[68px] flex ">
       <button class="shadow-bg" :class="{ 'active': !is_active, 'inactive': is_active }" @click="is_active = false">
         Manzil
       </button>
@@ -240,7 +240,7 @@ const averageRating = computed(() => {
 
     <div class="!mb-[50px]">
       <div v-if="!is_active" class="!p-[12px] rounded-[24px] bg-white relative">
-        <div class="location">
+        <div class="location dark:bg-zinc-700">
           <img src="@/assets/images/icons/location.svg" alt="mark"/>
           <span class="!ml-[8px]">{{ advertisementData?.from_location?.name }}</span>
         </div>
@@ -260,7 +260,7 @@ const averageRating = computed(() => {
             <span class="text-[#292D324D] text-[12px] !mb-[6px]">{{ $t('description') }}</span>
             <textarea
                 v-model="allComments.comment_text"
-                class="w-full !py-[12px] !px-[16px] border rounded-lg text-[#292D324D] text-[14px] outline-none"
+                class="w-full !py-[12px] !px-[16px] border rounded-lg dark:!bg-zinc-700 text-[#292D324D] text-[14px] outline-none"
                 placeholder="O‘z fikringizni yozib qoldiring!"
                 rows="4"
             />
@@ -365,6 +365,11 @@ body {
   object-fit: cover;
 }
 
+.swiper-button-prev,
+.swiper-button-next {
+  background: transparent !important;
+}
+
 .shadow-bg {
   @apply py-[12px] px-[20px] text-[14px] rounded-[8px];
 }
@@ -372,6 +377,10 @@ body {
 .active {
   @apply bg-[#1A1F23] text-white;
   box-shadow: 0 1.5px 4px -1px #0A090B12;
+}
+
+.dark .active {
+  @apply bg-[#292D32] text-white;
 }
 
 .inactive {

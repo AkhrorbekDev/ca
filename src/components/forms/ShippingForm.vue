@@ -374,11 +374,10 @@ onUnmounted(() => {
           :class="{
         _invalid: (errors['details.load_weight.amount'])
       }"
-          class="load_weight_select formItem flex items-center justify-between"
-      >
-        <div class="flex flex-col  items-start justify-center">
+          class="load_weight_select formItem flex items-center justify-between dark:!bg-zinc-700">
+        <div class="flex flex-col dark:!bg-transparent items-start justify-center">
 
-          <label for="load_weight.amount" class="!text-[#292D324D]">{{ $t('loadWeight') }}</label>
+          <label for="load_weight.amount" class="text-[#292D324D]">{{ $t('loadWeight') }}</label>
           <InputText
               :model-value="values.details.load_weight.amount"
               type="number"
@@ -400,15 +399,13 @@ onUnmounted(() => {
               :options="loadWeightTypes"
               optionLabel="label"
               @update:model-value="handleChange"
-              class="!bg-[#FAFAFA] shadow-[none] !border-0 flex items-center"
-          >
+              class="!bg-transparent shadow-[none] !border-0 flex items-center">
             <template #option="slotProps">
               <div
-
-                  class="flex items-center min-w-[60px] w-full justify-between !py-4 border-b border-[#F5F5F7]"
+                  class="flex items-center dark:!bg-zinc-800 min-w-[60px] w-full justify-between !py-4 border-b border-[#F5F5F7]"
               >
-                <div class="w-full flex flex-col items-start justify-start">
-                  <label :for="`name.${slotProps.option.value}`" class="flex items-center gap-4 cursor-pointer">
+                <div class="w-full flex flex-col items-start justify-start dark:!bg-transparent">
+                  <label :for="`name.${slotProps.option.value}`" class="flex items-center gap-4 cursor-pointer ">
                     {{ slotProps.option.label }}
                   </label>
                 </div>
@@ -417,6 +414,7 @@ onUnmounted(() => {
                     :inputId="`name.${slotProps.option.value}`"
                     :name="field.name"
                     :value="slotProps.option.value"
+                    class="dark:!bg-transparent "
                 />
               </div>
             </template>
@@ -444,49 +442,48 @@ onUnmounted(() => {
               @update:model-value="onChangeDate($event, field.name)"
               iconDisplay="input"
               variant="filled"
-              class="custom-date w-full "
-          />
-          <label for="in_label" class="!text-[#292D324D]">
+              class="custom-date w-full "/>
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">
             {{ $t('departureDate') }}</label>
         </FloatLabel>
       </Field>
 
-      <div class="col-span-full">
+      <div class="col-span-full ">
 
         <div
             @click="toggleShowDetails"
             :class="{
                 _invalid: errors['price'] || imagesNotUploaded
               }"
-            class="w-full !bg-[#FAFAFA] !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
+            class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
         >
             <span class="text-[#292D324D] text-[12px] !mb-2">
                 {{ $t('additionalInfo') }}
                 {{ $t('additionalInfoDescription') }}
             </span>
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between dark:!bg-transparent">
             <span class="text-[#292D32]">
               {{ $t('additionalInfoDescription') }}
             </span>
-            <svg
-                :style="{
+            <div class="dark:bg-white/80 p-2 rounded-full size-5 flex items-center justify-center">
+              <svg
+                  :style="{
               transform: showDetails ? 'rotate(90deg)' : 'rotate(180deg)'
             }"
-                width="12"
-                height="8"
-                viewBox="0 0 12 8"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                  d="M1 6.5L6 1.5L11 6.5"
-                  stroke="#292D32"
-                  stroke-opacity="0.3"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-              />
-            </svg>
+                  width="12"
+                  height="8"
+                  viewBox="0 0 12 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M1 6.5L6 1.5L11 6.5"
+                    stroke="#292D32"
+                    stroke-opacity="0.3"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"/>
+              </svg>
+            </div>
           </div>
 
         </div>
@@ -509,32 +506,29 @@ onUnmounted(() => {
               :options="transports"
               optionLabel="name"
               :placeholder="$t('pickTransport')"
-              class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center"
-          >
+              class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
             <template #value="slotProps">
-              <div v-if="slotProps.value" class="flex items-center">
+              <div v-if="slotProps.value" class="flex items-center !bg-transparent">
                 <img
                     :alt="slotProps.value.name"
                     :src="slotProps.value.icon"
                     class="mr-2"
-                    style="width: 80px; height: 40px; object-fit: contain"
-                />
-                <div>{{ slotProps.value.name }}</div>
+                    style="width: 80px; height: 40px; object-fit: contain"/>
+                <p>{{ slotProps.value.name }}</p>
               </div>
-              <span v-else>
-                    {{ slotProps.placeholder }}
-                </span>
+              <span class="!bg-transparent" v-else>
+                {{ slotProps.placeholder }}
+              </span>
             </template>
             <template #option="slotProps">
-              <div class="flex items-center grow">
+              <div class="flex items-center grow ">
                 <img
                     :alt="slotProps.option.name"
                     :src="slotProps.option.icon"
                     :class="`mr-2`"
-                    style="width: 94px; height: 73px; object-fit: contain"
-                />
-                <div class="flex items-center justify-between grow">
-                  <div>
+                    style="width: 94px; height: 73px; object-fit: contain"/>
+                <div class="flex items-center justify-between grow dark:!bg-transparent">
+                  <div class="dark:!bg-transparent">
                     <span class="block">{{ slotProps.option.name }}</span>
                   </div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -543,8 +537,7 @@ onUnmounted(() => {
                         d="M8.33203 11.9999H15.6654M15.6654 11.9999L12.6065 9.33325M15.6654 11.9999L12.6065 14.6666"
                         stroke="white"
                         stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
+                        stroke-linejoin="round"/>
                   </svg>
 
 
@@ -552,7 +545,7 @@ onUnmounted(() => {
               </div>
             </template>
           </Select>
-          <label for="in_label" class="!text-[#292D324D]">
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">
             {{ $t('transportType') }}
           </label>
         </FloatLabel>
@@ -562,7 +555,7 @@ onUnmounted(() => {
       </Field>
       <button
           @click="submit"
-          class="!bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-auto w-full"
+          class="bg-[#66C61C] !py-[16px] flex items-center justify-center gap-2 text-white text-[16px] rounded-[20px] !mt-auto w-full"
       >
         {{ $t('createAdvertisement') }}
         <svg
@@ -590,10 +583,9 @@ onUnmounted(() => {
         style="box-shadow: 0 32px 100px 0 #292D3229;"
     >
       <div>
-
         <Field name="details.load_type_id">
           <div>
-            <span class="bg-[#FAFAFA] rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
+            <span class="bg-[#FAFAFA] dark:bg-zinc-700 rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
               {{ $t('cargoType') }}
             </span>
           </div>
@@ -609,7 +601,7 @@ onUnmounted(() => {
         </Field>
         <Field name="details.load_service_id">
           <div>
-          <span class="text-sm text-[#292D324D]">
+          <span class="text-sm text-[#292D324D] dark:!text-white">
             {{ $t('cargoLoadingService') }}
           </span>
 
@@ -625,7 +617,7 @@ onUnmounted(() => {
           />
         </Field>
         <div
-            class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px] !mb-[24px]"
+            class="bg-[#FAFAFA] dark:!bg-zinc-700 rounded-[24px] !p-[16px] !mt-[24px] !mb-[24px]"
             :class="{
           _invalid: imagesNotUploaded
         }"
@@ -634,8 +626,8 @@ onUnmounted(() => {
             {{ $t('cargoImage') }}
           </span>
 
-          <div class="grid grid-cols-2 gap-4 !mt-[8px] rounded-2xl">
-            <div v-for="(img, index) in images" :key="index" class="relative group !mr-0 w-[105px] h-[105px]">
+          <div class="grid grid-cols-2 gap-4 !mt-[8px] rounded-2xl !bg-transparent">
+            <div v-for="(img, index) in images" :key="index" class="relative group !mr-0 w-[105px] h-[105px] !bg-transparent">
               <img
                   class="w-full h-full object-cover rounded-2xl"
                   :src="img"
@@ -690,13 +682,13 @@ onUnmounted(() => {
           </div>
         </div>
         <Field as="div" name="note" class="flex flex-col gap-2 w-full !mb-[24px]">
-          <label for="description" class="text-[#292D3280] text-[12px]">
+          <label for="description" class="text-[#292D3280]  text-[12px]">
             {{ $t('description') }}
           </label>
           <Textarea
               :model-value="values.note"
               id="description"
-              class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
+              class="w-full dark:bg-zinc-700 !rounded-[16px] dark:!placeholder-white placeholder-[#292D324D]"
               style="border: 1px solid #C2C2C233"
               rows="3"
               cols="30"
@@ -704,7 +696,7 @@ onUnmounted(() => {
           />
         </Field>
         <Field name="pay_type" v-slot="{handleChange }" as="div" class="!mt-[12px] !mb-[24px]">
-          <span class="bg-[#FAFAFA] rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
+          <span class="bg-[#FAFAFA] dark:!bg-zinc-700 rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
                 {{ $t('paymentType') }}
               </span>
 
@@ -774,7 +766,7 @@ onUnmounted(() => {
 
 </style>
 
-<style>
+<style lang="scss">
 .load_type_name {
   top: 100%;
   z-index: 2;
@@ -783,4 +775,31 @@ onUnmounted(() => {
   min-width: 200px !important;
 }
 
+.dark .p-select .p-select-dropdown {
+  background-color: #3f3f46 !important;
+  color: #fff !important;
+}
+
+.dark .p-select .p-select-list-container,
+.dark .p-select .p-select-overlay .p-component {
+  background-color: #27272a !important;
+}
+.dark .p-select .p-select-option:hover {
+  background-color: transparent !important;
+}
+.dark .p-select .p-select-option .p-select-option-selected .p-focus {
+  background-color: transparent !important;
+}
+.dark .p-select .p-select-option .p-select-option-selected-focus-color {
+  background-color: transparent !important;
+}
+
+.dark .p-datepicker .p-component {
+  background-color: #3f3f46 !important;
+}
+
+.dark .p-select-option .p-select-option-selected .p-focus,
+.dark.p-select-option.p-select-option-selected {
+  background-color: #3f3f46 !important;
+}
 </style>

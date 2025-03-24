@@ -31,7 +31,7 @@ defineProps({
       <label for="ingredient1" class="flex items-center gap-4 cursor-pointer">
         {{ item.label }}
       </label>
-      <span v-if="item.description" class="radio-item__description">
+      <span v-if="item.description" class="radio-item__description dark:!text-gray-400">
         {{ item.description }}
       </span>
     </div>
