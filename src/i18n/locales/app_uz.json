@@ -347,5 +347,6 @@
   "authRequired": "Bu amal bajarish uchun ro'yhatdan  o'tishingiz kerak",
   "delete": "O'chirish",
   "deleteSuccess": "Muvaffaqiyatli o'chirildi",
-  "deleteReferralCodeTitle": "Haqiqatdan ham kodni o‘chirmoqchimisiz?"
+  "deleteReferralCodeTitle": "Haqiqatdan ham kodni o‘chirmoqchimisiz?",
+  "avatarUpdated": "Profil rasmi muvaffaqiyatli yangilandi"
 }

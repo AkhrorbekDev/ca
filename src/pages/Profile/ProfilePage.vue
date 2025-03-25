@@ -23,7 +23,7 @@ const schema = yup.object({
   tg_link: yup.string().required(),
   type: yup.string().required(),
   email: yup.string().email().required(),
-  agree: yup.boolean().required().oneOf([true], t('agreeToTerms')),
+  // agree: yup.boolean().required().oneOf([true], t('agreeToTerms')),
 })
 
 const options = reactive<MaskInputOptions>({
@@ -78,6 +78,10 @@ const updateAgreeValue = (e) => {
   agreeValue.value = e
   vForm.value.setFieldValue('agree', e)
 }
+const avatarUpload = ref(false)
+const avatarDelete = ref(false)
+const submitForm = ref(false)
+
 const _showEditModal = ref(false)
 const showEditModal = () => {
   _showEditModal.value = true
@@ -107,13 +111,14 @@ const savePhone = (phone) => {
     })
   })
 }
+
 const submit = () => {
   vForm.value.validate().then((res) => {
     if (res.valid) {
       const values = vForm.value.values
       delete values.agree
       delete values.phone_number
-
+      submitForm.value = true
       $api.user.updateUserProfile(values)
           .then(res => {
             toast.add({
@@ -129,6 +134,8 @@ const submit = () => {
           life: 2000,
           group: 'br'
         })
+      }).finally(() => {
+        submitForm.value = false
       })
     }
   })
@@ -139,9 +146,26 @@ const handleFileUpload = (event) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const base64 = e.target.result as string;
+      avatarUpload.value = true
       $api.user.updateUserProfile({
         ...user.value,
         base64: base64.split(',')[1],
+      }).then(() => {
+        toast.add({
+          severity: 'success',
+          summary: t('avatarUpdated'),
+          life: 2000,
+          group: 'br'
+        })
+      }).catch(err => {
+        toast.add({
+          severity: 'error',
+          summary: err.message,
+          life: 2000,
+          group: 'br'
+        })
+      }).finally(() => {
+        avatarUpload.value = false
       })
     };
     reader.readAsDataURL(file);
@@ -149,9 +173,27 @@ const handleFileUpload = (event) => {
 };
 
 const deleteAvatar = () => {
+  avatarDelete.value = true
   $api.user.updateUserProfile({
     ...user.value,
     base64: '',
+  })
+      .then(() => {
+        toast.add({
+          severity: 'success',
+          summary: t('avatarDeleted'),
+          life: 2000,
+          group: 'br'
+        })
+      }).catch(err => {
+    toast.add({
+      severity: 'error',
+      summary: err.message,
+      life: 2000,
+      group: 'br'
+    })
+  }).finally(() => {
+    avatarDelete.value = false
   })
 }
 
@@ -176,7 +218,7 @@ const deleteAvatar = () => {
           <Avatar
               icon="pi pi-user"
               size="xlarge"
-              class="bg-[#F3F3F3] !w-full !h-full text-[#B7B8BA] !mb-[8px]"
+              class="bg-[#F3F3F3]  !w-full !h-full text-[#B7B8BA] !mb-[8px]"
               shape="circle"
           />
         </template>
@@ -186,12 +228,26 @@ const deleteAvatar = () => {
         <label
             class="!bg-[#66C61C] !py-[18px] !px-[24px]
              flex items-center justify-center gap-2 text-white text-[16px]
-             rounded-[20px] !mt-auto w-full cursor-pointer"
+             rounded-[20px] whitespace-nowrap !mt-auto w-full cursor-pointer"
             for="upload_avatar"
         >
           <span>
             {{ $t('uploadAvatar') }}
           </span>
+          <svg
+              v-if="avatarUpload"
+              class="mr-3 -ml-1 size-5 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+          >
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
           <input
               type="file"
               accept="image/jpeg, image/jpg, image/png"
@@ -209,6 +265,20 @@ const deleteAvatar = () => {
           <span>
             {{ $t('deleteAvatar') }}
           </span>
+          <svg
+              v-if="deleteAvatar"
+              class="mr-3 -ml-1 size-5 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+          >
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
         </label>
       </div>
     </div>
@@ -426,21 +496,21 @@ const deleteAvatar = () => {
             name="agree"
             class="flex items-center !mt-[36px]"
         >
-          <Checkbox
-              :class="{
-                          _invalid: !agreeValue
-                        }"
-              :invalid="!agreeValue"
-              v-model="initialValues.agree"
-              inputId="agree"
-              binary
-              name="agree"
-              @update:model-value="updateAgreeValue"
-          />
-          <label for="agree" class="!ml-[8px] text-[14px]">
-            <span class="text-[#218BFF]">Foydalanish shartlari</span>
-            <span class="text-[#292D324D]">ga roziman</span>
-          </label>
+          <!--          <Checkbox-->
+          <!--              :class="{-->
+          <!--                          _invalid: !agreeValue-->
+          <!--                        }"-->
+          <!--              :invalid="!agreeValue"-->
+          <!--              v-model="initialValues.agree"-->
+          <!--              inputId="agree"-->
+          <!--              binary-->
+          <!--              name="agree"-->
+          <!--              @update:model-value="updateAgreeValue"-->
+          <!--          />-->
+          <!--          <label for="agree" class="!ml-[8px] text-[14px]">-->
+          <!--            <span class="text-[#218BFF]">Foydalanish shartlari</span>-->
+          <!--            <span class="text-[#292D324D]">ga roziman</span>-->
+          <!--          </label>-->
         </div>
         <button
             @click="submit"
@@ -451,7 +521,7 @@ const deleteAvatar = () => {
 
           {{ $t('save') }}
           <svg
-              v-if="isLoading"
+              v-if="submitForm"
               class="mr-3 -ml-1 size-5 animate-spin text-white"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
