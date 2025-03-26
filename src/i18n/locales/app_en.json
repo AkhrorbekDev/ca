@@ -231,60 +231,73 @@
   "///////": "//////",
   "newUserInfo": "Are you new to our platform?",
   "oldUserInfo": "Have you registered before?",
-  "enterCodeWithPhone": "We sent a confirmation code to the number {phone}. Enter your mobile code in the field below.",
-  "createAdvertisement": "Post an advertisement",
-  "more": "More details",
-  "pickAddress": "Choose address",
-  "footerSiteDescription": "Transport services platform",
-  "otherMaterials": "Other materials",
-  "otherMaterialsDescription": "Other materials",
-  "buildingMaterials": "Building materials",
-  "buildingMaterialsDescription": "Furniture, baseboards, drywall",
-  "foods": "Food products",
-  "foodsDescription": "Beverages, carbonated, mineral waters",
-  "repairItems": "Equipment and spare parts",
-  "repairItemsDescription": "Car bodies, lighting, generator",
-  "withoutLoader": "Without loaders",
-  "withoutLoaderDescription": "No help needed",
-  "withLoader": "Driver needs to carry goods",
-  "withLoaderDescription": "Carrying loads not exceeding 50kg",
+  "enterCodeWithPhone": "We sent a confirmation code to { phone }.\n            Please enter the mobile\n            code in the field below.",
+  "createAdvertisement": "Place an Ad",
+  "more": "More Details",
+  "pickAddress": "Select Address",
+  "footerSiteDescription": "Transport Services\nPlatform",
+  "otherMaterials": "Other Materials",
+  "otherMaterialsDescription": "Other Materials",
+  "buildingMaterials": "Construction Materials",
+  "buildingMaterialsDescription": "Furniture, Plinth, Drywall",
+  "foods": "Food Products",
+  "foodsDescription": "Drinks, Carbonated, Mineral Waters",
+  "repairItems": "Equipment and Spare Parts",
+  "repairItemsDescription": "Bodies, Lights, Generator",
+  "withoutLoader": "Without Loaders",
+  "withoutLoaderDescription": "No Help Needed",
+  "withLoader": "Driver Must Carry Cargo",
+  "withLoaderDescription": "Carrying Loads Not Exceeding 50kg",
   "kg": "kg",
   "m3": "m³",
   "litr": "liter",
-  "additionalInfoDescription": "Type of cargo, image, loading service, payment...",
-  "pickTransport": "Choose transport",
-  "enterAmount": "Enter amount",
-  "fuelType": "Fuel type",
-  "companies": "List of companies",
-  "companiesDescription": "Select a company",
-  "fuelDeliveryPrice": "Delivery price",
+  "additionalInfoDescription": "Cargo Type, Formalities, Loading Service, Payment...",
+  "pickTransport": "Select Transport",
+  "enterAmount": "Enter Amount",
+  "fuelType": "Fuel Type",
+  "companies": "List of Companies",
+  "companiesDescription": "Select a Company",
+  "fuelDeliveryPrice": "Delivery Price",
   "free": "Free",
-  "noData": "No data",
-  "//": "//",
+  "noData": "No Data",
+  "fromWhatDay": "From What Date",
+  "toWhatDay": "Until What Date",
+  "workshops": "Workshops",
+  "masters": "Masters",
+  "matorMaster": "Motor Master",
+  "matorMasterDes": "Engine Motor Works",
+  "electricMaster": "Auto Electrician",
+  "electricMasterDes": "All Electrical Work, Headlights, Dashboard",
+  "bodyMaster": "Body Master",
+  "bodyMasterDes": "Polishing, Painting, Cracking, Denting",
+  "clear": "Clear",
+  "categories": "Categories",
+  "region": "Region",
+  "rating": "Rating",
   "services_": {
     "delivery": {
       "title": "Delivery",
-      "subTitle": "Fast and safe delivery service of goods and products to the destination"
+      "subTitle": "Fast and safe delivery of goods and products to the destination"
     },
     "distillation": {
-      "title": "Vehicle Transfer",
-      "subTitle": "Service for delivering your car to the required destination by qualified drivers"
+      "title": "Distillation",
+      "subTitle": "Service of delivering your car to the required destination by qualified drivers"
     },
     "shipping": {
-      "title": "Cargo Transportation",
-      "subTitle": "Efficient solution for transporting all types of cargo from small to large"
+      "title": "Cargo Shipping",
+      "subTitle": "Effective solution for transporting cargo of all sizes"
     },
     "oil": {
       "title": "Fuel Delivery",
-      "subTitle": "Fast and quality fuel delivery to the designated location for your vehicle"
+      "subTitle": "Quick and quality fuel delivery to your specified location for your vehicle"
     },
     "passenger": {
       "title": "Passenger Transportation",
-      "subTitle": "Transport service for personal, family or group travel"
+      "subTitle": "Transport service for personal, family, or group travel"
     },
     "transport-rental": {
-      "title": "Vehicle Rental",
-      "subTitle": "Service of providing vehicles for temporary use on a payment basis"
+      "title": "Transport Rental",
+      "subTitle": "Service of temporarily providing vehicles on a paid basis"
     },
     "technical": {
       "title": "Special Equipment",
@@ -292,7 +305,7 @@
     },
     "transfer": {
       "title": "Transport Transfer",
-      "subTitle": "Service of safe and timely delivery of vehicles to the destination"
+      "subTitle": "Service of safely and timely delivering vehicles to the destination"
     },
     "keeping": {
       "title": "Storage Service",
@@ -303,15 +316,34 @@
       "subTitle": "Providing technical inspection and other necessary auto service"
     }
   },
+  "warehouses": "Warehouses",
   "download": "Download",
-  "announcement_time": "Announcement time",
-  "max_passenger_count": "Maximum number of passengers",
-  "max_vehicle_count": "Maximum number of vehicles",
-  "max_cargo_capacity_kg": "Maximum cargo capacity (kg)",
-  "leave_cargo_comment": "Leave a cargo comment",
+  "announcement_time": "Announcement Time",
+  "max_passenger_count": "Maximum Passenger Count",
+  "max_vehicle_count": "Maximum Vehicle Count",
+  "max_cargo_capacity_kg": "Maximum Cargo Capacity",
+  "leave_cargo_comment": "Leave a comment about the cargo!",
   "post": "Post",
-  "fuel_type": "Fuel type",
-  "fuel_type_and_prices": "Fuel type and prices",
+  "uploadAvatar": "Upload Profile Picture",
+  "deleteAvatar": "Delete Profile Picture",
+  "fuel_type": "Fuel Type",
+  "fuel_type_and_prices": "Fuel Types and Prices",
   "mode": "Mode",
-  "system_settings": "System settings"
+  "system_settings": "System Settings",
+  "changePhoneNumber": "Change Phone Number",
+  "phoneNumberChanged": "Your Phone Number Has Changed",
+  "back": "Back",
+  "createCode": "Create Code",
+  "createSuccess": "Referral Code Successfully Created",
+  "profileUpdated": "Account Information Successfully Created",
+  "layout-mode": "Mode",
+  "next": "Next",
+  "enterClientInfos": "Personal Information",
+  "enterPhysicalInfos": "Legal Entity Information",
+  "enterInfos": "Enter Your Information",
+  "authRequired": "You Need to Register to Perform This Action",
+  "delete": "Delete",
+  "deleteSuccess": "Successfully Deleted",
+  "deleteReferralCodeTitle": "Are You Sure You Want to Delete the Code?",
+  "avatarUpdated": "Profile Picture Successfully Updated"
 }

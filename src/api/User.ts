@@ -14,6 +14,10 @@ export default class User extends ApiCoreFetch {
         return this.post('/mobile/v1/referreal_code', data);
     }
 
+    updateUserProfile(data): Promise<any> {
+        return this.put('/mobile/v1/user', data);
+    }
+
     updateReferralCode(data) {
         return this.put('/mobile/v1/referreal_code', data);
     }

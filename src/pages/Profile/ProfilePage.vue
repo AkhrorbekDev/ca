@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, inject, onMounted, reactive, ref, watch} from 'vue'
+import {computed, inject, reactive, ref, watch} from 'vue'
 import editIcon from '@/assets/icons/edit.svg';
 import type {MaskInputOptions} from 'maska';
 import {Field, Form} from 'vee-validate';
@@ -19,18 +19,18 @@ const prefix = '998'
 const schema = yup.object({
   first_name: yup.string().required(),
   last_name: yup.string().required(),
-  phone: yup.string().required(),
-  tg_link: yup.string().url().required(),
+  phone_number: yup.string().required(),
+  tg_link: yup.string().required(),
   type: yup.string().required(),
   email: yup.string().email().required(),
-  agree: yup.boolean().required().oneOf([true], t('agreeToTerms')),
+  // agree: yup.boolean().required().oneOf([true], t('agreeToTerms')),
 })
 
 const options = reactive<MaskInputOptions>({
   mask: '+998 (##) ###-##-##',
   reversed: true,
   postProcess: (event) => {
-    vForm.value.setFieldValue('phone', `${prefix}${event.detail.unmasked}`)
+    vForm.value.setFieldValue('phone_number', `${prefix}${event.detail.unmasked}`)
   }
 })
 const edit = ref({
@@ -42,11 +42,19 @@ const edit = ref({
   email: false,
 })
 const user = computed(() => {
-  return $auth.user
+  return $auth.user || null
 })
 
 watch(user, (newVal) => {
-  _user.value = {...newVal}
+  console.log(newVal)
+  if (newVal) {
+
+    _user.value = {...newVal}
+    vForm.value?.setFieldValue('first_name', newVal.first_name)
+    // vForm.value?.setValues({...newVal})
+  }
+}, {
+  immediate: true
 })
 
 
@@ -70,6 +78,10 @@ const updateAgreeValue = (e) => {
   agreeValue.value = e
   vForm.value.setFieldValue('agree', e)
 }
+const avatarUpload = ref(false)
+const avatarDelete = ref(false)
+const submitForm = ref(false)
+
 const _showEditModal = ref(false)
 const showEditModal = () => {
   _showEditModal.value = true
@@ -79,7 +91,7 @@ const savePhone = (phone) => {
   _showEditModal.value = false
   _user.value.phone_number = phone
   return;
-  $api.auth.updateUserProfile({
+  $api.user.updateUserProfile({
     ...user.value,
     phone_number: phone,
   }).then(() => {
@@ -99,9 +111,33 @@ const savePhone = (phone) => {
     })
   })
 }
+
 const submit = () => {
   vForm.value.validate().then((res) => {
-    console.log(res)
+    if (res.valid) {
+      const values = vForm.value.values
+      delete values.agree
+      delete values.phone_number
+      submitForm.value = true
+      $api.user.updateUserProfile(values)
+          .then(res => {
+            toast.add({
+              severity: 'success',
+              summary: t('profileUpdated'),
+              life: 2000,
+              group: 'br'
+            })
+          }).catch(err => {
+        toast.add({
+          severity: 'error',
+          summary: err.message,
+          life: 2000,
+          group: 'br'
+        })
+      }).finally(() => {
+        submitForm.value = false
+      })
+    }
   })
 }
 const handleFileUpload = (event) => {
@@ -110,9 +146,26 @@ const handleFileUpload = (event) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       const base64 = e.target.result as string;
-      $api.auth.updateUserProfile({
+      avatarUpload.value = true
+      $api.user.updateUserProfile({
         ...user.value,
         base64: base64.split(',')[1],
+      }).then(() => {
+        toast.add({
+          severity: 'success',
+          summary: t('avatarUpdated'),
+          life: 2000,
+          group: 'br'
+        })
+      }).catch(err => {
+        toast.add({
+          severity: 'error',
+          summary: err.message,
+          life: 2000,
+          group: 'br'
+        })
+      }).finally(() => {
+        avatarUpload.value = false
       })
     };
     reader.readAsDataURL(file);
@@ -120,15 +173,30 @@ const handleFileUpload = (event) => {
 };
 
 const deleteAvatar = () => {
-  $api.auth.updateUserProfile({
+  avatarDelete.value = true
+  $api.user.updateUserProfile({
     ...user.value,
     base64: '',
   })
+      .then(() => {
+        toast.add({
+          severity: 'success',
+          summary: t('avatarDeleted'),
+          life: 2000,
+          group: 'br'
+        })
+      }).catch(err => {
+    toast.add({
+      severity: 'error',
+      summary: err.message,
+      life: 2000,
+      group: 'br'
+    })
+  }).finally(() => {
+    avatarDelete.value = false
+  })
 }
 
-onMounted(() => {
-  _user.value = $auth.user ? {...$auth.user} : {}
-})
 </script>
 
 <template>
@@ -150,7 +218,7 @@ onMounted(() => {
           <Avatar
               icon="pi pi-user"
               size="xlarge"
-              class="bg-[#F3F3F3] !w-full !h-full text-[#B7B8BA] !mb-[8px]"
+              class="bg-[#F3F3F3]  !w-full !h-full text-[#B7B8BA] !mb-[8px]"
               shape="circle"
           />
         </template>
@@ -160,12 +228,26 @@ onMounted(() => {
         <label
             class="!bg-[#66C61C] !py-[18px] !px-[24px]
              flex items-center justify-center gap-2 text-white text-[16px]
-             rounded-[20px] !mt-auto w-full cursor-pointer"
+             rounded-[20px] whitespace-nowrap !mt-auto w-full cursor-pointer"
             for="upload_avatar"
         >
           <span>
             {{ $t('uploadAvatar') }}
           </span>
+          <svg
+              v-if="avatarUpload"
+              class="mr-3 -ml-1 size-5 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+          >
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
           <input
               type="file"
               accept="image/jpeg, image/jpg, image/png"
@@ -183,11 +265,24 @@ onMounted(() => {
           <span>
             {{ $t('deleteAvatar') }}
           </span>
+          <svg
+              v-if="deleteAvatar"
+              class="mr-3 -ml-1 size-5 animate-spin text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+          >
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
+          </svg>
         </label>
       </div>
     </div>
     <Form
-
         ref="vForm"
         as="div"
         v-slot="{errors}"
@@ -200,6 +295,7 @@ onMounted(() => {
             as="div"
             name="type"
             v-slot="{field}"
+            :model-value="_user.type"
             :class="{
                 _invalid: errors.type
             }"
@@ -253,6 +349,7 @@ onMounted(() => {
         <Field
             name="first_name"
             as="div"
+            v-model="_user.first_name"
             :class="{_invalid: errors.first_name}"
             class="flex items-center border-[1px] border-[#FAFAFA] bg-[#fafafa] justify-between w-full !pr-[16px]"
         >
@@ -276,6 +373,7 @@ onMounted(() => {
         <Field
             as="div"
             name="last_name"
+            :model-value="_user.last_name"
             :class="{ _invalid: errors.last_name}"
             class="flex items-center border-[1px] border-[#FAFAFA] bg-[#fafafa] justify-between w-full !pr-[16px]"
         >
@@ -299,8 +397,11 @@ onMounted(() => {
       </div>
       <div class=" w-full flex flex-col items-start gap-[6px]  justify-between">
         <label class="!text-[#292D324D]">{{ $t('phoneNumber') }}</label>
-        <div
-            :class="{ _invalid: errors.phone}"
+        <Field
+            as="div"
+            name="phone_number"
+            :model-value="_user?.phone_number"
+            :class="{ _invalid: errors.phone_number}"
             class="flex items-center border-[1px] border-[#FAFAFA] bg-[#fafafa] justify-between w-full !pr-[16px]"
         >
           <input
@@ -309,14 +410,13 @@ onMounted(() => {
               :data-maska="options.mask"
               placeholder="+998"
               :disabled="!edit.phone"
-              :readonly="!edit.phone"
               :value="_user?.phone_number"
               class="!bg-[#FAFAFA] !border-0 !p-[16px] outline-none rounded-[20px]"
           />
           <div class="cursor-pointer" @click="showEditModal">
             <img :src="editIcon" alt="">
           </div>
-        </div>
+        </Field>
 
       </div>
       <div class=" w-full flex flex-col items-start gap-[6px] justify-between">
@@ -324,6 +424,7 @@ onMounted(() => {
         <Field
             as="div"
             name="tg_link"
+            :model-value="_user?.tg_link"
             :class="{_invalid: errors.tg_link}"
             class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]"
         >
@@ -349,6 +450,7 @@ onMounted(() => {
         <Field
             as="div"
             name="email"
+            :model-value="_user?.mail"
             :class="{_invalid: errors.email}"
             class="flex items-center bg-[#fafafa] justify-between w-full !pr-[16px]"
         >
@@ -394,21 +496,21 @@ onMounted(() => {
             name="agree"
             class="flex items-center !mt-[36px]"
         >
-          <Checkbox
-              :class="{
-                          _invalid: !agreeValue
-                        }"
-              :invalid="!agreeValue"
-              v-model="initialValues.agree"
-              inputId="agree"
-              binary
-              name="agree"
-              @update:model-value="updateAgreeValue"
-          />
-          <label for="agree" class="!ml-[8px] text-[14px]">
-            <span class="text-[#218BFF]">Foydalanish shartlari</span>
-            <span class="text-[#292D324D]">ga roziman</span>
-          </label>
+          <!--          <Checkbox-->
+          <!--              :class="{-->
+          <!--                          _invalid: !agreeValue-->
+          <!--                        }"-->
+          <!--              :invalid="!agreeValue"-->
+          <!--              v-model="initialValues.agree"-->
+          <!--              inputId="agree"-->
+          <!--              binary-->
+          <!--              name="agree"-->
+          <!--              @update:model-value="updateAgreeValue"-->
+          <!--          />-->
+          <!--          <label for="agree" class="!ml-[8px] text-[14px]">-->
+          <!--            <span class="text-[#218BFF]">Foydalanish shartlari</span>-->
+          <!--            <span class="text-[#292D324D]">ga roziman</span>-->
+          <!--          </label>-->
         </div>
         <button
             @click="submit"
@@ -419,7 +521,7 @@ onMounted(() => {
 
           {{ $t('save') }}
           <svg
-              v-if="isLoading"
+              v-if="submitForm"
               class="mr-3 -ml-1 size-5 animate-spin text-white"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

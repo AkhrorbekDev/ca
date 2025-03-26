@@ -338,6 +338,7 @@
   "back": "Ortga",
   "createCode": "Kod yaratish",
   "createSuccess": "Referral kod muvaffaqiyatli yaratildi",
+  "profileUpdated": "Akaunt ma'lumotlari muvaffaqiyatli yaratildi",
   "layout-mode": "Rejim",
   "next": "Keyingisi",
   "enterClientInfos": "Jismoniy shaxs ma’lumotlari",
@@ -346,5 +347,6 @@
   "authRequired": "Bu amal bajarish uchun ro'yhatdan  o'tishingiz kerak",
   "delete": "O'chirish",
   "deleteSuccess": "Muvaffaqiyatli o'chirildi",
-  "deleteReferralCodeTitle": "Haqiqatdan ham kodni o‘chirmoqchimisiz?"
+  "deleteReferralCodeTitle": "Haqiqatdan ham kodni o‘chirmoqchimisiz?",
+  "avatarUpdated": "Profil rasmi muvaffaqiyatli yangilandi"
 }

@@ -60,18 +60,25 @@ const routes: RouteRecordRaw[] = [
                 name: 'profile-referral',
                 component: () => import('@/pages/Profile/ReferralsPage.vue'),
             },
-            {
-                path: 'theme',
-                name: 'profile-layout',
-                component: () => import('@/pages/Profile/ThemePage.vue'),
-            },
-            {
-                path: 'language',
-                name: 'profile-language',
-                component: () => import('@/pages/Profile/ReferralsPage.vue'),
-            },
+
 
         ]
+    },
+    {
+        path: '/theme',
+        name: 'profile-layout',
+        meta: {
+            layout: 'ProfileLayout',
+        },
+        component: () => import('@/pages/Profile/ThemePage.vue'),
+    },
+    {
+        path: '/language',
+        name: 'profile-language',
+        meta: {
+            layout: 'ProfileLayout',
+        },
+        component: () => import('@/pages/Profile/ReferralsPage.vue'),
     },
     {
         name: 'faq',

@@ -229,7 +229,6 @@ onUnmounted(() => {
     <div
         class="flex flex-col h-full gap-4 w-full !p-[16px]"
     >
-
       <LocationItem
           :class="{
         _invalid: (errors['to_location.lat'] || errors['to_location.lng'])
@@ -264,7 +263,7 @@ onUnmounted(() => {
           />
           <!--            <InputText id="in_label" variant="filled" placeholder="Manzilni tanlang"-->
           <!--                       class="w-full bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>-->
-          <label for="in_label" class="!text-[#292D324D]">{{ $t('departureDate') }}</label>
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">{{ $t('departureDate') }}</label>
         </FloatLabel>
       </Field>
       <Field
@@ -273,9 +272,9 @@ onUnmounted(() => {
         _invalid: errors['details.fuel_amount']
       }"
           name="details.fuel_amount"
-          class="formItem flex flex-col"
+          class="formItem flex flex-col dark:!bg-zinc-700"
       >
-        <label for="price" class="text-[#292D324D] txt-[12px]">{{ $t('cargoVolume') }} ({{ $t('litr') }})</label>
+        <label for="price" class="text-[#292D324D] text-xs">{{ $t('cargoVolume') }} ({{ $t('litr') }})</label>
         <InputText
 
             :model-value="values.details.fuel_amount"
@@ -303,7 +302,7 @@ onUnmounted(() => {
               :options="oilTypes"
               optionLabel="type"
               :placeholder="$t('select')"
-              class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center"
+              class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 !border-0 dark:!placeholder-white !rounded-[24px] custom-placeholder-select h-[76px] flex items-center"
           >
             <template #value="slotProps">
               <div v-if="selectedOil" class="flex items-center">
@@ -333,7 +332,7 @@ onUnmounted(() => {
               </div>
             </template>
           </Select>
-          <label for="in_label" class="!text-[#292D324D]">
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">
             {{ $t('fuelType') }}
           </label>
         </FloatLabel>
@@ -345,12 +344,12 @@ onUnmounted(() => {
             :class="{
         _invalid: errors['details.company_id']
       }"
-            class="w-full !bg-[#FAFAFA] border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
+            class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
         >
             <span class="text-[#292D324D] text-[12px] !mb-2">
               {{ $t('companies') }}
             </span>
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between !bg-transparent">
             <span class="text-[#292D32]">
                {{ selectedOilCompany ? selectedOilCompany.company_name : $t('companiesDescription') }}
             </span>

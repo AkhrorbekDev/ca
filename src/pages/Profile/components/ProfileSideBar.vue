@@ -7,11 +7,12 @@ import userIcon from '@/assets/icons/User.svg'
 import turnOff from '@/assets/icons/Turn off.svg'
 import moon from '@/assets/icons/Moon.svg'
 import question from '@/assets/icons/Question.svg'
-import {useRouter} from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 
 const {t} = useI18n()
 const $auth = inject('auth')
 const router = useRouter()
+const route = useRoute()
 const routes = ref([
   {
     title: t('profile'),
@@ -39,11 +40,15 @@ const routes = ref([
     link: 'faq'
   }
 ])
+const profileRoutes = ['profile-main', 'profile-referral']
+
 const logOut = () => {
   $auth.logout().then(res => {
-    router.push({
-      name: 'home'
-    })
+    if (profileRoutes.includes(route.name)) {
+      router.push({
+        name: 'home'
+      })
+    }
   })
 }
 </script>
@@ -51,15 +56,15 @@ const logOut = () => {
 <template>
   <div class="bg-[#FFFFFF] dark:!bg-zinc-800 !rounded-[16px] !px-[16px] !py-[16px] min-w-[300px] max-w-[300px]">
     <ul class="flex flex-col gap-[8px]">
-      <li
+      <router-link
+          :to="{
+          name: route.link
+        }"
           class="flex items-center justify-start !py-[12px] !px-[16px] bg-[#fafafa] dark:!bg-zinc-700 rounded-[16px] cursor-pointer"
           v-for="route in routes"
           :key="route.title"
       >
-        <router-link
-            :to="{
-          name: route.link
-        }"
+        <div
             class="flex items-center justify-start gap-[8px]"
         >
           <img
@@ -74,16 +79,15 @@ const logOut = () => {
           >
             {{ route.title }}
           </span>
-        </router-link>
+        </div>
 
-      </li>
+      </router-link>
       <li
-          class="flex items-center justify-start !py-[12px] !px-[16px] !bg-[#fafafa]  rounded-[16px] cursor-pointer"
+          @click.prevent="logOut"
+          class="flex items-center justify-start !py-[12px] !px-[16px] bg-[#fafafa] dark:!bg-zinc-700 rounded-[16px] cursor-pointer"
       >
-        <a
+        <div
             class="flex items-center justify-start gap-[8px]"
-
-            @click.prevent="logOut"
         >
           <img
               :src="turnOff"
@@ -95,7 +99,7 @@ const logOut = () => {
           >
             {{ $t('logOut') }}
           </span>
-        </a>
+        </div>
       </li>
     </ul>
   </div>

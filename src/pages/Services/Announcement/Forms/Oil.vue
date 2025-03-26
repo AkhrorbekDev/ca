@@ -116,6 +116,21 @@ const setLocation = (name) => {
   hideDetailsOnLocationChange.value = true
 }
 
+const setSelectedLocation = async (address, name) => {
+  await getGeoObject({address: address})
+      .then(res => {
+        const marker = mapStore.getMarker(name)
+        addAnnouncement.value[name] = {
+          lat: marker.markerProps.geometry.coordinates[0],
+          lng: marker.markerProps.geometry.coordinates[1],
+          name: res.data.description
+        }
+        mapStore.removeMarker(name)
+      }).finally(() => {
+        hideDetailsOnLocationChange.value = false
+      })
+}
+
 const v$ = useVuelidate(rules, addAnnouncement);
 
 // Helper function to check if a field has errors
@@ -254,16 +269,15 @@ const oilTypes = [
 <template>
   <Transition name="bounce">
     <form
-        v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
       <div class="grid grid-cols-2 gap-4">
         <div>
           <LocationItem
               :location="addAnnouncement.from_location"
-              as="div"
-              :class="['', { 'border border-red-500 rounded-[24px]': formSubmitted && !addAnnouncement.from_location.name }]"
+              as="div" :class="['', { 'border border-red-500 rounded-[24px]': formSubmitted && !addAnnouncement.from_location.name }]"
               name="from_location"
+              @on:select="setSelectedLocation($event,'from_location')"
               @click="setLocation('from_location')"
           />
           <small v-if="formSubmitted && !addAnnouncement.from_location.name" class="text-red-500 ml-2">

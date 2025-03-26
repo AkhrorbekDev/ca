@@ -283,25 +283,25 @@ onUnmounted(() => closeMenu())
           'rounded-r-[32px] !shadow-header': !menuVisible
        }"
   >
-    <div class="navbar-items relative h-[100vh]  max-w-max ">
+    <div class="navbar-items relative h-[100vh] dark:!bg-zinc-800 max-w-max ">
       <ConfirmDialog group="headless"/>
-      <div class="navbar-items__menu  !py-[16px] !mx-[12px]">
+      <div class="navbar-items__menu dark:!bg-transparent !py-[16px] !mx-[12px]">
         <router-link to="/">
           <img class="!mb-[40px] !mt-[10px]" src="@/assets/icons/logo-new.svg" alt="logo" width="130"/>
         </router-link>
-        <div class="navbar-items__menu-items">
+        <div class="navbar-items__menu-items dark:!bg-transparent">
           <div
               v-for="(list, index2) in menuItems"
               :key="index2"
-              class="navbar-items__menu-item"
+              class="navbar-items__menu-item dark:!bg-transparent"
               :class="{_active: activeRouteName === list.unique}"
               @click.stop="openChildMenu(index2, list)"
           >
-            <div class="navbar-items__menu-item-image">
+            <div class="navbar-items__menu-item-image dark:!bg-transparent">
               <img :src="list.icon" alt="">
             </div>
             <p
-                class="navbar-items__menu-item-text"
+                class="navbar-items__menu-item-text dark:!text-white"
                 :class="{'text-[#66C61C]' : activeRouteName === list.unique}"
             >
               {{ list.title }}
@@ -310,27 +310,27 @@ onUnmounted(() => closeMenu())
         </div>
       </div>
       <div
-          class="navbar-items subitems absolute top-0 bottom-0 left-full bg-[#FFFFFF] pr-[24px] h-[100vh] rounded-r-[32px] !transition-all"
+          class="navbar-items subitems absolute top-0 bottom-0 left-full bg-[#FFFFFF] dark:!bg-zinc-800 pr-[24px] h-[100vh] rounded-r-[32px] !transition-all"
           :class="{
         '_active-subitems': menuVisible,
       }"
       >
         <div class="navbar-items__divider"/>
 
-        <div class="navbar-items__menu service-items !py-[16px] !mx-[12px]">
-          <div class="navbar-items__menu-items">
+        <div class="navbar-items__menu service-items !py-[16px] !mx-[12px] dark:!bg-transparent">
+          <div class="navbar-items__menu-items dark:!bg-transparent">
             <div
                 v-for="(list, index2) in selectedMenu?.children"
                 :key="index2"
-                class="navbar-items__menu-item !px-[12px] !py-[14px]"
+                class="navbar-items__menu-item !px-[12px] !py-[14px] dark:!bg-transparent"
                 :class="{_activeServiceItem: selectedService && selectedService.id === list.id}"
                 @click="openDetail(selectedMenu, list)"
             >
-              <div class="navbar-items__menu-item-image">
+              <div class="navbar-items__menu-item-image dark:!bg-transparent">
                 <img :src="list.img" alt="">
               </div>
               <div
-                  class="navbar-items__menu-item-text"
+                  class="navbar-items__menu-item-text dark:!bg-transparent"
                   :class="{'!text-[#66C61C]' : selectedService && selectedService.id === list.id}"
               >
                 {{ $t(list.title) }}

@@ -41,15 +41,15 @@ defineProps({
       <!--      <template v-else>-->
       <!--       -->
       <!--      </template>-->
-      <div v-if="serviceId && serviceId !== 4" class="cards"
+      <div v-if="serviceId && serviceId !== 4" class="cards dark:!bg-zinc-700"
            v-for="(item, index) in transports"
            :key="index"
            @click="$emit('on:click',item)"
       >
         <img :src="item.icon" v-if="item.icon" class="!m-auto" alt="#"/>
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center !bg-transparent">
           <h4 class="text-[#292D32] text-[14px] ">{{ item.name }}</h4>
-          <p class="text-gray-900">{{ item.volume }}</p>
+          <p class="text-gray-900 dark:!text-gray-400">{{ item.volume }}</p>
         </div>
       </div>
       <template v-if="serviceId && serviceId === 4">

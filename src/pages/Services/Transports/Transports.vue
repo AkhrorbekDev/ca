@@ -139,7 +139,7 @@ onMounted(async () => {
         {{ transport?.name ? transport.name : service?.name }}
       </h1>
       <button
-          class="flex items-center relative justify-center gap-[8px] w-[105px] h-[48px] filter-btn__shadow rounded-[18px] bg-[#ffffff]">
+          class="flex items-center relative justify-center gap-[8px] w-[105px] h-[48px] filter-btn__shadow rounded-[18px] bg-[#ffffff] dark:!bg-zinc-700">
         <img src="@/assets/icons/filter.svg" alt="">
         <span>
           {{ $t('filter') }}
