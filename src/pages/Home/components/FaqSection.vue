@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-
+import {useI18n} from "vue-i18n";
 import {ref} from "vue";
 
 interface FaqData {
@@ -7,32 +7,33 @@ interface FaqData {
   description: string
 }
 
+const {t} = useI18n()
 const faqsData: WizardData[] = [
 
   {
-    title: "Carting platformasidan qanday ro’yxatdan o’taman?",
-    description: "Platformani o’zida yoki Ilovani yuklab olib, ro‘yxatdan o‘tish orqali siz o‘z profilingizni yaratasiz. Kelgusida ushbu yaratilgan profil orqali siz platforma va undagi xizmatlardan foylanishingiz mukin",
+    title: t('faq_how_it_works_title'),
+    description: t('faq_how_it_works_desc'),
+  },
+  {
+    title: t('faq_login_title'),
+    description: t('faq_login_desc'),
 
   },
 
+
   {
-    title: "Carting orqali transport xizmati ko’rsatsam bo’ladimi?",
-    description: "Albatta, buning uchun siz Platforma yoki Ilovani yuklab olib, ro‘yxatdan o‘tish orqali siz o‘z profilingizni yaratasiz. Qaysi turdagi transport xizmatini ko’rsatishingiz, uning narxlarini ko’rsatgan holda e’lon yaratasiz. Mijozlar esa o’zlari sizni topishadi va aloqaga chiqishadi.",
+    title: t('faq_payment_methods_title'),
+    description: t('faq_payment_methods_desc'),
   },
 
   {
-    title: "Cartingda buyurtma narxi qanday hisoblanadi?",
-    description: " Har bir xizmat bo’yicha narxlar buyurtmachi va xizmat ko’rsatuvchi o’rtasida erkin bozor sharoitida, o’zaro kelishilgan holda belgilanadi. Platforma esa yuk hajmi va manzil masofasidan kelib chiqib taxminiy narx taklif etadi.",
+    title: t('faq_pricing_title'),
+    description: t('faq_pricing_desc'),
   },
 
   {
-    title: "Baholar va sharhlar qanday beriladi?",
-    description: "Yuk yetkazib berilganidan so‘ng, siz haydovchiga va xizmat sifatiga baho berishingiz va sharh qoldirishingiz mumkin. Bu baholar boshqa foydalanuvchilarga yordam beradi va xizmatimizni yanada yaxshilashga hissa qo‘shadi.",
-  },
-
-  {
-    title: "Baholar va sharhlar qanday beriladi?",
-    description: "Albatta, buning uchun siz Platforma yoki Ilovani yuklab olib, ro‘yxatdan o‘tish orqali siz o‘z profilingizni yaratasiz. Qaysi turdagi transport xizmatini ko’rsatishingiz, uning narxlarini ko’rsatgan holda e’lon yaratasiz. Mijozlar esa o’zlari sizni topishadi va aloqaga chiqishadi.",
+    title: t('faq_referral_title'),
+    description: t('faq_referral_desc'),
   },
 ]
 
@@ -40,7 +41,6 @@ const tabIndex = ref<string | number>(null)
 
 
 const changeIndex = (index) => {
-  console.log(tabIndex.value, index)
   if (tabIndex.value !== index) {
     tabIndex.value = index
   } else {

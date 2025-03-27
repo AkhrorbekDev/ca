@@ -345,5 +345,70 @@
   "delete": "Delete",
   "deleteSuccess": "Successfully Deleted",
   "deleteReferralCodeTitle": "Are You Sure You Want to Delete the Code?",
-  "avatarUpdated": "Profile Picture Successfully Updated"
+  "avatarUpdated": "Profile Picture Successfully Updated",
+  "home": {
+    "navbar": {
+      "platformInfo": "Platform Information",
+      "services": "Services",
+      "advantages": "Advantages",
+      "collaboration": "Collaboration",
+      "contact": "Contact",
+      "faq": "FAQ"
+    },
+    "title": {
+      "all": "All",
+      "transport": "Transport",
+      "services": "Services in one place",
+      "description": "Carting refers to all types of transport services \n an innovative platform concentrated in one place.",
+      "createAnnouncement": "Create Announcement",
+      "watchVideo": "Watch Video"
+    },
+    "search": "Search",
+    "about": {
+      "description": "Carting-Every with you \n            In step now together!",
+      "description2": "We offer the most popular transport and logistics services to the population and corporate customers quickly, easily and reliably, on the basis of modern technologies. Our goal is to provide opportunities for large and small companies, individual entrepreneurs and individuals to enjoy quality, affordable and safe transportation services at any time, from anywhere, through this platform.",
+      "useService": "Use the service"
+    },
+    "topDrivers": "Top Drivers",
+    "usingMode": {
+      "title": "Mode of use",
+      "first": {
+        "title": "Register",
+        "description": "Register on the platform or through a mobile application"
+      },
+      "second": {
+        "title": "Choose a Service",
+        "description": "Choose the type \n of service you want"
+      },
+      "third": {
+        "title": "Post Ad",
+        "description": "Create a service use announcement"
+      },
+      "fourth": {
+        "title": "Use The Service",
+        "description": "Pay and use \n the service"
+      }
+    },
+    "advantages": {
+      "title": "Why choose us",
+      "description": "Reasons to choose”Carting \" and its advantages",
+      "description2": "We make it possible for customers to enjoy reliable and convenient transportation services!",
+      "first": {
+        "title": "Comfort and agility",
+        "description": "Order all transport and logistics services quickly and conveniently through a mobile application or website"
+      },
+      "second": {
+        "title": "Wide Range Of Services",
+        "description": "Provides all kinds of transport, Logistics and warehousing services in one place."
+      },
+      "third": {
+        "title": "Convenient Payment Systems",
+        "description": "There is an option for customers to pay by moving cash, personal card or money."
+      },
+      "fourth": {
+        "title": "Customer Attitude",
+        "description": "Customers can solve their problems through the technical support service in 24\\7 mode."
+      }
+    }
+  }
 }
