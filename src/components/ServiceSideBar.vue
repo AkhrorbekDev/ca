@@ -301,7 +301,7 @@ onUnmounted(() => closeMenu())
               <img :src="list.icon" alt="">
             </div>
             <p
-                class="navbar-items__menu-item-text dark:!text-white"
+                class="navbar-items__menu-item-text break-words dark:!text-white"
                 :class="{'text-[#66C61C]' : activeRouteName === list.unique}"
             >
               {{ list.title }}
@@ -310,7 +310,8 @@ onUnmounted(() => closeMenu())
         </div>
       </div>
       <div
-          class="navbar-items subitems absolute top-0 bottom-0 left-full bg-[#FFFFFF] dark:!bg-zinc-800 pr-[24px] h-[100vh] rounded-r-[32px] !transition-all"
+          class="navbar-items subitems absolute top-0 bottom-0 left-full bg-[#FFFFFF] dark:!bg-zinc-800 pr-[24px]
+          h-[100vh] rounded-r-[32px] !transition-all"
           :class="{
         '_active-subitems': menuVisible,
       }"
@@ -509,7 +510,7 @@ onUnmounted(() => closeMenu())
         line-height: 16px;
         color: #292D32;
         text-align: center;
-        word-break: break-word;
+        word-break: auto-phrase;
       }
 
     }

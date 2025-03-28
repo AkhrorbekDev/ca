@@ -259,7 +259,7 @@ onMounted(() => {
             </span>
           <div class="flex items-center justify-between">
             <span class="text-[#292D32]">
-              Yuk turi, rasmi, yuklash xizmati, to‘lov...
+<!--              Yuk turi, rasmi, yuklash xizmati, to‘lov...-->
             </span>
             <svg
                 :style="{

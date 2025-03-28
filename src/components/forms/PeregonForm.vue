@@ -287,7 +287,7 @@ onUnmounted(() => {
             </span>
           <div class="flex items-center justify-between !bg-transparent">
             <span class="text-[#292D32]">
-               {{ $t('description') }}, {{ $t('paymentType') }}, {{ $t('price') }}
+<!--               {{ $t('description') }}, {{ $t('paymentType') }}, {{ $t('price') }}-->
             </span>
             <svg
                 :style="{

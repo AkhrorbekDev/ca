@@ -374,7 +374,8 @@ onUnmounted(() => {
           :class="{
         _invalid: (errors['details.load_weight.amount'])
       }"
-          class="load_weight_select formItem flex items-center justify-between dark:!bg-zinc-700">
+          class="load_weight_select formItem flex items-center justify-between dark:!bg-zinc-700"
+      >
         <div class="flex flex-col dark:!bg-transparent items-start justify-center">
 
           <label for="load_weight.amount" class="text-[#292D324D]">{{ $t('loadWeight') }}</label>
@@ -399,7 +400,8 @@ onUnmounted(() => {
               :options="loadWeightTypes"
               optionLabel="label"
               @update:model-value="handleChange"
-              class="!bg-transparent shadow-[none] !border-0 flex items-center">
+              class="!bg-transparent shadow-[none] !border-0 flex items-center"
+          >
             <template #option="slotProps">
               <div
                   class="flex items-center dark:!bg-zinc-800 min-w-[60px] w-full justify-between !py-4 border-b border-[#F5F5F7]"
@@ -442,7 +444,8 @@ onUnmounted(() => {
               @update:model-value="onChangeDate($event, field.name)"
               iconDisplay="input"
               variant="filled"
-              class="custom-date w-full "/>
+              class="custom-date w-full "
+          />
           <label for="in_label" class="text-[#292D324D] dark:!text-white">
             {{ $t('departureDate') }}</label>
         </FloatLabel>
@@ -459,11 +462,9 @@ onUnmounted(() => {
         >
             <span class="text-[#292D324D] text-[12px] !mb-2">
                 {{ $t('additionalInfo') }}
-                {{ $t('additionalInfoDescription') }}
             </span>
           <div class="flex items-center justify-between dark:!bg-transparent">
             <span class="text-[#292D32]">
-              {{ $t('additionalInfoDescription') }}
             </span>
             <div class="dark:bg-white/80 p-2 rounded-full size-5 flex items-center justify-center">
               <svg
@@ -474,14 +475,16 @@ onUnmounted(() => {
                   height="8"
                   viewBox="0 0 12 8"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
+                  xmlns="http://www.w3.org/2000/svg"
+              >
                 <path
                     d="M1 6.5L6 1.5L11 6.5"
                     stroke="#292D32"
                     stroke-opacity="0.3"
                     stroke-width="1.5"
                     stroke-linecap="round"
-                    stroke-linejoin="round"/>
+                    stroke-linejoin="round"
+                />
               </svg>
             </div>
           </div>
@@ -506,14 +509,16 @@ onUnmounted(() => {
               :options="transports"
               optionLabel="name"
               :placeholder="$t('pickTransport')"
-              class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
+              class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center"
+          >
             <template #value="slotProps">
               <div v-if="slotProps.value" class="flex items-center !bg-transparent">
                 <img
                     :alt="slotProps.value.name"
                     :src="slotProps.value.icon"
                     class="mr-2"
-                    style="width: 80px; height: 40px; object-fit: contain"/>
+                    style="width: 80px; height: 40px; object-fit: contain"
+                />
                 <p>{{ slotProps.value.name }}</p>
               </div>
               <span class="!bg-transparent" v-else>
@@ -526,7 +531,8 @@ onUnmounted(() => {
                     :alt="slotProps.option.name"
                     :src="slotProps.option.icon"
                     :class="`mr-2`"
-                    style="width: 94px; height: 73px; object-fit: contain"/>
+                    style="width: 94px; height: 73px; object-fit: contain"
+                />
                 <div class="flex items-center justify-between grow dark:!bg-transparent">
                   <div class="dark:!bg-transparent">
                     <span class="block">{{ slotProps.option.name }}</span>
@@ -537,7 +543,8 @@ onUnmounted(() => {
                         d="M8.33203 11.9999H15.6654M15.6654 11.9999L12.6065 9.33325M15.6654 11.9999L12.6065 14.6666"
                         stroke="white"
                         stroke-linecap="round"
-                        stroke-linejoin="round"/>
+                        stroke-linejoin="round"
+                    />
                   </svg>
 
 
@@ -627,7 +634,11 @@ onUnmounted(() => {
           </span>
 
           <div class="grid grid-cols-2 gap-4 !mt-[8px] rounded-2xl !bg-transparent">
-            <div v-for="(img, index) in images" :key="index" class="relative group !mr-0 w-[105px] h-[105px] !bg-transparent">
+            <div
+                v-for="(img, index) in images"
+                :key="index"
+                class="relative group !mr-0 w-[105px] h-[105px] !bg-transparent"
+            >
               <img
                   class="w-full h-full object-cover rounded-2xl"
                   :src="img"
@@ -784,12 +795,15 @@ onUnmounted(() => {
 .dark .p-select .p-select-overlay .p-component {
   background-color: #27272a !important;
 }
+
 .dark .p-select .p-select-option:hover {
   background-color: transparent !important;
 }
+
 .dark .p-select .p-select-option .p-select-option-selected .p-focus {
   background-color: transparent !important;
 }
+
 .dark .p-select .p-select-option .p-select-option-selected-focus-color {
   background-color: transparent !important;
 }
