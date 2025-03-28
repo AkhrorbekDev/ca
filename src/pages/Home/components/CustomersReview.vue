@@ -6,19 +6,20 @@
   <div>
     <div class="bgWay">
       <div class="max-w-screen-xl  container lg:mx-auto !pt-[126px] !pb-[100px] relative dark:!bg-transparent">
-        <h1 class="text-[#FFFFFF] text-[40px] !font-600 !mb-[16px] text-center">Mijozlarimiz fikri</h1>
+        <p class="text-[#FFFFFF] text-[40px] !font-600 !mb-[16px] text-center">
+          {{ $t('home.customers.title') }}
+        </p>
         <p class="text-[#FFFFFF] text-[18px] font-400 !mb-[32px] text-center md:w-[53%] !m-auto">
-          Xizmat ko‘rsatish sifatini yaxshilash va mijozlar ehtiyojlarini yanada yaxshiroq tushunish uchun
-          bizga har bir mijozning fikri juda muhimdir!
+          {{ $t('home.customers.description') }}
         </p>
 
         <div
-            class="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2  md:bottom-[-60%] md:w-full dark:!bg-transparent">
+            class="md:absolute md:left-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2  md:bottom-[-60%] md:w-full dark:!bg-transparent"
+        >
           <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-10 dark:!bg-transparent">
-            <div class="bg-[#FAFAFA] dark:!bg-zinc-700 !m-auto w-[392px] rounded-[24px] !p-[24px]"
-            >
+            <div class="bg-[#FAFAFA] dark:!bg-zinc-700 !m-auto w-[392px] rounded-[24px] !p-[24px]">
               <p class="text-[#292D3266] text-[18px]">
-                Carting orqali buyurtmalarim har doim vaqtida yetib keladi. Bu juda qulay!
+                {{ $t('home.customers.subDescription') }}
 
               </p>
 
@@ -33,8 +34,7 @@
               </div>
             </div>
 
-            <div class="bg-[#FAFAFA] dark:!bg-zinc-700 !m-auto w-[392px] rounded-[24px] !p-[24px]"
-            >
+            <div class="bg-[#FAFAFA] dark:!bg-zinc-700 !m-auto w-[392px] rounded-[24px] !p-[24px]">
               <p class="text-[#292D3266] text-[18px]">
                 Mobil ilova orqali tez va oson buyurtma berish imkoniyati yoqdi. Rahmat!
 
@@ -52,8 +52,7 @@
               </div>
             </div>
 
-            <div class="bg-[#FAFAFA] dark:!bg-zinc-700 !m-auto w-[392px] rounded-[24px] !p-[24px]"
-            >
+            <div class="bg-[#FAFAFA] dark:!bg-zinc-700 !m-auto w-[392px] rounded-[24px] !p-[24px]">
               <p class="text-[#292D3266] text-[18px]">
                 Carting xizmatlari boshqa kompaniyalarga nisbatan hamyonbop!
               </p>

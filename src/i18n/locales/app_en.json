@@ -409,6 +409,40 @@
         "title": "Customer Attitude",
         "description": "Customers can solve their problems through the technical support service in 24\\7 mode."
       }
+    },
+    "faqDescription": "This FAQ section allows users to\n            effective platform use\n            and quickly find the necessary information\n            gives the opportunity.",
+    "offer": {
+      "title": "You to cooperation \n            we offer",
+      "description": "If you have a need for quality transportation services in the field of freight and passenger transportation, or if you are your own transportation service provider, we will provide you with a mutually effective cooperation! Together we strive to create a successful and long-term partnership!",
+      "connectWith": "Connect with us"
+    },
+    "sponsors": "Sponsors",
+    "app": {
+      "download": "Download the app",
+      "description": "Download the mobile application and use the service more conveniently",
+      "subDescription": "Carting mobile application is the best that provides transport services using modern technologies\n          solution."
+    },
+    "customers": {
+      "title": "Feedback from our customers",
+      "description": "To improve the quality of Service and better understand the needs of customers\n          the opinion of each client is very important to us!",
+      "subDescription": "Through Carting, my orders always arrive in time. It is very convenient!"
+    },
+    "footer": {
+      "title": "For customers",
+      "aboutPlatform": "About the platform",
+      "services": "Services",
+      "advantages": "Advantages",
+      "collaboration": "Collaboration",
+      "contact": "Contact",
+      "ourGoals": "Our goals and values",
+      "department": "Relief Department",
+      "modeUse": "Mode of use",
+      "topDrivers": "Top Drivers",
+      "personalCab": "Personal Cabinet",
+      "location": "Location",
+      "termOfUse": "Terms of use",
+      "privacyPolicy": "Privacy Policy",
+      "developed": "Developed by"
     }
   }
 }
