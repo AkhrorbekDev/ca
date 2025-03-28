@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, inject, onMounted, ref} from 'vue';
+import {computed, inject, onMounted, ref, watch} from 'vue';
 import {useVuelidate} from '@vuelidate/core';
 import {maxLength, minValue, numeric, required} from '@vuelidate/validators';
 import LocationItem from "@/components/form-elements/LocationItem.vue";
@@ -10,27 +10,29 @@ const mapStore = useMapStore()
 const model = defineModel();
 const props = defineProps({
   announceValue: {
-    type: Object,
-    default: () => ({}),
+    type: Number,
+    default: '',
   },
   activeTab: {
     type: Number,
-  }
+  },
+  childForm: {
+    type: Object,
+  },
 });
 
 const $api = inject('api');
 
 // Refs for form data and lists
-const oilList = ref<{ type: string; price: number }[] | []>([]);
+const tariffs = ref<{ day: string; price: number }[] | []>([]);
 const imageList = ref<string[] | []>([]);
-const categoriesAllList = ref([]);
-const servicesAllList = ref([]);
+const carAllList = ref([]);
 const formSubmitted = ref(false);
 
 const collectImages = ref([]);
 
 const addList = () => {
-  oilList.value.push({type: '', price: ''});
+  tariffs.value.push({day: '', price: ''});
 };
 
 const addAnnouncement = ref({
@@ -45,7 +47,7 @@ const addAnnouncement = ref({
   details: {
     company_name: null,
     capacity: null,
-    fuels: [],
+    tariffs: [],
   },
   note: null,
 });
@@ -73,11 +75,11 @@ const rules = {
 };
 
 // Custom validation for fuels list
-const isOilListValid = computed(() => {
-  if (oilList.value.length === 0) return false;
+const isTariffsValid = computed(() => {
+  if (tariffs.value.length === 0) return false;
 
-  for (const item of oilList.value) {
-    if (!item.type || item.price === '' || item.price === null) {
+  for (const item of tariffs.value) {
+    if (!item.day || item.price === '' || item.price === null) {
       return false;
     }
   }
@@ -116,6 +118,21 @@ const setLocation = (name) => {
   hideDetailsOnLocationChange.value = true
 }
 
+const setSelectedLocation = async (address, name) => {
+  await getGeoObject({address: address})
+      .then(res => {
+        const marker = mapStore.getMarker(name)
+        addAnnouncement.value[name] = {
+          lat: marker.markerProps.geometry.coordinates[0],
+          lng: marker.markerProps.geometry.coordinates[1],
+          name: res.data.description
+        }
+        mapStore.removeMarker(name)
+      }).finally(() => {
+        hideDetailsOnLocationChange.value = false
+      })
+}
+
 const v$ = useVuelidate(rules, addAnnouncement);
 
 // Helper function to check if a field has errors
@@ -131,14 +148,11 @@ const hasNestedError = (parent, field) => {
 // Fetch lists on component mount
 onMounted(async () => {
   try {
-    const responseCategory = await $api.workshop.getWorkshopCategory();
-    categoriesAllList.value = responseCategory?.data;
-
-    const responseService = await $api.workshop.getWorkshopService();
-    servicesAllList.value = responseService?.data;
+    const responseCars = await $api.workshop.getCars();
+    carAllList.value = responseCars?.data;
 
     // Initialize with one empty oil item
-    if (oilList.value.length === 0) {
+    if (tariffs.value.length === 0) {
       addList();
     }
   } catch (error) {
@@ -171,10 +185,10 @@ const deleteImage = (index) => {
 
 // Remove oil type item
 const removeOilItem = (index) => {
-  oilList.value.splice(index, 1);
+  tariffs.value.splice(index, 1);
 
   // Ensure there's always at least one oil item
-  if (oilList.value.length === 0) {
+  if (tariffs.value.length === 0) {
     addList();
   }
 };
@@ -186,7 +200,7 @@ const createAnnouncement = async (announce) => {
   const isFormValid = await v$.value.$validate();
 
   // Check if oil list is valid
-  if (!isOilListValid.value) {
+  if (!isTariffsValid.value) {
     return;
   }
 
@@ -195,7 +209,7 @@ const createAnnouncement = async (announce) => {
   }
 
   try {
-    announce.details.fuels = oilList.value;
+    announce.details.tariffs = tariffs.value;
 
     const announcementResponse = await $api.workshop.createWorkshop(announce);
     const advertisementId = announcementResponse?.data?.id;
@@ -222,14 +236,14 @@ const createAnnouncement = async (announce) => {
       details: {
         company_name: null,
         capacity: null,
-        fuels: [],
+        tariffs: [],
       },
       note: null,
     };
 
     imageList.value = [];
     collectImages.value = [];
-    oilList.value = [{type: '', price: ''}];
+    tariffs.value = [{day: '', price: ''}];
     formSubmitted.value = false;
 
     // Close dialog/form
@@ -245,18 +259,44 @@ const modelCar = [
   {id: 3, name: 'Hyundai'},
 ];
 
-const kuzuvCar = [
-  {id: 1, name: 'Sedan'},
-  {id: 2, name: 'Jip'},
-];
+const carGearbox = ref([
+  {id: 1, name: 'Avtomat'},
+  {id: 2, name: 'Mexanika'},
+]);
+
+const carConditioner = ref([
+  {id: 1, name: 'Bor'},
+  {id: 2, name: 'Yo‘q'},
+]);
+
+const carInsurance = ref([
+  {id: 1, name: 'Bor'},
+  {id: 2, name: 'Yo‘q'},
+]);
+
+const carLuggage = ref([
+  {id: 1, name: 'Bor'},
+  {id: 2, name: 'Yo‘q'},
+]);
+
+const colorCar = computed(() => {
+  return carAllList.value.map((item) => {
+    return JSON.parse(item.colors.value);
+  });
+})
+
+watch(() => props.childForm,
+    (val) => addAnnouncement.value.service_type_id = val.id,
+    {immediate: true}
+)
 </script>
 
 <template>
   <Transition name="bounce">
     <form
-        v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
+<!--      <pre>{{addAnnouncement}}</pre>-->
       <div class="grid grid-cols-2 gap-4">
         <div>
           <LocationItem
@@ -264,6 +304,7 @@ const kuzuvCar = [
               as="div"
               :class="['', { 'border border-red-500 rounded-[24px]': formSubmitted && !addAnnouncement.from_location.name }]"
               name="from_location"
+              @on:select="setSelectedLocation($event,'from_location')"
               @click="setLocation('from_location')"
           />
           <small v-if="formSubmitted && !addAnnouncement.from_location.name" class="text-red-500 ml-2">
@@ -274,7 +315,7 @@ const kuzuvCar = [
         <div>
           <FloatLabel variant="in">
             <InputText
-                v-model="addAnnouncement.details.company_name"
+                v-model="addAnnouncement.price"
                 id="company_name"
                 variant="filled"
                 type="number"
@@ -294,14 +335,13 @@ const kuzuvCar = [
       <!--      Technical characteristics   -->
       <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
         <span class="block !mb-[16px] text-[#000000] text-[16px] font-medium">Yoqilg'i turi va narxlari</span>
-
         <div class="grid grid-cols-2 gap-4">
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="modelCar"
-                  optionLabel="name"
-                  optionValue="name"
+                  :options="carAllList"
+                  optionLabel="car_name"
+                  optionValue="car_name"
                   placeholder="Tanlang"
                   :class="[
                     'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
@@ -319,7 +359,7 @@ const kuzuvCar = [
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="kuzuvCar"
+                  :options="carGearbox"
                   optionLabel="name"
                   optionValue="name"
                   placeholder="Tanlang"
@@ -339,7 +379,7 @@ const kuzuvCar = [
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="oilTypes"
+                  :options="carGearbox"
                   optionLabel="name"
                   optionValue="name"
                   placeholder="Tanlang"
@@ -359,9 +399,9 @@ const kuzuvCar = [
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="oilTypes"
-                  optionLabel="name"
-                  optionValue="name"
+                  :options="carAllList"
+                  optionLabel="engine_capacity"
+                  optionValue="engine_capacity"
                   placeholder="Tanlang"
                   :class="[
                     'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
@@ -375,13 +415,13 @@ const kuzuvCar = [
               Dvigatel hajmi kiriting
             </small>
           </div>
-
+<!--          <pre>{{colorCar[0]}}</pre>-->
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="oilTypes"
+                  :options="colorCar[0]"
                   optionLabel="name"
-                  optionValue="name"
+                  optionValue="color_id"
                   placeholder="Tanlang"
                   :class="[
                     'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
@@ -399,7 +439,7 @@ const kuzuvCar = [
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="oilTypes"
+                  :options="carLuggage"
                   optionLabel="name"
                   optionValue="name"
                   placeholder="Tanlang"
@@ -419,9 +459,9 @@ const kuzuvCar = [
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="oilTypes"
-                  optionLabel="name"
-                  optionValue="name"
+                  :options="carAllList"
+                  optionLabel="seat_count"
+                  optionValue="seat_count"
                   placeholder="Tanlang"
                   :class="[
                     'w-full !rounded-[24px] custom-placeholder-select h-[76px] flex items-center',
@@ -439,7 +479,7 @@ const kuzuvCar = [
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="oilTypes"
+                  :options="carConditioner"
                   optionLabel="name"
                   optionValue="name"
                   placeholder="Tanlang"
@@ -459,7 +499,7 @@ const kuzuvCar = [
           <div>
             <FloatLabel variant="in">
               <Select
-                  :options="oilTypes"
+                  :options="carInsurance"
                   optionLabel="name"
                   optionValue="name"
                   placeholder="Tanlang"
@@ -476,40 +516,40 @@ const kuzuvCar = [
             </small>
           </div>
 
-          <div>
-            <FloatLabel variant="in">
-              <InputText
-                  v-model="addAnnouncement.details.capacity"
-                  id="capacity"
-                  variant="filled"
-                  type="number"
-                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',
-                { '!border !border-red-500': hasNestedError('details', 'capacity') },
-                { '!border-0': !hasNestedError('details', 'capacity') }
-              ]"
-              />
-              <label for="capacity" class="!text-[#292D324D]">Sutkalik km limiti</label>
-            </FloatLabel>
-            <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">
-              Sutkalik km limitini kiriting
-            </small>
-          </div>
+<!--          <div>-->
+<!--            <FloatLabel variant="in">-->
+<!--              <InputText-->
+<!--                  v-model="addAnnouncement.details.capacity"-->
+<!--                  id="capacity"-->
+<!--                  variant="filled"-->
+<!--                  type="number"-->
+<!--                  :class="['w-full !bg-white !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px]',-->
+<!--                { '!border !border-red-500': hasNestedError('details', 'capacity') },-->
+<!--                { '!border-0': !hasNestedError('details', 'capacity') }-->
+<!--              ]"-->
+<!--              />-->
+<!--              <label for="capacity" class="!text-[#292D324D]">Sutkalik km limiti</label>-->
+<!--            </FloatLabel>-->
+<!--            <small v-if="hasNestedError('details', 'capacity')" class="text-red-500 ml-2">-->
+<!--              Sutkalik km limitini kiriting-->
+<!--            </small>-->
+<!--          </div>-->
         </div>
       </div>
 
       <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
         <span class="block !mb-[16px] text-[#000000] text-[16px] font-medium">Yoqilg'i turi va narxlari</span>
 
-        <small v-if="formSubmitted && !isOilListValid" class="text-red-500 mb-4 block">
+        <small v-if="formSubmitted && !isTariffsValid" class="text-red-500 mb-4 block">
           Yoqilg'i turi va narxi to'ldirilishi shart
         </small>
 
         <div class="grid grid-cols-2 gap-4">
-          <template v-for="(item, index) in oilList" :key="index">
+          <template v-for="(item, index) in tariffs" :key="index">
             <div>
               <FloatLabel variant="in">
                 <InputText
-                    v-model="item.price"
+                    v-model="item.day"
                     id="oil_price"
                     variant="filled"
                     type="number"
@@ -541,7 +581,7 @@ const kuzuvCar = [
 
               <!-- Remove button for oil items (except the first one if it's the only one) -->
               <button
-                  v-if="oilList.length > 1"
+                  v-if="tariffs.length > 1"
                   type="button"
                   @click="removeOilItem(index)"
                   class="absolute right-2 top-2 text-red-500 p-2"
@@ -563,7 +603,7 @@ const kuzuvCar = [
                xmlns="http://www.w3.org/2000/svg">
             <path d="M1 5H9M5 1L5 9" stroke="#66C61C" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-          Qo'shish
+          {{$t('send')}}
         </button>
       </div>
 

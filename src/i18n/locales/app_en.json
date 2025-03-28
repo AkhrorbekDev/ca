@@ -231,60 +231,73 @@
   "///////": "//////",
   "newUserInfo": "Are you new to our platform?",
   "oldUserInfo": "Have you registered before?",
-  "enterCodeWithPhone": "We sent a confirmation code to the number {phone}. Enter your mobile code in the field below.",
-  "createAdvertisement": "Post an advertisement",
-  "more": "More details",
-  "pickAddress": "Choose address",
-  "footerSiteDescription": "Transport services platform",
-  "otherMaterials": "Other materials",
-  "otherMaterialsDescription": "Other materials",
-  "buildingMaterials": "Building materials",
-  "buildingMaterialsDescription": "Furniture, baseboards, drywall",
-  "foods": "Food products",
-  "foodsDescription": "Beverages, carbonated, mineral waters",
-  "repairItems": "Equipment and spare parts",
-  "repairItemsDescription": "Car bodies, lighting, generator",
-  "withoutLoader": "Without loaders",
-  "withoutLoaderDescription": "No help needed",
-  "withLoader": "Driver needs to carry goods",
-  "withLoaderDescription": "Carrying loads not exceeding 50kg",
+  "enterCodeWithPhone": "We sent a confirmation code to { phone }.\n            Please enter the mobile\n            code in the field below.",
+  "createAdvertisement": "Place an Ad",
+  "more": "More Details",
+  "pickAddress": "Select Address",
+  "footerSiteDescription": "Transport Services\nPlatform",
+  "otherMaterials": "Other Materials",
+  "otherMaterialsDescription": "Other Materials",
+  "buildingMaterials": "Construction Materials",
+  "buildingMaterialsDescription": "Furniture, Plinth, Drywall",
+  "foods": "Food Products",
+  "foodsDescription": "Drinks, Carbonated, Mineral Waters",
+  "repairItems": "Equipment and Spare Parts",
+  "repairItemsDescription": "Bodies, Lights, Generator",
+  "withoutLoader": "Without Loaders",
+  "withoutLoaderDescription": "No Help Needed",
+  "withLoader": "Driver Must Carry Cargo",
+  "withLoaderDescription": "Carrying Loads Not Exceeding 50kg",
   "kg": "kg",
   "m3": "m³",
   "litr": "liter",
-  "additionalInfoDescription": "Type of cargo, image, loading service, payment...",
-  "pickTransport": "Choose transport",
-  "enterAmount": "Enter amount",
-  "fuelType": "Fuel type",
-  "companies": "List of companies",
-  "companiesDescription": "Select a company",
-  "fuelDeliveryPrice": "Delivery price",
+  "additionalInfoDescription": "Cargo Type, Formalities, Loading Service, Payment...",
+  "pickTransport": "Select Transport",
+  "enterAmount": "Enter Amount",
+  "fuelType": "Fuel Type",
+  "companies": "List of Companies",
+  "companiesDescription": "Select a Company",
+  "fuelDeliveryPrice": "Delivery Price",
   "free": "Free",
-  "noData": "No data",
-  "//": "//",
+  "noData": "No Data",
+  "fromWhatDay": "From What Date",
+  "toWhatDay": "Until What Date",
+  "workshops": "Workshops",
+  "masters": "Masters",
+  "matorMaster": "Motor Master",
+  "matorMasterDes": "Engine Motor Works",
+  "electricMaster": "Auto Electrician",
+  "electricMasterDes": "All Electrical Work, Headlights, Dashboard",
+  "bodyMaster": "Body Master",
+  "bodyMasterDes": "Polishing, Painting, Cracking, Denting",
+  "clear": "Clear",
+  "categories": "Categories",
+  "region": "Region",
+  "rating": "Rating",
   "services_": {
     "delivery": {
       "title": "Delivery",
-      "subTitle": "Fast and safe delivery service of goods and products to the destination"
+      "subTitle": "Fast and safe delivery of goods and products to the destination"
     },
     "distillation": {
-      "title": "Vehicle Transfer",
-      "subTitle": "Service for delivering your car to the required destination by qualified drivers"
+      "title": "Distillation",
+      "subTitle": "Service of delivering your car to the required destination by qualified drivers"
     },
     "shipping": {
-      "title": "Cargo Transportation",
-      "subTitle": "Efficient solution for transporting all types of cargo from small to large"
+      "title": "Cargo Shipping",
+      "subTitle": "Effective solution for transporting cargo of all sizes"
     },
     "oil": {
       "title": "Fuel Delivery",
-      "subTitle": "Fast and quality fuel delivery to the designated location for your vehicle"
+      "subTitle": "Quick and quality fuel delivery to your specified location for your vehicle"
     },
     "passenger": {
       "title": "Passenger Transportation",
-      "subTitle": "Transport service for personal, family or group travel"
+      "subTitle": "Transport service for personal, family, or group travel"
     },
     "transport-rental": {
-      "title": "Vehicle Rental",
-      "subTitle": "Service of providing vehicles for temporary use on a payment basis"
+      "title": "Transport Rental",
+      "subTitle": "Service of temporarily providing vehicles on a paid basis"
     },
     "technical": {
       "title": "Special Equipment",
@@ -292,7 +305,7 @@
     },
     "transfer": {
       "title": "Transport Transfer",
-      "subTitle": "Service of safe and timely delivery of vehicles to the destination"
+      "subTitle": "Service of safely and timely delivering vehicles to the destination"
     },
     "keeping": {
       "title": "Storage Service",
@@ -301,6 +314,135 @@
     "repair": {
       "title": "Auto Repair",
       "subTitle": "Providing technical inspection and other necessary auto service"
+    }
+  },
+  "warehouses": "Warehouses",
+  "download": "Download",
+  "announcement_time": "Announcement Time",
+  "max_passenger_count": "Maximum Passenger Count",
+  "max_vehicle_count": "Maximum Vehicle Count",
+  "max_cargo_capacity_kg": "Maximum Cargo Capacity",
+  "leave_cargo_comment": "Leave a comment about the cargo!",
+  "post": "Post",
+  "uploadAvatar": "Upload Profile Picture",
+  "deleteAvatar": "Delete Profile Picture",
+  "fuel_type": "Fuel Type",
+  "fuel_type_and_prices": "Fuel Types and Prices",
+  "mode": "Mode",
+  "system_settings": "System Settings",
+  "changePhoneNumber": "Change Phone Number",
+  "phoneNumberChanged": "Your Phone Number Has Changed",
+  "back": "Back",
+  "createCode": "Create Code",
+  "createSuccess": "Referral Code Successfully Created",
+  "profileUpdated": "Account Information Successfully Created",
+  "layout-mode": "Mode",
+  "next": "Next",
+  "enterClientInfos": "Personal Information",
+  "enterPhysicalInfos": "Legal Entity Information",
+  "enterInfos": "Enter Your Information",
+  "authRequired": "You Need to Register to Perform This Action",
+  "delete": "Delete",
+  "deleteSuccess": "Successfully Deleted",
+  "deleteReferralCodeTitle": "Are You Sure You Want to Delete the Code?",
+  "avatarUpdated": "Profile Picture Successfully Updated",
+  "home": {
+    "navbar": {
+      "platformInfo": "Platform Information",
+      "services": "Services",
+      "advantages": "Advantages",
+      "collaboration": "Collaboration",
+      "contact": "Contact",
+      "faq": "FAQ"
+    },
+    "title": {
+      "all": "All",
+      "transport": "Transport",
+      "services": "Services in one place",
+      "description": "Carting refers to all types of transport services \n an innovative platform concentrated in one place.",
+      "createAnnouncement": "Create Announcement",
+      "watchVideo": "Watch Video"
+    },
+    "search": "Search",
+    "about": {
+      "description": "Carting-Every with you \n            In step now together!",
+      "description2": "We offer the most popular transport and logistics services to the population and corporate customers quickly, easily and reliably, on the basis of modern technologies. Our goal is to provide opportunities for large and small companies, individual entrepreneurs and individuals to enjoy quality, affordable and safe transportation services at any time, from anywhere, through this platform.",
+      "useService": "Use the service"
+    },
+    "topDrivers": "Top Drivers",
+    "usingMode": {
+      "title": "Mode of use",
+      "first": {
+        "title": "Register",
+        "description": "Register on the platform or through a mobile application"
+      },
+      "second": {
+        "title": "Choose a Service",
+        "description": "Choose the type \n of service you want"
+      },
+      "third": {
+        "title": "Post Ad",
+        "description": "Create a service use announcement"
+      },
+      "fourth": {
+        "title": "Use The Service",
+        "description": "Pay and use \n the service"
+      }
+    },
+    "advantages": {
+      "title": "Why choose us",
+      "description": "Reasons to choose”Carting \" and its advantages",
+      "description2": "We make it possible for customers to enjoy reliable and convenient transportation services!",
+      "first": {
+        "title": "Comfort and agility",
+        "description": "Order all transport and logistics services quickly and conveniently through a mobile application or website"
+      },
+      "second": {
+        "title": "Wide Range Of Services",
+        "description": "Provides all kinds of transport, Logistics and warehousing services in one place."
+      },
+      "third": {
+        "title": "Convenient Payment Systems",
+        "description": "There is an option for customers to pay by moving cash, personal card or money."
+      },
+      "fourth": {
+        "title": "Customer Attitude",
+        "description": "Customers can solve their problems through the technical support service in 24\\7 mode."
+      }
+    },
+    "faqDescription": "This FAQ section allows users to\n            effective platform use\n            and quickly find the necessary information\n            gives the opportunity.",
+    "offer": {
+      "title": "You to cooperation \n            we offer",
+      "description": "If you have a need for quality transportation services in the field of freight and passenger transportation, or if you are your own transportation service provider, we will provide you with a mutually effective cooperation! Together we strive to create a successful and long-term partnership!",
+      "connectWith": "Connect with us"
+    },
+    "sponsors": "Sponsors",
+    "app": {
+      "download": "Download the app",
+      "description": "Download the mobile application and use the service more conveniently",
+      "subDescription": "Carting mobile application is the best that provides transport services using modern technologies\n          solution."
+    },
+    "customers": {
+      "title": "Feedback from our customers",
+      "description": "To improve the quality of Service and better understand the needs of customers\n          the opinion of each client is very important to us!",
+      "subDescription": "Through Carting, my orders always arrive in time. It is very convenient!"
+    },
+    "footer": {
+      "title": "For customers",
+      "aboutPlatform": "About the platform",
+      "services": "Services",
+      "advantages": "Advantages",
+      "collaboration": "Collaboration",
+      "contact": "Contact",
+      "ourGoals": "Our goals and values",
+      "department": "Relief Department",
+      "modeUse": "Mode of use",
+      "topDrivers": "Top Drivers",
+      "personalCab": "Personal Cabinet",
+      "location": "Location",
+      "termOfUse": "Terms of use",
+      "privacyPolicy": "Privacy Policy",
+      "developed": "Developed by"
     }
   }
 }

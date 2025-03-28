@@ -31,8 +31,21 @@ html {
 .dark h6,
 .dark span,
 .dark p,
-.dark a {
+.dark a,
+.dark button,
+.dark label,
+.dark input,
+.dark select,
+.dark textarea {
   color: #fff;
+}
+
+.dark div{
+  background: #1a1a1a ;
+}
+
+.dark input{
+  background: #88888c !important;
 }
 
 //
@@ -54,3 +67,27 @@ html {
   max-height: 76px;
 }
 
+:root.theme-mode {
+  --bg-primary: #ffffff !important;
+  --bg-secondary: #f1f5f9;
+  --text-primary: #333333;
+}
+
+:root.theme-light {
+  --bg-primary: #ffffff !important;
+  --bg-secondary: #f1f5f9;
+  --text-primary: #333333;
+}
+
+:root.theme-dark {
+  --bg-primary: #1a1a1a !important;
+  --bg-secondary: #2a2a2a !important;
+  --text-primary: #f1f5f9 !important;
+}
+
+/* Apply theme variables to the body */
+body {
+  background-color: var(--bg-primary, #f1f5f9);
+  color: var(--text-primary, #333333);
+  transition: background-color 0.3s, color 0.3s;
+}

@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import {Field, Form} from 'vee-validate'
-import {passengerTrafficSchema} from "@/components/form-elements/schema";
-import LocationItem from "@/components/form-elements/LocationItem.vue";
+import {passengerTrafficSchema} from '@/components/form-elements/schema';
+import LocationItem from '@/components/form-elements/LocationItem.vue';
 import {inject, onMounted, onUnmounted, ref, watch} from 'vue'
-import getGeoObject from "@/composables/getGeoObject";
-import useMapStore from "@/stores/map.store";
+import getGeoObject from '@/composables/getGeoObject';
+import useMapStore from '@/stores/map.store';
 import {ADV_TYPES} from '@/constants'
+import {useI18n} from 'vue-i18n'
 
+const {t} = useI18n()
 const $api = inject('api')
 const mapStore = useMapStore()
 const emit = defineEmits(['on:success', 'auth:invalid'])
@@ -56,7 +58,20 @@ const setLocation = (name) => {
   }, name)
   // hideDetailsOnLocationChange.value = true
 }
-
+const setSelectedLocation = async (address, name) => {
+  await getGeoObject({address: address})
+      .then(res => {
+        const marker = mapStore.getMarker(name)
+        mainForm.value.setFieldValue(name, {
+          lat: marker.markerProps.geometry.coordinates[0],
+          lng: marker.markerProps.geometry.coordinates[1],
+          name: address
+        })
+        mapStore.removeMarker(name)
+      }).finally(() => {
+        hideDetailsOnLocationChange.value = false
+      })
+}
 const onChangeDate = (e: Date, name) => {
   mainForm.value.setFieldValue(name, dateRef.value.formatDate(e, 'dd.mm.yy'))
 }
@@ -92,7 +107,7 @@ watch(showDetails, (e) => {
 })
 const paymentTypes = ref([
   {
-    name: 'Naqd',
+    name: t('cash'),
     value: 'CASH',
     icon: `
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -113,7 +128,7 @@ const paymentTypes = ref([
     `
   },
   {
-    name: 'Karta',
+    name: t('card'),
     value: 'CARD',
     icon: `
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -222,22 +237,37 @@ onUnmounted(() => {
   >
     <div class="navbar-items__divider"/>
     <div
-        class="flex flex-col h-full w-full gap-4 !p-[16px]">
+        class="flex flex-col h-full w-full gap-4 !p-[16px]"
+    >
       <LocationItem
+          @on:select="setSelectedLocation($event,'from_location')"
+
           :label="$t('from')"
           :class="{
         _invalid: (errors['from_location.lat'] || errors['from_location.lng'])
-      }" :location="values.from_location"
-          as="div" class="col-span-full" name="from_location"
-          @click="setLocation('from_location')"/>
+      }"
+          :location="values.from_location"
+          as="div"
+          class="col-span-full"
+          name="from_location"
+          @click="setLocation('from_location')"
+      />
 
-      <LocationItem :class="{
+      <LocationItem
+          @on:select="setSelectedLocation($event,'to_location')"
+          :class="{
         _invalid: (errors['to_location.lat'] || errors['to_location.lng'])
-      }" :location="values.to_location" as="div" class="col-span-full" name="to_location"
-                    @click="setLocation('to_location')"/>
-      <Field :class="{
+      }"
+          :location="values.to_location"
+          as="div"
+          class="col-span-full"
+          name="to_location"
+          @click="setLocation('to_location')"
+      />
+      <Field
+          :class="{
         _invalid: errors['details.passenger_count']
-      }" as="div" name="details.passenger_count" class="formItem flex flex-col">
+      }" as="div" name="details.passenger_count" class="formItem flex flex-col dark:!bg-zinc-700">
         <label for="passenger_count" class="text-[#292D324D] txt-[12px]">
 
           {{ $t('passengerCount') }}
@@ -246,13 +276,19 @@ onUnmounted(() => {
             :model-value="values.details.passenger_count"
             type="number"
 
-            class=" !bg-transparent  !py-[8px] !px-[0] shadow-none !border-0"
+            class=" !bg-transparent  !py-[8px]  !px-[0] shadow-none !border-0"
             id="passenger_count" aria-describedby="username-help"
             :placeholder="$t('passengerCount') "/>
       </Field>
-      <Field v-slot="{field}" :class="{
+      <Field
+          v-slot="{field}"
+          :class="{
                 _invalid: errors.shipment_date
-              }" name="shipment_date" as="div" class=" !px-[4px]  col-span-full">
+              }"
+          name="shipment_date"
+          as="div"
+          class=" !px-[4px]  col-span-full"
+      >
         <FloatLabel variant="in">
           <DatePicker
               :model-value="values.shipment_date"
@@ -261,74 +297,96 @@ onUnmounted(() => {
               inputId="in_label"
               showIcon
               @update:model-value="onChangeDate($event, field.name)"
-              iconDisplay="input" variant="filled"
-              class="custom-date w-full"/>
+              iconDisplay="input"
+              variant="filled"
+              class="custom-date w-full"
+          />
           <!--            <InputText id="in_label" variant="filled" placeholder="Manzilni tanlang"-->
           <!--                       class="w-full bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>-->
-          <label for="in_label" class="!text-[#292D324D]">{{ $t('departureDate') }}</label>
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">{{ $t('departureDate') }}</label>
         </FloatLabel>
       </Field>
 
       <div class="col-span-full">
         <div
-            @click="toggleShowDetails" :class="{
+            @click="toggleShowDetails"
+            :class="{
                 _invalid: errors.price
               }"
-            class="w-full !bg-[#FAFAFA] border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
+            class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 border-0 !rounded-[24px] h-[76px] !px-[16px] !pt-[12px] cursor-pointer relative"
         >
             <span class="text-[#292D324D] text-[12px] !mb-2">
               {{ $t('additionalInfo') }}
             </span>
-          <div class="flex items-center justify-between">
+          <div class="flex items-center justify-between !bg-transparent">
             <span class="text-[#292D32]">
-              {{ $t('description') }}, {{ $t('paymentType') }}, {{ $t('price') }}
+<!--              {{ $t('description') }}, {{ $t('paymentType') }}, {{ $t('price') }}-->
             </span>
-            <svg :style="{
+            <svg
+                :style="{
               transform: showDetails ? 'rotate(90deg)' : 'rotate(180deg)'
-            }" width="12" height="8" viewBox="0 0 12 8" fill="none"
-                 xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 6.5L6 1.5L11 6.5" stroke="#292D32" stroke-opacity="0.3" stroke-width="1.5"
-                    stroke-linecap="round" stroke-linejoin="round"/>
+            }"
+                width="12"
+                height="8"
+                viewBox="0 0 12 8"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                  d="M1 6.5L6 1.5L11 6.5"
+                  stroke="#292D32"
+                  stroke-opacity="0.3"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+              />
             </svg>
           </div>
 
         </div>
       </div>
-      <Field name="details.transportation_type_id" as="div"
-             :class="{
+      <Field
+          name="details.transportation_type_id"
+          as="div"
+          :class="{
                 _invalid: (errors['details.transportation_type_id'])
-              }" class="col-span-full !px-[4px]">
+              }"
+          class="col-span-full !px-[4px]"
+      >
         <FloatLabel variant="in">
           <Select :loading="isLoading" :model-value="selectedTransports"
                   @update:model-value="updateTransportType" :options="transports"
                   optionLabel="name"
                   :placeholder="$t('pickTransport')"
-                  class="w-full !bg-[#FAFAFA] !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
+                  class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 !border-0 !rounded-[24px] custom-placeholder-select h-[76px] flex items-center">
             <template #value="slotProps">
-              <div v-if="slotProps.value" class="flex items-center">
+              <div v-if="slotProps.value" class="flex items-center !bg-transparent">
                 <img :alt="slotProps.value.name"
                      :src="slotProps.value.icon"
                      class="mr-2" style="width: 80px; height: 40px; object-fit: contain"/>
-                <div>{{ slotProps.value.name }}</div>
+                <p>{{ slotProps.value.name }}</p>
               </div>
               <span v-else>
                     {{ slotProps.placeholder }}
                 </span>
             </template>
             <template #option="slotProps">
-              <div class="flex items-center grow">
+              <div class="flex items-center grow bg-transparent">
                 <img :alt="slotProps.option.name"
                      :src="slotProps.option.icon"
                      :class="`mr-2`" style="width: 94px; height: 73px; object-fit: contain"/>
-                <div class="flex items-center justify-between grow">
-                  <div>
+                <div class="flex items-center justify-between grow bg-transparent">
+                  <div class="bg-transparent">
                     <span class="block">{{ slotProps.option.name }}</span>
                   </div>
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="24" height="24" rx="12" fill="#66C61C"/>
                     <path
                         d="M8.33203 11.9999H15.6654M15.6654 11.9999L12.6065 9.33325M15.6654 11.9999L12.6065 14.6666"
-                        stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                        stroke="white"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
                   </svg>
 
 
@@ -336,7 +394,7 @@ onUnmounted(() => {
               </div>
             </template>
           </Select>
-          <label for="in_label" class="!text-[#292D324D]">
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">
             {{ $t('transportType') }}
           </label>
         </FloatLabel>
@@ -351,12 +409,19 @@ onUnmounted(() => {
 
         {{ $t('createAdvertisement') }}
 
-        <svg v-if="isSubmited" class="mr-3 -ml-1 size-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg"
-             fill="none"
-             viewBox="0 0 24 24">
+        <svg
+            v-if="isSubmited"
+            class="mr-3 -ml-1 size-5 animate-spin text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+        >
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
         </svg>
       </button>
     </div>
@@ -371,20 +436,23 @@ onUnmounted(() => {
       <div>
         <Field as="div" name="note" class="flex flex-col gap-2 w-full !mb-[24px]">
           <label for="description" class="text-[#292D3280] text-[12px]">{{ $t('description') }}</label>
-          <Textarea :model-value="values.note" id="description" class="w-full  !rounded-[16px] !placeholder-[#292D324D]"
+          <Textarea :model-value="values.note" id="description"
+                    class="w-full dark:!bg-zinc-700 !rounded-[16px] dark:!placeholder-white placeholder-[#292D324D]"
                     style="border: 1px solid #C2C2C233" rows="3"
                     cols="30"
                     :placeholder="$t('leaveOrderComment')"/>
         </Field>
         <Field name="pay_type" v-slot="{handleChange }" as="div" class="!mb-[24px]">
-          <span class="bg-[#FAFAFA] rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
+          <span class="bg-[#FAFAFA] dark:!bg-zinc-700 rounded-[50px] !px-[8px] text-sm text-[#292D324D]">
                 {{ $t('paymentType') }}
-              </span>
+          </span>
 
           <div v-for="paymentType in paymentTypes" :key="paymentType.value">
             <div class="flex items-center justify-between !py-4 border-b border-[#F5F5F7]">
-              <label :for="`paymentType.${paymentType.value}`"
-                     class="flex items-center gap-4 cursor-pointer">
+              <label
+                  :for="`paymentType.${paymentType.value}`"
+                  class="flex items-center gap-4 cursor-pointer"
+              >
                 <span v-html="paymentType.icon"/>
                 {{ paymentType.name }}
               </label>
@@ -406,14 +474,17 @@ onUnmounted(() => {
               :model-value="values.price"
               type="number"
               class="!py-[12px] !px-[16px] !rounded-[16px] border !border-[#C2C2C233] !placeholder-[#292D324D]"
-              id="price" aria-describedby="username-help"
-              :placeholder="$t('enterPrice')"/>
+              id="price"
+              aria-describedby="username-help"
+              :placeholder="$t('enterPrice')"
+          />
         </Field>
       </div>
       <div class="footer">
         <button
             @click="onSaveDetails"
-            class="!p-[16px] bg-[#66C61C] rounded-[24px] text-white text-center w-full !mt-[72px] text-[16px]">
+            class="!p-[16px] bg-[#66C61C] rounded-[24px] text-white text-center w-full !mt-[72px] text-[16px]"
+        >
           {{ $t('confirm') }}
         </button>
       </div>

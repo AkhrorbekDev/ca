@@ -138,7 +138,22 @@ const setLocation = (name) => {
       }
     }
   }, name)
-  // hideDetailsOnLocationChange.value = true
+  hideDetailsOnLocationChange.value = true
+}
+
+const setSelectedLocation = async (address, name) => {
+  await getGeoObject({address: address})
+      .then(res => {
+        const marker = mapStore.getMarker(name)
+        addAnnouncement.value[name] = {
+          lat: marker.markerProps.geometry.coordinates[0],
+          lng: marker.markerProps.geometry.coordinates[1],
+          name: res.data.description
+        }
+        mapStore.removeMarker(name)
+      }).finally(() => {
+        hideDetailsOnLocationChange.value = false
+      })
 }
 
 // Delete image
@@ -181,7 +196,7 @@ const createAnnouncement = async (announce) => {
     // Reset form
     addAnnouncement.value = {
       adv_type: '',
-      service_type_id: 7,
+      service_type_id: '',
       to_location: {
         lat: null,
         lng: null,
@@ -208,43 +223,45 @@ const createAnnouncement = async (announce) => {
 <template>
   <Transition name="bounce">
     <form
-        v-if="!hideDetailsOnLocationChange"
         @submit.prevent="createAnnouncement(addAnnouncement)"
     >
-      <pre>{{ pageValue.id }}</pre>
-      <pre>{{ addAnnouncement }}</pre>
       <div class="grid grid-cols-2 gap-4">
-        <LocationItem :location="addAnnouncement.to_location" as="div" class="" name="to_location"
-                      @click="setLocation('to_location')"/>
+        <LocationItem
+            :location="addAnnouncement.to_location"
+            as="div" class=""
+            name="to_location"
+            @on:select="setSelectedLocation($event,'from_location')"
+            @click="setLocation('to_location')"/>
 
         <FloatLabel variant="in">
           <InputText v-model="addAnnouncement.price" id="in_label" variant="filled" type="number"
-                     class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
-          <label for="in_label" class="!text-[#292D324D]">{{ $t('price') }}</label>
+                     class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
+          <label for="in_label" class="text-[#292D324D] dark:!text-white">{{ $t('price') }}</label>
         </FloatLabel>
 
-        <FloatLabel variant="in">
+        <FloatLabel variant="in" class="relative">
           <InputText v-model="addAnnouncement.details.area" id="in_label" variant="filled" type="number"
-                     class="w-full !bg-[#FAFAFA] !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
+                     class="w-full bg-[#FAFAFA] dark:!bg-zinc-700 !rounded-[24px] !pt-[34px] !pb-[18px] !px-[16px] !border-0"/>
+          <span class="absolute top-8 right-5">m²</span>
           <label for="in_label"
-                 class="!text-[#292D324D]">Maydon</label>
+                 class="text-[#292D324D] dark:!text-white">Maydon</label>
         </FloatLabel>
 
       </div>
 
       <div class="flex flex-col gap-2 w-full !mt-[24px]">
         <label for="description" class="text-[#292D3280] text-[16px]">{{ $t('description') }}</label>
-        <Textarea v-model="addAnnouncement.note" id="description" class="w-full   custom-placeholder-input" rows="3"
+        <Textarea v-model="addAnnouncement.note" id="description" class="w-full dark:!bg-zinc-700 custom-placeholder-input" rows="3"
                   cols="30"
                   placeholder="Yuk haqida izoh qoldiring!"/>
       </div>
 
-      <div class="bg-[#FAFAFA] rounded-[24px] !p-[16px] !mt-[24px]">
+      <div class="bg-[#FAFAFA] dark:!bg-zinc-700 rounded-[24px] !p-[16px] !mt-[24px]">
         <span class="text-[#292D324D] text-[12px]">Yuk rasmlari</span>
         <!--          {{ imageList }}-->
 
-        <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl">
-          <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px]">
+        <div class="grid grid-cols-6 gap-4 !mt-[8px] rounded-2xl dark:!bg-zinc-700">
+          <div v-for="(img, index) in imageList" :key="index" class="relative group !mr-0 w-[105px] h-[105px] dark:!bg-zinc-700">
             <img class="w-full h-full object-cover rounded-2xl"
                  :src="img" alt="img"
                  width="105">
@@ -291,9 +308,9 @@ const createAnnouncement = async (announce) => {
         <button
             type="submit"
             :disabled="v$.$invalid"
-            class="text-white bg-[#66C61C] !py-4 !px-11 rounded-3xl disabled:opacity-50"
+            class="text-white bg-[#66C61C] !py-4 !px-11 rounded-3xl disabled:opacity-50 !mt-4"
         >
-          Joylash
+          {{$t('post')}}
         </button>
       </div>
     </form>

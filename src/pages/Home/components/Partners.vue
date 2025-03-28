@@ -39,7 +39,7 @@ const driverData: DriversData[] = [
 <template>
   <div class="bg-white !py-[80px]">
 
-    <h3 class="text-[#292D32] text-[64px] font-semibold text-center !mb-[40px]">Hamkorlar</h3>
+    <h3 class="text-[#292D32] text-[64px] font-semibold text-center !mb-[40px]">{{ $t('home.sponsors') }}</h3>
 
     <swiper
         :loop="true"

@@ -10,6 +10,7 @@ import 'swiper/css/navigation';
 
 // Import required modules
 import {Autoplay} from 'swiper/modules';
+import {useI18n} from 'vue-i18n';
 
 interface SliderData {
   title: string;
@@ -19,33 +20,28 @@ interface SliderData {
 
 // Define modules array including pagination and autoplay
 const modules = [Autoplay];
-
+const {t} = useI18n();
 // Define slider data array
 const sliderData: SliderData[] = [
   {
-    title: "Yetkazib berish",
-    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
-    image: "./delivery.png"
+    title: t('services_.delivery.title'),
+    description: t('services_.delivery.description'),
+    image: './delivery.png'
   },
   {
-    title: "Maxsus texnika",
-    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
-    image: "./special.png"
+    title: t('services_.technical.title'),
+    description: t('services_.technical.description'),
+    image: './special.png'
   },
   {
-    title: "Yuk tashish",
-    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
-    image: "./shipping.png"
+    title: t('services_.shipping.title'),
+    description: t('services_.shipping.description'),
+    image: './shipping.png'
   },
   {
-    title: "Yo'lovchi tashish",
-    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
-    image: "./passenger.png"
-  },
-  {
-    title: "Maxsus texnika",
-    description: "Qurilish yoki maxsus ishlarni bajarish uchun zarur bo‘lgan texnikalar xizmati",
-    image: "./special.png"
+    title: t('services_.passenger.title'),
+    description: t('services_.passenger.description'),
+    image: './passenger.png'
   }
 ];
 </script>

@@ -323,7 +323,7 @@ watchEffect(() => {
 }
 
 .mega-drop-menu {
-  @apply absolute top-[80px] left-[-50px] !p-[16px] bg-[#FAFAFA] w-[359px] rounded-[24px];
+  @apply absolute top-[80px] right-0 !p-[16px] bg-[#FAFAFA] w-[359px] rounded-[24px];
   box-shadow: 0 32px 100px 0 #292D3229;
 
   .cards {

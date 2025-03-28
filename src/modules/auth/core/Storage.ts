@@ -23,7 +23,7 @@ class Storage implements StorageInterface {
         return this._cookies.get(_name);
     }
 
-    set(name: string, value: string, options: any): void {
+    set(name: string, value: string, options: { path: '/' }): void {
         const _name = this.options.prefix + '.' + name
         console.log({
             _name,

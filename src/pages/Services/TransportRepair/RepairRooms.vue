@@ -113,7 +113,7 @@ const breadcrumbItems = computed(() => {
         {{ $route.query?.repair_type_id ? $t('masters') : $t('workshops') }}
       </h1>
       <button
-          class="flex items-center relative justify-center gap-[8px] w-[105px] h-[48px] filter-btn__shadow rounded-[18px] bg-[#ffffff]">
+          class="flex items-center relative justify-center gap-[8px] w-[105px] h-[48px] filter-btn__shadow rounded-[18px] bg-[#ffffff] dark:!bg-zinc-700">
         <img src="@/assets/icons/filter.svg" alt="">
         <span>
           {{ $t('filter') }}
@@ -139,9 +139,7 @@ const breadcrumbItems = computed(() => {
               <button
                   v-for="(item, index) in categoriesList" @click="pushCategory(index)"
                   :class="['!py-[4px] !px-[12px] text-[#292D32] text-[12px] rounded-[20px] bg-[#FFFFFF]', categories.includes(index) && '!bg-[#66C61C] text-white']">
-                {{
-                  item
-                }}
+                {{ item }}
               </button>
             </div>
           </div>
@@ -212,6 +210,7 @@ const breadcrumbItems = computed(() => {
 
     <template v-if="advertisementData.length > 0">
       <div class="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-5">
+        dasdsa
         <Cards
             v-for="(item, index) in advertisementData"
             :key="index"

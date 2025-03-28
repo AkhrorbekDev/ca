@@ -95,6 +95,7 @@ class Auth {
         // ])
         if (tokenStatus.valid()) {
             await this.initializeRequestInterceptor()
+            console.log(this.options.user)
             if (this.options.user.fetchUser) {
                 await this.fetchUser()
             }
@@ -227,8 +228,9 @@ class Auth {
         }
         options.method = request.method
         options.headers = {}
-        options.headers[this.options.token.name] = this.token.get()
-        options.onRequest = (context) => console.log(context, 'fetchUser')
+        options.onRequest = (context) => {
+            context.options.headers.set(this.options.token.name, this.token.get())
+        }
         return this.request._request(request.url, options)
             .then(res => {
                 this.user = res.data[this.options.user.property]
@@ -236,7 +238,7 @@ class Auth {
             }).catch(async err => {
                 if (err.status === 401 && refreshToken) {
                     return await this.refreshTokens().then(async () => {
-                        return await this.fetchUser(false)
+                        return this.fetchUser(false)
                     })
                 } else {
                     return Promise.reject(err)
@@ -247,9 +249,10 @@ class Auth {
     initializeRequestInterceptor(refreshEndpoint?: string): void {
         this.interceptor = async (config) => {
             // Don't intercept refresh token requests
-            if (this._needToken(config) || config.url === refreshEndpoint) {
+            if (!this._needToken(config) || config.url === refreshEndpoint) {
                 return config
             }
+            console.log(config, this._needToken(config), 'config')
 
             // Perform scheme checks.
             const {
@@ -300,6 +303,8 @@ class Auth {
 
     reset() {
         this.token.set(false, false)
+        this.user = null
+        this.loggedIn = null
         this.refreshToken.set(false, false)
         this.interceptor = null
     }

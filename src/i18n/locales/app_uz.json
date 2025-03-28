@@ -40,9 +40,11 @@
   "legalEntityInfo": "Yuridik shaxs ma'lumotlari",
   "individualInfo": "Jismoniy shaxs ma'lumotlari",
   "agreeToTerms": "Foydalanish shartlariga roziman",
+  "agreeTo": "Foydalanish shartlari",
+  "agreeTerms": "ga roziman",
   "fillInTheInformation": "Malumotlarni to'ldiring",
   "enterSTIR": "STIR kiriting",
-  "enterCompanyName": "Kompaniya nomi kiriting",
+  "enterCompanyName": "Kompaniya nomini kiriting",
   "enterYourName": "Ismingizni kiriting",
   "enterYourSurname": "Familiyangizni kiriting",
   "enterPhoneNumber": "Telefon raqami",
@@ -317,5 +319,133 @@
       "subTitle": "Texnik ko'rik va boshqa zarur bo'lgan avtoservis xizmatlarini ko'rsatish"
     }
   },
-  "warehouses": "Omborxonalar"
+  "warehouses": "Omborxonalar",
+  "download": "Yuklash",
+  "announcement_time": "E’lon vaqti",
+  "max_passenger_count": "Maksimal yo‘lovchi soni",
+  "max_vehicle_count": "Maksimal transport soni",
+  "max_cargo_capacity_kg": "Maksimal yuk sig‘imi",
+  "leave_cargo_comment": "Yuk haqida izoh qoldiring!",
+  "post": "Joylash",
+  "uploadAvatar": "Profil rasmini yuklash",
+  "deleteAvatar": "Profil rasmini o'chirish",
+  "fuel_type": "Yoqilg'i turi",
+  "fuel_type_and_prices": "Yoqilg'i turi va narxlari",
+  "mode": "Rejim",
+  "system_settings": "Tizim sozlamalari",
+  "changePhoneNumber": "Telefon raqamini o'zgartirish",
+  "phoneNumberChanged": "Telefon raqamingiz o'zgardi",
+  "back": "Ortga",
+  "createCode": "Kod yaratish",
+  "createSuccess": "Referral kod muvaffaqiyatli yaratildi",
+  "profileUpdated": "Akaunt ma'lumotlari muvaffaqiyatli yaratildi",
+  "layout-mode": "Rejim",
+  "next": "Keyingisi",
+  "enterClientInfos": "Jismoniy shaxs ma’lumotlari",
+  "enterPhysicalInfos": "Yuridik shaxs ma’lumotlari",
+  "enterInfos": "Ma’lumotlaringizni kiriting",
+  "authRequired": "Bu amal bajarish uchun ro'yhatdan  o'tishingiz kerak",
+  "delete": "O'chirish",
+  "deleteSuccess": "Muvaffaqiyatli o'chirildi",
+  "deleteReferralCodeTitle": "Haqiqatdan ham kodni o‘chirmoqchimisiz?",
+  "avatarUpdated": "Profil rasmi muvaffaqiyatli yangilandi",
+  "home": {
+    "navbar": {
+      "platformInfo": "Platforma haqida ma'lumot",
+      "services": "Xizmatlar",
+      "advantages": "Afzalliklar",
+      "collaboration": "Hamkorlik",
+      "contact": "Aloqa",
+      "faq": "Ko'p so'raladigan savollar"
+    },
+    "title": {
+      "all": "Barchasi",
+      "transport": "Transport",
+      "services": "Bir joyda xizmatlar",
+      "description": "Kargo transport barcha turdagi transport xizmatlarini \n bitta innovatsion platformada jamlagan.",
+      "createAnnouncement": "E'lon yaratish",
+      "watchVideo": "Videoni ko'rish"
+    },
+    "search": "Qidirish",
+    "about": {
+      "description": "Kargo Transport - Har doim siz bilan \n Hozir birga!",
+      "description2": "Biz aholga va korporativ mijozlarga zamonaviy texnologiyalar asosida transport va logistika xizmatlarining eng mashhurlarini tez, oson va ishonchli ravishda taqdim etamiz. Bizning maqsadimiz - katta va kichik kompaniyalar, yakka tadbirkorlar va shaxslar uchun ushbu platforma orqali istalgan vaqt va joydan sifatli, arzon va xavfsiz transport xizmatlaridan foydalanish imkoniyatini yaratishdir.",
+      "useService": "Xizmatdan foydalanish"
+    },
+    "topDrivers": "Eng yaxshi haydovchilar",
+    "usingMode": {
+      "title": "Foydalanish usuli",
+      "first": {
+        "title": "Ro'yxatdan o'tish",
+        "description": "Platformada yoki mobil ilovada ro'yxatdan o'ting"
+      },
+      "second": {
+        "title": "Xizmatni tanlash",
+        "description": "Kerakli xizmat turini \n tanlang"
+      },
+      "third": {
+        "title": "E'lon joylashtirish",
+        "description": "Xizmat foydalanish e'lonini yarating"
+      },
+      "fourth": {
+        "title": "Xizmatdan foydalanish",
+        "description": "To'lang va \n xizmatdan foydalaning"
+      }
+    },
+    "advantages": {
+      "title": "Nima uchun biz",
+      "description": "\"Kargo Transport\"ni tanlash sabablari va afzalliklari",
+      "description2": "Mijozlarga ishonchli va qulay transport xizmatlaridan foydalanish imkoniyatini yaratamiz!",
+      "first": {
+        "title": "Qulaylik va harakatlanuvchilik",
+        "description": "Barcha transport va logistika xizmatlarini mobil ilova yoki veb-sayt orqali tez va qulay ravishda buyurtma qiling"
+      },
+      "second": {
+        "title": "Keng xizmatlar spektri",
+        "description": "Barcha turdagi transport, logistika va omborxona xizmatlarini bitta joyda taqdim etadi."
+      },
+      "third": {
+        "title": "Qulay to'lov tizimi",
+        "description": "Mijozlar uchun naqd pul, shaxsiy karta yoki pul o'tkazmalari orqali to'lash imkoniyati mavjud."
+      },
+      "fourth": {
+        "title": "Mijozlarga munosabat",
+        "description": "Mijozlar 24/7 rejimida texnik yordam xizmati orqali muammolarini hal qila olishadi."
+      }
+    },
+    "faqDescription": "Ushbu Ko'p so'raladigan savollar bo'limi \n foydalanuvchilarga platformadan \n samarali foydalanish va kerakli ma'lumotlarni \n tez topishga yordam beradi.",
+    "offer": {
+      "title": "Sizga hamkorlikni \n taklif qilamiz",
+      "description": "Agar sizda yuk va yo'lovchi tashish sohasida sifatli transport xizmatlariga ehtiyoj bo'lsa, yoki agar siz o'zingiz transport xizmati ko'rsatuvchisi bo'lsangiz, biz sizga o'zaro foydali hamkorlik taqdim etamiz! Biz birgalikda muvaffaqiyatli va uzoq muddatli sheriklik yaratishga intilamiz!",
+      "connectWith": "Biz bilan bog'laning"
+    },
+    "sponsors": "Hamkorlar",
+    "app": {
+      "download": "Ilovani yuklab olish",
+      "description": "Mobil ilovani yuklab oling va xizmatdan yanada qulay foydalaning",
+      "subDescription": "Kargo Transport mobil ilovasi zamonaviy texnologiyalardan foydalangan holda transport xizmatlarini taqdim etuvchi eng yaxshi echimdir."
+    },
+    "customers": {
+      "title": "Mijozlarimizning fikrlari",
+      "description": "Xizmat sifatini yaxshilash va mijozlarning ehtiyojlarini yaxshi tushunish uchun \n har bir mijozning fikri juda muhim!",
+      "subDescription": "Kargo Transport orqali mening buyurtmalarim har doim vaqtida keladi. Juda qulay!"
+    },
+    "footer": {
+      "title": "Mijozlar uchun",
+      "aboutPlatform": "Platforma haqida",
+      "services": "Xizmatlar",
+      "advantages": "Afzalliklar",
+      "collaboration": "Hamkorlik",
+      "contact": "Aloqa",
+      "ourGoals": "Maqsadlarimiz va qadriyatlarimiz",
+      "department": "Yordam bo'limi",
+      "modeUse": "Foydalanish usuli",
+      "topDrivers": "Eng yaxshi haydovchilar",
+      "personalCab": "Shaxsiy kabinet",
+      "location": "Joylashuv",
+      "termOfUse": "Foydalanish shartlari",
+      "privacyPolicy": "Maxfiylik siyosati",
+      "developed": "Ishlab chiqilgan"
+    }
+  }
 }
