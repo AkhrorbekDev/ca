@@ -40,7 +40,7 @@ const changeRoute = () => {
               v-model="selectedService"
               :options="services"
               optionLabel="title"
-              placeholder="Xizmat turini tanlang"
+              :placeholder="$t('serviceType')"
               class="w-full !bg-[#FAFAFA] !border-0 custom-placeholder-select"
               @update:model-value="onSelectService"
           >
@@ -89,28 +89,24 @@ const changeRoute = () => {
         </div>
 
         <button class="bg-[#66C61C] h-[40px] text-white rounded-full !mt-auto" @click="changeRoute">
-          Izlash
+          {{ $t('search') }}
         </button>
       </div>
 
       <div class="flex justify-between" id="about">
         <div class="!mr-[40px]">
-          <span class="block text-[16px] text-[#292D3266] font-medium !mb-[24px]">Biz haqimizda</span>
+          <span class="block text-[16px] text-[#292D3266] font-medium !mb-[24px]">{{ $t('aboutUs') }}</span>
 
-          <h2 class="text-[#292D32] text-[40px] font-semibold !mb-[24px]">Carting – Siz bilan Har <br>
-            Qadamda endi Birga!</h2>
+          <h2 class="text-[#292D32] text-[40px] font-semibold !mb-[24px]">
+            {{ $t('home.about.description') }}
+          </h2>
 
           <p class="w-[592px] text-[#292D3266] text-[18px] !mb-[24px]">
-            Biz aholi va korporativ mijozlarga eng ommabop transport va
-            logistika xizmatlarini tez, oson va ishonchli tarzda, zamonaviy
-            texnologiyalar asosida taqdim etishni taklif etamiz. Maqsadimiz,
-            ushbu platforma orqali yirik va kichik kompaniyalar, yakka tartibdagi
-            tadbirkorlar va jismoniy shaxslar uchun sifatli, arzon va xavfsiz
-            transport xizmatlaridan istalgan vaqtda, istalgan joydanfoydalanish
-            imkoniyatini yaratishdir.</p>
+            {{ $t('home.about.description2') }}
+          </p>
 
           <router-link to="/services" class="bg-[#66C61C] font-medium text-white rounded-[8px] !px-[24px] !py-[12px]">
-            Xizmatdan foydalanish
+            {{ $t('home.about.useService') }}
           </router-link>
         </div>
 

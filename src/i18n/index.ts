@@ -12,7 +12,7 @@ export enum Language {
     KK = 'kk'
 }
 
-const defaultLanguage = Language.UZ
+const defaultLanguage = Language.EN
 
 const i18n = createI18n({
     locale: defaultLanguage,

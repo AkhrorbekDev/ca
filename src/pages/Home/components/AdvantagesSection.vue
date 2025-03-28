@@ -1,30 +1,32 @@
 <script lang="ts" setup>
+import {useI18n} from 'vue-i18n'
 
 interface AdvantagesData {
   title: string
   description: string
 }
 
+const {t} = useI18n()
 const advantagesDataData: AdvantagesData[] = [
 
   {
-    title: "Qulaylik va Tezkorlik",
-    description: "Barcha transport va logistika xizmatlarini mobil ilova yoki veb-sayt orqali tez va qulay tarzda buyurtma berish.",
+    title: t('home.advantages.first.title'),
+    description: t('home.advantages.first.description'),
   },
 
   {
-    title: "Xizmatlarning Keng Qamrovi",
-    description: "Barcha turdagi transport, logistika va omborxona xizmatlarini bir joyda taqdim etadi.",
+    title: t('home.advantages.second.title'),
+    description: t('home.advantages.second.description')
   },
 
   {
-    title: "Qulay To‘lov Tizimlari",
-    description: "Mijozlar uchun naqd, shaxsiy karta yoki pul ko‘chirish orqali to‘lov qilish imkoniyati mavjud.",
+    title: t('home.advantages.third.title'),
+    description: t('home.advantages.third.description')
   },
 
   {
-    title: "Mijozlarga Munosabat",
-    description: "Mijozlar 24\\7 rejimida texnik qo‘llab-quvvatlash xizmati orqali o‘z muammolarini yechishlari mumkin.",
+    title: t('home.advantages.fourth.title'),
+    description: t('home.advantages.fourth.description')
   },
 ]
 </script>
@@ -34,22 +36,36 @@ const advantagesDataData: AdvantagesData[] = [
   <div id="advantage" class="bg-[#FAFAFA] !py-[100px]">
     <div class="max-w-screen-xl  container lg:mx-auto">
       <div class="flex items-center">
-        <img src="@/assets/images/advantages-img.png" alt="advantages-img" width="600"
-             class="w-[600px] h-[808px] !mr-[39px] !rounded-2xl">
+        <img
+            src="@/assets/images/advantages-img.png"
+            alt="advantages-img"
+            width="600"
+            class="w-[600px] h-[808px] !mr-[39px] !rounded-2xl"
+        >
 
         <div class="dark:!bg-zinc-700 !p-4 rounded-lg">
-          <p class="font-medium text-[#292D3266] !mb-[24px]">Nima uchun bizni tanlashadi</p>
+          <p class="font-medium text-[#292D3266] !mb-[24px]">{{ $t('home.advantages.title') }}</p>
 
-          <h3 class="text-[#292D32] text-[40px] font-semibold !mb-[24px]">“Carting”ni Tanlash uchun
-            Sabablar va uning Afzalliklari</h3>
+          <h3 class="text-[#292D32] text-[40px] font-semibold !mb-[24px]">
+            {{ $t('home.advantages.description') }}
+          </h3>
 
-          <p class="text-[#292D3266] text-[18px] !mb-[24px]">Biz mijozlarga ishonchli va qulay transport xizmatlaridan
-            bahramand bo‘lish imkonini yaratamiz!</p>
+          <p class="text-[#292D3266] text-[18px] !mb-[24px]">
+            {{ $t('home.advantages.description2') }}
+          </p>
 
           <div class="dark:!bg-zinc-700">
-            <div class="flex items-start !mb-[24px] dark:!bg-zinc-700" v-for="(item, index) in advantagesDataData" :key="index">
-              <img src="@/assets/images/icons/advantages-icon.svg" alt="advantages-icon.svg" width="48"
-                   class="!mr-[16px]">
+            <div
+                class="flex items-start !mb-[24px] dark:!bg-zinc-700"
+                v-for="(item, index) in advantagesDataData"
+                :key="index"
+            >
+              <img
+                  src="@/assets/images/icons/advantages-icon.svg"
+                  alt="advantages-icon.svg"
+                  width="48"
+                  class="!mr-[16px]"
+              >
 
               <div class="dark:!bg-zinc-700">
                 <h4 class="text-[#000000] text-[20px] font-medium !mb-2">{{ item.title }}</h4>

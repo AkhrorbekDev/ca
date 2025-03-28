@@ -8,15 +8,16 @@
       </div>
 
       <div class="md:w-1/2 text-center md:text-left">
-        <p class="uppercase text-[#292D3266] text-[16px] font-500 mb-[24px]">Ilovani yuklab oling</p>
+        <p class="uppercase text-[#292D3266] text-[16px] font-500 mb-[24px]">{{ $t('home.app.download') }}</p>
 
-        <h1 class="text-[40px] font-600 !mb-[24px] md:w-[70%] text-[#292D32]">
-          Ilovamiz Yordamida <br> Istalgan Transport Xizmatini Toping
-        </h1>
+        <p class="text-[40px] font-600 !mb-[24px] md:w-[70%] text-[#292D32]">
+          {{ $t('home.app.description') }}
+        </p>
 
         <p class="text-[#292D3266] !mb-[32px] leading-[32px] text-[18px] md:w-[80%] font-400">
-          Carting mobil ilovasi transport xizmatlarini zamonaviy texnologiyalar yordamida taqdim etuvchi eng yaxshi
-          yechim.
+          {{
+            $t('home.app.subDescription')
+          }}
         </p>
 
         <div class="flex justify-center md:justify-start gap-4">
